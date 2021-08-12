@@ -8,7 +8,7 @@
 
 #### Bug修复
 
-- (无)
+- 修正 PointCrudOperation 中错误的代码。
 
 #### 功能移除
 
