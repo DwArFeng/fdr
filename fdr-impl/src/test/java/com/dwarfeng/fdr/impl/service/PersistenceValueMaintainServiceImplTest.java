@@ -45,11 +45,18 @@ public class PersistenceValueMaintainServiceImplTest {
             PersistenceValue persistenceValue = new PersistenceValue(
                     null,
                     parentPoint.getKey(),
-                    i == 0 ? new Date(10000) : new Date(),
+                    i == 0 ? new Date(10000) : new Date(20000),
                     "persistence-value-" + i
             );
             persistenceValues.add(persistenceValue);
         }
+        persistenceValues.add(new PersistenceValue(
+                null,
+                parentPoint.getKey(),
+                new Date(30000),
+                "persistence-value-" + persistenceValues.size()
+        ));
+
     }
 
     @After
@@ -69,9 +76,9 @@ public class PersistenceValueMaintainServiceImplTest {
             }
         } finally {
             for (PersistenceValue persistenceValue : persistenceValues) {
-                persistenceValueMaintainService.delete(persistenceValue.getKey());
+                persistenceValueMaintainService.deleteIfExists(persistenceValue.getKey());
             }
-            pointMaintainService.delete(parentPoint.getKey());
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
         }
     }
 
@@ -92,9 +99,32 @@ public class PersistenceValueMaintainServiceImplTest {
             assertNull(previous);
         } finally {
             for (PersistenceValue persistenceValue : persistenceValues) {
-                persistenceValueMaintainService.delete(persistenceValue.getKey());
+                persistenceValueMaintainService.deleteIfExists(persistenceValue.getKey());
             }
-            pointMaintainService.delete(parentPoint.getKey());
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
+        }
+    }
+
+    @Test
+    public void testRear() throws ServiceException {
+        try {
+            parentPoint.setKey(pointMaintainService.insert(parentPoint));
+            for (PersistenceValue persistenceValue : persistenceValues) {
+                persistenceValue.setPointKey(parentPoint.getKey());
+                persistenceValue.setKey(persistenceValueMaintainService.insert(persistenceValue));
+            }
+            PersistenceValue rear = persistenceValueMaintainService.rear(parentPoint.getKey(), new Date(22450));
+            assertNotNull(rear);
+            assertEquals(persistenceValues.get(persistenceValues.size() - 1).getKey(), rear.getKey());
+            rear = persistenceValueMaintainService.rear(parentPoint.getKey(), new Date(30000));
+            assertNull(rear);
+            rear = persistenceValueMaintainService.rear(parentPoint.getKey(), new Date(30001));
+            assertNull(rear);
+        } finally {
+            for (PersistenceValue persistenceValue : persistenceValues) {
+                persistenceValueMaintainService.deleteIfExists(persistenceValue.getKey());
+            }
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
         }
     }
 }

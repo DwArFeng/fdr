@@ -160,9 +160,9 @@ public class MappingLookupServiceImplTest {
             assertEquals(persistenceValues.get(2).getValue(), timedValues.get(0).getValue());
         } finally {
             for (PersistenceValue persistenceValue : persistenceValues) {
-                persistenceValueMaintainService.delete(persistenceValue.getKey());
+                persistenceValueMaintainService.deleteIfExists(persistenceValue.getKey());
             }
-            pointMaintainService.delete(parentPoint.getKey());
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
         }
     }
 
@@ -226,9 +226,9 @@ public class MappingLookupServiceImplTest {
             assertEquals(filteredValues.get(2).getValue(), timedValues.get(0).getValue());
         } finally {
             for (FilteredValue filteredValue : filteredValues) {
-                filteredValueMaintainService.delete(filteredValue.getKey());
+                filteredValueMaintainService.deleteIfExists(filteredValue.getKey());
             }
-            pointMaintainService.delete(parentPoint.getKey());
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
         }
     }
 
@@ -292,9 +292,9 @@ public class MappingLookupServiceImplTest {
             assertEquals(triggeredValues.get(2).getValue(), timedValues.get(0).getValue());
         } finally {
             for (TriggeredValue triggeredValue : triggeredValues) {
-                triggeredValueMaintainService.delete(triggeredValue.getKey());
+                triggeredValueMaintainService.deleteIfExists(triggeredValue.getKey());
             }
-            pointMaintainService.delete(parentPoint.getKey());
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
         }
     }
 }

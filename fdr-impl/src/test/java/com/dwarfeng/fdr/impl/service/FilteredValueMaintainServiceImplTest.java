@@ -59,12 +59,20 @@ public class FilteredValueMaintainServiceImplTest {
                     null,
                     parentPoint.getKey(),
                     parentFilterInfo.getKey(),
-                    i == 0 ? new Date(10000) : new Date(),
+                    i == 0 ? new Date(10000) : new Date(20000),
                     "filtered-value-" + i,
                     "this is a test"
             );
             filteredValues.add(filteredValue);
         }
+        filteredValues.add(new FilteredValue(
+                null,
+                parentPoint.getKey(),
+                parentFilterInfo.getKey(),
+                new Date(30000),
+                "filtered-value-" + filteredValues.size(),
+                "this is a test"
+        ));
     }
 
     @After
@@ -89,10 +97,10 @@ public class FilteredValueMaintainServiceImplTest {
             }
         } finally {
             for (FilteredValue filteredValue : filteredValues) {
-                filteredValueMaintainService.delete(filteredValue.getKey());
+                filteredValueMaintainService.deleteIfExists(filteredValue.getKey());
             }
-            filterInfoMaintainService.delete(parentFilterInfo.getKey());
-            pointMaintainService.delete(parentPoint.getKey());
+            filterInfoMaintainService.deleteIfExists(parentFilterInfo.getKey());
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
         }
     }
 
@@ -113,9 +121,32 @@ public class FilteredValueMaintainServiceImplTest {
             assertNull(previous);
         } finally {
             for (FilteredValue filteredValue : filteredValues) {
-                filteredValueMaintainService.delete(filteredValue.getKey());
+                filteredValueMaintainService.deleteIfExists(filteredValue.getKey());
             }
-            pointMaintainService.delete(parentPoint.getKey());
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
+        }
+    }
+
+    @Test
+    public void testRear() throws ServiceException {
+        try {
+            parentPoint.setKey(pointMaintainService.insert(parentPoint));
+            for (FilteredValue filteredValue : filteredValues) {
+                filteredValue.setPointKey(parentPoint.getKey());
+                filteredValue.setKey(filteredValueMaintainService.insert(filteredValue));
+            }
+            FilteredValue rear = filteredValueMaintainService.rear(parentPoint.getKey(), new Date(22450));
+            assertNotNull(rear);
+            assertEquals(filteredValues.get(filteredValues.size() - 1).getKey(), rear.getKey());
+            rear = filteredValueMaintainService.rear(parentPoint.getKey(), new Date(30000));
+            assertNull(rear);
+            rear = filteredValueMaintainService.rear(parentPoint.getKey(), new Date(30001));
+            assertNull(rear);
+        } finally {
+            for (FilteredValue filteredValue : filteredValues) {
+                filteredValueMaintainService.deleteIfExists(filteredValue.getKey());
+            }
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
         }
     }
 }

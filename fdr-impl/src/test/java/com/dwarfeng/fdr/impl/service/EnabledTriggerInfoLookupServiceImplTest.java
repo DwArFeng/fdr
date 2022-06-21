@@ -90,7 +90,7 @@ public class EnabledTriggerInfoLookupServiceImplTest {
             assertEquals(5, enabledTriggerInfoLookupService.getEnabledTriggerInfos(parentPoint.getKey()).size());
             assertEquals(5, enabledTriggerInfoCache.get(parentPoint.getKey()).size());
             TriggerInfo triggerInfo = triggerInfos.get(0);
-            triggerInfoMaintainService.delete(triggerInfo.getKey());
+            triggerInfoMaintainService.deleteIfExists(triggerInfo.getKey());
             assertEquals(0, enabledTriggerInfoCache.get(parentPoint.getKey()).size());
             triggerInfoMaintainService.insert(triggerInfo);
             assertEquals(0, enabledTriggerInfoCache.get(parentPoint.getKey()).size());
@@ -99,9 +99,9 @@ public class EnabledTriggerInfoLookupServiceImplTest {
             assertEquals(5, enabledTriggerInfoCache.get(parentPoint.getKey()).size());
         } finally {
             for (TriggerInfo triggerInfo : triggerInfos) {
-                triggerInfoMaintainService.delete(triggerInfo.getKey());
+                triggerInfoMaintainService.deleteIfExists(triggerInfo.getKey());
             }
-            pointMaintainService.delete(parentPoint.getKey());
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
         }
     }
 }

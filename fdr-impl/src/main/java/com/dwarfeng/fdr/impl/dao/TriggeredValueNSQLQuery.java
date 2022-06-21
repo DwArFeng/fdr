@@ -31,4 +31,6 @@ public interface TriggeredValueNSQLQuery extends NSQLQuery {
     Integer lookupTriggeredCountForTrigger(@NonNull Connection connection, Object[] objs) throws DaoException;
 
     TriggeredValue previous(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException;
+
+    TriggeredValue rear(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException;
 }

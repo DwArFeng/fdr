@@ -31,4 +31,6 @@ public interface FilteredValueNSQLQuery extends NSQLQuery {
     Integer lookupFilteredCountForFilter(@NonNull Connection connection, Object[] objs) throws DaoException;
 
     FilteredValue previous(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException;
+
+    FilteredValue rear(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException;
 }

@@ -59,12 +59,20 @@ public class TriggeredValueMaintainServiceImplTest {
                     null,
                     parentPoint.getKey(),
                     parentTriggerInfo.getKey(),
-                    i == 0 ? new Date(10000) : new Date(),
+                    i == 0 ? new Date(10000) : new Date(20000),
                     "triggered-value-" + i,
                     "this is a test"
             );
             triggeredValues.add(triggeredValue);
         }
+        triggeredValues.add(new TriggeredValue(
+                null,
+                parentPoint.getKey(),
+                parentTriggerInfo.getKey(),
+                new Date(30000),
+                "triggered-value-" + triggeredValues.size(),
+                "this is a test"
+        ));
     }
 
     @After
@@ -89,10 +97,10 @@ public class TriggeredValueMaintainServiceImplTest {
             }
         } finally {
             for (TriggeredValue triggeredValue : triggeredValues) {
-                triggeredValueMaintainService.delete(triggeredValue.getKey());
+                triggeredValueMaintainService.deleteIfExists(triggeredValue.getKey());
             }
-            triggerInfoMaintainService.delete(parentTriggerInfo.getKey());
-            pointMaintainService.delete(parentPoint.getKey());
+            triggerInfoMaintainService.deleteIfExists(parentTriggerInfo.getKey());
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
         }
     }
 
@@ -113,9 +121,32 @@ public class TriggeredValueMaintainServiceImplTest {
             assertNull(previous);
         } finally {
             for (TriggeredValue triggeredValue : triggeredValues) {
-                triggeredValueMaintainService.delete(triggeredValue.getKey());
+                triggeredValueMaintainService.deleteIfExists(triggeredValue.getKey());
             }
-            pointMaintainService.delete(parentPoint.getKey());
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
+        }
+    }
+
+    @Test
+    public void testRear() throws ServiceException {
+        try {
+            parentPoint.setKey(pointMaintainService.insert(parentPoint));
+            for (TriggeredValue triggeredValue : triggeredValues) {
+                triggeredValue.setPointKey(parentPoint.getKey());
+                triggeredValue.setKey(triggeredValueMaintainService.insert(triggeredValue));
+            }
+            TriggeredValue rear = triggeredValueMaintainService.rear(parentPoint.getKey(), new Date(22450));
+            assertNotNull(rear);
+            assertEquals(triggeredValues.get(triggeredValues.size() - 1).getKey(), rear.getKey());
+            rear = triggeredValueMaintainService.rear(parentPoint.getKey(), new Date(30000));
+            assertNull(rear);
+            rear = triggeredValueMaintainService.rear(parentPoint.getKey(), new Date(30001));
+            assertNull(rear);
+        } finally {
+            for (TriggeredValue triggeredValue : triggeredValues) {
+                triggeredValueMaintainService.deleteIfExists(triggeredValue.getKey());
+            }
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
         }
     }
 }

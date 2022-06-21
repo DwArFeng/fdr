@@ -398,7 +398,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
         }
     }
 
-    public FilteredValue previousByCriteria(LongIdKey pointKey, Date date) {
+    private FilteredValue previousByCriteria(LongIdKey pointKey, Date date) {
         DetachedCriteria criteria = DetachedCriteria.forClass(HibernateFilteredValue.class);
         if (Objects.isNull(pointKey)) {
             criteria.add(Restrictions.isNull("pointLongId"));
@@ -407,6 +407,54 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
         }
         criteria.add(Restrictions.lt("happenedDate", date));
         criteria.addOrder(Order.desc("happenedDate"));
+        return hibernateTemplate.findByCriteria(criteria, 0, 1).stream().findFirst()
+                .map(value -> beanTransformer.reverseTransform((HibernateFilteredValue) value)).orElse(null);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public FilteredValue rear(LongIdKey pointKey, Date date) throws DaoException {
+        try {
+            if (Objects.isNull(nsqlQuery)) {
+                LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
+                return rearByCriteria(pointKey, date);
+            }
+            LOGGER.debug("使用原生SQL进行查询...");
+            Pair<FilteredValue, Exception> queryInfo = hibernateTemplate.executeWithNativeSession(
+                    session -> session.doReturningWork(connection -> {
+                        FilteredValue filteredValue = null;
+                        Exception exception = null;
+                        try {
+                            filteredValue = nsqlQuery.rear(connection, pointKey, date);
+                        } catch (Exception e) {
+                            LOGGER.warn("原生SQL查询返回异常", e);
+                            exception = e;
+                        }
+                        return Pair.of(filteredValue, exception);
+                    })
+            );
+            assert queryInfo != null;
+            if (Objects.isNull(queryInfo.getRight())) {
+                return queryInfo.getLeft();
+            } else {
+                LOGGER.warn("原生SQL查询返回值无效, 不使用原生SQL再次进行查询...");
+                return rearByCriteria(pointKey, date);
+            }
+        } catch (Exception e) {
+            throw new DaoException(e);
+        }
+    }
+
+    private FilteredValue rearByCriteria(LongIdKey pointKey, Date date) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(HibernateFilteredValue.class);
+        if (Objects.isNull(pointKey)) {
+            criteria.add(Restrictions.isNull("pointLongId"));
+        } else {
+            criteria.add(Restrictions.eq("pointLongId", pointKey.getLongId()));
+        }
+        criteria.add(Restrictions.gt("happenedDate", date));
+        criteria.addOrder(Order.asc("happenedDate"));
         return hibernateTemplate.findByCriteria(criteria, 0, 1).stream().findFirst()
                 .map(value -> beanTransformer.reverseTransform((HibernateFilteredValue) value)).orElse(null);
     }

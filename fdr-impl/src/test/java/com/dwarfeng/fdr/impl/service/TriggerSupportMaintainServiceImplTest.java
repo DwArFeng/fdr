@@ -55,7 +55,7 @@ public class TriggerSupportMaintainServiceImplTest {
             }
         } finally {
             for (TriggerSupport triggerSupport : triggerSupports) {
-                service.delete(triggerSupport.getKey());
+                service.deleteIfExists(triggerSupport.getKey());
             }
         }
     }

@@ -56,8 +56,8 @@ public class RealtimeValueMaintainServiceImplTest {
             realtimeValue.setKey(parentPoint.getKey());
             realtimeValueMaintainService.insert(realtimeValue);
         } finally {
-            realtimeValueMaintainService.delete(realtimeValue.getKey());
-            pointMaintainService.delete(parentPoint.getKey());
+            realtimeValueMaintainService.deleteIfExists(realtimeValue.getKey());
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
         }
     }
 }

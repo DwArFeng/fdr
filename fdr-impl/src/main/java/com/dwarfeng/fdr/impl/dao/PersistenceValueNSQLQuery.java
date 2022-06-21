@@ -25,4 +25,6 @@ public interface PersistenceValueNSQLQuery extends NSQLQuery {
     Integer lookupPersistenceCount(@NonNull Connection connection, Object[] objs) throws DaoException;
 
     PersistenceValue previous(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException;
+
+    PersistenceValue rear(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException;
 }

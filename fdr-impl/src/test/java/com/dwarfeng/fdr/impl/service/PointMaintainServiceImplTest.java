@@ -56,7 +56,7 @@ public class PointMaintainServiceImplTest {
             }
         } finally {
             for (Point point : points) {
-                pointMaintainService.delete(point.getKey());
+                pointMaintainService.deleteIfExists(point.getKey());
             }
         }
     }

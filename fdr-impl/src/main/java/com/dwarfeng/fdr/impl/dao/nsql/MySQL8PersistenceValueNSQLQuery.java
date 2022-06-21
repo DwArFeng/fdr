@@ -28,7 +28,9 @@ public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implement
     }
 
     @Override
-    public List<PersistenceValue> lookupPersistence(@NonNull Connection connection, Object[] objs) throws DaoException {
+    public List<PersistenceValue> lookupPersistence(
+            @NonNull Connection connection, Object[] objs
+    ) throws DaoException {
         try {
             NSQLQueryUtil.objsValidation(
                     objs,
@@ -83,7 +85,9 @@ public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implement
     }
 
     @Override
-    public List<PersistenceValue> lookupPersistence(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo) throws DaoException {
+    public List<PersistenceValue> lookupPersistence(
+            @NonNull Connection connection, Object[] objs, PagingInfo pagingInfo
+    ) throws DaoException {
         try {
             NSQLQueryUtil.objsValidation(
                     objs,
@@ -143,7 +147,9 @@ public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implement
     }
 
     @Override
-    public Integer lookupPersistenceCount(@NonNull Connection connection, Object[] objs) throws DaoException {
+    public Integer lookupPersistenceCount(
+            @NonNull Connection connection, Object[] objs
+    ) throws DaoException {
         try {
             NSQLQueryUtil.objsValidation(
                     objs,
@@ -193,7 +199,9 @@ public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implement
     }
 
     @Override
-    public PersistenceValue previous(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException {
+    public PersistenceValue previous(
+            @NonNull Connection connection, LongIdKey pointKey, Date date
+    ) throws DaoException {
         try {
             StringBuilder sqlBuilder = new StringBuilder();
             selectTable(sqlBuilder);
@@ -209,6 +217,52 @@ public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implement
             sqlBuilder.append("ORDER BY ");
             {
                 sqlBuilder.append("tbl.happened_date DESC ");
+            }
+            sqlBuilder.append("LIMIT 1");
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
+            if (Objects.isNull(pointKey)) {
+                preparedStatement.setTimestamp(1, new Timestamp(date.getTime()));
+            } else {
+                preparedStatement.setLong(1, pointKey.getLongId());
+                preparedStatement.setTimestamp(2, new Timestamp(date.getTime()));
+            }
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return new PersistenceValue(
+                        new LongIdKey(resultSet.getLong(1)),
+                        pointKey,
+                        new Date(resultSet.getTimestamp(2).getTime()),
+                        resultSet.getString(3)
+                );
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public PersistenceValue rear(
+            @NonNull Connection connection, LongIdKey pointKey, Date date
+    ) throws DaoException {
+        try {
+            StringBuilder sqlBuilder = new StringBuilder();
+            selectTable(sqlBuilder);
+            sqlBuilder.append("WHERE ");
+            {
+                if (Objects.isNull(pointKey)) {
+                    sqlBuilder.append("tbl.point_id IS NULL AND ");
+                } else {
+                    sqlBuilder.append("tbl.point_id=? AND ");
+                }
+                sqlBuilder.append("tbl.happened_date>? ");
+            }
+            sqlBuilder.append("ORDER BY ");
+            {
+                sqlBuilder.append("tbl.happened_date ASC ");
             }
             sqlBuilder.append("LIMIT 1");
 

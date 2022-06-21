@@ -72,9 +72,9 @@ public class TriggerInfoMaintainServiceImplTest {
             }
         } finally {
             for (TriggerInfo triggerInfo : triggerInfos) {
-                triggerInfoMaintainService.delete(triggerInfo.getKey());
+                triggerInfoMaintainService.deleteIfExists(triggerInfo.getKey());
             }
-            pointMaintainService.delete(parentPoint.getKey());
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
         }
     }
 }

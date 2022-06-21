@@ -72,9 +72,9 @@ public class FilterInfoMaintainServiceImplTest {
             }
         } finally {
             for (FilterInfo filterInfo : filterInfos) {
-                filterInfoMaintainService.delete(filterInfo.getKey());
+                filterInfoMaintainService.deleteIfExists(filterInfo.getKey());
             }
-            pointMaintainService.delete(parentPoint.getKey());
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
         }
     }
 }

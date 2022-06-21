@@ -4,7 +4,10 @@
 
 #### 功能构建
 
-- (无)
+- 对持久值、被触发值、被过滤值增加向后查询功能。
+  - com.dwarfeng.fdr.stack.service.PersistenceValueMaintainService.rear。
+  - com.dwarfeng.fdr.stack.service.TriggeredValueMaintainService.rear。
+  - com.dwarfeng.fdr.stack.service.FilteredValueMaintainService.rear。
 
 #### Bug修复
 

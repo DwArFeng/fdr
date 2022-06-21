@@ -28,7 +28,9 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
     }
 
     @Override
-    public List<FilteredValue> lookupFilteredForPoint(@NonNull Connection connection, Object[] objs) throws DaoException {
+    public List<FilteredValue> lookupFilteredForPoint(
+            @NonNull Connection connection, Object[] objs
+    ) throws DaoException {
         try {
             NSQLQueryUtil.objsValidation(
                     objs,
@@ -85,7 +87,9 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
     }
 
     @Override
-    public List<FilteredValue> lookupFilteredForPoint(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo) throws DaoException {
+    public List<FilteredValue> lookupFilteredForPoint(
+            @NonNull Connection connection, Object[] objs, PagingInfo pagingInfo
+    ) throws DaoException {
         try {
             NSQLQueryUtil.objsValidation(
                     objs,
@@ -147,7 +151,9 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
     }
 
     @Override
-    public Integer lookupFilteredCountForPoint(@NonNull Connection connection, Object[] objs) throws DaoException {
+    public Integer lookupFilteredCountForPoint(
+            @NonNull Connection connection, Object[] objs
+    ) throws DaoException {
         try {
             NSQLQueryUtil.objsValidation(
                     objs,
@@ -190,7 +196,9 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
     }
 
     @Override
-    public List<FilteredValue> lookupFilteredForFilter(@NonNull Connection connection, Object[] objs) throws DaoException {
+    public List<FilteredValue> lookupFilteredForFilter(
+            @NonNull Connection connection, Object[] objs
+    ) throws DaoException {
         try {
             NSQLQueryUtil.objsValidation(
                     objs,
@@ -247,7 +255,9 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
     }
 
     @Override
-    public List<FilteredValue> lookupFilteredForFilter(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo) throws DaoException {
+    public List<FilteredValue> lookupFilteredForFilter(
+            @NonNull Connection connection, Object[] objs, PagingInfo pagingInfo
+    ) throws DaoException {
         try {
             NSQLQueryUtil.objsValidation(
                     objs,
@@ -309,7 +319,9 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
     }
 
     @Override
-    public Integer lookupFilteredCountForFilter(@NonNull Connection connection, Object[] objs) throws DaoException {
+    public Integer lookupFilteredCountForFilter(
+            @NonNull Connection connection, Object[] objs
+    ) throws DaoException {
         try {
             NSQLQueryUtil.objsValidation(
                     objs,
@@ -352,7 +364,9 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
     }
 
     @Override
-    public FilteredValue previous(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException {
+    public FilteredValue previous(
+            @NonNull Connection connection, LongIdKey pointKey, Date date
+    ) throws DaoException {
         try {
             StringBuilder sqlBuilder = new StringBuilder();
             selectTableWithFilterId(sqlBuilder);
@@ -368,6 +382,54 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
             sqlBuilder.append("ORDER BY ");
             {
                 sqlBuilder.append("tbl.happened_date DESC ");
+            }
+            sqlBuilder.append("LIMIT 1");
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
+            if (Objects.isNull(pointKey)) {
+                preparedStatement.setTimestamp(1, new Timestamp(date.getTime()));
+            } else {
+                preparedStatement.setLong(1, pointKey.getLongId());
+                preparedStatement.setTimestamp(2, new Timestamp(date.getTime()));
+            }
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return new FilteredValue(
+                        new LongIdKey(resultSet.getLong(1)),
+                        pointKey,
+                        new LongIdKey(resultSet.getLong(2)),
+                        new Date(resultSet.getTimestamp(3).getTime()),
+                        resultSet.getString(4),
+                        resultSet.getString(5)
+                );
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public FilteredValue rear(
+            @NonNull Connection connection, LongIdKey pointKey, Date date
+    ) throws DaoException {
+        try {
+            StringBuilder sqlBuilder = new StringBuilder();
+            selectTableWithFilterId(sqlBuilder);
+            sqlBuilder.append("WHERE ");
+            {
+                if (Objects.isNull(pointKey)) {
+                    sqlBuilder.append("tbl.point_id IS NULL AND ");
+                } else {
+                    sqlBuilder.append("tbl.point_id=? AND ");
+                }
+                sqlBuilder.append("tbl.happened_date>? ");
+            }
+            sqlBuilder.append("ORDER BY ");
+            {
+                sqlBuilder.append("tbl.happened_date ASC ");
             }
             sqlBuilder.append("LIMIT 1");
 

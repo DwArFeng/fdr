@@ -231,4 +231,15 @@ public class TriggeredValueMaintainServiceImpl implements TriggeredValueMaintain
             throw ServiceExceptionHelper.logAndThrow("查询前刻数据时发生异常", LogLevel.WARN, sem, e);
         }
     }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public TriggeredValue rear(LongIdKey pointKey, Date date) throws ServiceException {
+        try {
+            return triggeredValueDao.rear(pointKey, date);
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logAndThrow("查询后刻数据时发生异常", LogLevel.WARN, sem, e);
+        }
+    }
 }
