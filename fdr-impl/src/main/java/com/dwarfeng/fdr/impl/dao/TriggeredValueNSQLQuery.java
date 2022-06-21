@@ -20,13 +20,15 @@ public interface TriggeredValueNSQLQuery extends NSQLQuery {
 
     List<TriggeredValue> lookupTriggeredForPoint(@NonNull Connection connection, Object[] objs) throws DaoException;
 
-    List<TriggeredValue> lookupTriggeredForPoint(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo) throws DaoException;
+    List<TriggeredValue> lookupTriggeredForPoint(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo)
+            throws DaoException;
 
     Integer lookupTriggeredCountForPoint(@NonNull Connection connection, Object[] objs) throws DaoException;
 
     List<TriggeredValue> lookupTriggeredForTrigger(@NonNull Connection connection, Object[] objs) throws DaoException;
 
-    List<TriggeredValue> lookupTriggeredForTrigger(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo) throws DaoException;
+    List<TriggeredValue> lookupTriggeredForTrigger(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo)
+            throws DaoException;
 
     Integer lookupTriggeredCountForTrigger(@NonNull Connection connection, Object[] objs) throws DaoException;
 

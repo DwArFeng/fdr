@@ -20,7 +20,8 @@ public interface PersistenceValueNSQLQuery extends NSQLQuery {
 
     List<PersistenceValue> lookupPersistence(@NonNull Connection connection, Object[] objs) throws DaoException;
 
-    List<PersistenceValue> lookupPersistence(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo) throws DaoException;
+    List<PersistenceValue> lookupPersistence(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo)
+            throws DaoException;
 
     Integer lookupPersistenceCount(@NonNull Connection connection, Object[] objs) throws DaoException;
 

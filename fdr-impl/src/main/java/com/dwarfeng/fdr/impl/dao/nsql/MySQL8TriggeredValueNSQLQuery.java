@@ -1,6 +1,7 @@
 package com.dwarfeng.fdr.impl.dao.nsql;
 
 import com.dwarfeng.fdr.impl.dao.TriggeredValueNSQLQuery;
+import com.dwarfeng.fdr.sdk.util.Constants;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -28,21 +29,19 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
     }
 
     @Override
-    public List<TriggeredValue> lookupTriggeredForPoint(
-            @NonNull Connection connection, Object[] objs
-    ) throws DaoException {
+    public List<TriggeredValue> lookupTriggeredForPoint(@NonNull Connection connection, Object[] objs)
+            throws DaoException {
         try {
             NSQLQueryUtil.objsValidation(
-                    objs,
-                    new Class[]{LongIdKey.class, Date.class, Date.class},
-                    new boolean[]{true, false, false}
+                    objs, new Class[]{LongIdKey.class, Date.class, Date.class}, new boolean[]{true, false, false}
             );
             LongIdKey pointKey = (LongIdKey) objs[0];
             Date startDate = (Date) objs[1];
             Date endDate = (Date) objs[2];
 
             StringBuilder sqlBuilder = new StringBuilder();
-            selectTableWithTriggerId(sqlBuilder);
+            selectTableWithPointId(sqlBuilder);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_POINT_ID_HAPPENED_DATE);
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -92,16 +91,15 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
     ) throws DaoException {
         try {
             NSQLQueryUtil.objsValidation(
-                    objs,
-                    new Class[]{LongIdKey.class, Date.class, Date.class},
-                    new boolean[]{true, false, false}
+                    objs, new Class[]{LongIdKey.class, Date.class, Date.class}, new boolean[]{true, false, false}
             );
             LongIdKey pointKey = (LongIdKey) objs[0];
             Date startDate = (Date) objs[1];
             Date endDate = (Date) objs[2];
 
             StringBuilder sqlBuilder = new StringBuilder();
-            selectTableWithTriggerId(sqlBuilder);
+            selectTableWithPointId(sqlBuilder);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_POINT_ID_HAPPENED_DATE);
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -151,14 +149,10 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
     }
 
     @Override
-    public Integer lookupTriggeredCountForPoint(
-            @NonNull Connection connection, Object[] objs
-    ) throws DaoException {
+    public Integer lookupTriggeredCountForPoint(@NonNull Connection connection, Object[] objs) throws DaoException {
         try {
             NSQLQueryUtil.objsValidation(
-                    objs,
-                    new Class[]{LongIdKey.class, Date.class, Date.class},
-                    new boolean[]{true, false, false}
+                    objs, new Class[]{LongIdKey.class, Date.class, Date.class}, new boolean[]{true, false, false}
             );
             LongIdKey pointKey = (LongIdKey) objs[0];
             Date startDate = (Date) objs[1];
@@ -166,6 +160,7 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectCount(sqlBuilder);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_POINT_ID);
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -196,21 +191,19 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
     }
 
     @Override
-    public List<TriggeredValue> lookupTriggeredForTrigger(
-            @NonNull Connection connection, Object[] objs
-    ) throws DaoException {
+    public List<TriggeredValue> lookupTriggeredForTrigger(@NonNull Connection connection, Object[] objs)
+            throws DaoException {
         try {
             NSQLQueryUtil.objsValidation(
-                    objs,
-                    new Class[]{LongIdKey.class, Date.class, Date.class},
-                    new boolean[]{true, false, false}
+                    objs, new Class[]{LongIdKey.class, Date.class, Date.class}, new boolean[]{true, false, false}
             );
             LongIdKey triggerKey = (LongIdKey) objs[0];
             Date startDate = (Date) objs[1];
             Date endDate = (Date) objs[2];
 
             StringBuilder sqlBuilder = new StringBuilder();
-            selectTableWithPointId(sqlBuilder);
+            selectTableWithTriggerId(sqlBuilder);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_TRIGGER_ID_HAPPENED_DATE);
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(triggerKey)) {
@@ -260,16 +253,15 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
     ) throws DaoException {
         try {
             NSQLQueryUtil.objsValidation(
-                    objs,
-                    new Class[]{LongIdKey.class, Date.class, Date.class},
-                    new boolean[]{true, false, false}
+                    objs, new Class[]{LongIdKey.class, Date.class, Date.class}, new boolean[]{true, false, false}
             );
             LongIdKey triggerKey = (LongIdKey) objs[0];
             Date startDate = (Date) objs[1];
             Date endDate = (Date) objs[2];
 
             StringBuilder sqlBuilder = new StringBuilder();
-            selectTableWithPointId(sqlBuilder);
+            selectTableWithTriggerId(sqlBuilder);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_TRIGGER_ID_HAPPENED_DATE);
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(triggerKey)) {
@@ -319,9 +311,7 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
     }
 
     @Override
-    public Integer lookupTriggeredCountForTrigger(
-            @NonNull Connection connection, Object[] objs
-    ) throws DaoException {
+    public Integer lookupTriggeredCountForTrigger(@NonNull Connection connection, Object[] objs) throws DaoException {
         try {
             NSQLQueryUtil.objsValidation(
                     objs,
@@ -334,6 +324,7 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectCount(sqlBuilder);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_TRIGGER_ID);
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(triggerKey)) {
@@ -364,12 +355,11 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
     }
 
     @Override
-    public TriggeredValue previous(
-            @NonNull Connection connection, LongIdKey pointKey, Date date
-    ) throws DaoException {
+    public TriggeredValue previous(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException {
         try {
             StringBuilder sqlBuilder = new StringBuilder();
-            selectTableWithTriggerId(sqlBuilder);
+            selectTableWithPointId(sqlBuilder);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_POINT_ID_HAPPENED_DATE_DESC);
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -412,12 +402,11 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
     }
 
     @Override
-    public TriggeredValue rear(
-            @NonNull Connection connection, LongIdKey pointKey, Date date
-    ) throws DaoException {
+    public TriggeredValue rear(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException {
         try {
             StringBuilder sqlBuilder = new StringBuilder();
-            selectTableWithTriggerId(sqlBuilder);
+            selectTableWithPointId(sqlBuilder);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_POINT_ID_HAPPENED_DATE);
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -459,7 +448,7 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
         }
     }
 
-    private void selectTableWithTriggerId(StringBuilder sqlBuilder) {
+    private void selectTableWithPointId(StringBuilder sqlBuilder) {
         sqlBuilder.append("SELECT ");
         {
             sqlBuilder.append("tbl.id,");
@@ -474,7 +463,7 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
         }
     }
 
-    private void selectTableWithPointId(StringBuilder sqlBuilder) {
+    private void selectTableWithTriggerId(StringBuilder sqlBuilder) {
         sqlBuilder.append("SELECT ");
         {
             sqlBuilder.append("tbl.id,");

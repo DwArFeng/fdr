@@ -61,10 +61,26 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
 
     private PersistenceValueNSQLQuery nsqlQuery = null;
 
+    @SuppressWarnings("DuplicatedCode")
     @PostConstruct
-    public void init() {
+    public void init() throws Exception {
         nsqlQuery = nsqlQueries.stream()
                 .filter(generator -> generator.supportType(hibernateDialect)).findAny().orElse(null);
+        boolean initFailed = Boolean.TRUE.equals(hibernateTemplate.executeWithNativeSession(
+                session -> session.doReturningWork(connection -> {
+                    try {
+                        nsqlQuery.init(connection);
+                        return false;
+                    } catch (Exception e) {
+                        LOGGER.warn("初始化本地 SQL 查询时发生异常", e);
+                        return true;
+                    }
+                })
+        ));
+        if (initFailed) {
+            LOGGER.warn("初始化本地 SQL 查询时发生异常，本地 SQL 查询机制将禁用");
+            usingNativeSQL = false;
+        }
     }
 
     @Override
@@ -186,7 +202,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
                             try {
                                 return nsqlQuery.lookupPersistence(connection, objs);
                             } catch (Exception e) {
-                                LOGGER.warn("原生SQL查询返回异常", e);
+                                LOGGER.warn("原生SQL查询发生异常", e);
                                 return null;
                             }
                         })
@@ -224,7 +240,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
                             try {
                                 return nsqlQuery.lookupPersistence(connection, objs, pagingInfo);
                             } catch (Exception e) {
-                                LOGGER.warn("原生SQL查询返回异常", e);
+                                LOGGER.warn("原生SQL查询发生异常", e);
                                 return null;
                             }
                         })
@@ -261,7 +277,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
                             try {
                                 return nsqlQuery.lookupPersistenceCount(connection, objs);
                             } catch (Exception e) {
-                                LOGGER.warn("原生SQL查询返回异常", e);
+                                LOGGER.warn("原生SQL查询发生异常", e);
                                 return null;
                             }
                         })
@@ -314,7 +330,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
                         try {
                             persistenceValue = nsqlQuery.previous(connection, pointKey, date);
                         } catch (Exception e) {
-                            LOGGER.warn("原生SQL查询返回异常", e);
+                            LOGGER.warn("原生SQL查询发生异常", e);
                             exception = e;
                         }
                         return Pair.of(persistenceValue, exception);
@@ -362,7 +378,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
                         try {
                             persistenceValue = nsqlQuery.rear(connection, pointKey, date);
                         } catch (Exception e) {
-                            LOGGER.warn("原生SQL查询返回异常", e);
+                            LOGGER.warn("原生SQL查询发生异常", e);
                             exception = e;
                         }
                         return Pair.of(persistenceValue, exception);

@@ -61,10 +61,26 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
 
     private FilteredValueNSQLQuery nsqlQuery = null;
 
+    @SuppressWarnings("DuplicatedCode")
     @PostConstruct
     public void init() {
         nsqlQuery = nsqlQueries.stream()
                 .filter(generator -> generator.supportType(hibernateDialect)).findAny().orElse(null);
+        boolean initFailed = Boolean.TRUE.equals(hibernateTemplate.executeWithNativeSession(
+                session -> session.doReturningWork(connection -> {
+                    try {
+                        nsqlQuery.init(connection);
+                        return false;
+                    } catch (Exception e) {
+                        LOGGER.warn("初始化本地 SQL 查询时发生异常", e);
+                        return true;
+                    }
+                })
+        ));
+        if (initFailed) {
+            LOGGER.warn("初始化本地 SQL 查询时发生异常，本地 SQL 查询机制将禁用");
+            usingNativeSQL = false;
+        }
     }
 
     @Override

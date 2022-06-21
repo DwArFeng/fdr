@@ -20,13 +20,15 @@ public interface FilteredValueNSQLQuery extends NSQLQuery {
 
     List<FilteredValue> lookupFilteredForPoint(@NonNull Connection connection, Object[] objs) throws DaoException;
 
-    List<FilteredValue> lookupFilteredForPoint(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo) throws DaoException;
+    List<FilteredValue> lookupFilteredForPoint(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo)
+            throws DaoException;
 
     Integer lookupFilteredCountForPoint(@NonNull Connection connection, Object[] objs) throws DaoException;
 
     List<FilteredValue> lookupFilteredForFilter(@NonNull Connection connection, Object[] objs) throws DaoException;
 
-    List<FilteredValue> lookupFilteredForFilter(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo) throws DaoException;
+    List<FilteredValue> lookupFilteredForFilter(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo)
+            throws DaoException;
 
     Integer lookupFilteredCountForFilter(@NonNull Connection connection, Object[] objs) throws DaoException;
 

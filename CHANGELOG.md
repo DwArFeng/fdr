@@ -32,6 +32,11 @@
   - com.dwarfeng.fdr.impl.bean.entity.HibernatePersistenceValue。
   - com.dwarfeng.fdr.impl.bean.entity.HibernateTriggeredValue。
 
+- 增加方法 `NSQLQuery.init`， 允许本地 SQL 查询在程序启动时进行初始化操作，如检查数据库结构等。
+
+- 优化 MySQL8NSQLQuery 性能。
+  - 为全部查询添加 `FORCE INDEX` 强制索引，强制 MySQL 选择最优索引进行查询。
+
 #### Bug修复
 
 - 修正 PointCrudOperation 中错误的代码。

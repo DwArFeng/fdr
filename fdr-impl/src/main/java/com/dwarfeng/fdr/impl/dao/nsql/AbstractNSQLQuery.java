@@ -1,7 +1,9 @@
 package com.dwarfeng.fdr.impl.dao.nsql;
 
 import com.dwarfeng.fdr.impl.dao.NSQLQuery;
+import org.springframework.lang.NonNull;
 
+import java.sql.Connection;
 import java.util.Objects;
 
 /**
@@ -21,6 +23,10 @@ public abstract class AbstractNSQLQuery implements NSQLQuery {
     @Override
     public boolean supportType(String type) {
         return Objects.equals(this.type, type);
+    }
+
+    @Override
+    public void init(@NonNull Connection connection) {
     }
 
     @Override
