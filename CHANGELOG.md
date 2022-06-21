@@ -27,6 +27,11 @@
   - 升级 `dcti` 依赖版本为 `1.1.2.a` 以规避漏洞。
   - 升级 `groovy` 依赖版本为 `3.0.7` 以规避漏洞。
 
+- 数据值实体的JPA注解增加索引，自动建表时会自动添加索引。
+  - com.dwarfeng.fdr.impl.bean.entity.HibernateFilteredValue。
+  - com.dwarfeng.fdr.impl.bean.entity.HibernatePersistenceValue。
+  - com.dwarfeng.fdr.impl.bean.entity.HibernateTriggeredValue。
+
 #### Bug修复
 
 - 修正 PointCrudOperation 中错误的代码。

@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.impl.bean.entity;
 
+import com.dwarfeng.fdr.sdk.util.Constants;
 import com.dwarfeng.fdr.sdk.util.Constraints;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
@@ -10,10 +11,17 @@ import java.util.Optional;
 
 @Entity
 @IdClass(HibernateLongIdKey.class)
-@Table(name = "tbl_filtered_value")
+@Table(name = "tbl_filtered_value", indexes = {
+        @Index(name = Constants.INDEX_NAME_POINT_ID, columnList = "point_id"),
+        @Index(name = Constants.INDEX_NAME_POINT_ID_HAPPENED_DATE, columnList = "point_id, happened_date ASC"),
+        @Index(name = Constants.INDEX_NAME_POINT_ID_HAPPENED_DATE_DESC, columnList = "point_id, happened_date DESC"),
+        @Index(name = Constants.INDEX_NAME_FILTER_ID, columnList = "filter_id"),
+        @Index(name = Constants.INDEX_NAME_FILTER_ID_HAPPENED_DATE, columnList = "filter_id, happened_date ASC"),
+        @Index(name = Constants.INDEX_NAME_FILTER_ID_HAPPENED_DATE_DESC, columnList = "filter_id, happened_date DESC")
+})
 public class HibernateFilteredValue implements Bean {
 
-    private static final long serialVersionUID = 4923865131580198476L;
+    private static final long serialVersionUID = 314967025301471016L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id

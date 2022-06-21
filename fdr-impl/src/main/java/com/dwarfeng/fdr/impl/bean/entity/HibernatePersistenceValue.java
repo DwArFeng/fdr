@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.impl.bean.entity;
 
+import com.dwarfeng.fdr.sdk.util.Constants;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
@@ -9,10 +10,14 @@ import java.util.Optional;
 
 @Entity
 @IdClass(HibernateLongIdKey.class)
-@Table(name = "tbl_persistence_value")
+@Table(name = "tbl_persistence_value", indexes = {
+        @Index(name = Constants.INDEX_NAME_POINT_ID, columnList = "point_id"),
+        @Index(name = Constants.INDEX_NAME_POINT_ID_HAPPENED_DATE, columnList = "point_id, happened_date ASC"),
+        @Index(name = Constants.INDEX_NAME_POINT_ID_HAPPENED_DATE_DESC, columnList = "point_id, happened_date DESC")
+})
 public class HibernatePersistenceValue implements Bean {
 
-    private static final long serialVersionUID = 4923865131580198476L;
+    private static final long serialVersionUID = -4074117033394243833L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
