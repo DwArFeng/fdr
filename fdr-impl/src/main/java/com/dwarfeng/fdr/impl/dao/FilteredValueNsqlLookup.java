@@ -18,19 +18,19 @@ import java.util.List;
  */
 public interface FilteredValueNsqlLookup extends NsqlLookup {
 
-    List<FilteredValue> lookupFilteredForPoint(@NonNull Connection connection, Object[] objs) throws DaoException;
+    List<FilteredValue> filteredForPoint(@NonNull Connection connection, Object[] objs) throws DaoException;
 
-    List<FilteredValue> lookupFilteredForPoint(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo)
+    List<FilteredValue> filteredForPoint(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo)
             throws DaoException;
 
-    Integer lookupFilteredCountForPoint(@NonNull Connection connection, Object[] objs) throws DaoException;
+    Integer filteredCountForPoint(@NonNull Connection connection, Object[] objs) throws DaoException;
 
-    List<FilteredValue> lookupFilteredForFilter(@NonNull Connection connection, Object[] objs) throws DaoException;
+    List<FilteredValue> filteredForFilter(@NonNull Connection connection, Object[] objs) throws DaoException;
 
-    List<FilteredValue> lookupFilteredForFilter(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo)
+    List<FilteredValue> filteredForFilter(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo)
             throws DaoException;
 
-    Integer lookupFilteredCountForFilter(@NonNull Connection connection, Object[] objs) throws DaoException;
+    Integer filteredCountForFilter(@NonNull Connection connection, Object[] objs) throws DaoException;
 
     FilteredValue previous(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException;
 

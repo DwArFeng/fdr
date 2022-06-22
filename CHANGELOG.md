@@ -41,6 +41,11 @@
   - `NSQLQuery` 规范化命名为 `NsqlLookup`。
   - `MySQL8XXX` 规范化命名为 `Mysql8XXX`。
 
+- 优化 `NativeSqlLookup` 子接口中的方法名称。
+  - com.dwarfeng.fdr.impl.dao.FilteredValueNsqlLookup。
+  - com.dwarfeng.fdr.impl.dao.PersistenceValueNsqlLookup。
+  - com.dwarfeng.fdr.impl.dao.TriggeredValueNsqlLookup。
+
 #### Bug修复
 
 - 修正 PointCrudOperation 中错误的代码。

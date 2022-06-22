@@ -200,7 +200,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
                 List<PersistenceValue> persistenceValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlLookup.lookupPersistence(connection, objs);
+                                return nsqlLookup.persistence(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询发生异常", e);
                                 return null;
@@ -238,7 +238,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
                 List<PersistenceValue> persistenceValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlLookup.lookupPersistence(connection, objs, pagingInfo);
+                                return nsqlLookup.persistence(connection, objs, pagingInfo);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询发生异常", e);
                                 return null;
@@ -275,7 +275,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
                 Integer count = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlLookup.lookupPersistenceCount(connection, objs);
+                                return nsqlLookup.persistenceCount(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询发生异常", e);
                                 return null;

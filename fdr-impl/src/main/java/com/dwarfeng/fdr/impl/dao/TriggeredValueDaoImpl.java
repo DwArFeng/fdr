@@ -200,7 +200,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
                 List<TriggeredValue> triggeredValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlLookup.lookupTriggeredForPoint(connection, objs);
+                                return nsqlLookup.triggeredForPoint(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -222,7 +222,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
                 List<TriggeredValue> triggeredValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlLookup.lookupTriggeredForTrigger(connection, objs);
+                                return nsqlLookup.triggeredForTrigger(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -260,7 +260,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
                 List<TriggeredValue> triggeredValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlLookup.lookupTriggeredForPoint(connection, objs, pagingInfo);
+                                return nsqlLookup.triggeredForPoint(connection, objs, pagingInfo);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -282,7 +282,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
                 List<TriggeredValue> triggeredValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlLookup.lookupTriggeredForTrigger(connection, objs, pagingInfo);
+                                return nsqlLookup.triggeredForTrigger(connection, objs, pagingInfo);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -319,7 +319,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
                 Integer count = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlLookup.lookupTriggeredCountForPoint(connection, objs);
+                                return nsqlLookup.triggeredCountForPoint(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -341,7 +341,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
                 Integer count = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlLookup.lookupTriggeredCountForTrigger(connection, objs);
+                                return nsqlLookup.triggeredCountForTrigger(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;

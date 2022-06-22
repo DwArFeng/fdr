@@ -28,7 +28,7 @@ public class Mysql8FilteredValueNsqlLookup extends AbstractNsqlLookup implements
     }
 
     @Override
-    public List<FilteredValue> lookupFilteredForPoint(@NonNull Connection connection, Object[] objs)
+    public List<FilteredValue> filteredForPoint(@NonNull Connection connection, Object[] objs)
             throws DaoException {
         try {
             NsqlLookupUtil.objsValidation(
@@ -85,7 +85,7 @@ public class Mysql8FilteredValueNsqlLookup extends AbstractNsqlLookup implements
     }
 
     @Override
-    public List<FilteredValue> lookupFilteredForPoint(
+    public List<FilteredValue> filteredForPoint(
             @NonNull Connection connection, Object[] objs, PagingInfo pagingInfo
     ) throws DaoException {
         try {
@@ -148,7 +148,7 @@ public class Mysql8FilteredValueNsqlLookup extends AbstractNsqlLookup implements
     }
 
     @Override
-    public Integer lookupFilteredCountForPoint(@NonNull Connection connection, Object[] objs) throws DaoException {
+    public Integer filteredCountForPoint(@NonNull Connection connection, Object[] objs) throws DaoException {
         try {
             NsqlLookupUtil.objsValidation(
                     objs, new Class[]{LongIdKey.class, Date.class, Date.class}, new boolean[]{true, false, false}
@@ -190,7 +190,7 @@ public class Mysql8FilteredValueNsqlLookup extends AbstractNsqlLookup implements
     }
 
     @Override
-    public List<FilteredValue> lookupFilteredForFilter(@NonNull Connection connection, Object[] objs)
+    public List<FilteredValue> filteredForFilter(@NonNull Connection connection, Object[] objs)
             throws DaoException {
         try {
             NsqlLookupUtil.objsValidation(
@@ -247,7 +247,7 @@ public class Mysql8FilteredValueNsqlLookup extends AbstractNsqlLookup implements
     }
 
     @Override
-    public List<FilteredValue> lookupFilteredForFilter(
+    public List<FilteredValue> filteredForFilter(
             @NonNull Connection connection, Object[] objs, PagingInfo pagingInfo
     ) throws DaoException {
         try {
@@ -310,7 +310,7 @@ public class Mysql8FilteredValueNsqlLookup extends AbstractNsqlLookup implements
     }
 
     @Override
-    public Integer lookupFilteredCountForFilter(@NonNull Connection connection, Object[] objs) throws DaoException {
+    public Integer filteredCountForFilter(@NonNull Connection connection, Object[] objs) throws DaoException {
         try {
             NsqlLookupUtil.objsValidation(
                     objs,

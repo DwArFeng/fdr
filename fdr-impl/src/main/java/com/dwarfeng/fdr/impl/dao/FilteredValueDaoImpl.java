@@ -200,7 +200,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
                 List<FilteredValue> filteredValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlLookup.lookupFilteredForPoint(connection, objs);
+                                return nsqlLookup.filteredForPoint(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -222,7 +222,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
                 List<FilteredValue> filteredValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlLookup.lookupFilteredForFilter(connection, objs);
+                                return nsqlLookup.filteredForFilter(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -260,7 +260,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
                 List<FilteredValue> filteredValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlLookup.lookupFilteredForPoint(connection, objs, pagingInfo);
+                                return nsqlLookup.filteredForPoint(connection, objs, pagingInfo);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -282,7 +282,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
                 List<FilteredValue> filteredValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlLookup.lookupFilteredForFilter(connection, objs, pagingInfo);
+                                return nsqlLookup.filteredForFilter(connection, objs, pagingInfo);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -319,7 +319,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
                 Integer count = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlLookup.lookupFilteredCountForPoint(connection, objs);
+                                return nsqlLookup.filteredCountForPoint(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -341,7 +341,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
                 Integer count = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlLookup.lookupFilteredCountForFilter(connection, objs);
+                                return nsqlLookup.filteredCountForFilter(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;

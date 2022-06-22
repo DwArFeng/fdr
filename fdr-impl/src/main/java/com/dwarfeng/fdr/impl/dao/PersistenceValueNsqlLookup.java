@@ -18,12 +18,12 @@ import java.util.List;
  */
 public interface PersistenceValueNsqlLookup extends NsqlLookup {
 
-    List<PersistenceValue> lookupPersistence(@NonNull Connection connection, Object[] objs) throws DaoException;
+    List<PersistenceValue> persistence(@NonNull Connection connection, Object[] objs) throws DaoException;
 
-    List<PersistenceValue> lookupPersistence(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo)
+    List<PersistenceValue> persistence(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo)
             throws DaoException;
 
-    Integer lookupPersistenceCount(@NonNull Connection connection, Object[] objs) throws DaoException;
+    Integer persistenceCount(@NonNull Connection connection, Object[] objs) throws DaoException;
 
     PersistenceValue previous(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException;
 

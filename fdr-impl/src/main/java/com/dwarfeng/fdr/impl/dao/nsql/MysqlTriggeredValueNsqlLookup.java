@@ -28,7 +28,7 @@ public class MysqlTriggeredValueNsqlLookup extends AbstractNsqlLookup implements
     }
 
     @Override
-    public List<TriggeredValue> lookupTriggeredForPoint(@NonNull Connection connection, Object[] objs)
+    public List<TriggeredValue> triggeredForPoint(@NonNull Connection connection, Object[] objs)
             throws DaoException {
         try {
             NsqlLookupUtil.objsValidation(
@@ -85,7 +85,7 @@ public class MysqlTriggeredValueNsqlLookup extends AbstractNsqlLookup implements
     }
 
     @Override
-    public List<TriggeredValue> lookupTriggeredForPoint(
+    public List<TriggeredValue> triggeredForPoint(
             @NonNull Connection connection, Object[] objs, PagingInfo pagingInfo
     ) throws DaoException {
         try {
@@ -148,7 +148,7 @@ public class MysqlTriggeredValueNsqlLookup extends AbstractNsqlLookup implements
     }
 
     @Override
-    public Integer lookupTriggeredCountForPoint(@NonNull Connection connection, Object[] objs) throws DaoException {
+    public Integer triggeredCountForPoint(@NonNull Connection connection, Object[] objs) throws DaoException {
         try {
             NsqlLookupUtil.objsValidation(
                     objs, new Class[]{LongIdKey.class, Date.class, Date.class}, new boolean[]{true, false, false}
@@ -190,7 +190,7 @@ public class MysqlTriggeredValueNsqlLookup extends AbstractNsqlLookup implements
     }
 
     @Override
-    public List<TriggeredValue> lookupTriggeredForTrigger(@NonNull Connection connection, Object[] objs)
+    public List<TriggeredValue> triggeredForTrigger(@NonNull Connection connection, Object[] objs)
             throws DaoException {
         try {
             NsqlLookupUtil.objsValidation(
@@ -247,7 +247,7 @@ public class MysqlTriggeredValueNsqlLookup extends AbstractNsqlLookup implements
     }
 
     @Override
-    public List<TriggeredValue> lookupTriggeredForTrigger(
+    public List<TriggeredValue> triggeredForTrigger(
             @NonNull Connection connection, Object[] objs, PagingInfo pagingInfo
     ) throws DaoException {
         try {
@@ -310,7 +310,7 @@ public class MysqlTriggeredValueNsqlLookup extends AbstractNsqlLookup implements
     }
 
     @Override
-    public Integer lookupTriggeredCountForTrigger(@NonNull Connection connection, Object[] objs) throws DaoException {
+    public Integer triggeredCountForTrigger(@NonNull Connection connection, Object[] objs) throws DaoException {
         try {
             NsqlLookupUtil.objsValidation(
                     objs,

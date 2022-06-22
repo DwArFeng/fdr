@@ -28,7 +28,7 @@ public class Mysql8PersistenceValueNsqlLookup extends AbstractNsqlLookup impleme
     }
 
     @Override
-    public List<PersistenceValue> lookupPersistence(@NonNull Connection connection, Object[] objs) throws DaoException {
+    public List<PersistenceValue> persistence(@NonNull Connection connection, Object[] objs) throws DaoException {
         try {
             NsqlLookupUtil.objsValidation(
                     objs, new Class[]{LongIdKey.class, Date.class, Date.class}, new boolean[]{true, false, false}
@@ -82,7 +82,7 @@ public class Mysql8PersistenceValueNsqlLookup extends AbstractNsqlLookup impleme
     }
 
     @Override
-    public List<PersistenceValue> lookupPersistence(
+    public List<PersistenceValue> persistence(
             @NonNull Connection connection, Object[] objs, PagingInfo pagingInfo
     ) throws DaoException {
         try {
@@ -143,7 +143,7 @@ public class Mysql8PersistenceValueNsqlLookup extends AbstractNsqlLookup impleme
     }
 
     @Override
-    public Integer lookupPersistenceCount(@NonNull Connection connection, Object[] objs) throws DaoException {
+    public Integer persistenceCount(@NonNull Connection connection, Object[] objs) throws DaoException {
         try {
             NsqlLookupUtil.objsValidation(
                     objs, new Class[]{LongIdKey.class, Date.class, Date.class}, new boolean[]{true, false, false}

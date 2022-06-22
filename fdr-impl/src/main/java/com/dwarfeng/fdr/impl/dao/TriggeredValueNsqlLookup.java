@@ -18,19 +18,19 @@ import java.util.List;
  */
 public interface TriggeredValueNsqlLookup extends NsqlLookup {
 
-    List<TriggeredValue> lookupTriggeredForPoint(@NonNull Connection connection, Object[] objs) throws DaoException;
+    List<TriggeredValue> triggeredForPoint(@NonNull Connection connection, Object[] objs) throws DaoException;
 
-    List<TriggeredValue> lookupTriggeredForPoint(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo)
+    List<TriggeredValue> triggeredForPoint(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo)
             throws DaoException;
 
-    Integer lookupTriggeredCountForPoint(@NonNull Connection connection, Object[] objs) throws DaoException;
+    Integer triggeredCountForPoint(@NonNull Connection connection, Object[] objs) throws DaoException;
 
-    List<TriggeredValue> lookupTriggeredForTrigger(@NonNull Connection connection, Object[] objs) throws DaoException;
+    List<TriggeredValue> triggeredForTrigger(@NonNull Connection connection, Object[] objs) throws DaoException;
 
-    List<TriggeredValue> lookupTriggeredForTrigger(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo)
+    List<TriggeredValue> triggeredForTrigger(@NonNull Connection connection, Object[] objs, PagingInfo pagingInfo)
             throws DaoException;
 
-    Integer lookupTriggeredCountForTrigger(@NonNull Connection connection, Object[] objs) throws DaoException;
+    Integer triggeredCountForTrigger(@NonNull Connection connection, Object[] objs) throws DaoException;
 
     TriggeredValue previous(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException;
 
