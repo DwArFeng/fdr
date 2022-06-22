@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.dao.nsql;
 
-import com.dwarfeng.fdr.impl.dao.PersistenceValueNSQLQuery;
+import com.dwarfeng.fdr.impl.dao.PersistenceValueNsqlLookup;
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -19,18 +19,18 @@ import java.util.Objects;
 
 @SuppressWarnings("DuplicatedCode")
 @Component
-public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implements PersistenceValueNSQLQuery {
+public class Mysql8PersistenceValueNsqlLookup extends AbstractNsqlLookup implements PersistenceValueNsqlLookup {
 
     public static final String SUPPORT_TYPE = "org.hibernate.dialect.MySQL8Dialect";
 
-    public MySQL8PersistenceValueNSQLQuery() {
+    public Mysql8PersistenceValueNsqlLookup() {
         super(SUPPORT_TYPE);
     }
 
     @Override
     public List<PersistenceValue> lookupPersistence(@NonNull Connection connection, Object[] objs) throws DaoException {
         try {
-            NSQLQueryUtil.objsValidation(
+            NsqlLookupUtil.objsValidation(
                     objs, new Class[]{LongIdKey.class, Date.class, Date.class}, new boolean[]{true, false, false}
             );
             LongIdKey pointKey = (LongIdKey) objs[0];
@@ -39,7 +39,7 @@ public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implement
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectTable(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -86,7 +86,7 @@ public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implement
             @NonNull Connection connection, Object[] objs, PagingInfo pagingInfo
     ) throws DaoException {
         try {
-            NSQLQueryUtil.objsValidation(
+            NsqlLookupUtil.objsValidation(
                     objs, new Class[]{LongIdKey.class, Date.class, Date.class}, new boolean[]{true, false, false}
             );
             LongIdKey pointKey = (LongIdKey) objs[0];
@@ -95,7 +95,7 @@ public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implement
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectTable(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -145,7 +145,7 @@ public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implement
     @Override
     public Integer lookupPersistenceCount(@NonNull Connection connection, Object[] objs) throws DaoException {
         try {
-            NSQLQueryUtil.objsValidation(
+            NsqlLookupUtil.objsValidation(
                     objs, new Class[]{LongIdKey.class, Date.class, Date.class}, new boolean[]{true, false, false}
             );
             LongIdKey pointKey = (LongIdKey) objs[0];
@@ -161,7 +161,7 @@ public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implement
             {
                 sqlBuilder.append("tbl_persistence_value AS tbl ");
             }
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id");
+            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -197,7 +197,7 @@ public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implement
         try {
             StringBuilder sqlBuilder = new StringBuilder();
             selectTable(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date_desc");
+            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date_desc");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -242,7 +242,7 @@ public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implement
         try {
             StringBuilder sqlBuilder = new StringBuilder();
             selectTable(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {

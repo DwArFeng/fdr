@@ -16,7 +16,7 @@ import java.util.List;
  * @author DwArFeng
  * @since 1.9.0
  */
-public interface TriggeredValueNSQLQuery extends NSQLQuery {
+public interface TriggeredValueNsqlLookup extends NsqlLookup {
 
     List<TriggeredValue> lookupTriggeredForPoint(@NonNull Connection connection, Object[] objs) throws DaoException;
 

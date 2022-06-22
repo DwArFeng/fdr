@@ -16,7 +16,7 @@ import java.util.List;
  * @author DwArFeng
  * @since 1.9.0
  */
-public interface PersistenceValueNSQLQuery extends NSQLQuery {
+public interface PersistenceValueNsqlLookup extends NsqlLookup {
 
     List<PersistenceValue> lookupPersistence(@NonNull Connection connection, Object[] objs) throws DaoException;
 

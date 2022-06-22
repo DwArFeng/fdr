@@ -11,7 +11,7 @@ import java.sql.Connection;
  * @author DwArFeng
  * @since 1.4.1
  */
-public interface NSQLQuery {
+public interface NsqlLookup {
 
     boolean supportType(String type);
 

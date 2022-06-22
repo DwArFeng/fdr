@@ -32,10 +32,14 @@
   - com.dwarfeng.fdr.impl.bean.entity.HibernatePersistenceValue。
   - com.dwarfeng.fdr.impl.bean.entity.HibernateTriggeredValue。
 
-- 增加方法 `NSQLQuery.init`， 允许本地 SQL 查询在程序启动时进行初始化操作，如检查数据库结构等。
+- 增加方法 `NativeSqlLookup.init`， 允许本地 SQL 查询在程序启动时进行初始化操作，如检查数据库结构等。
 
-- 优化 MySQL8NSQLQuery 性能。
+- 优化 Mysql8NativeSqlLookup 性能。
   - 为全部查询添加 `FORCE INDEX` 强制索引，强制 MySQL 选择最优索引进行查询。
+
+- 规范化命名。
+  - `NSQLQuery` 规范化命名为 `NsqlLookup`。
+  - `MySQL8XXX` 规范化命名为 `Mysql8XXX`。
 
 #### Bug修复
 

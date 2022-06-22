@@ -6,7 +6,7 @@ package com.dwarfeng.fdr.impl.dao.nsql;
  * @author DwArFeng
  * @since 1.9.4
  */
-public final class MySQL8NSQLQueryUtil {
+public final class Mysql8NsqlLookupUtil {
 
     public static void forceIndex(StringBuilder sqlBuilder, String indexName) {
         sqlBuilder.append("FORCE INDEX (");
@@ -14,7 +14,7 @@ public final class MySQL8NSQLQueryUtil {
         sqlBuilder.append(") ");
     }
 
-    private MySQL8NSQLQueryUtil() {
+    private Mysql8NsqlLookupUtil() {
         throw new IllegalStateException("禁止外部实例化");
     }
 }

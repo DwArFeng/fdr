@@ -16,7 +16,7 @@ import java.util.List;
  * @author DwArFeng
  * @since 1.9.0
  */
-public interface FilteredValueNSQLQuery extends NSQLQuery {
+public interface FilteredValueNsqlLookup extends NsqlLookup {
 
     List<FilteredValue> lookupFilteredForPoint(@NonNull Connection connection, Object[] objs) throws DaoException;
 

@@ -52,24 +52,24 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
     private BeanTransformer<PersistenceValue, HibernatePersistenceValue> beanTransformer;
     @SuppressWarnings("FieldMayBeFinal")
     @Autowired(required = false)
-    private List<PersistenceValueNSQLQuery> nsqlQueries = Collections.emptyList();
+    private List<PersistenceValueNsqlLookup> nsqlQueries = Collections.emptyList();
 
     @Value("${hibernate.accelerate.using_native_sql}")
     private boolean usingNativeSQL;
     @Value("${hibernate.dialect}")
     private String hibernateDialect;
 
-    private PersistenceValueNSQLQuery nsqlQuery = null;
+    private PersistenceValueNsqlLookup nsqlLookup = null;
 
     @SuppressWarnings("DuplicatedCode")
     @PostConstruct
     public void init() throws Exception {
-        nsqlQuery = nsqlQueries.stream()
+        nsqlLookup = nsqlQueries.stream()
                 .filter(generator -> generator.supportType(hibernateDialect)).findAny().orElse(null);
         boolean initFailed = Boolean.TRUE.equals(hibernateTemplate.executeWithNativeSession(
                 session -> session.doReturningWork(connection -> {
                     try {
-                        nsqlQuery.init(connection);
+                        nsqlLookup.init(connection);
                         return false;
                     } catch (Exception e) {
                         LOGGER.warn("初始化本地 SQL 查询时发生异常", e);
@@ -192,7 +192,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
     public List<PersistenceValue> lookup(String preset, Object[] objs) throws DaoException {
         try {
             if (Objects.equals(PersistenceValueMaintainService.CHILD_FOR_POINT_BETWEEN, preset) && usingNativeSQL) {
-                if (Objects.isNull(nsqlQuery)) {
+                if (Objects.isNull(nsqlLookup)) {
                     LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                     return presetLookupDao.lookup(preset, objs);
                 }
@@ -200,7 +200,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
                 List<PersistenceValue> persistenceValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlQuery.lookupPersistence(connection, objs);
+                                return nsqlLookup.lookupPersistence(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询发生异常", e);
                                 return null;
@@ -230,7 +230,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
     public List<PersistenceValue> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws DaoException {
         try {
             if (Objects.equals(PersistenceValueMaintainService.CHILD_FOR_POINT_BETWEEN, preset) && usingNativeSQL) {
-                if (Objects.isNull(nsqlQuery)) {
+                if (Objects.isNull(nsqlLookup)) {
                     LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                     return presetLookupDao.lookup(preset, objs, pagingInfo);
                 }
@@ -238,7 +238,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
                 List<PersistenceValue> persistenceValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlQuery.lookupPersistence(connection, objs, pagingInfo);
+                                return nsqlLookup.lookupPersistence(connection, objs, pagingInfo);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询发生异常", e);
                                 return null;
@@ -267,7 +267,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
     public int lookupCount(String preset, Object[] objs) throws DaoException {
         try {
             if (Objects.equals(PersistenceValueMaintainService.CHILD_FOR_POINT_BETWEEN, preset) && usingNativeSQL) {
-                if (Objects.isNull(nsqlQuery)) {
+                if (Objects.isNull(nsqlLookup)) {
                     LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                     return presetLookupDao.lookupCount(preset, objs);
                 }
@@ -275,7 +275,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
                 Integer count = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlQuery.lookupPersistenceCount(connection, objs);
+                                return nsqlLookup.lookupPersistenceCount(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询发生异常", e);
                                 return null;
@@ -318,7 +318,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public PersistenceValue previous(LongIdKey pointKey, Date date) throws DaoException {
         try {
-            if (Objects.isNull(nsqlQuery)) {
+            if (Objects.isNull(nsqlLookup)) {
                 LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                 return previousByCriteria(pointKey, date);
             }
@@ -328,7 +328,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
                         PersistenceValue persistenceValue = null;
                         Exception exception = null;
                         try {
-                            persistenceValue = nsqlQuery.previous(connection, pointKey, date);
+                            persistenceValue = nsqlLookup.previous(connection, pointKey, date);
                         } catch (Exception e) {
                             LOGGER.warn("原生SQL查询发生异常", e);
                             exception = e;
@@ -366,7 +366,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public PersistenceValue rear(LongIdKey pointKey, Date date) throws DaoException {
         try {
-            if (Objects.isNull(nsqlQuery)) {
+            if (Objects.isNull(nsqlLookup)) {
                 LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                 return rearByCriteria(pointKey, date);
             }
@@ -376,7 +376,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
                         PersistenceValue persistenceValue = null;
                         Exception exception = null;
                         try {
-                            persistenceValue = nsqlQuery.rear(connection, pointKey, date);
+                            persistenceValue = nsqlLookup.rear(connection, pointKey, date);
                         } catch (Exception e) {
                             LOGGER.warn("原生SQL查询发生异常", e);
                             exception = e;

@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.dao.nsql;
 
-import com.dwarfeng.fdr.impl.dao.FilteredValueNSQLQuery;
-import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
+import com.dwarfeng.fdr.impl.dao.TriggeredValueNsqlLookup;
+import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.DaoException;
@@ -19,19 +19,19 @@ import java.util.Objects;
 
 @SuppressWarnings("DuplicatedCode")
 @Component
-public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements FilteredValueNSQLQuery {
+public class MysqlTriggeredValueNsqlLookup extends AbstractNsqlLookup implements TriggeredValueNsqlLookup {
 
     public static final String SUPPORT_TYPE = "org.hibernate.dialect.MySQL8Dialect";
 
-    public MySQL8FilteredValueNSQLQuery() {
+    public MysqlTriggeredValueNsqlLookup() {
         super(SUPPORT_TYPE);
     }
 
     @Override
-    public List<FilteredValue> lookupFilteredForPoint(@NonNull Connection connection, Object[] objs)
+    public List<TriggeredValue> lookupTriggeredForPoint(@NonNull Connection connection, Object[] objs)
             throws DaoException {
         try {
-            NSQLQueryUtil.objsValidation(
+            NsqlLookupUtil.objsValidation(
                     objs, new Class[]{LongIdKey.class, Date.class, Date.class}, new boolean[]{true, false, false}
             );
             LongIdKey pointKey = (LongIdKey) objs[0];
@@ -40,7 +40,7 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectTableWithPointId(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -67,9 +67,9 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
             }
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<FilteredValue> filteredValues = new ArrayList<>();
+            List<TriggeredValue> triggeredValues = new ArrayList<>();
             while (resultSet.next()) {
-                filteredValues.add(new FilteredValue(
+                triggeredValues.add(new TriggeredValue(
                         new LongIdKey(resultSet.getLong(1)),
                         pointKey,
                         new LongIdKey(resultSet.getLong(2)),
@@ -78,18 +78,18 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
                         resultSet.getString(5)
                 ));
             }
-            return filteredValues;
+            return triggeredValues;
         } catch (Exception e) {
             throw new DaoException(e);
         }
     }
 
     @Override
-    public List<FilteredValue> lookupFilteredForPoint(
+    public List<TriggeredValue> lookupTriggeredForPoint(
             @NonNull Connection connection, Object[] objs, PagingInfo pagingInfo
     ) throws DaoException {
         try {
-            NSQLQueryUtil.objsValidation(
+            NsqlLookupUtil.objsValidation(
                     objs, new Class[]{LongIdKey.class, Date.class, Date.class}, new boolean[]{true, false, false}
             );
             LongIdKey pointKey = (LongIdKey) objs[0];
@@ -98,7 +98,7 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectTableWithPointId(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -130,9 +130,9 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
             }
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<FilteredValue> filteredValues = new ArrayList<>();
+            List<TriggeredValue> triggeredValues = new ArrayList<>();
             while (resultSet.next()) {
-                filteredValues.add(new FilteredValue(
+                triggeredValues.add(new TriggeredValue(
                         new LongIdKey(resultSet.getLong(1)),
                         pointKey,
                         new LongIdKey(resultSet.getLong(2)),
@@ -141,16 +141,16 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
                         resultSet.getString(5)
                 ));
             }
-            return filteredValues;
+            return triggeredValues;
         } catch (Exception e) {
             throw new DaoException(e);
         }
     }
 
     @Override
-    public Integer lookupFilteredCountForPoint(@NonNull Connection connection, Object[] objs) throws DaoException {
+    public Integer lookupTriggeredCountForPoint(@NonNull Connection connection, Object[] objs) throws DaoException {
         try {
-            NSQLQueryUtil.objsValidation(
+            NsqlLookupUtil.objsValidation(
                     objs, new Class[]{LongIdKey.class, Date.class, Date.class}, new boolean[]{true, false, false}
             );
             LongIdKey pointKey = (LongIdKey) objs[0];
@@ -159,7 +159,7 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectCount(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id");
+            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -190,25 +190,25 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
     }
 
     @Override
-    public List<FilteredValue> lookupFilteredForFilter(@NonNull Connection connection, Object[] objs)
+    public List<TriggeredValue> lookupTriggeredForTrigger(@NonNull Connection connection, Object[] objs)
             throws DaoException {
         try {
-            NSQLQueryUtil.objsValidation(
+            NsqlLookupUtil.objsValidation(
                     objs, new Class[]{LongIdKey.class, Date.class, Date.class}, new boolean[]{true, false, false}
             );
-            LongIdKey filterKey = (LongIdKey) objs[0];
+            LongIdKey triggerKey = (LongIdKey) objs[0];
             Date startDate = (Date) objs[1];
             Date endDate = (Date) objs[2];
 
             StringBuilder sqlBuilder = new StringBuilder();
-            selectTableWithFilterId(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_filter_id_happened_date");
+            selectTableWithTriggerId(sqlBuilder);
+            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_trigger_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
-                if (Objects.isNull(filterKey)) {
-                    sqlBuilder.append("tbl.filter_id IS NULL AND ");
+                if (Objects.isNull(triggerKey)) {
+                    sqlBuilder.append("tbl.trigger_id IS NULL AND ");
                 } else {
-                    sqlBuilder.append("tbl.filter_id=? AND ");
+                    sqlBuilder.append("tbl.trigger_id=? AND ");
                 }
                 sqlBuilder.append("tbl.happened_date>=? AND ");
                 sqlBuilder.append("tbl.happened_date<? ");
@@ -219,54 +219,54 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
             }
 
             PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
-            if (Objects.isNull(filterKey)) {
+            if (Objects.isNull(triggerKey)) {
                 preparedStatement.setTimestamp(1, new Timestamp(startDate.getTime()));
                 preparedStatement.setTimestamp(2, new Timestamp(endDate.getTime()));
             } else {
-                preparedStatement.setLong(1, filterKey.getLongId());
+                preparedStatement.setLong(1, triggerKey.getLongId());
                 preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
                 preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
             }
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<FilteredValue> filteredValues = new ArrayList<>();
+            List<TriggeredValue> triggeredValues = new ArrayList<>();
             while (resultSet.next()) {
-                filteredValues.add(new FilteredValue(
+                triggeredValues.add(new TriggeredValue(
                         new LongIdKey(resultSet.getLong(1)),
                         new LongIdKey(resultSet.getLong(2)),
-                        filterKey,
+                        triggerKey,
                         new Date(resultSet.getTimestamp(3).getTime()),
                         resultSet.getString(4),
                         resultSet.getString(5)
                 ));
             }
-            return filteredValues;
+            return triggeredValues;
         } catch (Exception e) {
             throw new DaoException(e);
         }
     }
 
     @Override
-    public List<FilteredValue> lookupFilteredForFilter(
+    public List<TriggeredValue> lookupTriggeredForTrigger(
             @NonNull Connection connection, Object[] objs, PagingInfo pagingInfo
     ) throws DaoException {
         try {
-            NSQLQueryUtil.objsValidation(
+            NsqlLookupUtil.objsValidation(
                     objs, new Class[]{LongIdKey.class, Date.class, Date.class}, new boolean[]{true, false, false}
             );
-            LongIdKey filterKey = (LongIdKey) objs[0];
+            LongIdKey triggerKey = (LongIdKey) objs[0];
             Date startDate = (Date) objs[1];
             Date endDate = (Date) objs[2];
 
             StringBuilder sqlBuilder = new StringBuilder();
-            selectTableWithFilterId(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_filter_id_happened_date");
+            selectTableWithTriggerId(sqlBuilder);
+            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_trigger_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
-                if (Objects.isNull(filterKey)) {
-                    sqlBuilder.append("tbl.filter_id IS NULL AND ");
+                if (Objects.isNull(triggerKey)) {
+                    sqlBuilder.append("tbl.trigger_id IS NULL AND ");
                 } else {
-                    sqlBuilder.append("tbl.filter_id=? AND ");
+                    sqlBuilder.append("tbl.trigger_id=? AND ");
                 }
                 sqlBuilder.append("tbl.happened_date>=? AND ");
                 sqlBuilder.append("tbl.happened_date<? ");
@@ -278,13 +278,13 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
             sqlBuilder.append("LIMIT ?, ?");
 
             PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
-            if (Objects.isNull(filterKey)) {
+            if (Objects.isNull(triggerKey)) {
                 preparedStatement.setTimestamp(1, new Timestamp(startDate.getTime()));
                 preparedStatement.setTimestamp(2, new Timestamp(endDate.getTime()));
                 preparedStatement.setInt(3, pagingInfo.getRows() * pagingInfo.getPage());
                 preparedStatement.setInt(4, pagingInfo.getRows());
             } else {
-                preparedStatement.setLong(1, filterKey.getLongId());
+                preparedStatement.setLong(1, triggerKey.getLongId());
                 preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
                 preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
                 preparedStatement.setInt(4, pagingInfo.getRows() * pagingInfo.getPage());
@@ -292,55 +292,55 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
             }
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<FilteredValue> filteredValues = new ArrayList<>();
+            List<TriggeredValue> triggeredValues = new ArrayList<>();
             while (resultSet.next()) {
-                filteredValues.add(new FilteredValue(
+                triggeredValues.add(new TriggeredValue(
                         new LongIdKey(resultSet.getLong(1)),
                         new LongIdKey(resultSet.getLong(2)),
-                        filterKey,
+                        triggerKey,
                         new Date(resultSet.getTimestamp(3).getTime()),
                         resultSet.getString(4),
                         resultSet.getString(5)
                 ));
             }
-            return filteredValues;
+            return triggeredValues;
         } catch (Exception e) {
             throw new DaoException(e);
         }
     }
 
     @Override
-    public Integer lookupFilteredCountForFilter(@NonNull Connection connection, Object[] objs) throws DaoException {
+    public Integer lookupTriggeredCountForTrigger(@NonNull Connection connection, Object[] objs) throws DaoException {
         try {
-            NSQLQueryUtil.objsValidation(
+            NsqlLookupUtil.objsValidation(
                     objs,
                     new Class[]{LongIdKey.class, Date.class, Date.class},
                     new boolean[]{true, false, false}
             );
-            LongIdKey filterKey = (LongIdKey) objs[0];
+            LongIdKey triggerKey = (LongIdKey) objs[0];
             Date startDate = (Date) objs[1];
             Date endDate = (Date) objs[2];
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectCount(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_filter_id");
+            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_trigger_id");
             sqlBuilder.append("WHERE ");
             {
-                if (Objects.isNull(filterKey)) {
-                    sqlBuilder.append("tbl.filter_id IS NULL AND ");
+                if (Objects.isNull(triggerKey)) {
+                    sqlBuilder.append("tbl.trigger_id IS NULL AND ");
                 } else {
-                    sqlBuilder.append("tbl.filter_id=? AND ");
+                    sqlBuilder.append("tbl.trigger_id=? AND ");
                 }
                 sqlBuilder.append("tbl.happened_date>=? AND ");
                 sqlBuilder.append("tbl.happened_date<? ");
             }
 
             PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
-            if (Objects.isNull(filterKey)) {
+            if (Objects.isNull(triggerKey)) {
                 preparedStatement.setTimestamp(1, new Timestamp(startDate.getTime()));
                 preparedStatement.setTimestamp(2, new Timestamp(endDate.getTime()));
             } else {
-                preparedStatement.setLong(1, filterKey.getLongId());
+                preparedStatement.setLong(1, triggerKey.getLongId());
                 preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
                 preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
             }
@@ -354,11 +354,11 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
     }
 
     @Override
-    public FilteredValue previous(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException {
+    public TriggeredValue previous(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException {
         try {
             StringBuilder sqlBuilder = new StringBuilder();
             selectTableWithPointId(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date_desc");
+            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date_desc");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -384,7 +384,7 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return new FilteredValue(
+                return new TriggeredValue(
                         new LongIdKey(resultSet.getLong(1)),
                         pointKey,
                         new LongIdKey(resultSet.getLong(2)),
@@ -401,11 +401,11 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
     }
 
     @Override
-    public FilteredValue rear(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException {
+    public TriggeredValue rear(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException {
         try {
             StringBuilder sqlBuilder = new StringBuilder();
             selectTableWithPointId(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -431,7 +431,7 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return new FilteredValue(
+                return new TriggeredValue(
                         new LongIdKey(resultSet.getLong(1)),
                         pointKey,
                         new LongIdKey(resultSet.getLong(2)),
@@ -451,18 +451,18 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
         sqlBuilder.append("SELECT ");
         {
             sqlBuilder.append("tbl.id,");
-            sqlBuilder.append("tbl.filter_id,");
+            sqlBuilder.append("tbl.trigger_id,");
             sqlBuilder.append("tbl.happened_date, ");
             sqlBuilder.append("tbl.value, ");
             sqlBuilder.append("tbl.message ");
         }
         sqlBuilder.append("FROM ");
         {
-            sqlBuilder.append("tbl_filtered_value AS tbl ");
+            sqlBuilder.append("tbl_triggered_value AS tbl ");
         }
     }
 
-    private void selectTableWithFilterId(StringBuilder sqlBuilder) {
+    private void selectTableWithTriggerId(StringBuilder sqlBuilder) {
         sqlBuilder.append("SELECT ");
         {
             sqlBuilder.append("tbl.id,");
@@ -473,7 +473,7 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
         }
         sqlBuilder.append("FROM ");
         {
-            sqlBuilder.append("tbl_filtered_value AS tbl ");
+            sqlBuilder.append("tbl_triggered_value AS tbl ");
         }
     }
 
@@ -484,7 +484,7 @@ public class MySQL8FilteredValueNSQLQuery extends AbstractNSQLQuery implements F
         }
         sqlBuilder.append("FROM ");
         {
-            sqlBuilder.append("tbl_filtered_value AS tbl ");
+            sqlBuilder.append("tbl_triggered_value AS tbl ");
         }
     }
 }

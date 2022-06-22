@@ -200,19 +200,19 @@
    
    数据映射查询是指将查询出的数据按照某种规则进行预处理，并且返回已经预处理好的值。类似于返回一段时间数据点的中位数、平均数、
    单词统计都可以使用数据的映射查询实现。
-   
+
    需要指出的是，映射查询只能满足少部分查询需求。更多复杂的数据处理应该在其它项目中完成。
 
 3. 加速
 
    FDR 针对部分查询提供了原生SQL加速的功能。
-   
+
    在使用加速功能的情况下，数据接口的时间查询，以及对应的维护服务的样板查询将会直接通过jdbc使用sql语句进行查询，从而大大提高
    查询的效率。
-   
-   然而，sql语句意味着不通用，针对于不同的数据库，您可能需要针对不同的数据库编写相关的 `NSQLQuery`, 目前该项目对于此接口
-   提供了 `MySQL8NSQLQuery` 实现，这意味着该项目本身支持 MySQL 的原生SQL加速。
-   
+
+   然而，sql语句意味着不通用，针对于不同的数据库，您可能需要针对不同的数据库编写相关的 `NsqlLookup`, 目前该项目对于此接口
+   提供了 `Mysql8NsqlLookup` 实现，这意味着该项目本身支持 MySQL 的原生SQL加速。
+
    开启原生SQL加速，需要在 `conf/database/performance.properties` 中设置属性
    ```properties
    # 针对持久数据点、被过滤数据点、被触发数据点的批量操作使用原生的SQL语句以提高查询效率。
@@ -286,8 +286,8 @@
 
 6. 原生SQL生成器的扩展
 
-   实现接口 `com.dwarfeng.fdr.impl.dao.NSQLQuery` 并将实现类注入到spring的IoC容器中。
-   
+   实现接口 `com.dwarfeng.fdr.impl.dao.NsqlLookup` 并将实现类注入到spring的IoC容器中。
+
    设置数据库连接 `conf/database/connection.properties`
    ```properties
    jdbc.driver=com.mysql.cj.jdbc.Driver

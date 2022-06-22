@@ -52,24 +52,24 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
     private BeanTransformer<TriggeredValue, HibernateTriggeredValue> beanTransformer;
     @SuppressWarnings("FieldMayBeFinal")
     @Autowired(required = false)
-    private List<TriggeredValueNSQLQuery> nsqlQueries = Collections.emptyList();
+    private List<TriggeredValueNsqlLookup> nsqlQueries = Collections.emptyList();
 
     @Value("${hibernate.accelerate.using_native_sql}")
     private boolean usingNativeSQL;
     @Value("${hibernate.dialect}")
     private String hibernateDialect;
 
-    private TriggeredValueNSQLQuery nsqlQuery = null;
+    private TriggeredValueNsqlLookup nsqlLookup = null;
 
     @SuppressWarnings("DuplicatedCode")
     @PostConstruct
     public void init() {
-        nsqlQuery = nsqlQueries.stream()
+        nsqlLookup = nsqlQueries.stream()
                 .filter(generator -> generator.supportType(hibernateDialect)).findAny().orElse(null);
         boolean initFailed = Boolean.TRUE.equals(hibernateTemplate.executeWithNativeSession(
                 session -> session.doReturningWork(connection -> {
                     try {
-                        nsqlQuery.init(connection);
+                        nsqlLookup.init(connection);
                         return false;
                     } catch (Exception e) {
                         LOGGER.warn("初始化本地 SQL 查询时发生异常", e);
@@ -192,7 +192,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
     public List<TriggeredValue> lookup(String preset, Object[] objs) throws DaoException {
         try {
             if (Objects.equals(TriggeredValueMaintainService.CHILD_FOR_POINT_BETWEEN, preset) && usingNativeSQL) {
-                if (Objects.isNull(nsqlQuery)) {
+                if (Objects.isNull(nsqlLookup)) {
                     LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                     return presetLookupDao.lookup(preset, objs);
                 }
@@ -200,7 +200,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
                 List<TriggeredValue> triggeredValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlQuery.lookupTriggeredForPoint(connection, objs);
+                                return nsqlLookup.lookupTriggeredForPoint(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -214,7 +214,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
                     return presetLookupDao.lookup(preset, objs);
                 }
             } else if (Objects.equals(TriggeredValueMaintainService.CHILD_FOR_TRIGGER_BETWEEN, preset) && usingNativeSQL) {
-                if (Objects.isNull(nsqlQuery)) {
+                if (Objects.isNull(nsqlLookup)) {
                     LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                     return presetLookupDao.lookup(preset, objs);
                 }
@@ -222,7 +222,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
                 List<TriggeredValue> triggeredValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlQuery.lookupTriggeredForTrigger(connection, objs);
+                                return nsqlLookup.lookupTriggeredForTrigger(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -252,7 +252,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
     public List<TriggeredValue> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws DaoException {
         try {
             if (Objects.equals(TriggeredValueMaintainService.CHILD_FOR_POINT_BETWEEN, preset) && usingNativeSQL) {
-                if (Objects.isNull(nsqlQuery)) {
+                if (Objects.isNull(nsqlLookup)) {
                     LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                     return presetLookupDao.lookup(preset, objs, pagingInfo);
                 }
@@ -260,7 +260,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
                 List<TriggeredValue> triggeredValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlQuery.lookupTriggeredForPoint(connection, objs, pagingInfo);
+                                return nsqlLookup.lookupTriggeredForPoint(connection, objs, pagingInfo);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -274,7 +274,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
                     return presetLookupDao.lookup(preset, objs, pagingInfo);
                 }
             } else if (Objects.equals(TriggeredValueMaintainService.CHILD_FOR_TRIGGER_BETWEEN, preset) && usingNativeSQL) {
-                if (Objects.isNull(nsqlQuery)) {
+                if (Objects.isNull(nsqlLookup)) {
                     LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                     return presetLookupDao.lookup(preset, objs, pagingInfo);
                 }
@@ -282,7 +282,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
                 List<TriggeredValue> triggeredValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlQuery.lookupTriggeredForTrigger(connection, objs, pagingInfo);
+                                return nsqlLookup.lookupTriggeredForTrigger(connection, objs, pagingInfo);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -311,7 +311,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
     public int lookupCount(String preset, Object[] objs) throws DaoException {
         try {
             if (Objects.equals(TriggeredValueMaintainService.CHILD_FOR_POINT_BETWEEN, preset) && usingNativeSQL) {
-                if (Objects.isNull(nsqlQuery)) {
+                if (Objects.isNull(nsqlLookup)) {
                     LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                     return presetLookupDao.lookupCount(preset, objs);
                 }
@@ -319,7 +319,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
                 Integer count = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlQuery.lookupTriggeredCountForPoint(connection, objs);
+                                return nsqlLookup.lookupTriggeredCountForPoint(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -333,7 +333,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
                     return presetLookupDao.lookupCount(preset, objs);
                 }
             } else if (Objects.equals(TriggeredValueMaintainService.CHILD_FOR_TRIGGER_BETWEEN, preset) && usingNativeSQL) {
-                if (Objects.isNull(nsqlQuery)) {
+                if (Objects.isNull(nsqlLookup)) {
                     LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                     return presetLookupDao.lookupCount(preset, objs);
                 }
@@ -341,7 +341,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
                 Integer count = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlQuery.lookupTriggeredCountForTrigger(connection, objs);
+                                return nsqlLookup.lookupTriggeredCountForTrigger(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -384,7 +384,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public TriggeredValue previous(LongIdKey pointKey, Date date) throws DaoException {
         try {
-            if (Objects.isNull(nsqlQuery)) {
+            if (Objects.isNull(nsqlLookup)) {
                 LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                 return previousByCriteria(pointKey, date);
             }
@@ -394,7 +394,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
                         TriggeredValue triggeredValue = null;
                         Exception exception = null;
                         try {
-                            triggeredValue = nsqlQuery.previous(connection, pointKey, date);
+                            triggeredValue = nsqlLookup.previous(connection, pointKey, date);
                         } catch (Exception e) {
                             LOGGER.warn("原生SQL查询返回异常", e);
                             exception = e;
@@ -432,7 +432,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public TriggeredValue rear(LongIdKey pointKey, Date date) throws DaoException {
         try {
-            if (Objects.isNull(nsqlQuery)) {
+            if (Objects.isNull(nsqlLookup)) {
                 LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                 return rearByCriteria(pointKey, date);
             }
@@ -442,7 +442,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
                         TriggeredValue triggeredValue = null;
                         Exception exception = null;
                         try {
-                            triggeredValue = nsqlQuery.rear(connection, pointKey, date);
+                            triggeredValue = nsqlLookup.rear(connection, pointKey, date);
                         } catch (Exception e) {
                             LOGGER.warn("原生SQL查询返回异常", e);
                             exception = e;
