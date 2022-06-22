@@ -7,7 +7,7 @@
     <parent>
         <artifactId>fdr-node</artifactId>
         <groupId>com.dwarfeng</groupId>
-        <version>1.9.4.a</version>
+        <version>1.9.5.a-SNAPSHOT</version>
     </parent>
 
     <artifactId>fdr-node-maintain</artifactId>
