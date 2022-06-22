@@ -1,7 +1,6 @@
 package com.dwarfeng.fdr.impl.dao.nsql;
 
 import com.dwarfeng.fdr.impl.dao.TriggeredValueNSQLQuery;
-import com.dwarfeng.fdr.sdk.util.Constants;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -41,7 +40,7 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectTableWithPointId(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_POINT_ID_HAPPENED_DATE);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -99,7 +98,7 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectTableWithPointId(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_POINT_ID_HAPPENED_DATE);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -160,7 +159,7 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectCount(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_POINT_ID);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -203,7 +202,7 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectTableWithTriggerId(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_TRIGGER_ID_HAPPENED_DATE);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_trigger_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(triggerKey)) {
@@ -261,7 +260,7 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectTableWithTriggerId(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_TRIGGER_ID_HAPPENED_DATE);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_trigger_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(triggerKey)) {
@@ -324,7 +323,7 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectCount(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_TRIGGER_ID);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_trigger_id");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(triggerKey)) {
@@ -359,7 +358,7 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
         try {
             StringBuilder sqlBuilder = new StringBuilder();
             selectTableWithPointId(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_POINT_ID_HAPPENED_DATE_DESC);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date_desc");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -406,7 +405,7 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
         try {
             StringBuilder sqlBuilder = new StringBuilder();
             selectTableWithPointId(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_POINT_ID_HAPPENED_DATE);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {

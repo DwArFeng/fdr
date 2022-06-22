@@ -1,7 +1,6 @@
 package com.dwarfeng.fdr.impl.dao.nsql;
 
 import com.dwarfeng.fdr.impl.dao.PersistenceValueNSQLQuery;
-import com.dwarfeng.fdr.sdk.util.Constants;
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -40,7 +39,7 @@ public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implement
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectTable(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_POINT_ID_HAPPENED_DATE);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -96,7 +95,7 @@ public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implement
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectTable(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_POINT_ID_HAPPENED_DATE);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -162,7 +161,7 @@ public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implement
             {
                 sqlBuilder.append("tbl_persistence_value AS tbl ");
             }
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_POINT_ID);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -198,7 +197,7 @@ public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implement
         try {
             StringBuilder sqlBuilder = new StringBuilder();
             selectTable(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_POINT_ID_HAPPENED_DATE_DESC);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date_desc");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -243,7 +242,7 @@ public class MySQL8PersistenceValueNSQLQuery extends AbstractNSQLQuery implement
         try {
             StringBuilder sqlBuilder = new StringBuilder();
             selectTable(sqlBuilder);
-            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, Constants.INDEX_NAME_POINT_ID_HAPPENED_DATE);
+            MySQL8NSQLQueryUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
