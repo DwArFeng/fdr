@@ -3,7 +3,6 @@ package com.dwarfeng.fdr.node.all.configuration;
 import com.dwarfeng.fdr.sdk.bean.entity.*;
 import com.dwarfeng.fdr.stack.bean.entity.*;
 import com.dwarfeng.subgrade.impl.bean.DozerBeanTransformer;
-import com.dwarfeng.subgrade.impl.cache.RedisBaseCache;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.impl.cache.RedisKeyListCache;
 import com.dwarfeng.subgrade.sdk.redis.formatter.LongIdStringKeyFormatter;
@@ -94,8 +93,8 @@ public class CacheConfiguration {
 
     @Bean
     @SuppressWarnings("unchecked")
-    public RedisBaseCache<StringIdKey, FilterSupport, FastJsonFilterSupport> filterSupportRedisBaseCache() {
-        return new RedisBaseCache<>(
+    public RedisBatchBaseCache<StringIdKey, FilterSupport, FastJsonFilterSupport> filterSupportRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
                 (RedisTemplate<String, FastJsonFilterSupport>) template,
                 new StringIdStringKeyFormatter(filterSupportPrefix),
                 new DozerBeanTransformer<>(FilterSupport.class, FastJsonFilterSupport.class, mapper)
@@ -104,8 +103,9 @@ public class CacheConfiguration {
 
     @Bean
     @SuppressWarnings("unchecked")
-    public RedisBaseCache<StringIdKey, TriggerSupport, FastJsonTriggerSupport> triggerSupportRedisBaseCache() {
-        return new RedisBaseCache<>(
+    public RedisBatchBaseCache<StringIdKey, TriggerSupport, FastJsonTriggerSupport>
+    triggerSupportRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
                 (RedisTemplate<String, FastJsonTriggerSupport>) template,
                 new StringIdStringKeyFormatter(triggerSupportPrefix),
                 new DozerBeanTransformer<>(TriggerSupport.class, FastJsonTriggerSupport.class, mapper)
@@ -114,8 +114,8 @@ public class CacheConfiguration {
 
     @Bean
     @SuppressWarnings("unchecked")
-    public RedisBaseCache<StringIdKey, MapperSupport, FastJsonMapperSupport> mapperSupportRedisBaseCache() {
-        return new RedisBaseCache<>(
+    public RedisBatchBaseCache<StringIdKey, MapperSupport, FastJsonMapperSupport> mapperSupportRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
                 (RedisTemplate<String, FastJsonMapperSupport>) template,
                 new StringIdStringKeyFormatter(mapperSupportPrefix),
                 new DozerBeanTransformer<>(MapperSupport.class, FastJsonMapperSupport.class, mapper)

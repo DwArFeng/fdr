@@ -4,6 +4,11 @@
 
 #### 功能构建
 
+- 为部分缓存增加批量操作功能。
+  - com.dwarfeng.fdr.stack.cache.FilterSupportCache。
+  - com.dwarfeng.fdr.stack.cache.MapperSupportCache。
+  - com.dwarfeng.fdr.stack.cache.TriggerSupportCache。
+
 - 为部分数据访问层增加批量操作功能。
   - com.dwarfeng.fdr.stack.dao.FilterSupportDao。
   - com.dwarfeng.fdr.stack.dao.MapperSupportDao。
