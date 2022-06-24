@@ -4,7 +4,10 @@
 
 #### 功能构建
 
-- (无)
+- 为部分数据访问层增加批量操作功能。
+  - com.dwarfeng.fdr.stack.dao.FilterSupportDao。
+  - com.dwarfeng.fdr.stack.dao.MapperSupportDao。
+  - com.dwarfeng.fdr.stack.dao.TriggerSupportDao。
 
 #### Bug修复
 

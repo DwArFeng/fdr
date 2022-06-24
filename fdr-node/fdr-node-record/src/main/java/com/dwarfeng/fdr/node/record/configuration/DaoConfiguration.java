@@ -62,7 +62,8 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, FilteredValue, HibernateFilteredValue> filteredValueHibernateBatchBaseDao() {
+    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, FilteredValue, HibernateFilteredValue>
+    filteredValueHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
                 new DozerBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, mapper),
@@ -262,8 +263,9 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernateBaseDao<StringIdKey, HibernateStringIdKey, FilterSupport, HibernateFilterSupport> filterSupportHibernateBaseDao() {
-        return new HibernateBaseDao<>(
+    public HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, FilterSupport, HibernateFilterSupport>
+    filterSupportHibernateBatchBaseDao() {
+        return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
                 new DozerBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, mapper),
                 new DozerBeanTransformer<>(FilterSupport.class, HibernateFilterSupport.class, mapper),
@@ -291,8 +293,9 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernateBaseDao<StringIdKey, HibernateStringIdKey, TriggerSupport, HibernateTriggerSupport> triggerSupportHibernateBaseDao() {
-        return new HibernateBaseDao<>(
+    public HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, TriggerSupport, HibernateTriggerSupport>
+    triggerSupportHibernateBatchBaseDao() {
+        return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
                 new DozerBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, mapper),
                 new DozerBeanTransformer<>(TriggerSupport.class, HibernateTriggerSupport.class, mapper),
@@ -338,8 +341,9 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernateBaseDao<StringIdKey, HibernateStringIdKey, MapperSupport, HibernateMapperSupport> mapperSupportHibernateBaseDao() {
-        return new HibernateBaseDao<>(
+    public HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, MapperSupport, HibernateMapperSupport>
+    mapperSupportHibernateBatchBaseDao() {
+        return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
                 new DozerBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, mapper),
                 new DozerBeanTransformer<>(MapperSupport.class, HibernateMapperSupport.class, mapper),

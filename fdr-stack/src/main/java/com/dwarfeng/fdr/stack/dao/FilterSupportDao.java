@@ -2,7 +2,7 @@ package com.dwarfeng.fdr.stack.dao;
 
 import com.dwarfeng.fdr.stack.bean.entity.FilterSupport;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
-import com.dwarfeng.subgrade.stack.dao.BaseDao;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
 import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
 import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 
@@ -12,6 +12,6 @@ import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
  * @author DwArFeng
  * @since 1.1.0
  */
-public interface FilterSupportDao extends BaseDao<StringIdKey, FilterSupport>, EntireLookupDao<FilterSupport>,
+public interface FilterSupportDao extends BatchBaseDao<StringIdKey, FilterSupport>, EntireLookupDao<FilterSupport>,
         PresetLookupDao<FilterSupport> {
 }
