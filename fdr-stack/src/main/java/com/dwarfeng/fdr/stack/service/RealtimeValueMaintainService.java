@@ -2,7 +2,7 @@ package com.dwarfeng.fdr.stack.service;
 
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.service.CrudService;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
 import com.dwarfeng.subgrade.stack.service.EntireLookupService;
 
 /**
@@ -11,6 +11,6 @@ import com.dwarfeng.subgrade.stack.service.EntireLookupService;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface RealtimeValueMaintainService extends CrudService<LongIdKey, RealtimeValue>,
+public interface RealtimeValueMaintainService extends BatchCrudService<LongIdKey, RealtimeValue>,
         EntireLookupService<RealtimeValue> {
 }

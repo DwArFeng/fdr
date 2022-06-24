@@ -14,6 +14,12 @@
   - com.dwarfeng.fdr.stack.dao.MapperSupportDao。
   - com.dwarfeng.fdr.stack.dao.TriggerSupportDao。
 
+- 为部分维护服务增加批量操作功能。
+  - com.dwarfeng.fdr.stack.service.FilterSupportMaintainService。
+  - com.dwarfeng.fdr.stack.service.MapperSupportMaintainService。
+  - com.dwarfeng.fdr.stack.service.RealtimeValueMaintainService。
+  - com.dwarfeng.fdr.stack.service.TriggerSupportMaintainService。
+
 #### Bug修复
 
 - (无)

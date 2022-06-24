@@ -5,7 +5,7 @@ import com.dwarfeng.fdr.stack.bean.entity.MapperSupport;
 import com.dwarfeng.fdr.stack.service.MapperSupportMaintainService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
-import com.dwarfeng.subgrade.impl.service.GeneralCrudService;
+import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
@@ -15,29 +15,42 @@ import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class MapperSupportMaintainServiceImpl implements MapperSupportMaintainService {
 
-    @Autowired
-    private GeneralCrudService<StringIdKey, MapperSupport> crudService;
-    @Autowired
-    private DaoOnlyEntireLookupService<MapperSupport> entireLookupService;
-    @Autowired
-    private DaoOnlyPresetLookupService<MapperSupport> presetLookupService;
+    private final GeneralBatchCrudService<StringIdKey, MapperSupport> crudService;
+    private final DaoOnlyEntireLookupService<MapperSupport> entireLookupService;
+    private final DaoOnlyPresetLookupService<MapperSupport> presetLookupService;
 
-    @SuppressWarnings("FieldMayBeFinal")
-    @Autowired(required = false)
-    private List<MapperSupporter> mapperSupporters = Collections.emptyList();
+    private final List<MapperSupporter> mapperSupporters;
 
-    @Autowired
-    private ServiceExceptionMapper sem;
+    private final ServiceExceptionMapper sem;
+
+    public MapperSupportMaintainServiceImpl(
+            GeneralBatchCrudService<StringIdKey, MapperSupport> crudService,
+            DaoOnlyEntireLookupService<MapperSupport> entireLookupService,
+            DaoOnlyPresetLookupService<MapperSupport> presetLookupService,
+            List<MapperSupporter> mapperSupporters,
+            ServiceExceptionMapper sem
+    ) {
+        this.crudService = crudService;
+        this.entireLookupService = entireLookupService;
+        this.presetLookupService = presetLookupService;
+        if (Objects.isNull(mapperSupporters)) {
+            this.mapperSupporters = new ArrayList<>();
+        } else {
+            this.mapperSupporters = mapperSupporters;
+        }
+        this.sem = sem;
+    }
 
     @Override
     @BehaviorAnalyse
@@ -111,6 +124,88 @@ public class MapperSupportMaintainServiceImpl implements MapperSupportMaintainSe
 
     @Override
     @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public boolean allExists(@SkipRecord List<StringIdKey> keys) throws ServiceException {
+        return crudService.allExists(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public boolean nonExists(@SkipRecord List<StringIdKey> keys) throws ServiceException {
+        return crudService.nonExists(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public List<MapperSupport> batchGet(@SkipRecord List<StringIdKey> keys) throws ServiceException {
+        return crudService.batchGet(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public List<StringIdKey> batchInsert(@SkipRecord List<MapperSupport> elements) throws ServiceException {
+        return crudService.batchInsert(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public void batchUpdate(@SkipRecord List<MapperSupport> elements) throws ServiceException {
+        crudService.batchUpdate(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public void batchDelete(@SkipRecord List<StringIdKey> keys) throws ServiceException {
+        crudService.batchDelete(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public List<MapperSupport> batchGetIfExists(@SkipRecord List<StringIdKey> keys) throws ServiceException {
+        return crudService.batchGetIfExists(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public List<StringIdKey> batchInsertIfExists(@SkipRecord List<MapperSupport> elements) throws ServiceException {
+        return crudService.batchInsertIfExists(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public void batchUpdateIfExists(@SkipRecord List<MapperSupport> elements) throws ServiceException {
+        crudService.batchUpdateIfExists(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public void batchDeleteIfExists(@SkipRecord List<StringIdKey> keys) throws ServiceException {
+        crudService.batchDeleteIfExists(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public List<StringIdKey> batchInsertOrUpdate(@SkipRecord List<MapperSupport> elements) throws ServiceException {
+        return crudService.batchInsertOrUpdate(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public PagedData<MapperSupport> lookup() throws ServiceException {
@@ -143,23 +238,22 @@ public class MapperSupportMaintainServiceImpl implements MapperSupportMaintainSe
 
     @Override
     @BehaviorAnalyse
-    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void reset() throws ServiceException {
-        for (MapperSupporter mapperSupporter : mapperSupporters) {
-            try {
-                crudService.insertOrUpdate(
-                        new MapperSupport(
-                                new StringIdKey(mapperSupporter.provideType()),
-                                mapperSupporter.provideLabel(),
-                                mapperSupporter.provideDescription(),
-                                mapperSupporter.provideArgsIllustrate()
-                        )
-                );
-            } catch (Exception e) {
-                throw ServiceExceptionHelper.logAndThrow("重置触发器支持时发生异常",
-                        LogLevel.WARN, sem, e
-                );
-            }
+        try {
+            List<StringIdKey> mapperKeys = entireLookupService.lookup().getData().stream()
+                    .map(MapperSupport::getKey).collect(Collectors.toList());
+            crudService.batchDelete(mapperKeys);
+            List<MapperSupport> mapperSupports = mapperSupporters.stream().map(supporter -> new MapperSupport(
+                    new StringIdKey(supporter.provideType()),
+                    supporter.provideLabel(),
+                    supporter.provideDescription(),
+                    supporter.provideArgsIllustrate()
+            )).collect(Collectors.toList());
+            crudService.batchInsert(mapperSupports);
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logAndThrow(
+                    "重置映射器支持时发生异常", LogLevel.WARN, sem, e
+            );
         }
     }
 }

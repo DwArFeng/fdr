@@ -2,7 +2,7 @@ package com.dwarfeng.fdr.impl.service;
 
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
 import com.dwarfeng.fdr.stack.service.RealtimeValueMaintainService;
-import com.dwarfeng.subgrade.impl.service.CustomCrudService;
+import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
@@ -14,11 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class RealtimeValueMaintainServiceImpl implements RealtimeValueMaintainService {
 
     @Autowired
-    private CustomCrudService<LongIdKey, RealtimeValue> crudService;
+    private CustomBatchCrudService<LongIdKey, RealtimeValue> crudService;
     @Autowired
     private DaoOnlyEntireLookupService<RealtimeValue> entireLookupService;
 
@@ -90,6 +92,88 @@ public class RealtimeValueMaintainServiceImpl implements RealtimeValueMaintainSe
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public LongIdKey insertOrUpdate(RealtimeValue element) throws ServiceException {
         return crudService.insertOrUpdate(element);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public boolean allExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+        return crudService.allExists(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public boolean nonExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+        return crudService.nonExists(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public List<RealtimeValue> batchGet(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+        return crudService.batchGet(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public List<LongIdKey> batchInsert(@SkipRecord List<RealtimeValue> elements) throws ServiceException {
+        return crudService.batchInsert(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public void batchUpdate(@SkipRecord List<RealtimeValue> elements) throws ServiceException {
+        crudService.batchUpdate(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public void batchDelete(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+        crudService.batchDelete(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public List<RealtimeValue> batchGetIfExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+        return crudService.batchGetIfExists(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public List<LongIdKey> batchInsertIfExists(@SkipRecord List<RealtimeValue> elements) throws ServiceException {
+        return crudService.batchInsertIfExists(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public void batchUpdateIfExists(@SkipRecord List<RealtimeValue> elements) throws ServiceException {
+        crudService.batchUpdateIfExists(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public void batchDeleteIfExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+        crudService.batchDeleteIfExists(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public List<LongIdKey> batchInsertOrUpdate(@SkipRecord List<RealtimeValue> elements) throws ServiceException {
+        return crudService.batchInsertOrUpdate(elements);
     }
 
     @Override

@@ -181,8 +181,8 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public CustomCrudService<LongIdKey, RealtimeValue> realtimeValueCustomCrudService() {
-        return new CustomCrudService<>(
+    public CustomBatchCrudService<LongIdKey, RealtimeValue> realtimeValueCustomBatchCrudService() {
+        return new CustomBatchCrudService<>(
                 realtimeValueCrudOperation,
                 longIdKeyKeyFetcher(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
@@ -247,8 +247,8 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public GeneralCrudService<StringIdKey, FilterSupport> filterSupportGeneralCrudService() {
-        return new GeneralCrudService<>(
+    public GeneralBatchCrudService<StringIdKey, FilterSupport> filterSupportGeneralBatchCrudService() {
+        return new GeneralBatchCrudService<>(
                 filterSupportDao,
                 filterSupportCache,
                 new ExceptionKeyFetcher<>(),
@@ -277,8 +277,8 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public GeneralCrudService<StringIdKey, TriggerSupport> triggerSupportGeneralCrudService() {
-        return new GeneralCrudService<>(
+    public GeneralBatchCrudService<StringIdKey, TriggerSupport> triggerSupportGeneralBatchCrudService() {
+        return new GeneralBatchCrudService<>(
                 triggerSupportDao,
                 triggerSupportCache,
                 new ExceptionKeyFetcher<>(),
@@ -325,8 +325,8 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public GeneralCrudService<StringIdKey, MapperSupport> mapperSupportGeneralCrudService() {
-        return new GeneralCrudService<>(
+    public GeneralBatchCrudService<StringIdKey, MapperSupport> mapperSupportGeneralBatchCrudService() {
+        return new GeneralBatchCrudService<>(
                 mapperSupportDao,
                 mapperSupportCache,
                 new ExceptionKeyFetcher<>(),
@@ -349,6 +349,36 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<MapperSupport> mapperSupportDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 mapperSupportDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyBatchWriteService<LongIdKey, FilteredValue> filteredValueDaoOnlyBatchWriteService() {
+        return new DaoOnlyBatchWriteService<>(
+                filteredValueDao,
+                longIdKeyKeyFetcher(),
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyBatchWriteService<LongIdKey, TriggeredValue> triggeredValueDaoOnlyBatchWriteService() {
+        return new DaoOnlyBatchWriteService<>(
+                triggeredValueDao,
+                longIdKeyKeyFetcher(),
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyBatchWriteService<LongIdKey, PersistenceValue> persistenceValueDaoOnlyBatchWriteService() {
+        return new DaoOnlyBatchWriteService<>(
+                persistenceValueDao,
+                longIdKeyKeyFetcher(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );

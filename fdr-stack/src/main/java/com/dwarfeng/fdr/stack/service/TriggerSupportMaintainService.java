@@ -3,7 +3,7 @@ package com.dwarfeng.fdr.stack.service;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerSupport;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import com.dwarfeng.subgrade.stack.service.CrudService;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
 import com.dwarfeng.subgrade.stack.service.EntireLookupService;
 import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 
@@ -13,7 +13,7 @@ import com.dwarfeng.subgrade.stack.service.PresetLookupService;
  * @author DwArFeng
  * @since 0.0.1.a-alpha
  */
-public interface TriggerSupportMaintainService extends CrudService<StringIdKey, TriggerSupport>,
+public interface TriggerSupportMaintainService extends BatchCrudService<StringIdKey, TriggerSupport>,
         EntireLookupService<TriggerSupport>, PresetLookupService<TriggerSupport> {
 
     String ID_LIKE = "id_like";
