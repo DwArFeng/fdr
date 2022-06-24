@@ -20,6 +20,13 @@
   - com.dwarfeng.fdr.stack.service.RealtimeValueMaintainService。
   - com.dwarfeng.fdr.stack.service.TriggerSupportMaintainService。
 
+- 增加预设查询。
+  - com.dwarfeng.fdr.stack.service.PointMaintainService.REMARK_LIKE。
+  - com.dwarfeng.fdr.stack.service.PointMaintainService.NAME_LIKE_PERSISTENCE_ENABLED。
+  - com.dwarfeng.fdr.stack.service.PointMaintainService.NAME_LIKE_REALTIME_ENABLED。
+  - com.dwarfeng.fdr.stack.service.PointMaintainService.NAME_LIKE_PERSISTENCE_DISABLED。
+  - com.dwarfeng.fdr.stack.service.PointMaintainService.NAME_LIKE_REALTIME_DISABLED。
+
 #### Bug修复
 
 - (无)
