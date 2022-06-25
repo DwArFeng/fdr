@@ -5,7 +5,7 @@
 
     <groupId>com.dwarfeng</groupId>
     <artifactId>fdr</artifactId>
-    <version>1.9.6.a</version>
+    <version>1.9.7.a-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -413,37 +413,37 @@
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-stack</artifactId>
-                <version>1.9.6.a</version>
+                <version>1.9.7.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-sdk</artifactId>
-                <version>1.9.6.a</version>
+                <version>1.9.7.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-impl</artifactId>
-                <version>1.9.6.a</version>
+                <version>1.9.7.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-node-maintain</artifactId>
-                <version>1.9.6.a</version>
+                <version>1.9.7.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-node-record</artifactId>
-                <version>1.9.6.a</version>
+                <version>1.9.7.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-node-inspect</artifactId>
-                <version>1.9.6.a</version>
+                <version>1.9.7.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-node-all</artifactId>
-                <version>1.9.6.a</version>
+                <version>1.9.7.a-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
