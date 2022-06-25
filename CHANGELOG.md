@@ -4,7 +4,17 @@
 
 #### 功能构建
 
-- (无)
+- 重写维护服务的 `lookupAsList` 方法，以提高查询速度。
+  - com.dwarfeng.fdr.impl.service.FilterInfoMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.PersistenceValueMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.TriggeredValueMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.MapperSupportMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.RealtimeValueMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.FilteredValueMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.FilterSupportMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.PointMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.TriggerInfoMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.TriggerSupportMaintainServiceImpl。
 
 #### Bug修复
 
