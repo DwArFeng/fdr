@@ -159,7 +159,7 @@ public class MysqlTriggeredValueNsqlLookup extends AbstractNsqlLookup implements
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectCount(sqlBuilder);
-            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id");
+            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -323,7 +323,7 @@ public class MysqlTriggeredValueNsqlLookup extends AbstractNsqlLookup implements
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectCount(sqlBuilder);
-            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_trigger_id");
+            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_trigger_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(triggerKey)) {

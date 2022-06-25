@@ -161,7 +161,7 @@ public class Mysql8PersistenceValueNsqlLookup extends AbstractNsqlLookup impleme
             {
                 sqlBuilder.append("tbl_persistence_value AS tbl ");
             }
-            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id");
+            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {

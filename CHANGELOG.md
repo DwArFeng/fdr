@@ -8,7 +8,10 @@
 
 #### Bug修复
 
-- (无)
+- 修正 Nsql 中不正确的索引使用。
+  - com.dwarfeng.fdr.impl.dao.nsql.Mysql8FilteredValueNsqlLookup。
+  - com.dwarfeng.fdr.impl.dao.nsql.Mysql8PersistenceValueNsqlLookup。
+  - com.dwarfeng.fdr.impl.dao.nsql.MysqlTriggeredValueNsqlLookup。
 
 #### 功能移除
 
