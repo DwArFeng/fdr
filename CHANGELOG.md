@@ -4,7 +4,12 @@
 
 #### 功能构建
 
-- (无)
+- 使用 `subgrade` 的加速查询机制重写部分数据访问层实现。
+  - com.dwarfeng.fdr.impl.dao.PersistenceValueDaoImpl。
+
+- 依赖升级。
+  - 升级 `dutil` 依赖版本为 `beta-0.3.0.a`。
+  - 升级 `subgrade` 依赖版本为 `1.2.8.a`。
 
 #### Bug修复
 

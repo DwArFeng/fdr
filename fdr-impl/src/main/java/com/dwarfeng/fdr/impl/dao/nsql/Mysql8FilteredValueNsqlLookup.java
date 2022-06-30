@@ -1,6 +1,7 @@
 package com.dwarfeng.fdr.impl.dao.nsql;
 
 import com.dwarfeng.fdr.impl.dao.FilteredValueNsqlLookup;
+import com.dwarfeng.fdr.impl.dao.nativelookup.Mysql8NativeLookupUtil;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -40,7 +41,7 @@ public class Mysql8FilteredValueNsqlLookup extends AbstractNsqlLookup implements
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectTableWithPointId(sqlBuilder);
-            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+            Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -98,7 +99,7 @@ public class Mysql8FilteredValueNsqlLookup extends AbstractNsqlLookup implements
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectTableWithPointId(sqlBuilder);
-            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+            Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -159,7 +160,7 @@ public class Mysql8FilteredValueNsqlLookup extends AbstractNsqlLookup implements
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectCount(sqlBuilder);
-            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+            Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -202,7 +203,7 @@ public class Mysql8FilteredValueNsqlLookup extends AbstractNsqlLookup implements
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectTableWithFilterId(sqlBuilder);
-            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_filter_id_happened_date");
+            Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_filter_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(filterKey)) {
@@ -260,7 +261,7 @@ public class Mysql8FilteredValueNsqlLookup extends AbstractNsqlLookup implements
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectTableWithFilterId(sqlBuilder);
-            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_filter_id_happened_date");
+            Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_filter_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(filterKey)) {
@@ -323,7 +324,7 @@ public class Mysql8FilteredValueNsqlLookup extends AbstractNsqlLookup implements
 
             StringBuilder sqlBuilder = new StringBuilder();
             selectCount(sqlBuilder);
-            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_filter_id_happened_date");
+            Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_filter_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(filterKey)) {
@@ -358,7 +359,7 @@ public class Mysql8FilteredValueNsqlLookup extends AbstractNsqlLookup implements
         try {
             StringBuilder sqlBuilder = new StringBuilder();
             selectTableWithPointId(sqlBuilder);
-            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date_desc");
+            Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date_desc");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {
@@ -405,7 +406,7 @@ public class Mysql8FilteredValueNsqlLookup extends AbstractNsqlLookup implements
         try {
             StringBuilder sqlBuilder = new StringBuilder();
             selectTableWithPointId(sqlBuilder);
-            Mysql8NsqlLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+            Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
             sqlBuilder.append("WHERE ");
             {
                 if (Objects.isNull(pointKey)) {

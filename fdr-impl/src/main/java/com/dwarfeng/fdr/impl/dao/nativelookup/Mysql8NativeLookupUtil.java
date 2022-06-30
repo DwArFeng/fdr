@@ -1,12 +1,12 @@
-package com.dwarfeng.fdr.impl.dao.nsql;
+package com.dwarfeng.fdr.impl.dao.nativelookup;
 
 /**
- * MySQL8本地SQL查询工具类。
+ * MySQL8 本地工具类。
  *
  * @author DwArFeng
- * @since 1.9.4
+ * @since 1.10.0
  */
-public final class Mysql8NsqlLookupUtil {
+public final class Mysql8NativeLookupUtil {
 
     public static void forceIndex(StringBuilder sqlBuilder, String indexName) {
         sqlBuilder.append("FORCE INDEX (");
@@ -14,7 +14,7 @@ public final class Mysql8NsqlLookupUtil {
         sqlBuilder.append(") ");
     }
 
-    private Mysql8NsqlLookupUtil() {
+    private Mysql8NativeLookupUtil() {
         throw new IllegalStateException("禁止外部实例化");
     }
 }

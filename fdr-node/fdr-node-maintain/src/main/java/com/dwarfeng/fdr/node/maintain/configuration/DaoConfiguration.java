@@ -9,10 +9,12 @@ import com.dwarfeng.subgrade.impl.dao.*;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
 import com.dwarfeng.subgrade.sdk.hibernate.modification.DefaultDeletionMod;
+import com.dwarfeng.subgrade.sdk.hibernate.nativelookup.DialectNativeLookup;
 import com.dwarfeng.subgrade.sdk.redis.formatter.LongIdStringKeyFormatter;
 import com.dwarfeng.subgrade.stack.bean.BeanTransformer;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +22,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.orm.hibernate5.HibernateTemplate;
+
+import java.util.List;
 
 @Configuration
 public class DaoConfiguration {
@@ -38,6 +42,8 @@ public class DaoConfiguration {
     @Autowired
     private PersistenceValuePresetCriteriaMaker persistenceValuePresetCriteriaMaker;
     @Autowired
+    private List<DialectNativeLookup<PersistenceValue>> persistenceValueDialectNativeLookups;
+    @Autowired
     private PointPresetCriteriaMaker pointPresetCriteriaMaker;
     @Autowired
     private TriggeredValuePresetCriteriaMaker triggeredValuePresetCriteriaMaker;
@@ -55,6 +61,11 @@ public class DaoConfiguration {
 
     @Value("${hibernate.jdbc.batch_size}")
     private int batchSize;
+
+    @Value("${hibernate.dialect}")
+    private String hibernateDialect;
+    @Value("${hibernate.accelerate.using_native_sql}")
+    private boolean accelerateEnabled;
 
     @Bean
     public BeanTransformer<FilteredValue, HibernateFilteredValue> filteredValueDozerBeanTransformer() {
@@ -142,12 +153,15 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernatePresetLookupDao<PersistenceValue, HibernatePersistenceValue> persistenceValueHibernatePresetLookupDao() {
-        return new HibernatePresetLookupDao<>(
+    public PresetLookupDao<PersistenceValue> persistenceValuePresetLookupDao() {
+        return HibernateDaoFactory.newPresetLookupDaoWithChosenDialect(
                 hibernateTemplate,
                 new DozerBeanTransformer<>(PersistenceValue.class, HibernatePersistenceValue.class, mapper),
                 HibernatePersistenceValue.class,
-                persistenceValuePresetCriteriaMaker
+                persistenceValuePresetCriteriaMaker,
+                persistenceValueDialectNativeLookups,
+                hibernateDialect,
+                true
         );
     }
 

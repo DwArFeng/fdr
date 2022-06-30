@@ -4,6 +4,7 @@ import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.service.PersistenceValueMaintainService;
 import com.dwarfeng.fdr.stack.service.PointMaintainService;
+import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import org.junit.After;
 import org.junit.Before;
@@ -83,6 +84,31 @@ public class PersistenceValueMaintainServiceImplTest {
     }
 
     @Test
+    public void testPresetLookup() throws ServiceException {
+        try {
+            parentPoint.setKey(pointMaintainService.insert(parentPoint));
+            for (PersistenceValue persistenceValue : persistenceValues) {
+                persistenceValue.setPointKey(parentPoint.getKey());
+                persistenceValue.setKey(persistenceValueMaintainService.insert(persistenceValue));
+            }
+
+            PagedData<PersistenceValue> lookup = persistenceValueMaintainService.lookup(
+                    PersistenceValueMaintainService.CHILD_FOR_POINT, new Object[]{parentPoint.getKey()}
+            );
+            assertEquals(persistenceValues.size(), lookup.getCount());
+            for (PersistenceValue persistenceValue : lookup.getData()) {
+                assertEquals(parentPoint.getKey(), persistenceValue.getPointKey());
+            }
+        } finally {
+            for (PersistenceValue persistenceValue : persistenceValues) {
+                persistenceValueMaintainService.deleteIfExists(persistenceValue.getKey());
+            }
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
+        }
+    }
+
+    @Test
+    @Deprecated
     public void testPrevious() throws ServiceException {
         try {
             parentPoint.setKey(pointMaintainService.insert(parentPoint));
@@ -106,6 +132,7 @@ public class PersistenceValueMaintainServiceImplTest {
     }
 
     @Test
+    @Deprecated
     public void testRear() throws ServiceException {
         try {
             parentPoint.setKey(pointMaintainService.insert(parentPoint));
