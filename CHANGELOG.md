@@ -4,6 +4,8 @@
 
 #### 功能构建
 
+- 将数据库的连接数量改为可配置项。
+
 - 使用 `subgrade` 的加速查询机制重写部分数据访问层实现。
   - com.dwarfeng.fdr.impl.dao.PersistenceValueDaoImpl。
   - com.dwarfeng.fdr.impl.dao.FilteredValueDaoImpl。
