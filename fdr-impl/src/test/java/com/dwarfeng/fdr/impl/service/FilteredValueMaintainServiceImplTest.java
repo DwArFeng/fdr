@@ -6,6 +6,7 @@ import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.service.FilterInfoMaintainService;
 import com.dwarfeng.fdr.stack.service.FilteredValueMaintainService;
 import com.dwarfeng.fdr.stack.service.PointMaintainService;
+import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import org.junit.After;
 import org.junit.Before;
@@ -39,19 +40,10 @@ public class FilteredValueMaintainServiceImplTest {
     @Before
     public void setUp() {
         parentPoint = new Point(
-                null,
-                "parent-point",
-                "test-point",
-                true,
-                true
+                null, "parent-point", "test-point", true, true
         );
         parentFilterInfo = new FilterInfo(
-                null,
-                parentPoint.getKey(),
-                true,
-                "parent-filter-info",
-                "this is a test",
-                "test"
+                null, parentPoint.getKey(), true, "parent-filter-info", "this is a test", "test"
         );
         filteredValues = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -105,6 +97,43 @@ public class FilteredValueMaintainServiceImplTest {
     }
 
     @Test
+    public void testPresetLookup() throws ServiceException {
+        try {
+            parentFilterInfo.setKey(filterInfoMaintainService.insert(parentFilterInfo));
+            parentFilterInfo.setPointKey(parentPoint.getKey());
+            parentPoint.setKey(pointMaintainService.insert(parentPoint));
+            for (FilteredValue filteredValue : filteredValues) {
+                filteredValue.setPointKey(parentPoint.getKey());
+                filteredValue.setFilterKey(parentFilterInfo.getKey());
+                filteredValue.setKey(filteredValueMaintainService.insert(filteredValue));
+            }
+
+            PagedData<FilteredValue> lookup = filteredValueMaintainService.lookup(
+                    FilteredValueMaintainService.CHILD_FOR_POINT, new Object[]{parentPoint.getKey()}
+            );
+            assertEquals(filteredValues.size(), lookup.getCount());
+            for (FilteredValue filteredValue : lookup.getData()) {
+                assertEquals(parentPoint.getKey(), filteredValue.getPointKey());
+            }
+
+            lookup = filteredValueMaintainService.lookup(
+                    FilteredValueMaintainService.CHILD_FOR_FILTER, new Object[]{parentFilterInfo.getKey()}
+            );
+            assertEquals(filteredValues.size(), lookup.getCount());
+            for (FilteredValue filteredValue : lookup.getData()) {
+                assertEquals(parentFilterInfo.getKey(), filteredValue.getFilterKey());
+            }
+        } finally {
+            for (FilteredValue filteredValue : filteredValues) {
+                filteredValueMaintainService.deleteIfExists(filteredValue.getKey());
+            }
+            filterInfoMaintainService.deleteIfExists(parentFilterInfo.getKey());
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
+        }
+    }
+
+    @Test
+    @Deprecated
     public void testPrevious() throws ServiceException {
         try {
             parentPoint.setKey(pointMaintainService.insert(parentPoint));
@@ -128,6 +157,7 @@ public class FilteredValueMaintainServiceImplTest {
     }
 
     @Test
+    @Deprecated
     public void testRear() throws ServiceException {
         try {
             parentPoint.setKey(pointMaintainService.insert(parentPoint));

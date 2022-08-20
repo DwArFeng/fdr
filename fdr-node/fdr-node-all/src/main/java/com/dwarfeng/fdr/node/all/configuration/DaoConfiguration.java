@@ -38,6 +38,8 @@ public class DaoConfiguration {
     @Autowired
     private FilteredValuePresetCriteriaMaker filteredValuePresetCriteriaMaker;
     @Autowired
+    private List<DialectNativeLookup<FilteredValue>> filteredValueDialectNativeLookups;
+    @Autowired
     private FilterInfoPresetCriteriaMaker filterInfoPresetCriteriaMaker;
     @Autowired
     private PersistenceValuePresetCriteriaMaker persistenceValuePresetCriteriaMaker;
@@ -47,6 +49,8 @@ public class DaoConfiguration {
     private PointPresetCriteriaMaker pointPresetCriteriaMaker;
     @Autowired
     private TriggeredValuePresetCriteriaMaker triggeredValuePresetCriteriaMaker;
+    @Autowired
+    private List<DialectNativeLookup<TriggeredValue>> triggeredValueDialectNativeLookups;
     @Autowired
     private TriggerInfoPresetCriteriaMaker triggerInfoPresetCriteriaMaker;
     @Autowired
@@ -64,7 +68,7 @@ public class DaoConfiguration {
 
     @Value("${hibernate.dialect}")
     private String hibernateDialect;
-    @Value("${hibernate.accelerate.using_native_sql}")
+    @Value("${hibernate.accelerate_enabled}")
     private boolean accelerateEnabled;
 
     @Bean
@@ -95,12 +99,15 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernatePresetLookupDao<FilteredValue, HibernateFilteredValue> filteredValueHibernatePresetLookupDao() {
-        return new HibernatePresetLookupDao<>(
+    public PresetLookupDao<FilteredValue> filteredValuePresetLookupDao() {
+        return HibernateDaoFactory.newPresetLookupDaoWithChosenDialect(
                 hibernateTemplate,
                 new DozerBeanTransformer<>(FilteredValue.class, HibernateFilteredValue.class, mapper),
                 HibernateFilteredValue.class,
-                filteredValuePresetCriteriaMaker
+                filteredValuePresetCriteriaMaker,
+                filteredValueDialectNativeLookups,
+                hibernateDialect,
+                accelerateEnabled
         );
     }
 
@@ -161,7 +168,7 @@ public class DaoConfiguration {
                 persistenceValuePresetCriteriaMaker,
                 persistenceValueDialectNativeLookups,
                 hibernateDialect,
-                true
+                accelerateEnabled
         );
     }
 
@@ -245,12 +252,15 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernatePresetLookupDao<TriggeredValue, HibernateTriggeredValue> triggeredValueHibernatePresetLookupDao() {
-        return new HibernatePresetLookupDao<>(
+    public PresetLookupDao<TriggeredValue> triggeredValuePresetLookupDao() {
+        return HibernateDaoFactory.newPresetLookupDaoWithChosenDialect(
                 hibernateTemplate,
                 new DozerBeanTransformer<>(TriggeredValue.class, HibernateTriggeredValue.class, mapper),
                 HibernateTriggeredValue.class,
-                triggeredValuePresetCriteriaMaker
+                triggeredValuePresetCriteriaMaker,
+                triggeredValueDialectNativeLookups,
+                hibernateDialect,
+                accelerateEnabled
         );
     }
 

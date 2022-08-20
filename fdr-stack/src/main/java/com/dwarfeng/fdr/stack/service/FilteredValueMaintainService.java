@@ -24,30 +24,50 @@ public interface FilteredValueMaintainService extends BatchCrudService<LongIdKey
     String CHILD_FOR_FILTER_SET = "child_for_filter_set";
     String CHILD_FOR_POINT_BETWEEN = "child_for_point_between";
     String CHILD_FOR_FILTER_BETWEEN = "child_for_filter_between";
+    /**
+     * @since 1.10.0
+     */
+    String CHILD_FOR_POINT_PREVIOUS = "child_for_point_previous";
+    /**
+     * @since 1.10.0
+     */
+    String CHILD_FOR_POINT_REAR = "child_for_point_rear";
 
     /**
      * 获取属于指定数据点下的距离指定日期之前最后的被过滤数据。
+     *
      * <p>
      * 获取的数据可以是 <code>null</code>。
+     *
+     * <p>
+     * 该方法已过时。请使用 {@link #CHILD_FOR_POINT_PREVIOUS} 预设查询代替。<br>
+     * 使用 {@link #lookupFirst(String, Object[])} 获得第一个元素。
      *
      * @param pointKey 指定的数据点。
      * @param date     指定的日期
      * @return 属于指定数据点下的距离指定日期之前最后的被过滤数据，可以是 null。
      * @throws ServiceException 服务异常。
      * @since 1.9.0
+     * @deprecated 使用预设查询 {@link #CHILD_FOR_POINT_PREVIOUS} 替代。
      */
     FilteredValue previous(LongIdKey pointKey, Date date) throws ServiceException;
 
     /**
      * 获取属于指定部件下的距离指定日期之后最早的统计历史。
+     *
      * <p>
      * 获取的数据可以是 <code>null</code>。
+     *
+     * <p>
+     * 该方法已过时。请使用 {@link #CHILD_FOR_POINT_REAR} 预设查询代替。<br>
+     * 使用 {@link #lookupFirst(String, Object[])} 获得第一个元素。
      *
      * @param pointKey 指定的数据点。
      * @param date     指定的日期
      * @return 属于指定数据点下的距离指定日期之后最早的被过滤数据，可以是 null。
      * @throws ServiceException 服务异常。
      * @since 1.9.4
+     * @deprecated 使用预设查询 {@link #CHILD_FOR_POINT_REAR} 替代。
      */
     FilteredValue rear(LongIdKey pointKey, Date date) throws ServiceException;
 }

@@ -6,6 +6,8 @@
 
 - 使用 `subgrade` 的加速查询机制重写部分数据访问层实现。
   - com.dwarfeng.fdr.impl.dao.PersistenceValueDaoImpl。
+  - com.dwarfeng.fdr.impl.dao.FilteredValueDaoImpl。
+  - com.dwarfeng.fdr.impl.dao.TriggeredValueDaoImpl。
 
 - 依赖升级。
   - 升级 `dutil` 依赖版本为 `beta-0.3.0.a`。

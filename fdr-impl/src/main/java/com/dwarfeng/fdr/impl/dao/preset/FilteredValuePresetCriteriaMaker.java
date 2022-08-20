@@ -39,6 +39,12 @@ public class FilteredValuePresetCriteriaMaker implements PresetCriteriaMaker {
             case FilteredValueMaintainService.CHILD_FOR_FILTER_BETWEEN:
                 childForFilterSetBetween(criteria, objs);
                 break;
+            case FilteredValueMaintainService.CHILD_FOR_POINT_PREVIOUS:
+                childForPointPrevious(criteria, objs);
+                break;
+            case FilteredValueMaintainService.CHILD_FOR_POINT_REAR:
+                childForPointRear(criteria, objs);
+                break;
             default:
                 throw new IllegalArgumentException("无法识别的预设: " + preset);
         }
@@ -130,6 +136,38 @@ public class FilteredValuePresetCriteriaMaker implements PresetCriteriaMaker {
             Date endDate = (Date) objs[2];
             criteria.add(Restrictions.ge("happenedDate", startDate));
             criteria.add(Restrictions.lt("happenedDate", endDate));
+            criteria.addOrder(Order.asc("happenedDate"));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));
+        }
+    }
+
+    private void childForPointPrevious(DetachedCriteria criteria, Object[] objs) {
+        try {
+            if (Objects.isNull(objs[0])) {
+                criteria.add(Restrictions.isNull("pointLongId"));
+            } else {
+                LongIdKey longIdKey = (LongIdKey) objs[0];
+                criteria.add(Restrictions.eqOrIsNull("pointLongId", longIdKey.getLongId()));
+            }
+            Date date = (Date) objs[1];
+            criteria.add(Restrictions.lt("happenedDate", date));
+            criteria.addOrder(Order.desc("happenedDate"));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));
+        }
+    }
+
+    private void childForPointRear(DetachedCriteria criteria, Object[] objs) {
+        try {
+            if (Objects.isNull(objs[0])) {
+                criteria.add(Restrictions.isNull("pointLongId"));
+            } else {
+                LongIdKey longIdKey = (LongIdKey) objs[0];
+                criteria.add(Restrictions.eqOrIsNull("pointLongId", longIdKey.getLongId()));
+            }
+            Date date = (Date) objs[1];
+            criteria.add(Restrictions.gt("happenedDate", date));
             criteria.addOrder(Order.asc("happenedDate"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));

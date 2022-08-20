@@ -6,6 +6,7 @@ import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.fdr.stack.service.PointMaintainService;
 import com.dwarfeng.fdr.stack.service.TriggerInfoMaintainService;
 import com.dwarfeng.fdr.stack.service.TriggeredValueMaintainService;
+import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import org.junit.After;
 import org.junit.Before;
@@ -39,19 +40,10 @@ public class TriggeredValueMaintainServiceImplTest {
     @Before
     public void setUp() {
         parentPoint = new Point(
-                null,
-                "parent-point",
-                "test-point",
-                true,
-                true
+                null, "parent-point", "test-point", true, true
         );
         parentTriggerInfo = new TriggerInfo(
-                null,
-                parentPoint.getKey(),
-                true,
-                "parent-trigger-info",
-                "this is a test",
-                "test"
+                null, parentPoint.getKey(), true, "parent-trigger-info", "this is a test", "test"
         );
         triggeredValues = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -105,6 +97,43 @@ public class TriggeredValueMaintainServiceImplTest {
     }
 
     @Test
+    public void testPresetLookup() throws ServiceException {
+        try {
+            parentTriggerInfo.setKey(triggerInfoMaintainService.insert(parentTriggerInfo));
+            parentTriggerInfo.setPointKey(parentPoint.getKey());
+            parentPoint.setKey(pointMaintainService.insert(parentPoint));
+            for (TriggeredValue triggeredValue : triggeredValues) {
+                triggeredValue.setPointKey(parentPoint.getKey());
+                triggeredValue.setTriggerKey(parentTriggerInfo.getKey());
+                triggeredValue.setKey(triggeredValueMaintainService.insert(triggeredValue));
+            }
+
+            PagedData<TriggeredValue> lookup = triggeredValueMaintainService.lookup(
+                    TriggeredValueMaintainService.CHILD_FOR_POINT, new Object[]{parentPoint.getKey()}
+            );
+            assertEquals(triggeredValues.size(), lookup.getCount());
+            for (TriggeredValue triggeredValue : lookup.getData()) {
+                assertEquals(parentPoint.getKey(), triggeredValue.getPointKey());
+            }
+
+            lookup = triggeredValueMaintainService.lookup(
+                    TriggeredValueMaintainService.CHILD_FOR_TRIGGER, new Object[]{parentTriggerInfo.getKey()}
+            );
+            assertEquals(triggeredValues.size(), lookup.getCount());
+            for (TriggeredValue triggeredValue : lookup.getData()) {
+                assertEquals(parentTriggerInfo.getKey(), triggeredValue.getTriggerKey());
+            }
+        } finally {
+            for (TriggeredValue triggeredValue : triggeredValues) {
+                triggeredValueMaintainService.deleteIfExists(triggeredValue.getKey());
+            }
+            triggerInfoMaintainService.deleteIfExists(parentTriggerInfo.getKey());
+            pointMaintainService.deleteIfExists(parentPoint.getKey());
+        }
+    }
+
+    @Test
+    @Deprecated
     public void testPrevious() throws ServiceException {
         try {
             parentPoint.setKey(pointMaintainService.insert(parentPoint));
@@ -128,6 +157,7 @@ public class TriggeredValueMaintainServiceImplTest {
     }
 
     @Test
+    @Deprecated
     public void testRear() throws ServiceException {
         try {
             parentPoint.setKey(pointMaintainService.insert(parentPoint));

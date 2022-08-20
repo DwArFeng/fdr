@@ -12,6 +12,8 @@ import java.util.Optional;
 @IdClass(HibernateLongIdKey.class)
 @Table(name = "tbl_filtered_value", indexes = {
         @Index(name = "idx_point_id", columnList = "point_id"),
+        @Index(name = "idx_happened_date", columnList = "happened_date ASC"),
+        @Index(name = "idx_happened_date_desc", columnList = "happened_date DESC"),
         @Index(name = "idx_point_id_happened_date", columnList = "point_id, happened_date ASC"),
         @Index(name = "idx_point_id_happened_date_desc", columnList = "point_id, happened_date DESC"),
         @Index(name = "idx_filter_id", columnList = "filter_id"),

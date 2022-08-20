@@ -21,7 +21,13 @@ public interface PersistenceValueMaintainService extends BatchCrudService<LongId
     String BETWEEN = "between";
     String CHILD_FOR_POINT = "child_for_point";
     String CHILD_FOR_POINT_BETWEEN = "child_for_point_between";
+    /**
+     * @since 1.10.0
+     */
     String CHILD_FOR_POINT_PREVIOUS = "child_for_point_previous";
+    /**
+     * @since 1.10.0
+     */
     String CHILD_FOR_POINT_REAR = "child_for_point_rear";
 
     /**
