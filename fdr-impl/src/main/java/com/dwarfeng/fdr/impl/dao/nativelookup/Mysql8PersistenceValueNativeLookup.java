@@ -29,6 +29,7 @@ public class Mysql8PersistenceValueNativeLookup extends AbstractDialectNativeLoo
             case PersistenceValueMaintainService.BETWEEN:
             case PersistenceValueMaintainService.CHILD_FOR_POINT:
             case PersistenceValueMaintainService.CHILD_FOR_POINT_BETWEEN:
+            case PersistenceValueMaintainService.CHILD_FOR_POINT_BETWEEN_RB_OPEN:
             case PersistenceValueMaintainService.CHILD_FOR_POINT_PREVIOUS:
             case PersistenceValueMaintainService.CHILD_FOR_POINT_REAR:
                 return true;
@@ -47,6 +48,8 @@ public class Mysql8PersistenceValueNativeLookup extends AbstractDialectNativeLoo
                 return childForPoint(connection, args);
             case PersistenceValueMaintainService.CHILD_FOR_POINT_BETWEEN:
                 return childForPointBetween(connection, args);
+            case PersistenceValueMaintainService.CHILD_FOR_POINT_BETWEEN_RB_OPEN:
+                return childForPointBetweenRbOpen(connection, args);
             case PersistenceValueMaintainService.CHILD_FOR_POINT_PREVIOUS:
                 return childForPointPrevious(connection, args);
             case PersistenceValueMaintainService.CHILD_FOR_POINT_REAR:
@@ -63,7 +66,7 @@ public class Mysql8PersistenceValueNativeLookup extends AbstractDialectNativeLoo
         StringBuilder sqlBuilder = new StringBuilder();
         selectColumn(sqlBuilder, "id", "point_id", "happened_date", "value");
         Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_happened_date");
-        sqlBuilder.append("WHERE tbl.happened_date>=? AND tbl.happened_date<? ");
+        sqlBuilder.append("WHERE tbl.happened_date>=? AND tbl.happened_date<=? ");
         sqlBuilder.append("ORDER BY tbl.happened_date ASC");
 
         PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
@@ -116,6 +119,46 @@ public class Mysql8PersistenceValueNativeLookup extends AbstractDialectNativeLoo
     }
 
     private List<PersistenceValue> childForPointBetween(Connection connection, Object[] args) throws SQLException {
+        LongIdKey pointKey = (LongIdKey) args[0];
+        Date startDate = (Date) args[1];
+        Date endDate = (Date) args[2];
+
+        StringBuilder sqlBuilder = new StringBuilder();
+        selectColumn(sqlBuilder, "id", "happened_date", "value");
+        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+        sqlBuilder.append("WHERE ");
+        if (Objects.isNull(pointKey)) {
+            sqlBuilder.append("tbl.point_id IS NULL AND ");
+        } else {
+            sqlBuilder.append("tbl.point_id=? AND ");
+        }
+        sqlBuilder.append("tbl.happened_date>=? AND tbl.happened_date<=? ");
+        sqlBuilder.append("ORDER BY tbl.happened_date ASC");
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
+        if (Objects.isNull(pointKey)) {
+            preparedStatement.setTimestamp(1, new Timestamp(startDate.getTime()));
+            preparedStatement.setTimestamp(2, new Timestamp(endDate.getTime()));
+        } else {
+            preparedStatement.setLong(1, pointKey.getLongId());
+            preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
+            preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
+        }
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        List<PersistenceValue> persistenceValues = new ArrayList<>();
+        while (resultSet.next()) {
+            persistenceValues.add(new PersistenceValue(
+                    new LongIdKey(resultSet.getLong(1)),
+                    pointKey,
+                    new Date(resultSet.getTimestamp(2).getTime()),
+                    resultSet.getString(3)
+            ));
+        }
+        return persistenceValues;
+    }
+
+    private List<PersistenceValue> childForPointBetweenRbOpen(Connection connection, Object[] args) throws SQLException {
         LongIdKey pointKey = (LongIdKey) args[0];
         Date startDate = (Date) args[1];
         Date endDate = (Date) args[2];

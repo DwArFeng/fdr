@@ -18,11 +18,26 @@ import java.util.Date;
 public interface TriggeredValueMaintainService extends BatchCrudService<LongIdKey, TriggeredValue>,
         EntireLookupService<TriggeredValue>, PresetLookupService<TriggeredValue> {
 
+    /**
+     * Between 包含左边界和右边界。
+     */
     String BETWEEN = "between";
     String CHILD_FOR_POINT = "child_for_point";
     String CHILD_FOR_TRIGGER = "child_for_trigger";
     String CHILD_FOR_TRIGGER_SET = "child_for_trigger_set";
+    /**
+     * Between 包含左边界和右边界。
+     */
     String CHILD_FOR_POINT_BETWEEN = "child_for_point_between";
+    /**
+     * Between 包含左边界，不包含右边界。
+     *
+     * @since 1.10.0
+     */
+    String CHILD_FOR_POINT_BETWEEN_RB_OPEN = "child_for_point_between_rb_open";
+    /**
+     * Between 包含左边界和右边界。
+     */
     String CHILD_FOR_TRIGGER_BETWEEN = "child_for_trigger_between";
     /**
      * @since 1.10.0

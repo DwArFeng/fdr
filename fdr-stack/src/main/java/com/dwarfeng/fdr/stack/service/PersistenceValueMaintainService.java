@@ -18,9 +18,21 @@ import java.util.Date;
 public interface PersistenceValueMaintainService extends BatchCrudService<LongIdKey, PersistenceValue>,
         EntireLookupService<PersistenceValue>, PresetLookupService<PersistenceValue> {
 
+    /**
+     * Between 包含左边界和右边界。
+     */
     String BETWEEN = "between";
     String CHILD_FOR_POINT = "child_for_point";
+    /**
+     * Between 包含左边界和右边界。
+     */
     String CHILD_FOR_POINT_BETWEEN = "child_for_point_between";
+    /**
+     * Between 包含左边界，不包含右边界。
+     *
+     * @since 1.10.0
+     */
+    String CHILD_FOR_POINT_BETWEEN_RB_OPEN = "child_for_point_between_rb_open";
     /**
      * @since 1.10.0
      */

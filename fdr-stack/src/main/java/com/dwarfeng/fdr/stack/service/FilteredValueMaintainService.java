@@ -18,11 +18,26 @@ import java.util.Date;
 public interface FilteredValueMaintainService extends BatchCrudService<LongIdKey, FilteredValue>,
         EntireLookupService<FilteredValue>, PresetLookupService<FilteredValue> {
 
+    /**
+     * Between 包含左边界和右边界。
+     */
     String BETWEEN = "between";
     String CHILD_FOR_POINT = "child_for_point";
     String CHILD_FOR_FILTER = "child_for_filter";
     String CHILD_FOR_FILTER_SET = "child_for_filter_set";
+    /**
+     * Between 包含左边界和右边界。
+     */
     String CHILD_FOR_POINT_BETWEEN = "child_for_point_between";
+    /**
+     * Between 包含左边界，不包含右边界。
+     *
+     * @since 1.10.0
+     */
+    String CHILD_FOR_POINT_BETWEEN_RB_OPEN = "child_for_point_between_rb_open";
+    /**
+     * Between 包含左边界和右边界。
+     */
     String CHILD_FOR_FILTER_BETWEEN = "child_for_filter_between";
     /**
      * @since 1.10.0

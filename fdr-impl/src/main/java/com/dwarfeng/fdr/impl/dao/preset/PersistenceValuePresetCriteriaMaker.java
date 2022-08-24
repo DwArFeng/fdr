@@ -28,6 +28,9 @@ public class PersistenceValuePresetCriteriaMaker implements PresetCriteriaMaker 
             case PersistenceValueMaintainService.CHILD_FOR_POINT_BETWEEN:
                 childForPointBetween(criteria, objs);
                 break;
+            case PersistenceValueMaintainService.CHILD_FOR_POINT_BETWEEN_RB_OPEN:
+                childForPointBetweenRbOpen(criteria, objs);
+                break;
             case PersistenceValueMaintainService.CHILD_FOR_POINT_PREVIOUS:
                 childForPointPrevious(criteria, objs);
                 break;
@@ -44,7 +47,7 @@ public class PersistenceValuePresetCriteriaMaker implements PresetCriteriaMaker 
             Date startDate = (Date) objs[0];
             Date endDate = (Date) objs[1];
             criteria.add(Restrictions.ge("happenedDate", startDate));
-            criteria.add(Restrictions.lt("happenedDate", endDate));
+            criteria.add(Restrictions.le("happenedDate", endDate));
             criteria.addOrder(Order.asc("happenedDate"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));
@@ -65,6 +68,24 @@ public class PersistenceValuePresetCriteriaMaker implements PresetCriteriaMaker 
     }
 
     private void childForPointBetween(DetachedCriteria criteria, Object[] objs) {
+        try {
+            if (Objects.isNull(objs[0])) {
+                criteria.add(Restrictions.isNull("pointLongId"));
+            } else {
+                LongIdKey longIdKey = (LongIdKey) objs[0];
+                criteria.add(Restrictions.eqOrIsNull("pointLongId", longIdKey.getLongId()));
+            }
+            Date startDate = (Date) objs[1];
+            Date endDate = (Date) objs[2];
+            criteria.add(Restrictions.ge("happenedDate", startDate));
+            criteria.add(Restrictions.le("happenedDate", endDate));
+            criteria.addOrder(Order.asc("happenedDate"));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));
+        }
+    }
+
+    private void childForPointBetweenRbOpen(DetachedCriteria criteria, Object[] objs) {
         try {
             if (Objects.isNull(objs[0])) {
                 criteria.add(Restrictions.isNull("pointLongId"));
