@@ -30,6 +30,10 @@ public class ServiceExceptionMapperConfiguration {
         destination.put(UnsupportedMapperTypeException.class, ServiceExceptionCodes.MAPPER_TYPE_UNSUPPORTED);
         destination.put(PersistenceDisabledException.class, ServiceExceptionCodes.PERSISTENCE_DISABLED);
         destination.put(RealtimeDisabledException.class, ServiceExceptionCodes.REALTIME_DISABLED);
+        destination.put(MappingLookupException.class, ServiceExceptionCodes.MAPPING_LOOKUP_FAILED);
+        destination.put(MappingLookupSessionCanceledException.class, ServiceExceptionCodes.MAPPING_LOOKUP_SESSION_CANCELED);
+        destination.put(MappingLookupSessionNotExistsException.class, ServiceExceptionCodes.MAPPING_LOOKUP_SESSION_NOT_EXISTS);
+        destination.put(MappingLookupTimeoutException.class, ServiceExceptionCodes.MAPPING_LOOKUP_TIMEOUT);
         return new MapServiceExceptionMapper(destination, com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes.UNDEFINE);
     }
 }

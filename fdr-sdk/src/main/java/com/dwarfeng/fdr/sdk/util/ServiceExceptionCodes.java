@@ -40,6 +40,14 @@ public final class ServiceExceptionCodes {
             new ServiceException.Code(offset(50), "persistence disabled");
     public static final ServiceException.Code REALTIME_DISABLED =
             new ServiceException.Code(offset(51), "realtime disabled");
+    public static final ServiceException.Code MAPPING_LOOKUP_FAILED =
+            new ServiceException.Code(offset(60), "mapping lookup failed");
+    public static final ServiceException.Code MAPPING_LOOKUP_SESSION_CANCELED =
+            new ServiceException.Code(offset(61), "mapping lookup session canceled");
+    public static final ServiceException.Code MAPPING_LOOKUP_SESSION_NOT_EXISTS =
+            new ServiceException.Code(offset(62), "mapping lookup session not exists");
+    public static final ServiceException.Code MAPPING_LOOKUP_TIMEOUT =
+            new ServiceException.Code(offset(63), "mapping lookup timeout");
 
     private static int offset(int i) {
         return EXCEPTION_CODE_OFFSET + i;
@@ -60,7 +68,28 @@ public final class ServiceExceptionCodes {
      * @param exceptionCodeOffset 指定的异常代号的偏移量。
      */
     public static void setExceptionCodeOffset(int exceptionCodeOffset) {
+        // 设置 EXCEPTION_CODE_OFFSET 的值。
         EXCEPTION_CODE_OFFSET = exceptionCodeOffset;
+
+        // 以新的 EXCEPTION_CODE_OFFSET 为基准，更新异常代码的值。
+        FILTER_FAILED.setCode(offset(0));
+        FILTER_MAKE_FAILED.setCode(offset(1));
+        FILTER_TYPE_UNSUPPORTED.setCode(offset(2));
+        TRIGGER_FAILED.setCode(offset(10));
+        TRIGGER_MAKE_FAILED.setCode(offset(11));
+        TRIGGER_TYPE_UNSUPPORTED.setCode(offset(12));
+        POINT_NOT_EXISTS.setCode(offset(20));
+        RECORD_HANDLER_STOPPED.setCode(offset(30));
+        CONSUME_HANDLER_STOPPED.setCode(offset(31));
+        MAPPER_FAILED.setCode(offset(40));
+        MAPPER_MAKE_FAILED.setCode(offset(41));
+        MAPPER_TYPE_UNSUPPORTED.setCode(offset(42));
+        PERSISTENCE_DISABLED.setCode(offset(50));
+        REALTIME_DISABLED.setCode(offset(51));
+        MAPPING_LOOKUP_FAILED.setCode(offset(60));
+        MAPPING_LOOKUP_SESSION_CANCELED.setCode(offset(61));
+        MAPPING_LOOKUP_SESSION_NOT_EXISTS.setCode(offset(62));
+        MAPPING_LOOKUP_TIMEOUT.setCode(offset(63));
     }
 
     private ServiceExceptionCodes() {

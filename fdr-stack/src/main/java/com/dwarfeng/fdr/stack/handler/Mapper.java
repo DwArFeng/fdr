@@ -2,7 +2,7 @@ package com.dwarfeng.fdr.stack.handler;
 
 import com.dwarfeng.dcti.stack.bean.dto.TimedValue;
 import com.dwarfeng.fdr.stack.exception.MapperException;
-import com.dwarfeng.subgrade.stack.bean.Bean;
+import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -31,12 +31,16 @@ public interface Mapper {
      * @author DwArFeng
      * @since 1.9.0
      */
-    class MapData implements Bean {
+    class MapData implements Dto {
 
-        private static final long serialVersionUID = -8708046460783444031L;
+        private static final long serialVersionUID = 5280142375890070814L;
 
         private List<TimedValue> timedValues;
         private TimedValue previous;
+        /**
+         * @since 1.10.0
+         */
+        private TimedValue rear;
         private Date startDate;
         private Date endDate;
         private Object[] args;
@@ -45,9 +49,12 @@ public interface Mapper {
         }
 
         public MapData(
-                List<TimedValue> timedValues, TimedValue previous, Date startDate, Date endDate, Object[] args) {
+                List<TimedValue> timedValues, TimedValue previous, TimedValue rear, Date startDate, Date endDate,
+                Object[] args
+        ) {
             this.timedValues = timedValues;
             this.previous = previous;
+            this.rear = rear;
             this.startDate = startDate;
             this.endDate = endDate;
             this.args = args;
@@ -67,6 +74,14 @@ public interface Mapper {
 
         public void setPrevious(TimedValue previous) {
             this.previous = previous;
+        }
+
+        public TimedValue getRear() {
+            return rear;
+        }
+
+        public void setRear(TimedValue rear) {
+            this.rear = rear;
         }
 
         public Date getStartDate() {
@@ -98,6 +113,7 @@ public interface Mapper {
             return "MapData{" +
                     "timedValues=" + timedValues +
                     ", previous=" + previous +
+                    ", rear=" + rear +
                     ", startDate=" + startDate +
                     ", endDate=" + endDate +
                     ", args=" + Arrays.toString(args) +

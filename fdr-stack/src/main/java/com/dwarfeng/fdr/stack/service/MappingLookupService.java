@@ -13,6 +13,8 @@ import java.util.List;
  *
  * @author DwArFeng
  * @since 1.5.0
+ * @deprecated 查询功能被分散到 {@link PersistenceValueMappingLookupService},
+ * {@link FilteredValueMappingLookupService}, {@link TriggeredValueMappingLookupService} 中。
  */
 public interface MappingLookupService extends Service {
 
@@ -28,8 +30,8 @@ public interface MappingLookupService extends Service {
      * @throws ServiceException 服务异常。
      */
     List<TimedValue> mappingPersistenceValue(
-            String mapperType, LongIdKey pointKey, Date startDate, Date endDate, Object[] mapperArgs)
-            throws ServiceException;
+            String mapperType, LongIdKey pointKey, Date startDate, Date endDate, Object[] mapperArgs
+    ) throws ServiceException;
 
     /**
      * 查询并映射指定数据点的持久化数据。
@@ -43,8 +45,8 @@ public interface MappingLookupService extends Service {
      * @throws ServiceException 服务异常。
      */
     List<TimedValue> mappingFilteredValue(
-            String mapperType, LongIdKey pointKey, Date startDate, Date endDate, Object[] mapperArgs)
-            throws ServiceException;
+            String mapperType, LongIdKey pointKey, Date startDate, Date endDate, Object[] mapperArgs
+    ) throws ServiceException;
 
     /**
      * 查询并映射指定数据点的持久化数据。
@@ -58,6 +60,6 @@ public interface MappingLookupService extends Service {
      * @throws ServiceException 服务异常。
      */
     List<TimedValue> mappingTriggeredValue(
-            String mapperType, LongIdKey pointKey, Date startDate, Date endDate, Object[] mapperArgs)
-            throws ServiceException;
+            String mapperType, LongIdKey pointKey, Date startDate, Date endDate, Object[] mapperArgs
+    ) throws ServiceException;
 }

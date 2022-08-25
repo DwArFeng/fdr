@@ -716,7 +716,7 @@ public class Mysql8TriggeredValueNativeLookup extends AbstractDialectNativeLooku
         Date endDate = (Date) args[1];
 
         StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_trigger_value AS tbl ");
+        sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_triggered_value AS tbl ");
         Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_happened_date");
         sqlBuilder.append("WHERE tbl.happened_date>=? AND tbl.happened_date<?");
 
@@ -733,7 +733,7 @@ public class Mysql8TriggeredValueNativeLookup extends AbstractDialectNativeLooku
         LongIdKey pointKey = (LongIdKey) args[0];
 
         StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_trigger_value AS tbl ");
+        sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_triggered_value AS tbl ");
         Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
         sqlBuilder.append("WHERE ");
         if (Objects.isNull(pointKey)) {
@@ -756,7 +756,7 @@ public class Mysql8TriggeredValueNativeLookup extends AbstractDialectNativeLooku
         LongIdKey triggerKey = (LongIdKey) args[0];
 
         StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_trigger_value AS tbl ");
+        sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_triggered_value AS tbl ");
         Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_trigger_id_happened_date");
         sqlBuilder.append("WHERE ");
         if (Objects.isNull(triggerKey)) {
@@ -781,7 +781,7 @@ public class Mysql8TriggeredValueNativeLookup extends AbstractDialectNativeLooku
         Date endDate = (Date) args[2];
 
         StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_trigger_value AS tbl ");
+        sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_triggered_value AS tbl ");
         Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
         sqlBuilder.append("WHERE ");
         if (Objects.isNull(pointKey)) {
@@ -812,7 +812,7 @@ public class Mysql8TriggeredValueNativeLookup extends AbstractDialectNativeLooku
         Date endDate = (Date) args[2];
 
         StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_trigger_value AS tbl ");
+        sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_triggered_value AS tbl ");
         Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_trigger_id_happened_date");
         sqlBuilder.append("WHERE ");
         if (Objects.isNull(triggerKey)) {
@@ -842,7 +842,7 @@ public class Mysql8TriggeredValueNativeLookup extends AbstractDialectNativeLooku
         Date date = (Date) args[1];
 
         StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_trigger_value AS tbl ");
+        sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_triggered_value AS tbl ");
         Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date_desc");
         sqlBuilder.append("WHERE ");
         if (Objects.isNull(pointKey)) {
@@ -870,7 +870,7 @@ public class Mysql8TriggeredValueNativeLookup extends AbstractDialectNativeLooku
         Date date = (Date) args[1];
 
         StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_trigger_value AS tbl ");
+        sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_triggered_value AS tbl ");
         Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
         sqlBuilder.append("WHERE ");
         if (Objects.isNull(pointKey)) {

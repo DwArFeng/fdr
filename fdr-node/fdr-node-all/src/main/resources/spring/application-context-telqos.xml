@@ -22,6 +22,9 @@
             <telqos:command-impl ref="recordCommand"/>
             <telqos:command-impl ref="recorderCommand"/>
             <telqos:command-impl ref="mapLocalCacheCommand"/>
+            <telqos:command-impl ref="persistenceValueMappingLookupCommand"/>
+            <telqos:command-impl ref="filteredValueMappingLookupCommand"/>
+            <telqos:command-impl ref="triggeredValueMappingLookupCommand"/>
         </telqos:command>
     </telqos:config>
 
