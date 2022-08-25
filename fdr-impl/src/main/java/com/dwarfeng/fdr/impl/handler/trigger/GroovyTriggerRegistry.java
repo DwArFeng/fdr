@@ -72,9 +72,8 @@ public class GroovyTriggerRegistry extends AbstractTriggerRegistry {
 
     @Override
     public Trigger makeTrigger(TriggerInfo triggerInfo) throws TriggerException {
-        try {
+        try (GroovyClassLoader classLoader = new GroovyClassLoader()) {
             // 通过Groovy脚本生成处理器。
-            GroovyClassLoader classLoader = new GroovyClassLoader();
             Class<?> aClass = classLoader.parseClass(triggerInfo.getContent());
             Processor processor = (Processor) aClass.newInstance();
             // 构建触发器对象。

@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 
-@Service
 @Deprecated
+@Service
 public class MappingLookupServiceImpl implements MappingLookupService {
 
     private final PersistenceValueMappingLookupHandler persistenceValueMappingLookupHandler;

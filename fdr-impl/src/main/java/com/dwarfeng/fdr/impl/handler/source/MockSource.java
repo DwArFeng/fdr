@@ -114,8 +114,6 @@ public class MockSource implements Source {
     @Configuration
     public static class MockSourceConfiguration {
 
-        private static final Logger LOGGER = LoggerFactory.getLogger(MockSourceConfiguration.class);
-
         @Value("${source.mock.buffer_size}")
         private int bufferSize;
 
@@ -175,8 +173,7 @@ public class MockSource implements Source {
                     return Collections.emptyList();
                 }
 
-                int processingElementSize = Math.min(size, buffer.size());
-                List<DataInfo> subList = buffer.subList(0, processingElementSize);
+                List<DataInfo> subList = buffer.subList(0, size);
                 List<DataInfo> elements2Return = new ArrayList<>(subList);
                 subList.clear();
 
@@ -194,10 +191,6 @@ public class MockSource implements Source {
             } finally {
                 lock.unlock();
             }
-        }
-
-        public int bufferSize() {
-            return bufferSize;
         }
 
         public void block() {

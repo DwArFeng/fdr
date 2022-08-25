@@ -74,7 +74,7 @@ public class MapLocalCacheCommand extends CliCommand {
             context.sendMessage("not exists!");
             return;
         }
-        context.sendMessage(String.format("mapper: %s", mapper.toString()));
+        context.sendMessage(String.format("mapper: %s", mapper));
     }
 
     private Pair<String, Integer> analyseCommand(CommandLine cmd) {

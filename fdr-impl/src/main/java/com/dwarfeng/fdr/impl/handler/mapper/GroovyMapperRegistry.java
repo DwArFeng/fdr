@@ -95,7 +95,7 @@ public class GroovyMapperRegistry extends AbstractMapperRegistry {
 
         @Override
         public List<TimedValue> map(MapData mapData) throws MapperException {
-            try {
+            try (GroovyClassLoader classLoader = new GroovyClassLoader()) {
                 // 构建 args。
                 Object[] mapperArgs = mapData.getArgs();
                 Object[] processorArgs;
@@ -106,7 +106,6 @@ public class GroovyMapperRegistry extends AbstractMapperRegistry {
                     System.arraycopy(mapperArgs, 1, processorArgs, 0, mapperArgs.length - 1);
                 }
                 // 通过Groovy脚本生成处理器。
-                GroovyClassLoader classLoader = new GroovyClassLoader();
                 Class<?> aClass = classLoader.parseClass((String) mapperArgs[0]);
                 Processor processor = (Processor) aClass.newInstance();
                 // 映射数据值。

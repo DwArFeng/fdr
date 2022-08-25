@@ -16,6 +16,9 @@ import java.util.List;
  * @deprecated 查询功能被分散到 {@link PersistenceValueMappingLookupService},
  * {@link FilteredValueMappingLookupService}, {@link TriggeredValueMappingLookupService} 中。
  */
+// 由于还要保留微服务调用功能，该接口还需要继续使用。
+@SuppressWarnings("DeprecatedIsStillUsed")
+@Deprecated
 public interface MappingLookupService extends Service {
 
     /**

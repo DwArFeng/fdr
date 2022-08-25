@@ -72,9 +72,8 @@ public class GroovyFilterRegistry extends AbstractFilterRegistry {
 
     @Override
     public Filter makeFilter(FilterInfo filterInfo) throws FilterException {
-        try {
+        try (GroovyClassLoader classLoader = new GroovyClassLoader()) {
             // 通过Groovy脚本生成处理器。
-            GroovyClassLoader classLoader = new GroovyClassLoader();
             Class<?> aClass = classLoader.parseClass(filterInfo.getContent());
             Processor processor = (Processor) aClass.newInstance();
             // 构建过滤器对象。

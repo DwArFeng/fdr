@@ -142,6 +142,7 @@ public class NativeKafkaPusher extends AbstractPusher {
         @Value("${pusher.native.kafka.transaction_prefix}")
         private String transactionPrefix;
 
+        @SuppressWarnings("DuplicatedCode")
         @Bean("nativeKafkaPusher.producerProperties")
         public Map<String, Object> producerProperties() {
             LOGGER.info("配置Kafka生产者属性...");
@@ -156,6 +157,7 @@ public class NativeKafkaPusher extends AbstractPusher {
             return props;
         }
 
+        @SuppressWarnings("DuplicatedCode")
         @Bean("nativeKafkaPusher.producerFactory")
         public ProducerFactory<String, String> producerFactory() {
             LOGGER.info("配置Kafka生产者工厂...");

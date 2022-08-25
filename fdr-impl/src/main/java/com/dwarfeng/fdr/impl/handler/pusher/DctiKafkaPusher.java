@@ -8,6 +8,7 @@ import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
+import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
@@ -148,6 +149,7 @@ public class DctiKafkaPusher extends AbstractPusher {
         @Value("${pusher.dcti.kafka.transaction_prefix}")
         private String transactionPrefix;
 
+        @SuppressWarnings("DuplicatedCode")
         @Bean("dctiKafkaPusher.producerProperties")
         public Map<String, Object> producerProperties() {
             LOGGER.info("配置Kafka生产者属性...");
@@ -162,6 +164,7 @@ public class DctiKafkaPusher extends AbstractPusher {
             return props;
         }
 
+        @SuppressWarnings("DuplicatedCode")
         @Bean("dctiKafkaPusher.producerFactory")
         public ProducerFactory<String, String> producerFactory() {
             LOGGER.info("配置Kafka生产者工厂...");
@@ -192,13 +195,17 @@ public class DctiKafkaPusher extends AbstractPusher {
         }
     }
 
-    private static class MessagedValue {
+    private static class MessagedValue implements Dto {
+
+        private static final long serialVersionUID = -8117329938652795344L;
 
         @JSONField(name = "value", ordinal = 1)
         private String value;
         @JSONField(name = "massage", ordinal = 2)
         private String message;
 
+        // 该类需要符合 Bean 规范，必须要指定无参数构造函数。
+        @SuppressWarnings("unused")
         public MessagedValue() {
         }
 

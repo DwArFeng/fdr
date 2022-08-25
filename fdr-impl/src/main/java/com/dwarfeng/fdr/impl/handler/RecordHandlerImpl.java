@@ -149,7 +149,7 @@ public class RecordHandlerImpl implements RecordHandler {
             try {
                 consumer.consume(dataInfo2Consume);
             } catch (Exception e) {
-                LOGGER.warn("消费元素时发生异常, 抛弃 DataInfo: " + dataInfo2Consume.toString(), e);
+                LOGGER.warn("消费元素时发生异常, 抛弃 DataInfo: " + dataInfo2Consume, e);
             }
         }
         scheduledFuture.cancel(true);
@@ -513,7 +513,7 @@ public class RecordHandlerImpl implements RecordHandler {
                     consumer.consume(dataInfo);
                 } catch (Exception e) {
                     if (Objects.nonNull(dataInfo)) {
-                        LOGGER.warn("记录数据信息时发生异常, 抛弃 DataInfo: " + dataInfo.toString(), e);
+                        LOGGER.warn("记录数据信息时发生异常, 抛弃 DataInfo: " + dataInfo, e);
                     }
                 }
             }
