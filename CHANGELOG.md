@@ -20,6 +20,8 @@
   - com.dwarfeng.fdr.impl.dao.nativelookup.Mysql8PersistenceValueNativeLookup。
   - com.dwarfeng.fdr.impl.dao.nativelookup.Mysql8TriggeredValueNativeLookup。
 
+- 修正映射查询指令错误的显示格式。
+
 #### 功能移除
 
 - (无)

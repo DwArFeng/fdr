@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class FilteredValueMappingLookupCommand extends CliCommand {
@@ -78,35 +77,9 @@ public class FilteredValueMappingLookupCommand extends CliCommand {
         }
     }
 
-    @SuppressWarnings("DuplicatedCode")
     private void handleList(Context context) throws Exception {
         List<MappingLookupSessionInfo> sessionInfos = handler.getSessionInfos();
-        if (sessionInfos.isEmpty()) {
-            context.sendMessage("没有数据!");
-        } else {
-            int index = 0;
-            int maxMapperTypeLength = CommandUtil.maxStringLength(
-                    sessionInfos.stream().map(MappingLookupSessionInfo::getMapperType).collect(Collectors.toList()), 3
-            );
-            context.sendMessage(String.format(
-                    "%1$-6s %2$-23s %3$-" + maxMapperTypeLength + "s %4$-22s %5$-22s %6$-22s %7$-7s %8$-22s %9$-7s " +
-                            "%10$-22s",
-                    "key", "mt", "pkey", "start date", "end date", "created date", "cf", "canceled date", "ff", "" +
-                            "finished date"
-            ));
-            for (MappingLookupSessionInfo sessionInfo : sessionInfos) {
-                context.sendMessage(String.format(
-                        "%1$-6d %2$-23d %3$-" + maxMapperTypeLength + "s %4$-22s %5$-22s %6$-22s %7$-7b %8$-22s " +
-                                "%9$-7b %10$-22s",
-                        ++index, sessionInfo.getKey().getLongId(), sessionInfo.getMapperType(),
-                        CommandUtil.formatDate(sessionInfo.getStartDate()),
-                        CommandUtil.formatDate(sessionInfo.getEndDate()),
-                        CommandUtil.formatDate(sessionInfo.getCreatedDate()),
-                        sessionInfo.isCanceledFlag(), CommandUtil.formatDate(sessionInfo.getCanceledDate()),
-                        sessionInfo.isFinishedFlag(), CommandUtil.formatDate(sessionInfo.getFinishedDate())
-                ));
-            }
-        }
+        MappingCommandUtil.printSessionInfos(context, sessionInfos);
     }
 
     private void handleCleanup(Context context) throws Exception {
