@@ -26,7 +26,7 @@ class MappingLookupSession {
     public static MappingLookupSession of(LongIdKey sessionKey, MappingLookupInfo info) {
         return new MappingLookupSession(
                 sessionKey, info.getMapperType(), info.getPointKey(), info.getStartDate(), info.getEndDate(),
-                info.getMapperArgs(), new Date(), false, null, false, null, null, null
+                info.getMapperArgs(), new Date(), false, null, false, null, 0, info.getStartDate(), null, null
         );
     }
 
@@ -42,6 +42,8 @@ class MappingLookupSession {
     private Date canceledDate;
     private boolean finishedFlag;
     private Date finishedDate;
+    private int fetchedSize;
+    private Date currentPeriodStartDate;
     private List<TimedValue> result;
     private HandlerException exception;
 
@@ -51,7 +53,7 @@ class MappingLookupSession {
     private MappingLookupSession(
             LongIdKey key, String mapperType, LongIdKey pointKey, Date startDate, Date endDate,
             Object[] mapperArgs, Date createdDate, boolean canceledFlag, Date canceledDate, boolean finishedFlag,
-            Date finishedDate, List<TimedValue> result, HandlerException exception
+            Date finishedDate, int fetchedSize, Date currentPeriodStartDate, List<TimedValue> result, HandlerException exception
     ) {
         this.key = key;
         this.mapperType = mapperType;
@@ -64,6 +66,8 @@ class MappingLookupSession {
         this.canceledDate = canceledDate;
         this.finishedFlag = finishedFlag;
         this.finishedDate = finishedDate;
+        this.fetchedSize = fetchedSize;
+        this.currentPeriodStartDate = currentPeriodStartDate;
         this.result = result;
         this.exception = exception;
     }
@@ -106,8 +110,8 @@ class MappingLookupSession {
         try {
             return new MappingLookupSessionInfo(
                     key, mapperType, pointKey, startDate, endDate, mapperArgs, createdDate, canceledFlag, canceledDate,
-                    finishedFlag, finishedDate
-            );
+                    finishedFlag, finishedDate,
+                    fetchedSize, currentPeriodStartDate);
         } finally {
             lock.unlock();
         }
@@ -205,6 +209,24 @@ class MappingLookupSession {
             finishedFlag = true;
             finishedDate = new Date();
             condition.signalAll();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void setFetchedSize(int fetchedSize) {
+        lock.lock();
+        try {
+            this.fetchedSize = fetchedSize;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void setCurrentPeriodStartDate(Date currentPeriodStartDate) {
+        lock.lock();
+        try {
+            this.currentPeriodStartDate = currentPeriodStartDate;
         } finally {
             lock.unlock();
         }

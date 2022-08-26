@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class MappingLookupSessionInfo implements Dto {
 
-    private static final long serialVersionUID = -8531280805925660709L;
+    private static final long serialVersionUID = -1382291506456803669L;
 
     private LongIdKey key;
     private String mapperType;
@@ -27,13 +27,16 @@ public class MappingLookupSessionInfo implements Dto {
     private Date canceledDate;
     private boolean finishedFlag;
     private Date finishedDate;
+    private int fetchedSize;
+    private Date currentPeriodStartDate;
 
     public MappingLookupSessionInfo() {
     }
 
     public MappingLookupSessionInfo(
             LongIdKey key, String mapperType, LongIdKey pointKey, Date startDate, Date endDate, Object[] mapperArgs,
-            Date createdDate, boolean canceledFlag, Date canceledDate, boolean finishedFlag, Date finishedDate
+            Date createdDate, boolean canceledFlag, Date canceledDate, boolean finishedFlag, Date finishedDate,
+            int fetchedSize, Date currentPeriodStartDate
     ) {
         this.key = key;
         this.mapperType = mapperType;
@@ -46,6 +49,8 @@ public class MappingLookupSessionInfo implements Dto {
         this.canceledDate = canceledDate;
         this.finishedFlag = finishedFlag;
         this.finishedDate = finishedDate;
+        this.fetchedSize = fetchedSize;
+        this.currentPeriodStartDate = currentPeriodStartDate;
     }
 
     public LongIdKey getKey() {
@@ -136,6 +141,22 @@ public class MappingLookupSessionInfo implements Dto {
         this.finishedDate = finishedDate;
     }
 
+    public int getFetchedSize() {
+        return fetchedSize;
+    }
+
+    public void setFetchedSize(int fetchedSize) {
+        this.fetchedSize = fetchedSize;
+    }
+
+    public Date getCurrentPeriodStartDate() {
+        return currentPeriodStartDate;
+    }
+
+    public void setCurrentPeriodStartDate(Date currentPeriodStartDate) {
+        this.currentPeriodStartDate = currentPeriodStartDate;
+    }
+
     @Override
     public String toString() {
         return "MappingLookupSessionInfo{" +
@@ -150,6 +171,8 @@ public class MappingLookupSessionInfo implements Dto {
                 ", canceledDate=" + canceledDate +
                 ", finishedFlag=" + finishedFlag +
                 ", finishedDate=" + finishedDate +
+                ", fetchedSize=" + fetchedSize +
+                ", currentPeriodStartDate=" + currentPeriodStartDate +
                 '}';
     }
 }

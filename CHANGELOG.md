@@ -4,7 +4,7 @@
 
 #### 功能构建
 
-- (无)
+- 优化 MappingLookupSessionInfo 实体中的字段。
 
 #### Bug修复
 
@@ -21,6 +21,11 @@
   - com.dwarfeng.fdr.impl.dao.nativelookup.Mysql8TriggeredValueNativeLookup。
 
 - 修正映射查询指令错误的显示格式。
+
+- 修正发现的映射查询存在的错误。
+  - com.dwarfeng.fdr.impl.handler.FilteredValueMappingLookupHandlerImpl。
+  - com.dwarfeng.fdr.impl.handler.PersistenceValueMappingLookupHandlerImpl。
+  - com.dwarfeng.fdr.impl.handler.TriggeredValueMappingLookupHandlerImpl。
 
 #### 功能移除
 

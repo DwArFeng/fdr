@@ -271,20 +271,21 @@ public class TriggeredValueMappingLookupHandlerImpl implements TriggeredValueMap
             try {
                 List<TimedValue> timedValues = new ArrayList<>();
                 List<TriggeredValue> singleLookupResult;
-                int anchorPage = 0;
                 Date anchorStartDate;
                 Date anchorEndDate = startDate;
                 boolean notLastPeriodFlag;
+                int fetchedSize = 0;
                 do {
                     anchorStartDate = anchorEndDate;
-                    long maxPeriodGripTime = startDate.getTime() + maxLookupPeriodSpan;
+                    long maxPeriodGripTime = anchorStartDate.getTime() + maxLookupPeriodSpan;
                     long endTime = endDate.getTime();
                     notLastPeriodFlag = maxPeriodGripTime < endTime;
                     anchorEndDate = notLastPeriodFlag ? new Date(maxPeriodGripTime) : endDate;
+                    session.setCurrentPeriodStartDate(anchorStartDate);
+                    int anchorPage = 0;
                     do {
                         // 判断用户是否取消了本次会话。
                         if (session.isCanceledFlag()) {
-                            session.finish();
                             return;
                         }
                         if (notLastPeriodFlag) {
@@ -300,6 +301,8 @@ public class TriggeredValueMappingLookupHandlerImpl implements TriggeredValueMap
                                     new PagingInfo(anchorPage, maxLookupPageSize)
                             );
                         }
+                        fetchedSize += singleLookupResult.size();
+                        session.setFetchedSize(fetchedSize);
                         timedValues.addAll(singleLookupResult.stream().map(
                                 value -> new TimedValue(value.getValue(), value.getHappenedDate())
                         ).collect(Collectors.toList()));
@@ -309,21 +312,23 @@ public class TriggeredValueMappingLookupHandlerImpl implements TriggeredValueMap
 
                 // 判断用户是否取消了本次会话。
                 if (session.isCanceledFlag()) {
-                    session.finish();
                     return;
                 }
                 TriggeredValue rawPrevious = maintainService.lookupFirst(
                         TriggeredValueMaintainService.CHILD_FOR_POINT_PREVIOUS, new Object[]{pointKey, startDate}
                 );
-                TimedValue previous = new TimedValue(rawPrevious.getValue(), rawPrevious.getHappenedDate());
+                TimedValue previous = Optional.ofNullable(rawPrevious).map(
+                        raw -> new TimedValue(raw.getValue(), raw.getHappenedDate())
+                ).orElse(null);
                 TriggeredValue rawRear = maintainService.lookupFirst(
                         TriggeredValueMaintainService.CHILD_FOR_POINT_REAR, new Object[]{pointKey, endDate}
                 );
-                TimedValue rear = new TimedValue(rawRear.getValue(), rawRear.getHappenedDate());
+                TimedValue rear = Optional.ofNullable(rawRear).map(
+                        raw -> new TimedValue(raw.getValue(), raw.getHappenedDate())
+                ).orElse(null);
 
                 // 判断用户是否取消了本次会话。
                 if (session.isCanceledFlag()) {
-                    session.finish();
                     return;
                 }
                 Mapper mapper = checkAndGetMapper(mapperType);
