@@ -8,7 +8,7 @@
 
 #### Bug修复
 
-- (无)
+- 修正 application-context-aop.xml 配置文件中存在的错误。
 
 #### 功能移除
 
