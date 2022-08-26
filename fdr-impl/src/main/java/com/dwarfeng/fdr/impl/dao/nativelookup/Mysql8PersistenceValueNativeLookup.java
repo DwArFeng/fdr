@@ -283,6 +283,8 @@ public class Mysql8PersistenceValueNativeLookup extends AbstractDialectNativeLoo
                 return childForPoint(connection, args, pagingInfo);
             case PersistenceValueMaintainService.CHILD_FOR_POINT_BETWEEN:
                 return childForPointBetween(connection, args, pagingInfo);
+            case PersistenceValueMaintainService.CHILD_FOR_POINT_BETWEEN_RB_OPEN:
+                return childForPointBetweenRbOpen(connection, args, pagingInfo);
             case PersistenceValueMaintainService.CHILD_FOR_POINT_PREVIOUS:
                 return childForPointPrevious(connection, args, pagingInfo);
             case PersistenceValueMaintainService.CHILD_FOR_POINT_REAR:
@@ -300,7 +302,7 @@ public class Mysql8PersistenceValueNativeLookup extends AbstractDialectNativeLoo
         StringBuilder sqlBuilder = new StringBuilder();
         selectColumn(sqlBuilder, "id", "point_id", "happened_date", "value");
         Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_happened_date");
-        sqlBuilder.append("WHERE tbl.happened_date>=? AND tbl.happened_date<? ");
+        sqlBuilder.append("WHERE tbl.happened_date>=? AND tbl.happened_date<=? ");
         sqlBuilder.append("ORDER BY tbl.happened_date ASC ");
         sqlBuilder.append("LIMIT ?, ?");
 
@@ -363,6 +365,52 @@ public class Mysql8PersistenceValueNativeLookup extends AbstractDialectNativeLoo
     }
 
     private List<PersistenceValue> childForPointBetween(Connection connection, Object[] args, PagingInfo pagingInfo)
+            throws SQLException {
+        LongIdKey pointKey = (LongIdKey) args[0];
+        Date startDate = (Date) args[1];
+        Date endDate = (Date) args[2];
+
+        StringBuilder sqlBuilder = new StringBuilder();
+        selectColumn(sqlBuilder, "id", "happened_date", "value");
+        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+        sqlBuilder.append("WHERE ");
+        if (Objects.isNull(pointKey)) {
+            sqlBuilder.append("tbl.point_id IS NULL AND ");
+        } else {
+            sqlBuilder.append("tbl.point_id=? AND ");
+        }
+        sqlBuilder.append("tbl.happened_date>=? AND tbl.happened_date<=? ");
+        sqlBuilder.append("ORDER BY tbl.happened_date ASC ");
+        sqlBuilder.append("LIMIT ?, ?");
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
+        if (Objects.isNull(pointKey)) {
+            preparedStatement.setTimestamp(1, new Timestamp(startDate.getTime()));
+            preparedStatement.setTimestamp(2, new Timestamp(endDate.getTime()));
+            preparedStatement.setInt(3, pagingInfo.getRows() * pagingInfo.getPage());
+            preparedStatement.setInt(4, pagingInfo.getRows());
+        } else {
+            preparedStatement.setLong(1, pointKey.getLongId());
+            preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
+            preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
+            preparedStatement.setInt(4, pagingInfo.getRows() * pagingInfo.getPage());
+            preparedStatement.setInt(5, pagingInfo.getRows());
+        }
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        List<PersistenceValue> persistenceValues = new ArrayList<>();
+        while (resultSet.next()) {
+            persistenceValues.add(new PersistenceValue(
+                    new LongIdKey(resultSet.getLong(1)),
+                    pointKey,
+                    new Date(resultSet.getTimestamp(2).getTime()),
+                    resultSet.getString(3)
+            ));
+        }
+        return persistenceValues;
+    }
+
+    private List<PersistenceValue> childForPointBetweenRbOpen(Connection connection, Object[] args, PagingInfo pagingInfo)
             throws SQLException {
         LongIdKey pointKey = (LongIdKey) args[0];
         Date startDate = (Date) args[1];
@@ -517,6 +565,8 @@ public class Mysql8PersistenceValueNativeLookup extends AbstractDialectNativeLoo
                 return childForPointCount(connection, args);
             case PersistenceValueMaintainService.CHILD_FOR_POINT_BETWEEN:
                 return childForPointBetweenCount(connection, args);
+            case PersistenceValueMaintainService.CHILD_FOR_POINT_BETWEEN_RB_OPEN:
+                return childForPointBetweenRbOpenCount(connection, args);
             case PersistenceValueMaintainService.CHILD_FOR_POINT_PREVIOUS:
                 return childForPointPreviousCount(connection, args);
             case PersistenceValueMaintainService.CHILD_FOR_POINT_REAR:
@@ -533,7 +583,7 @@ public class Mysql8PersistenceValueNativeLookup extends AbstractDialectNativeLoo
         StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_persistence_value AS tbl ");
         Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_happened_date");
-        sqlBuilder.append("WHERE tbl.happened_date>=? AND tbl.happened_date<?");
+        sqlBuilder.append("WHERE tbl.happened_date>=? AND tbl.happened_date<=?");
 
         PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
         preparedStatement.setTimestamp(1, new Timestamp(startDate.getTime()));
@@ -568,6 +618,37 @@ public class Mysql8PersistenceValueNativeLookup extends AbstractDialectNativeLoo
     }
 
     private int childForPointBetweenCount(Connection connection, Object[] args) throws SQLException {
+        LongIdKey pointKey = (LongIdKey) args[0];
+        Date startDate = (Date) args[1];
+        Date endDate = (Date) args[2];
+
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_persistence_value AS tbl ");
+        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+        sqlBuilder.append("WHERE ");
+        if (Objects.isNull(pointKey)) {
+            sqlBuilder.append("tbl.point_id IS NULL AND ");
+        } else {
+            sqlBuilder.append("tbl.point_id=? AND ");
+        }
+        sqlBuilder.append("tbl.happened_date>=? AND tbl.happened_date<=? ");
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
+        if (Objects.isNull(pointKey)) {
+            preparedStatement.setTimestamp(1, new Timestamp(startDate.getTime()));
+            preparedStatement.setTimestamp(2, new Timestamp(endDate.getTime()));
+        } else {
+            preparedStatement.setLong(1, pointKey.getLongId());
+            preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
+            preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
+        }
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return Long.valueOf(resultSet.getLong(1)).intValue();
+    }
+
+    private int childForPointBetweenRbOpenCount(Connection connection, Object[] args) throws SQLException {
         LongIdKey pointKey = (LongIdKey) args[0];
         Date startDate = (Date) args[1];
         Date endDate = (Date) args[2];

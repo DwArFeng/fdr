@@ -15,6 +15,11 @@
   - com.dwarfeng.fdr.impl.handler.PersistenceValueMappingLookupHandlerImpl。
   - com.dwarfeng.fdr.impl.handler.TriggeredValueMappingLookupHandlerImpl。
 
+- 修正 Mysql8 本地查询中的错误。
+  - com.dwarfeng.fdr.impl.dao.nativelookup.Mysql8FilteredValueNativeLookup。
+  - com.dwarfeng.fdr.impl.dao.nativelookup.Mysql8PersistenceValueNativeLookup。
+  - com.dwarfeng.fdr.impl.dao.nativelookup.Mysql8TriggeredValueNativeLookup。
+
 #### 功能移除
 
 - (无)

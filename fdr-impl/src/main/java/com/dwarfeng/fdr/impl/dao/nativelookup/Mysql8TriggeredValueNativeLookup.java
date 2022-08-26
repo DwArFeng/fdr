@@ -377,6 +377,8 @@ public class Mysql8TriggeredValueNativeLookup extends AbstractDialectNativeLooku
                 return childForTrigger(connection, args, pagingInfo);
             case TriggeredValueMaintainService.CHILD_FOR_POINT_BETWEEN:
                 return childForPointBetween(connection, args, pagingInfo);
+            case TriggeredValueMaintainService.CHILD_FOR_POINT_BETWEEN_RB_OPEN:
+                return childForPointBetweenRbOpen(connection, args, pagingInfo);
             case TriggeredValueMaintainService.CHILD_FOR_TRIGGER_BETWEEN:
                 return childForTriggerBetween(connection, args, pagingInfo);
             case TriggeredValueMaintainService.CHILD_FOR_POINT_PREVIOUS:
@@ -396,7 +398,7 @@ public class Mysql8TriggeredValueNativeLookup extends AbstractDialectNativeLooku
         StringBuilder sqlBuilder = new StringBuilder();
         selectColumn(sqlBuilder, "id", "point_id", "trigger_id", "happened_date", "value", "message");
         Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_happened_date");
-        sqlBuilder.append("WHERE tbl.happened_date>=? AND tbl.happened_date<? ");
+        sqlBuilder.append("WHERE tbl.happened_date>=? AND tbl.happened_date<=? ");
         sqlBuilder.append("ORDER BY tbl.happened_date ASC ");
         sqlBuilder.append("LIMIT ?, ?");
 
@@ -518,6 +520,54 @@ public class Mysql8TriggeredValueNativeLookup extends AbstractDialectNativeLooku
         } else {
             sqlBuilder.append("tbl.point_id=? AND ");
         }
+        sqlBuilder.append("tbl.happened_date>=? AND tbl.happened_date<=? ");
+        sqlBuilder.append("ORDER BY tbl.happened_date ASC ");
+        sqlBuilder.append("LIMIT ?, ?");
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
+        if (Objects.isNull(pointKey)) {
+            preparedStatement.setTimestamp(1, new Timestamp(startDate.getTime()));
+            preparedStatement.setTimestamp(2, new Timestamp(endDate.getTime()));
+            preparedStatement.setInt(3, pagingInfo.getRows() * pagingInfo.getPage());
+            preparedStatement.setInt(4, pagingInfo.getRows());
+        } else {
+            preparedStatement.setLong(1, pointKey.getLongId());
+            preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
+            preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
+            preparedStatement.setInt(4, pagingInfo.getRows() * pagingInfo.getPage());
+            preparedStatement.setInt(5, pagingInfo.getRows());
+        }
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        List<TriggeredValue> triggeredValues = new ArrayList<>();
+        while (resultSet.next()) {
+            triggeredValues.add(new TriggeredValue(
+                    new LongIdKey(resultSet.getLong(1)),
+                    pointKey,
+                    new LongIdKey(resultSet.getLong(2)),
+                    new Date(resultSet.getTimestamp(3).getTime()),
+                    resultSet.getString(4),
+                    resultSet.getString(5)
+            ));
+        }
+        return triggeredValues;
+    }
+
+    private List<TriggeredValue> childForPointBetweenRbOpen(Connection connection, Object[] args, PagingInfo pagingInfo)
+            throws SQLException {
+        LongIdKey pointKey = (LongIdKey) args[0];
+        Date startDate = (Date) args[1];
+        Date endDate = (Date) args[2];
+
+        StringBuilder sqlBuilder = new StringBuilder();
+        selectColumn(sqlBuilder, "id", "trigger_id", "happened_date", "value", "message");
+        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+        sqlBuilder.append("WHERE ");
+        if (Objects.isNull(pointKey)) {
+            sqlBuilder.append("tbl.point_id IS NULL AND ");
+        } else {
+            sqlBuilder.append("tbl.point_id=? AND ");
+        }
         sqlBuilder.append("tbl.happened_date>=? AND tbl.happened_date<? ");
         sqlBuilder.append("ORDER BY tbl.happened_date ASC ");
         sqlBuilder.append("LIMIT ?, ?");
@@ -566,7 +616,7 @@ public class Mysql8TriggeredValueNativeLookup extends AbstractDialectNativeLooku
         } else {
             sqlBuilder.append("tbl.trigger_id=? AND ");
         }
-        sqlBuilder.append("tbl.happened_date>=? AND tbl.happened_date<? ");
+        sqlBuilder.append("tbl.happened_date>=? AND tbl.happened_date<=? ");
         sqlBuilder.append("ORDER BY tbl.happened_date ASC ");
         sqlBuilder.append("LIMIT ?, ?");
 
@@ -700,6 +750,8 @@ public class Mysql8TriggeredValueNativeLookup extends AbstractDialectNativeLooku
                 return childForTriggerCount(connection, args);
             case TriggeredValueMaintainService.CHILD_FOR_POINT_BETWEEN:
                 return childForPointBetweenCount(connection, args);
+            case TriggeredValueMaintainService.CHILD_FOR_POINT_BETWEEN_RB_OPEN:
+                return childForPointBetweenRbOpenCount(connection, args);
             case TriggeredValueMaintainService.CHILD_FOR_TRIGGER_BETWEEN:
                 return childForTriggerBetweenCount(connection, args);
             case TriggeredValueMaintainService.CHILD_FOR_POINT_PREVIOUS:
@@ -718,7 +770,7 @@ public class Mysql8TriggeredValueNativeLookup extends AbstractDialectNativeLooku
         StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_triggered_value AS tbl ");
         Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_happened_date");
-        sqlBuilder.append("WHERE tbl.happened_date>=? AND tbl.happened_date<?");
+        sqlBuilder.append("WHERE tbl.happened_date>=? AND tbl.happened_date<=?");
 
         PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
         preparedStatement.setTimestamp(1, new Timestamp(startDate.getTime()));
@@ -789,6 +841,37 @@ public class Mysql8TriggeredValueNativeLookup extends AbstractDialectNativeLooku
         } else {
             sqlBuilder.append("tbl.point_id=? AND ");
         }
+        sqlBuilder.append("tbl.happened_date>=? AND tbl.happened_date<=?");
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
+        if (Objects.isNull(pointKey)) {
+            preparedStatement.setTimestamp(1, new Timestamp(startDate.getTime()));
+            preparedStatement.setTimestamp(2, new Timestamp(endDate.getTime()));
+        } else {
+            preparedStatement.setLong(1, pointKey.getLongId());
+            preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
+            preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
+        }
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return Long.valueOf(resultSet.getLong(1)).intValue();
+    }
+
+    private int childForPointBetweenRbOpenCount(Connection connection, Object[] args) throws SQLException {
+        LongIdKey pointKey = (LongIdKey) args[0];
+        Date startDate = (Date) args[1];
+        Date endDate = (Date) args[2];
+
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.append("SELECT COUNT(tbl.id) FROM tbl_triggered_value AS tbl ");
+        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+        sqlBuilder.append("WHERE ");
+        if (Objects.isNull(pointKey)) {
+            sqlBuilder.append("tbl.point_id IS NULL AND ");
+        } else {
+            sqlBuilder.append("tbl.point_id=? AND ");
+        }
         sqlBuilder.append("tbl.happened_date>=? AND tbl.happened_date<?");
 
         PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
@@ -820,7 +903,7 @@ public class Mysql8TriggeredValueNativeLookup extends AbstractDialectNativeLooku
         } else {
             sqlBuilder.append("tbl.trigger_id=? AND ");
         }
-        sqlBuilder.append("tbl.happened_date>=? AND tbl.happened_date<?");
+        sqlBuilder.append("tbl.happened_date>=? AND tbl.happened_date<=?");
 
         PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
         if (Objects.isNull(triggerKey)) {
