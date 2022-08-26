@@ -95,15 +95,15 @@ public class FilteredValueMappingLookupHandlerImpl implements FilteredValueMappi
         try {
             MappingLookupSession session = MappingLookupSession.of(keyFetcher.fetchKey(), mappingLookupInfo);
 
+            FilteredValueMappingLookupHandlerImpl.LookupTask lookupTask = ctx.getBean(LookupTask.class, this, session);
+            executor.submit(lookupTask);
+
             lock.lock();
             try {
                 sessionMap.put(session.getKey(), session);
             } finally {
                 lock.unlock();
             }
-
-            FilteredValueMappingLookupHandlerImpl.LookupTask lookupTask = ctx.getBean(LookupTask.class, this, session);
-            executor.submit(lookupTask);
 
             return session.getResult();
         } catch (HandlerException e) {
@@ -120,15 +120,15 @@ public class FilteredValueMappingLookupHandlerImpl implements FilteredValueMappi
         try {
             MappingLookupSession session = MappingLookupSession.of(keyFetcher.fetchKey(), mappingLookupInfo);
 
+            FilteredValueMappingLookupHandlerImpl.LookupTask lookupTask = ctx.getBean(LookupTask.class, this, session);
+            executor.submit(lookupTask);
+
             lock.lock();
             try {
                 sessionMap.put(session.getKey(), session);
             } finally {
                 lock.unlock();
             }
-
-            FilteredValueMappingLookupHandlerImpl.LookupTask lookupTask = ctx.getBean(LookupTask.class, this, session);
-            executor.submit(lookupTask);
 
             return session.getKey();
         } catch (Exception e) {

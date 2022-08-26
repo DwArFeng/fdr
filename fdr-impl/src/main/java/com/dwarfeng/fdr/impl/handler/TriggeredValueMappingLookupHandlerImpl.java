@@ -95,15 +95,15 @@ public class TriggeredValueMappingLookupHandlerImpl implements TriggeredValueMap
         try {
             MappingLookupSession session = MappingLookupSession.of(keyFetcher.fetchKey(), mappingLookupInfo);
 
+            TriggeredValueMappingLookupHandlerImpl.LookupTask lookupTask = ctx.getBean(LookupTask.class, this, session);
+            executor.submit(lookupTask);
+
             lock.lock();
             try {
                 sessionMap.put(session.getKey(), session);
             } finally {
                 lock.unlock();
             }
-
-            TriggeredValueMappingLookupHandlerImpl.LookupTask lookupTask = ctx.getBean(LookupTask.class, this, session);
-            executor.submit(lookupTask);
 
             return session.getResult();
         } catch (HandlerException e) {
@@ -120,15 +120,15 @@ public class TriggeredValueMappingLookupHandlerImpl implements TriggeredValueMap
         try {
             MappingLookupSession session = MappingLookupSession.of(keyFetcher.fetchKey(), mappingLookupInfo);
 
+            TriggeredValueMappingLookupHandlerImpl.LookupTask lookupTask = ctx.getBean(LookupTask.class, this, session);
+            executor.submit(lookupTask);
+
             lock.lock();
             try {
                 sessionMap.put(session.getKey(), session);
             } finally {
                 lock.unlock();
             }
-
-            TriggeredValueMappingLookupHandlerImpl.LookupTask lookupTask = ctx.getBean(LookupTask.class, this, session);
-            executor.submit(lookupTask);
 
             return session.getKey();
         } catch (Exception e) {

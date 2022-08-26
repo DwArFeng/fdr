@@ -10,6 +10,11 @@
 
 - 修正 application-context-aop.xml 配置文件中存在的错误。
 
+- 解决部分处理器实现发生异常后资源无法释放的问题。
+  - com.dwarfeng.fdr.impl.handler.FilteredValueMappingLookupHandlerImpl。
+  - com.dwarfeng.fdr.impl.handler.PersistenceValueMappingLookupHandlerImpl。
+  - com.dwarfeng.fdr.impl.handler.TriggeredValueMappingLookupHandlerImpl。
+
 #### 功能移除
 
 - (无)
