@@ -27,6 +27,11 @@
   - com.dwarfeng.fdr.impl.handler.PersistenceValueMappingLookupHandlerImpl。
   - com.dwarfeng.fdr.impl.handler.TriggeredValueMappingLookupHandlerImpl。
 
+- 修正部分接口实现中声明周期函数未加注解的错误。
+  - com.dwarfeng.fdr.impl.handler.FilteredValueMappingLookupHandlerImpl。
+  - com.dwarfeng.fdr.impl.handler.PersistenceValueMappingLookupHandlerImpl。
+  - com.dwarfeng.fdr.impl.handler.TriggeredValueMappingLookupHandlerImpl。
+
 #### 功能移除
 
 - (无)

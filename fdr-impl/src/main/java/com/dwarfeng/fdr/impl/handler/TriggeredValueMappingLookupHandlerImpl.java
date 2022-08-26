@@ -28,6 +28,8 @@ import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
@@ -77,11 +79,13 @@ public class TriggeredValueMappingLookupHandlerImpl implements TriggeredValueMap
         this.keyFetcher = keyFetcher;
     }
 
+    @PostConstruct
     public void init() throws Exception {
         TriggeredValueMappingLookupHandlerImpl.CleanupTask cleanupTask = ctx.getBean(CleanupTask.class, this);
         cleanTaskScheduledFuture = scheduler.schedule(cleanupTask, new CronTrigger(cleanupTaskCron));
     }
 
+    @PreDestroy
     public void dispose() {
         cleanTaskScheduledFuture.cancel(true);
         cleanTaskScheduledFuture = null;
