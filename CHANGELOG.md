@@ -6,6 +6,11 @@
 
 - 优化 MappingLookupSessionInfo 实体中的字段。
 
+- 修正部分接口实现的日志记录。
+  - com.dwarfeng.fdr.impl.handler.FilteredValueMappingLookupHandlerImpl。
+  - com.dwarfeng.fdr.impl.handler.PersistenceValueMappingLookupHandlerImpl。
+  - com.dwarfeng.fdr.impl.handler.TriggeredValueMappingLookupHandlerImpl。
+
 #### Bug修复
 
 - 修正 application-context-aop.xml 配置文件中存在的错误。

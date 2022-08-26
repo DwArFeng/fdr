@@ -342,10 +342,16 @@ public class PersistenceValueMappingLookupHandlerImpl implements PersistenceValu
 
                 // 设置结果。
                 session.setResult(result);
-            } catch (HandlerException e) {
-                session.setException(e);
             } catch (Exception e) {
-                session.setException(new HandlerException(e));
+                String logMessage = String.format(
+                        "持久值映射查询发生异常, 获取会话结果时将抛出此异常, 会话主键: %s, 异常信息: ", session.getKey()
+                );
+                LOGGER.warn(logMessage, e);
+                if (e instanceof HandlerException) {
+                    session.setException((HandlerException) e);
+                } else {
+                    session.setException(new HandlerException(e));
+                }
             } finally {
                 session.finish();
             }
