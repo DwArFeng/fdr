@@ -431,13 +431,7 @@
                     </exclusion>
                 </exclusions>
             </dependency>
-            <!-- Dwarfeng-ftp组件 -->
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>dwarfeng-ftp</artifactId>
-                <version>${dwarfeng-ftp.version}</version>
-            </dependency>
-            <!-- Spring-terminator组件 -->
+            <!-- Spring-terminator 组件 -->
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>spring-terminator</artifactId>
