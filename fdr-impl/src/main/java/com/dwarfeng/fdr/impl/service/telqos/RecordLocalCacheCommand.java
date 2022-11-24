@@ -26,11 +26,27 @@ public class RecordLocalCacheCommand extends CliCommand {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RecordLocalCacheCommand.class);
 
+    private static final String COMMAND_OPTION_LOOKUP = "l";
+    private static final String COMMAND_OPTION_CLEAR = "c";
+
+    private static final String[] COMMAND_OPTION_ARRAY = new String[]{
+            COMMAND_OPTION_LOOKUP,
+            COMMAND_OPTION_CLEAR
+    };
+
     private static final String IDENTITY = "rlc";
     private static final String DESCRIPTION = "数据记录本地缓存操作";
-    private static final String CMD_LINE_SYNTAX_C = "rlc -c";
-    private static final String CMD_LINE_SYNTAX_P = "rlc -p point-id";
-    private static final String CMD_LINE_SYNTAX = CMD_LINE_SYNTAX_C + System.lineSeparator() + CMD_LINE_SYNTAX_P;
+    private static final String CMD_LINE_SYNTAX_LOOKUP = IDENTITY + " " +
+            CommandUtil.concatOptionPrefix(COMMAND_OPTION_LOOKUP) + " point-id";
+    private static final String CMD_LINE_SYNTAX_CLEAR = IDENTITY + " " +
+            CommandUtil.concatOptionPrefix(COMMAND_OPTION_CLEAR);
+
+    private static final String[] CMD_LINE_ARRAY = new String[]{
+            CMD_LINE_SYNTAX_LOOKUP,
+            CMD_LINE_SYNTAX_CLEAR
+    };
+
+    private static final String CMD_LINE_SYNTAX = CommandUtil.syntax(CMD_LINE_ARRAY);
 
     public RecordLocalCacheCommand() {
         super(IDENTITY, DESCRIPTION, CMD_LINE_SYNTAX);
@@ -42,27 +58,27 @@ public class RecordLocalCacheCommand extends CliCommand {
     @Override
     protected List<Option> buildOptions() {
         List<Option> list = new ArrayList<>();
-        list.add(Option.builder("c").optionalArg(true).hasArg(false).desc("清除缓存").build());
-        list.add(Option.builder("p").optionalArg(true).hasArg(true).type(Number.class).argName("point-id")
-                .desc("查看指定数据点的详细信息，如果本地缓存中不存在，则尝试抓取").build());
+        list.add(Option.builder(COMMAND_OPTION_LOOKUP).optionalArg(true).hasArg(true).type(Number.class)
+                .argName("point-id").desc("查看指定数据点的详细信息，如果本地缓存中不存在，则尝试抓取").build());
+        list.add(Option.builder(COMMAND_OPTION_CLEAR).optionalArg(true).hasArg(false).desc("清除缓存").build());
         return list;
     }
 
     @Override
     protected void executeWithCmd(Context context, CommandLine cmd) throws TelqosException {
         try {
-            Pair<String, Integer> pair = analyseCommand(cmd);
+            Pair<String, Integer> pair = CommandUtil.analyseCommand(cmd, COMMAND_OPTION_ARRAY);
             if (pair.getRight() != 1) {
-                context.sendMessage("下列选项必须且只能含有一个: -c -p");
+                context.sendMessage(CommandUtil.optionMismatchMessage(COMMAND_OPTION_ARRAY));
                 context.sendMessage(CMD_LINE_SYNTAX);
                 return;
             }
             switch (pair.getLeft()) {
-                case "c":
-                    handleC(context);
+                case COMMAND_OPTION_LOOKUP:
+                    handleLookup(context, cmd);
                     break;
-                case "p":
-                    handleP(context, cmd);
+                case COMMAND_OPTION_CLEAR:
+                    handleClear(context);
                     break;
             }
         } catch (Exception e) {
@@ -70,18 +86,13 @@ public class RecordLocalCacheCommand extends CliCommand {
         }
     }
 
-    private void handleC(Context context) throws Exception {
-        recordQosService.clearLocalCache();
-        context.sendMessage("缓存已清空");
-    }
-
-    private void handleP(Context context, CommandLine cmd) throws Exception {
+    private void handleLookup(Context context, CommandLine cmd) throws Exception {
         long pointId;
         try {
-            pointId = ((Number) cmd.getParsedOptionValue("p")).longValue();
+            pointId = ((Number) cmd.getParsedOptionValue(COMMAND_OPTION_LOOKUP)).longValue();
         } catch (ParseException e) {
             LOGGER.warn("解析命令选项时发生异常，异常信息如下", e);
-            context.sendMessage("命令行格式错误，正确的格式为: " + CMD_LINE_SYNTAX_P);
+            context.sendMessage("命令行格式错误，正确的格式为: " + CMD_LINE_SYNTAX_LOOKUP);
             context.sendMessage("请留意选项 p 后接参数的类型应该是数字 ");
             return;
         }
@@ -103,17 +114,8 @@ public class RecordLocalCacheCommand extends CliCommand {
         }
     }
 
-    private Pair<String, Integer> analyseCommand(CommandLine cmd) {
-        int i = 0;
-        String subCmd = null;
-        if (cmd.hasOption("c")) {
-            i++;
-            subCmd = "c";
-        }
-        if (cmd.hasOption("p")) {
-            i++;
-            subCmd = "p";
-        }
-        return Pair.of(subCmd, i);
+    private void handleClear(Context context) throws Exception {
+        recordQosService.clearLocalCache();
+        context.sendMessage("缓存已清空");
     }
 }

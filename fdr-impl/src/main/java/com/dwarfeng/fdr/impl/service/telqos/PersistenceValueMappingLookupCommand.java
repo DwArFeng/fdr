@@ -32,7 +32,6 @@ public class PersistenceValueMappingLookupCommand extends CliCommand {
 
     private static final String IDENTITY = "pml";
     private static final String DESCRIPTION = "持久值映射查询操作";
-
     private static final String CMD_LINE_SYNTAX_LIST = IDENTITY + " " +
             CommandUtil.concatOptionPrefix(COMMAND_OPTION_LIST);
     private static final String CMD_LINE_SYNTAX_CLEANUP = IDENTITY + " " +
@@ -68,7 +67,7 @@ public class PersistenceValueMappingLookupCommand extends CliCommand {
     @Override
     protected void executeWithCmd(Context context, CommandLine cmd) throws TelqosException {
         try {
-            Pair<String, Integer> pair = analyseCommand(cmd);
+            Pair<String, Integer> pair = CommandUtil.analyseCommand(cmd, COMMAND_OPTION_ARRAY);
             if (pair.getRight() != 1) {
                 context.sendMessage(CommandUtil.optionMismatchMessage(COMMAND_OPTION_ARRAY));
                 context.sendMessage(CMD_LINE_SYNTAX);
@@ -114,24 +113,5 @@ public class PersistenceValueMappingLookupCommand extends CliCommand {
 
         MappingLookupSessionInfo sessionInfo = handler.getSessionInfo(new LongIdKey(sessionId));
         CommandUtil.printSessionInfoDetail(context, sessionInfo);
-    }
-
-    @SuppressWarnings("DuplicatedCode")
-    private Pair<String, Integer> analyseCommand(CommandLine cmd) {
-        int i = 0;
-        String subCmd = null;
-        if (cmd.hasOption(COMMAND_OPTION_LIST)) {
-            i++;
-            subCmd = COMMAND_OPTION_LIST;
-        }
-        if (cmd.hasOption(COMMAND_OPTION_CLEANUP)) {
-            i++;
-            subCmd = COMMAND_OPTION_CLEANUP;
-        }
-        if (cmd.hasOption(COMMAND_OPTION_LOOKUP_DETAIL)) {
-            i++;
-            subCmd = COMMAND_OPTION_LOOKUP_DETAIL;
-        }
-        return Pair.of(subCmd, i);
     }
 }

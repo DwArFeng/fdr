@@ -2,6 +2,8 @@ package com.dwarfeng.fdr.impl.service.telqos;
 
 import com.dwarfeng.fdr.stack.bean.dto.MappingLookupSessionInfo;
 import com.dwarfeng.springtelqos.stack.command.Context;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
@@ -43,10 +45,22 @@ final class CommandUtil {
         return sj.toString();
     }
 
+    public static Pair<String, Integer> analyseCommand(CommandLine commandLine, String... commandOptions) {
+        int i = 0;
+        String subCmd = null;
+        for (String commandOption : commandOptions) {
+            if (commandLine.hasOption(commandOption)) {
+                i++;
+                subCmd = commandOption;
+            }
+        }
+        return Pair.of(subCmd, i);
+    }
+
     public static String optionMismatchMessage(String... patterns) {
-        StringJoiner sj = new StringJoiner(", --", "下列选项必须且只能含有一个: --", "");
+        StringJoiner sj = new StringJoiner(", ", "下列选项必须且只能含有一个: ", "");
         for (String pattern : patterns) {
-            sj.add(pattern);
+            sj.add(concatOptionPrefix(pattern));
         }
         return sj.toString();
     }

@@ -23,11 +23,27 @@ public class RecorderCommand extends CliCommand {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RecorderCommand.class);
 
+    private static final String COMMAND_OPTION_L = "l";
+    private static final String COMMAND_OPTION_S = "s";
+
+    private static final String[] COMMAND_OPTION_ARRAY = new String[]{
+            COMMAND_OPTION_L,
+            COMMAND_OPTION_S
+    };
+
     private static final String IDENTITY = "rec";
     private static final String DESCRIPTION = "记录者操作";
-    private static final String CMD_LINE_SYNTAX_L = "rec -l";
-    private static final String CMD_LINE_SYNTAX_S = "rec -s [-b val] [-t val]";
-    private static final String CMD_LINE_SYNTAX = CMD_LINE_SYNTAX_L + System.lineSeparator() + CMD_LINE_SYNTAX_S;
+    private static final String CMD_LINE_SYNTAX_L = IDENTITY + " " +
+            CommandUtil.concatOptionPrefix(COMMAND_OPTION_L);
+    private static final String CMD_LINE_SYNTAX_S = IDENTITY + " " +
+            CommandUtil.concatOptionPrefix(COMMAND_OPTION_S) + " [-b val] [-t val]";
+
+    private static final String[] CMD_LINE_ARRAY = new String[]{
+            CMD_LINE_SYNTAX_L,
+            CMD_LINE_SYNTAX_S
+    };
+
+    private static final String CMD_LINE_SYNTAX = CommandUtil.syntax(CMD_LINE_ARRAY);
 
     public RecorderCommand() {
         super(IDENTITY, DESCRIPTION, CMD_LINE_SYNTAX);
@@ -39,8 +55,8 @@ public class RecorderCommand extends CliCommand {
     @Override
     protected List<Option> buildOptions() {
         List<Option> list = new ArrayList<>();
-        list.add(Option.builder("l").optionalArg(true).hasArg(false).desc("查看记录者状态").build());
-        list.add(Option.builder("s").optionalArg(true).hasArg(false).desc("设置记录者参数").build());
+        list.add(Option.builder(COMMAND_OPTION_L).optionalArg(true).hasArg(false).desc("查看记录者状态").build());
+        list.add(Option.builder(COMMAND_OPTION_S).optionalArg(true).hasArg(false).desc("设置记录者参数").build());
         list.add(Option.builder("b").optionalArg(true).hasArg(true).type(Number.class)
                 .argName("buffer-size").desc("缓冲器的大小").build());
         list.add(Option.builder("t").optionalArg(true).hasArg(true).type(Number.class)
@@ -51,17 +67,17 @@ public class RecorderCommand extends CliCommand {
     @Override
     protected void executeWithCmd(Context context, CommandLine cmd) throws TelqosException {
         try {
-            Pair<String, Integer> pair = analyseCommand(cmd);
+            Pair<String, Integer> pair = CommandUtil.analyseCommand(cmd, COMMAND_OPTION_ARRAY);
             if (pair.getRight() != 1) {
-                context.sendMessage("下列选项必须且只能含有一个: -l -s");
+                context.sendMessage(CommandUtil.optionMismatchMessage(COMMAND_OPTION_ARRAY));
                 context.sendMessage(CMD_LINE_SYNTAX);
                 return;
             }
             switch (pair.getLeft()) {
-                case "l":
+                case COMMAND_OPTION_L:
                     handleL(context);
                     break;
-                case "s":
+                case COMMAND_OPTION_S:
                     handleS(context, cmd);
                     break;
             }
@@ -102,20 +118,5 @@ public class RecorderCommand extends CliCommand {
                 recorderStatus.getBufferedSize(), recorderStatus.getBufferSize(), recorderStatus.getThread(),
                 recorderStatus.isIdle())
         );
-    }
-
-    @SuppressWarnings("DuplicatedCode")
-    private Pair<String, Integer> analyseCommand(CommandLine cmd) {
-        int i = 0;
-        String subCmd = null;
-        if (cmd.hasOption("l")) {
-            i++;
-            subCmd = "l";
-        }
-        if (cmd.hasOption("s")) {
-            i++;
-            subCmd = "s";
-        }
-        return Pair.of(subCmd, i);
     }
 }

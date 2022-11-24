@@ -12,7 +12,6 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -23,31 +22,54 @@ public class ConsumerCommand extends CliCommand {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsumerCommand.class);
 
+    private static final String COMMAND_OPTION_L = "l";
+    private static final String COMMAND_OPTION_S = "s";
+    private static final String COMMAND_OPTION_LC = "lc";
+    private static final String COMMAND_OPTION_LN = "ln";
+
+    private static final String[] COMMAND_OPTION_ARRAY = new String[]{
+            COMMAND_OPTION_L,
+            COMMAND_OPTION_S,
+            COMMAND_OPTION_LC,
+            COMMAND_OPTION_LN
+    };
+
     private static final String IDENTITY = "csu";
     private static final String DESCRIPTION = "消费者操作";
-    private static final String CMD_LINE_SYNTAX_L = "csu -l [-c classes] [-n names]";
-    private static final String CMD_LINE_SYNTAX_S = "csu -s [-c classes] [-n names] [-b val] [-a val] [-m val] [-t val]";
-    private static final String CMD_LINE_SYNTAX_LC = "csu -lc";
-    private static final String CMD_LINE_SYNTAX_LN = "cus -ln";
-    private static final String CMD_LINE_SYNTAX = CMD_LINE_SYNTAX_L + System.lineSeparator() +
-            CMD_LINE_SYNTAX_S + System.lineSeparator() + CMD_LINE_SYNTAX_LC + System.lineSeparator() +
-            CMD_LINE_SYNTAX_LN;
+    private static final String CMD_LINE_SYNTAX_L = IDENTITY + " " +
+            CommandUtil.concatOptionPrefix(COMMAND_OPTION_L) + " [-c classes] [-n names]";
+    private static final String CMD_LINE_SYNTAX_S = IDENTITY + " " +
+            CommandUtil.concatOptionPrefix(COMMAND_OPTION_S) +
+            " [-c classes] [-n names] [-b val] [-a val] [-m val] [-t val]";
+    private static final String CMD_LINE_SYNTAX_LC = IDENTITY + " " +
+            CommandUtil.concatOptionPrefix(COMMAND_OPTION_LC);
+    private static final String CMD_LINE_SYNTAX_LN = IDENTITY + " " +
+            CommandUtil.concatOptionPrefix(COMMAND_OPTION_LN);
 
-    public ConsumerCommand() {
+    private static final String[] CMD_LINE_ARRAY = new String[]{
+            CMD_LINE_SYNTAX_L,
+            CMD_LINE_SYNTAX_S,
+            CMD_LINE_SYNTAX_LC,
+            CMD_LINE_SYNTAX_LN
+    };
+
+    private static final String CMD_LINE_SYNTAX = CommandUtil.syntax(CMD_LINE_ARRAY);
+
+    private final RecordQosService recordQosService;
+
+    public ConsumerCommand(RecordQosService recordQosService) {
         super(IDENTITY, DESCRIPTION, CMD_LINE_SYNTAX);
+        this.recordQosService = recordQosService;
     }
-
-    @Autowired
-    private RecordQosService recordQosService;
 
     @Override
     protected List<Option> buildOptions() {
         List<Option> list = new ArrayList<>();
-        list.add(Option.builder("l").optionalArg(true).hasArg(false).desc("查看消费者状态").build());
-        list.add(Option.builder("s").optionalArg(true).hasArg(false).desc("设置消费者参数").build());
-        list.add(Option.builder("lc").longOpt("list-classes").optionalArg(true).hasArg(false)
+        list.add(Option.builder(COMMAND_OPTION_L).optionalArg(true).hasArg(false).desc("查看消费者状态").build());
+        list.add(Option.builder(COMMAND_OPTION_S).optionalArg(true).hasArg(false).desc("设置消费者参数").build());
+        list.add(Option.builder(COMMAND_OPTION_LC).longOpt("list-classes").optionalArg(true).hasArg(false)
                 .desc("列出所有消费者类型").build());
-        list.add(Option.builder("ln").longOpt("list-names").optionalArg(true).hasArg(false)
+        list.add(Option.builder(COMMAND_OPTION_LN).longOpt("list-names").optionalArg(true).hasArg(false)
                 .desc("列出所有消费者名称").build());
         list.add(Option.builder("c").optionalArg(true).hasArg(true).argName("classes").desc("消费者类型").build());
         list.add(Option.builder("n").optionalArg(true).hasArg(true).argName("names").desc("消费者名称").build());
@@ -65,23 +87,23 @@ public class ConsumerCommand extends CliCommand {
     @Override
     protected void executeWithCmd(Context context, CommandLine cmd) throws TelqosException {
         try {
-            Pair<String, Integer> pair = analyseCommand(cmd);
+            Pair<String, Integer> pair = CommandUtil.analyseCommand(cmd, COMMAND_OPTION_ARRAY);
             if (pair.getRight() != 1) {
-                context.sendMessage("下列选项必须且只能含有一个: -l -s -lc -ln");
+                context.sendMessage(CommandUtil.optionMismatchMessage(COMMAND_OPTION_ARRAY));
                 context.sendMessage(CMD_LINE_SYNTAX);
                 return;
             }
             switch (pair.getLeft()) {
-                case "l":
+                case COMMAND_OPTION_L:
                     handleL(context, cmd);
                     break;
-                case "s":
+                case COMMAND_OPTION_S:
                     handleS(context, cmd);
                     break;
-                case "lc":
+                case COMMAND_OPTION_LC:
                     handleLc(context);
                     break;
-                case "ln":
+                case COMMAND_OPTION_LN:
                     handleLn(context);
                     break;
             }
@@ -143,13 +165,14 @@ public class ConsumerCommand extends CliCommand {
         ).collect(Collectors.toList());
     }
 
-    private void printConsumerStatus(Context context, List<ConsumerId> consumerIds) throws ServiceException, TelqosException {
+    private void printConsumerStatus(Context context, List<ConsumerId> consumerIds)
+            throws ServiceException, TelqosException {
         int index = 0;
         for (ConsumerId consumerId : consumerIds) {
             ConsumerStatus consumerStatus = recordQosService.getConsumerStatus(consumerId);
             context.sendMessage(
                     String.format(
-                            "%-4d %s-%-14s buffered-size:%-7d buffer-size:%-7d batch-size:%-7d max-idle-time:%-10d " +
+                            "%-4d %s-%-21s buffered-size:%-7d buffer-size:%-7d batch-size:%-7d max-idle-time:%-10d " +
                                     "thread:%-3d idle:%b",
                             ++index, consumerId.getType(), consumerId.getLabel(), consumerStatus.getBufferedSize(),
                             consumerStatus.getBufferSize(), consumerStatus.getBatchSize(),
@@ -168,27 +191,5 @@ public class ConsumerCommand extends CliCommand {
         context.sendMessage("2.\ttriggered\t触发器消费者");
         context.sendMessage("3.\tpersistence\t持久值消费者");
         context.sendMessage("4.\trealtime\t实时值消费者");
-    }
-
-    private Pair<String, Integer> analyseCommand(CommandLine cmd) {
-        int i = 0;
-        String subCmd = null;
-        if (cmd.hasOption("l")) {
-            i++;
-            subCmd = "l";
-        }
-        if (cmd.hasOption("s")) {
-            i++;
-            subCmd = "s";
-        }
-        if (cmd.hasOption("lc")) {
-            i++;
-            subCmd = "lc";
-        }
-        if (cmd.hasOption("ln")) {
-            i++;
-            subCmd = "ln";
-        }
-        return Pair.of(subCmd, i);
     }
 }

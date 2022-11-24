@@ -18,11 +18,27 @@ import java.util.Objects;
 @Component
 public class MapLocalCacheCommand extends CliCommand {
 
+    private static final String COMMAND_OPTION_LOOKUP = "l";
+    private static final String COMMAND_OPTION_CLEAR = "c";
+
+    private static final String[] COMMAND_OPTION_ARRAY = new String[]{
+            COMMAND_OPTION_LOOKUP,
+            COMMAND_OPTION_CLEAR
+    };
+
     private static final String IDENTITY = "mlc";
     private static final String DESCRIPTION = "映射查询本地缓存操作";
-    private static final String CMD_LINE_SYNTAX_C = "mlc -c";
-    private static final String CMD_LINE_SYNTAX_P = "mlc -t mapper-type";
-    private static final String CMD_LINE_SYNTAX = CMD_LINE_SYNTAX_C + System.lineSeparator() + CMD_LINE_SYNTAX_P;
+    private static final String CMD_LINE_SYNTAX_LOOKUP = IDENTITY + " " +
+            CommandUtil.concatOptionPrefix(COMMAND_OPTION_LOOKUP) + " mapper-type";
+    private static final String CMD_LINE_SYNTAX_CLEAR = IDENTITY + " " +
+            CommandUtil.concatOptionPrefix(COMMAND_OPTION_CLEAR);
+
+    private static final String[] CMD_LINE_ARRAY = new String[]{
+            CMD_LINE_SYNTAX_LOOKUP,
+            CMD_LINE_SYNTAX_CLEAR
+    };
+
+    private static final String CMD_LINE_SYNTAX = CommandUtil.syntax(CMD_LINE_ARRAY);
 
     public MapLocalCacheCommand() {
         super(IDENTITY, DESCRIPTION, CMD_LINE_SYNTAX);
@@ -34,27 +50,27 @@ public class MapLocalCacheCommand extends CliCommand {
     @Override
     protected List<Option> buildOptions() {
         List<Option> list = new ArrayList<>();
-        list.add(Option.builder("c").optionalArg(true).hasArg(false).desc("清除缓存").build());
-        list.add(Option.builder("t").optionalArg(true).hasArg(true).type(Number.class).argName("mapper-type")
-                .desc("查看指定映射类型的映射器，如果本地缓存中不存在，则尝试抓取").build());
+        list.add(Option.builder(COMMAND_OPTION_LOOKUP).optionalArg(true).hasArg(true).type(Number.class)
+                .argName("mapper-type").desc("查看指定映射类型的映射器，如果本地缓存中不存在，则尝试抓取").build());
+        list.add(Option.builder(COMMAND_OPTION_CLEAR).optionalArg(true).hasArg(false).desc("清除缓存").build());
         return list;
     }
 
     @Override
     protected void executeWithCmd(Context context, CommandLine cmd) throws TelqosException {
         try {
-            Pair<String, Integer> pair = analyseCommand(cmd);
+            Pair<String, Integer> pair = CommandUtil.analyseCommand(cmd, COMMAND_OPTION_ARRAY);
             if (pair.getRight() != 1) {
-                context.sendMessage("下列选项必须且只能含有一个: -c -t");
+                context.sendMessage(CommandUtil.optionMismatchMessage(COMMAND_OPTION_ARRAY));
                 context.sendMessage(CMD_LINE_SYNTAX);
                 return;
             }
             switch (pair.getLeft()) {
-                case "c":
-                    handleC(context);
+                case COMMAND_OPTION_LOOKUP:
+                    handleLookup(context, cmd);
                     break;
-                case "t":
-                    handleT(context, cmd);
+                case COMMAND_OPTION_CLEAR:
+                    handleClear(context);
                     break;
             }
         } catch (Exception e) {
@@ -62,13 +78,8 @@ public class MapLocalCacheCommand extends CliCommand {
         }
     }
 
-    private void handleC(Context context) throws Exception {
-        mapQosService.clearLocalCache();
-        context.sendMessage("缓存已清空");
-    }
-
-    private void handleT(Context context, CommandLine cmd) throws Exception {
-        String mapperType = cmd.getOptionValue("t");
+    private void handleLookup(Context context, CommandLine cmd) throws Exception {
+        String mapperType = cmd.getOptionValue(COMMAND_OPTION_LOOKUP);
         Mapper mapper = mapQosService.getMapper(mapperType);
         if (Objects.isNull(mapper)) {
             context.sendMessage("not exists!");
@@ -77,17 +88,8 @@ public class MapLocalCacheCommand extends CliCommand {
         context.sendMessage(String.format("mapper: %s", mapper));
     }
 
-    private Pair<String, Integer> analyseCommand(CommandLine cmd) {
-        int i = 0;
-        String subCmd = null;
-        if (cmd.hasOption("c")) {
-            i++;
-            subCmd = "c";
-        }
-        if (cmd.hasOption("t")) {
-            i++;
-            subCmd = "t";
-        }
-        return Pair.of(subCmd, i);
+    private void handleClear(Context context) throws Exception {
+        mapQosService.clearLocalCache();
+        context.sendMessage("缓存已清空");
     }
 }
