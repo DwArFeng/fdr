@@ -75,7 +75,7 @@
    
 3. `ConsumeHandler`消费动作事件，将动作相关的实体持久化至数据访问层中，并将事件推送给`PushHandler`。
 
-   `ConsumeHandler` 拥有灵活的执行逻辑，这些逻辑细节都可以进行配置，详见配置文件`conf/fdr/consume.properties`。
+   `ConsumeHandler` 拥有灵活地执行逻辑，这些逻辑细节都可以进行配置，详见配置文件`conf/fdr/consume.properties`。
 
 ---
 
