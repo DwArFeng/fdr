@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 
-@Deprecated
 @Service
+@Deprecated
 public class MappingLookupServiceImpl implements MappingLookupService {
 
     private final PersistenceValueMappingLookupHandler persistenceValueMappingLookupHandler;
@@ -44,6 +44,7 @@ public class MappingLookupServiceImpl implements MappingLookupService {
     @Override
     @BehaviorAnalyse
     @SkipRecord
+    @Deprecated
     public List<TimedValue> mappingPersistenceValue(
             String mapperType, LongIdKey pointKey, Date startDate, Date endDate, Object[] mapperArgs
     ) throws ServiceException {
@@ -62,6 +63,7 @@ public class MappingLookupServiceImpl implements MappingLookupService {
     @Override
     @BehaviorAnalyse
     @SkipRecord
+    @Deprecated
     public List<TimedValue> mappingFilteredValue(
             String mapperType, LongIdKey pointKey, Date startDate, Date endDate, Object[] mapperArgs
     ) throws ServiceException {
@@ -80,9 +82,10 @@ public class MappingLookupServiceImpl implements MappingLookupService {
     @Override
     @BehaviorAnalyse
     @SkipRecord
+    @Deprecated
     public List<TimedValue> mappingTriggeredValue(
-            String mapperType, LongIdKey pointKey, Date startDate, Date endDate, Object[] mapperArgs)
-            throws ServiceException {
+            String mapperType, LongIdKey pointKey, Date startDate, Date endDate, Object[] mapperArgs
+    ) throws ServiceException {
         try {
             return triggeredValueMappingLookupHandler.mappingLookup(new MappingLookupInfo(
                     mapperType, pointKey, startDate, endDate, mapperArgs
