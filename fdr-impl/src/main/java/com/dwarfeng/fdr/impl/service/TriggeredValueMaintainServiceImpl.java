@@ -256,6 +256,7 @@ public class TriggeredValueMaintainServiceImpl implements TriggeredValueMaintain
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    @Deprecated
     public TriggeredValue previous(LongIdKey pointKey, Date date) throws ServiceException {
         try {
             return triggeredValueDao.previous(pointKey, date);
@@ -267,6 +268,7 @@ public class TriggeredValueMaintainServiceImpl implements TriggeredValueMaintain
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    @Deprecated
     public TriggeredValue rear(LongIdKey pointKey, Date date) throws ServiceException {
         try {
             return triggeredValueDao.rear(pointKey, date);

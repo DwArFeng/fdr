@@ -256,6 +256,7 @@ public class PersistenceValueMaintainServiceImpl implements PersistenceValueMain
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    @Deprecated
     public PersistenceValue previous(LongIdKey pointKey, Date date) throws ServiceException {
         try {
             return persistenceValueDao.previous(pointKey, date);
@@ -267,6 +268,7 @@ public class PersistenceValueMaintainServiceImpl implements PersistenceValueMain
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    @Deprecated
     public PersistenceValue rear(LongIdKey pointKey, Date date) throws ServiceException {
         try {
             return persistenceValueDao.rear(pointKey, date);

@@ -53,7 +53,8 @@ class MappingLookupSession {
     private MappingLookupSession(
             LongIdKey key, String mapperType, LongIdKey pointKey, Date startDate, Date endDate,
             Object[] mapperArgs, Date createdDate, boolean canceledFlag, Date canceledDate, boolean finishedFlag,
-            Date finishedDate, int fetchedSize, Date currentPeriodStartDate, List<TimedValue> result, HandlerException exception
+            Date finishedDate, int fetchedSize, Date currentPeriodStartDate, List<TimedValue> result,
+            HandlerException exception
     ) {
         this.key = key;
         this.mapperType = mapperType;

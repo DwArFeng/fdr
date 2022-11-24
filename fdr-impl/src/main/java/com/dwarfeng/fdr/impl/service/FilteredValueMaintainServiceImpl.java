@@ -256,6 +256,7 @@ public class FilteredValueMaintainServiceImpl implements FilteredValueMaintainSe
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    @Deprecated
     public FilteredValue previous(LongIdKey pointKey, Date date) throws ServiceException {
         try {
             return filteredValueDao.previous(pointKey, date);
@@ -267,6 +268,7 @@ public class FilteredValueMaintainServiceImpl implements FilteredValueMaintainSe
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    @Deprecated
     public FilteredValue rear(LongIdKey pointKey, Date date) throws ServiceException {
         try {
             return filteredValueDao.rear(pointKey, date);

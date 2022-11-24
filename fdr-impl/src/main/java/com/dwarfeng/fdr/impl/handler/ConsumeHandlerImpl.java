@@ -391,7 +391,9 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
                         if (batchSize <= 1 || maxIdleTime <= 0) {
                             consumeCondition.await();
                         } else {
-                            consumeCondition.await(timeOffset, TimeUnit.MILLISECONDS);
+                            // 对阻塞是否到达指定时间的判断在外层 while(...) 中完成，不需要此处的结果参与判断。
+                            @SuppressWarnings("unused")
+                            boolean timeElapsed = consumeCondition.await(timeOffset, TimeUnit.MILLISECONDS);
                         }
                     } catch (InterruptedException ignored) {
                     }
