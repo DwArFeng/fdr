@@ -24,7 +24,7 @@
     </properties>
 
     <dependencies>
-        <!-- javassist 组件 -->
+        <!-- Javassist 组件 -->
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
@@ -44,7 +44,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-        <!-- subgrade组件 -->
+        <!-- Subgrade 组件 -->
         <dependency>
             <groupId>com.dwarfeng</groupId>
             <artifactId>subgrade-sdk</artifactId>
