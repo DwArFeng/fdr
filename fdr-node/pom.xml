@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.dwarfeng</groupId>
         <artifactId>fdr</artifactId>
-        <version>1.10.5.a-SNAPSHOT</version>
+        <version>1.10.15.a</version>
     </parent>
 
     <packaging>pom</packaging>
