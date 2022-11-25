@@ -40,11 +40,11 @@
         <guava.version>31.1-jre</guava.version>
         <curator.version>4.3.0</curator.version>
         <aspectj.version>1.8.2</aspectj.version>
-        <aopalliance.version>1.0</aopalliance.version>
         <hibernate.version>5.4.24.Final</hibernate.version>
         <hibernate-validator.version>6.2.5.Final</hibernate-validator.version>
-        <log4j2.version>2.17.2</log4j2.version>
         <slf4j.version>1.7.5</slf4j.version>
+        <log4j2.version>2.17.2</log4j2.version>
+        <jboss-logging.version>3.4.3.Final</jboss-logging.version>
         <dozer.version>5.5.1</dozer.version>
         <dutil.version>beta-0.3.2.a</dutil.version>
         <snowflake.version>1.4.10.a</snowflake.version>
@@ -199,6 +199,11 @@
                 <artifactId>log4j-slf4j-impl</artifactId>
                 <version>${log4j2.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.jboss.logging</groupId>
+                <artifactId>jboss-logging</artifactId>
+                <version>${jboss-logging.version}</version>
+            </dependency>
             <!-- Protobuf 组件 -->
             <dependency>
                 <groupId>com.google.protobuf</groupId>
@@ -331,6 +336,12 @@
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate-validator.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>jboss-logging</artifactId>
+                        <groupId>org.jboss.logging</groupId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- Dozer 模块 -->
             <dependency>
