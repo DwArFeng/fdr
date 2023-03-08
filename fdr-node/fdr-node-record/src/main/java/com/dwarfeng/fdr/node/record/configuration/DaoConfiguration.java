@@ -1,10 +1,12 @@
 package com.dwarfeng.fdr.node.record.configuration;
 
+import com.dwarfeng.fdr.impl.bean.HibernateMapper;
 import com.dwarfeng.fdr.impl.bean.entity.*;
 import com.dwarfeng.fdr.impl.dao.preset.*;
+import com.dwarfeng.fdr.sdk.bean.FastJsonMapper;
 import com.dwarfeng.fdr.sdk.bean.entity.FastJsonRealtimeValue;
 import com.dwarfeng.fdr.stack.bean.entity.*;
-import com.dwarfeng.subgrade.impl.bean.DozerBeanTransformer;
+import com.dwarfeng.subgrade.impl.bean.MapStructBeanTransformer;
 import com.dwarfeng.subgrade.impl.dao.*;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
@@ -15,8 +17,6 @@ import com.dwarfeng.subgrade.stack.bean.BeanTransformer;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
-import org.dozer.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,37 +28,21 @@ import java.util.List;
 @Configuration
 public class DaoConfiguration {
 
-    @Autowired
-    private HibernateTemplate hibernateTemplate;
-    @Autowired
-    private RedisTemplate<String, ?> redisTemplate;
-    @Autowired
-    private Mapper mapper;
+    private final HibernateTemplate hibernateTemplate;
+    private final RedisTemplate<String, ?> redisTemplate;
 
-    @Autowired
-    private FilteredValuePresetCriteriaMaker filteredValuePresetCriteriaMaker;
-    @Autowired
-    private List<DialectNativeLookup<FilteredValue>> filteredValueDialectNativeLookups;
-    @Autowired
-    private FilterInfoPresetCriteriaMaker filterInfoPresetCriteriaMaker;
-    @Autowired
-    private PersistenceValuePresetCriteriaMaker persistenceValuePresetCriteriaMaker;
-    @Autowired
-    private List<DialectNativeLookup<PersistenceValue>> persistenceValueDialectNativeLookups;
-    @Autowired
-    private PointPresetCriteriaMaker pointPresetCriteriaMaker;
-    @Autowired
-    private TriggeredValuePresetCriteriaMaker triggeredValuePresetCriteriaMaker;
-    @Autowired
-    private List<DialectNativeLookup<TriggeredValue>> triggeredValueDialectNativeLookups;
-    @Autowired
-    private TriggerInfoPresetCriteriaMaker triggerInfoPresetCriteriaMaker;
-    @Autowired
-    private FilterSupportPresetCriteriaMaker filterSupportPresetCriteriaMaker;
-    @Autowired
-    private TriggerSupportPresetCriteriaMaker triggerSupportPresetCriteriaMaker;
-    @Autowired
-    private MapperSupportPresetCriteriaMaker mapperSupportPresetCriteriaMaker;
+    private final FilteredValuePresetCriteriaMaker filteredValuePresetCriteriaMaker;
+    private final List<DialectNativeLookup<FilteredValue>> filteredValueDialectNativeLookups;
+    private final FilterInfoPresetCriteriaMaker filterInfoPresetCriteriaMaker;
+    private final PersistenceValuePresetCriteriaMaker persistenceValuePresetCriteriaMaker;
+    private final List<DialectNativeLookup<PersistenceValue>> persistenceValueDialectNativeLookups;
+    private final PointPresetCriteriaMaker pointPresetCriteriaMaker;
+    private final TriggeredValuePresetCriteriaMaker triggeredValuePresetCriteriaMaker;
+    private final List<DialectNativeLookup<TriggeredValue>> triggeredValueDialectNativeLookups;
+    private final TriggerInfoPresetCriteriaMaker triggerInfoPresetCriteriaMaker;
+    private final FilterSupportPresetCriteriaMaker filterSupportPresetCriteriaMaker;
+    private final TriggerSupportPresetCriteriaMaker triggerSupportPresetCriteriaMaker;
+    private final MapperSupportPresetCriteriaMaker mapperSupportPresetCriteriaMaker;
 
     @Value("${redis.dbkey.realtime_value}")
     private String realtimeValueDbKey;
@@ -71,9 +55,41 @@ public class DaoConfiguration {
     @Value("${hibernate.accelerate_enabled}")
     private boolean accelerateEnabled;
 
+    public DaoConfiguration(
+            HibernateTemplate hibernateTemplate,
+            RedisTemplate<String, ?> redisTemplate,
+            FilteredValuePresetCriteriaMaker filteredValuePresetCriteriaMaker,
+            List<DialectNativeLookup<FilteredValue>> filteredValueDialectNativeLookups,
+            FilterInfoPresetCriteriaMaker filterInfoPresetCriteriaMaker,
+            PersistenceValuePresetCriteriaMaker persistenceValuePresetCriteriaMaker,
+            List<DialectNativeLookup<PersistenceValue>> persistenceValueDialectNativeLookups,
+            PointPresetCriteriaMaker pointPresetCriteriaMaker,
+            TriggeredValuePresetCriteriaMaker triggeredValuePresetCriteriaMaker,
+            List<DialectNativeLookup<TriggeredValue>> triggeredValueDialectNativeLookups,
+            TriggerInfoPresetCriteriaMaker triggerInfoPresetCriteriaMaker,
+            FilterSupportPresetCriteriaMaker filterSupportPresetCriteriaMaker,
+            TriggerSupportPresetCriteriaMaker triggerSupportPresetCriteriaMaker,
+            MapperSupportPresetCriteriaMaker mapperSupportPresetCriteriaMaker
+    ) {
+        this.hibernateTemplate = hibernateTemplate;
+        this.redisTemplate = redisTemplate;
+        this.filteredValuePresetCriteriaMaker = filteredValuePresetCriteriaMaker;
+        this.filteredValueDialectNativeLookups = filteredValueDialectNativeLookups;
+        this.filterInfoPresetCriteriaMaker = filterInfoPresetCriteriaMaker;
+        this.persistenceValuePresetCriteriaMaker = persistenceValuePresetCriteriaMaker;
+        this.persistenceValueDialectNativeLookups = persistenceValueDialectNativeLookups;
+        this.pointPresetCriteriaMaker = pointPresetCriteriaMaker;
+        this.triggeredValuePresetCriteriaMaker = triggeredValuePresetCriteriaMaker;
+        this.triggeredValueDialectNativeLookups = triggeredValueDialectNativeLookups;
+        this.triggerInfoPresetCriteriaMaker = triggerInfoPresetCriteriaMaker;
+        this.filterSupportPresetCriteriaMaker = filterSupportPresetCriteriaMaker;
+        this.triggerSupportPresetCriteriaMaker = triggerSupportPresetCriteriaMaker;
+        this.mapperSupportPresetCriteriaMaker = mapperSupportPresetCriteriaMaker;
+    }
+
     @Bean
-    public BeanTransformer<FilteredValue, HibernateFilteredValue> filteredValueDozerBeanTransformer() {
-        return new DozerBeanTransformer<>(FilteredValue.class, HibernateFilteredValue.class, mapper);
+    public BeanTransformer<FilteredValue, HibernateFilteredValue> filteredValueMapStructBeanTransformer() {
+        return new MapStructBeanTransformer<>(FilteredValue.class, HibernateFilteredValue.class, HibernateMapper.class);
     }
 
     @Bean
@@ -81,8 +97,10 @@ public class DaoConfiguration {
     filteredValueHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, mapper),
-                new DozerBeanTransformer<>(FilteredValue.class, HibernateFilteredValue.class, mapper),
+                new MapStructBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, HibernateMapper.class),
+                new MapStructBeanTransformer<>(
+                        FilteredValue.class, HibernateFilteredValue.class, HibernateMapper.class
+                ),
                 HibernateFilteredValue.class,
                 new DefaultDeletionMod<>(),
                 batchSize
@@ -93,7 +111,9 @@ public class DaoConfiguration {
     public HibernateEntireLookupDao<FilteredValue, HibernateFilteredValue> filteredValueHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(FilteredValue.class, HibernateFilteredValue.class, mapper),
+                new MapStructBeanTransformer<>(
+                        FilteredValue.class, HibernateFilteredValue.class, HibernateMapper.class
+                ),
                 HibernateFilteredValue.class
         );
     }
@@ -102,7 +122,9 @@ public class DaoConfiguration {
     public PresetLookupDao<FilteredValue> filteredValuePresetLookupDao() {
         return HibernateDaoFactory.newPresetLookupDaoWithChosenDialect(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(FilteredValue.class, HibernateFilteredValue.class, mapper),
+                new MapStructBeanTransformer<>(
+                        FilteredValue.class, HibernateFilteredValue.class, HibernateMapper.class
+                ),
                 HibernateFilteredValue.class,
                 filteredValuePresetCriteriaMaker,
                 filteredValueDialectNativeLookups,
@@ -112,11 +134,12 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, FilterInfo, HibernateFilterInfo> filterInfoHibernateBatchBaseDao() {
+    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, FilterInfo, HibernateFilterInfo>
+    filterInfoHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, mapper),
-                new DozerBeanTransformer<>(FilterInfo.class, HibernateFilterInfo.class, mapper),
+                new MapStructBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, HibernateMapper.class),
+                new MapStructBeanTransformer<>(FilterInfo.class, HibernateFilterInfo.class, HibernateMapper.class),
                 HibernateFilterInfo.class,
                 new DefaultDeletionMod<>(),
                 batchSize
@@ -127,7 +150,7 @@ public class DaoConfiguration {
     public HibernatePresetLookupDao<FilterInfo, HibernateFilterInfo> filterInfoHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(FilterInfo.class, HibernateFilterInfo.class, mapper),
+                new MapStructBeanTransformer<>(FilterInfo.class, HibernateFilterInfo.class, HibernateMapper.class),
                 HibernateFilterInfo.class,
                 filterInfoPresetCriteriaMaker
         );
@@ -135,15 +158,20 @@ public class DaoConfiguration {
 
     @Bean
     public BeanTransformer<PersistenceValue, HibernatePersistenceValue> persistenceValueBeanTransformer() {
-        return new DozerBeanTransformer<>(PersistenceValue.class, HibernatePersistenceValue.class, mapper);
+        return new MapStructBeanTransformer<>(
+                PersistenceValue.class, HibernatePersistenceValue.class, HibernateMapper.class
+        );
     }
 
     @Bean
-    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, PersistenceValue, HibernatePersistenceValue> persistenceValueHibernateBatchBaseDao() {
+    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, PersistenceValue, HibernatePersistenceValue>
+    persistenceValueHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, mapper),
-                new DozerBeanTransformer<>(PersistenceValue.class, HibernatePersistenceValue.class, mapper),
+                new MapStructBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, HibernateMapper.class),
+                new MapStructBeanTransformer<>(
+                        PersistenceValue.class, HibernatePersistenceValue.class, HibernateMapper.class
+                ),
                 HibernatePersistenceValue.class,
                 new DefaultDeletionMod<>(),
                 batchSize
@@ -151,10 +179,13 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernateEntireLookupDao<PersistenceValue, HibernatePersistenceValue> persistenceValueHibernateEntireLookupDao() {
+    public HibernateEntireLookupDao<PersistenceValue, HibernatePersistenceValue>
+    persistenceValueHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(PersistenceValue.class, HibernatePersistenceValue.class, mapper),
+                new MapStructBeanTransformer<>(
+                        PersistenceValue.class, HibernatePersistenceValue.class, HibernateMapper.class
+                ),
                 HibernatePersistenceValue.class
         );
     }
@@ -163,7 +194,9 @@ public class DaoConfiguration {
     public PresetLookupDao<PersistenceValue> persistenceValuePresetLookupDao() {
         return HibernateDaoFactory.newPresetLookupDaoWithChosenDialect(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(PersistenceValue.class, HibernatePersistenceValue.class, mapper),
+                new MapStructBeanTransformer<>(
+                        PersistenceValue.class, HibernatePersistenceValue.class, HibernateMapper.class
+                ),
                 HibernatePersistenceValue.class,
                 persistenceValuePresetCriteriaMaker,
                 persistenceValueDialectNativeLookups,
@@ -176,8 +209,8 @@ public class DaoConfiguration {
     public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, Point, HibernatePoint> pointHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, mapper),
-                new DozerBeanTransformer<>(Point.class, HibernatePoint.class, mapper),
+                new MapStructBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, HibernateMapper.class),
+                new MapStructBeanTransformer<>(Point.class, HibernatePoint.class, HibernateMapper.class),
                 HibernatePoint.class,
                 new DefaultDeletionMod<>(),
                 batchSize
@@ -188,7 +221,7 @@ public class DaoConfiguration {
     public HibernateEntireLookupDao<Point, HibernatePoint> pointHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(Point.class, HibernatePoint.class, mapper),
+                new MapStructBeanTransformer<>(Point.class, HibernatePoint.class, HibernateMapper.class),
                 HibernatePoint.class
         );
     }
@@ -197,7 +230,7 @@ public class DaoConfiguration {
     public HibernatePresetLookupDao<Point, HibernatePoint> pointHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(Point.class, HibernatePoint.class, mapper),
+                new MapStructBeanTransformer<>(Point.class, HibernatePoint.class, HibernateMapper.class),
                 HibernatePoint.class,
                 pointPresetCriteriaMaker
         );
@@ -209,7 +242,7 @@ public class DaoConfiguration {
         return new RedisBatchBaseDao<>(
                 (RedisTemplate<String, FastJsonRealtimeValue>) redisTemplate,
                 new LongIdStringKeyFormatter("key."),
-                new DozerBeanTransformer<>(RealtimeValue.class, FastJsonRealtimeValue.class, mapper),
+                new MapStructBeanTransformer<>(RealtimeValue.class, FastJsonRealtimeValue.class, FastJsonMapper.class),
                 realtimeValueDbKey
         );
     }
@@ -220,22 +253,27 @@ public class DaoConfiguration {
         return new RedisEntireLookupDao<>(
                 (RedisTemplate<String, FastJsonRealtimeValue>) redisTemplate,
                 new LongIdStringKeyFormatter("key."),
-                new DozerBeanTransformer<>(RealtimeValue.class, FastJsonRealtimeValue.class, mapper),
+                new MapStructBeanTransformer<>(RealtimeValue.class, FastJsonRealtimeValue.class, FastJsonMapper.class),
                 realtimeValueDbKey
         );
     }
 
     @Bean
-    public BeanTransformer<TriggeredValue, HibernateTriggeredValue> triggeredValueDozerBeanTransformer() {
-        return new DozerBeanTransformer<>(TriggeredValue.class, HibernateTriggeredValue.class, mapper);
+    public BeanTransformer<TriggeredValue, HibernateTriggeredValue> triggeredValueMapStructBeanTransformer() {
+        return new MapStructBeanTransformer<>(
+                TriggeredValue.class, HibernateTriggeredValue.class, HibernateMapper.class
+        );
     }
 
     @Bean
-    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, TriggeredValue, HibernateTriggeredValue> triggeredValueHibernateBatchBaseDao() {
+    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, TriggeredValue, HibernateTriggeredValue>
+    triggeredValueHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, mapper),
-                new DozerBeanTransformer<>(TriggeredValue.class, HibernateTriggeredValue.class, mapper),
+                new MapStructBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, HibernateMapper.class),
+                new MapStructBeanTransformer<>(
+                        TriggeredValue.class, HibernateTriggeredValue.class, HibernateMapper.class
+                ),
                 HibernateTriggeredValue.class,
                 new DefaultDeletionMod<>(),
                 batchSize
@@ -246,7 +284,9 @@ public class DaoConfiguration {
     public HibernateEntireLookupDao<TriggeredValue, HibernateTriggeredValue> triggeredValueHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(TriggeredValue.class, HibernateTriggeredValue.class, mapper),
+                new MapStructBeanTransformer<>(
+                        TriggeredValue.class, HibernateTriggeredValue.class, HibernateMapper.class
+                ),
                 HibernateTriggeredValue.class
         );
     }
@@ -255,7 +295,9 @@ public class DaoConfiguration {
     public PresetLookupDao<TriggeredValue> triggeredValuePresetLookupDao() {
         return HibernateDaoFactory.newPresetLookupDaoWithChosenDialect(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(TriggeredValue.class, HibernateTriggeredValue.class, mapper),
+                new MapStructBeanTransformer<>(
+                        TriggeredValue.class, HibernateTriggeredValue.class, HibernateMapper.class
+                ),
                 HibernateTriggeredValue.class,
                 triggeredValuePresetCriteriaMaker,
                 triggeredValueDialectNativeLookups,
@@ -265,11 +307,12 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, TriggerInfo, HibernateTriggerInfo> triggerInfoHibernateBatchBaseDao() {
+    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, TriggerInfo, HibernateTriggerInfo>
+    triggerInfoHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, mapper),
-                new DozerBeanTransformer<>(TriggerInfo.class, HibernateTriggerInfo.class, mapper),
+                new MapStructBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, HibernateMapper.class),
+                new MapStructBeanTransformer<>(TriggerInfo.class, HibernateTriggerInfo.class, HibernateMapper.class),
                 HibernateTriggerInfo.class,
                 new DefaultDeletionMod<>(),
                 batchSize
@@ -280,7 +323,7 @@ public class DaoConfiguration {
     public HibernatePresetLookupDao<TriggerInfo, HibernateTriggerInfo> triggerInfoHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(TriggerInfo.class, HibernateTriggerInfo.class, mapper),
+                new MapStructBeanTransformer<>(TriggerInfo.class, HibernateTriggerInfo.class, HibernateMapper.class),
                 HibernateTriggerInfo.class,
                 triggerInfoPresetCriteriaMaker
         );
@@ -291,8 +334,10 @@ public class DaoConfiguration {
     filterSupportHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, mapper),
-                new DozerBeanTransformer<>(FilterSupport.class, HibernateFilterSupport.class, mapper),
+                new MapStructBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, HibernateMapper.class),
+                new MapStructBeanTransformer<>(
+                        FilterSupport.class, HibernateFilterSupport.class, HibernateMapper.class
+                ),
                 HibernateFilterSupport.class
         );
     }
@@ -301,7 +346,9 @@ public class DaoConfiguration {
     public HibernateEntireLookupDao<FilterSupport, HibernateFilterSupport> filterSupportHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(FilterSupport.class, HibernateFilterSupport.class, mapper),
+                new MapStructBeanTransformer<>(
+                        FilterSupport.class, HibernateFilterSupport.class, HibernateMapper.class
+                ),
                 HibernateFilterSupport.class
         );
     }
@@ -310,7 +357,9 @@ public class DaoConfiguration {
     public HibernatePresetLookupDao<FilterSupport, HibernateFilterSupport> filterSupportHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(FilterSupport.class, HibernateFilterSupport.class, mapper),
+                new MapStructBeanTransformer<>(
+                        FilterSupport.class, HibernateFilterSupport.class, HibernateMapper.class
+                ),
                 HibernateFilterSupport.class,
                 filterSupportPresetCriteriaMaker
         );
@@ -321,8 +370,10 @@ public class DaoConfiguration {
     triggerSupportHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, mapper),
-                new DozerBeanTransformer<>(TriggerSupport.class, HibernateTriggerSupport.class, mapper),
+                new MapStructBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, HibernateMapper.class),
+                new MapStructBeanTransformer<>(
+                        TriggerSupport.class, HibernateTriggerSupport.class, HibernateMapper.class
+                ),
                 HibernateTriggerSupport.class
         );
     }
@@ -331,7 +382,9 @@ public class DaoConfiguration {
     public HibernateEntireLookupDao<TriggerSupport, HibernateTriggerSupport> triggerSupportHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(TriggerSupport.class, HibernateTriggerSupport.class, mapper),
+                new MapStructBeanTransformer<>(
+                        TriggerSupport.class, HibernateTriggerSupport.class, HibernateMapper.class
+                ),
                 HibernateTriggerSupport.class
         );
     }
@@ -340,7 +393,9 @@ public class DaoConfiguration {
     public HibernatePresetLookupDao<TriggerSupport, HibernateTriggerSupport> triggerSupportHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(TriggerSupport.class, HibernateTriggerSupport.class, mapper),
+                new MapStructBeanTransformer<>(
+                        TriggerSupport.class, HibernateTriggerSupport.class, HibernateMapper.class
+                ),
                 HibernateTriggerSupport.class,
                 triggerSupportPresetCriteriaMaker
         );
@@ -350,7 +405,7 @@ public class DaoConfiguration {
     public HibernateEntireLookupDao<FilterInfo, HibernateFilterInfo> filterInfoHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(FilterInfo.class, HibernateFilterInfo.class, mapper),
+                new MapStructBeanTransformer<>(FilterInfo.class, HibernateFilterInfo.class, HibernateMapper.class),
                 HibernateFilterInfo.class
         );
     }
@@ -359,7 +414,7 @@ public class DaoConfiguration {
     public HibernateEntireLookupDao<TriggerInfo, HibernateTriggerInfo> triggerInfoHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(TriggerInfo.class, HibernateTriggerInfo.class, mapper),
+                new MapStructBeanTransformer<>(TriggerInfo.class, HibernateTriggerInfo.class, HibernateMapper.class),
                 HibernateTriggerInfo.class
         );
     }
@@ -369,8 +424,10 @@ public class DaoConfiguration {
     mapperSupportHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, mapper),
-                new DozerBeanTransformer<>(MapperSupport.class, HibernateMapperSupport.class, mapper),
+                new MapStructBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, HibernateMapper.class),
+                new MapStructBeanTransformer<>(
+                        MapperSupport.class, HibernateMapperSupport.class, HibernateMapper.class
+                ),
                 HibernateMapperSupport.class
         );
     }
@@ -379,7 +436,9 @@ public class DaoConfiguration {
     public HibernateEntireLookupDao<MapperSupport, HibernateMapperSupport> mapperSupportHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(MapperSupport.class, HibernateMapperSupport.class, mapper),
+                new MapStructBeanTransformer<>(
+                        MapperSupport.class, HibernateMapperSupport.class, HibernateMapper.class
+                ),
                 HibernateMapperSupport.class
         );
     }
@@ -388,7 +447,9 @@ public class DaoConfiguration {
     public HibernatePresetLookupDao<MapperSupport, HibernateMapperSupport> mapperSupportHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(MapperSupport.class, HibernateMapperSupport.class, mapper),
+                new MapStructBeanTransformer<>(
+                        MapperSupport.class, HibernateMapperSupport.class, HibernateMapper.class
+                ),
                 HibernateMapperSupport.class,
                 mapperSupportPresetCriteriaMaker
         );
@@ -398,7 +459,7 @@ public class DaoConfiguration {
     public HibernateBatchWriteDao<FilteredValue, HibernateFilteredValue> filteredValueHibernateBatchWriteDao() {
         return new HibernateBatchWriteDao<>(
                 hibernateTemplate,
-                filteredValueDozerBeanTransformer(),
+                filteredValueMapStructBeanTransformer(),
                 batchSize
         );
     }
@@ -407,16 +468,19 @@ public class DaoConfiguration {
     public HibernateBatchWriteDao<TriggeredValue, HibernateTriggeredValue> triggeredValueHibernateBatchWriteDao() {
         return new HibernateBatchWriteDao<>(
                 hibernateTemplate,
-                triggeredValueDozerBeanTransformer(),
+                triggeredValueMapStructBeanTransformer(),
                 batchSize
         );
     }
 
     @Bean
-    public HibernateBatchWriteDao<PersistenceValue, HibernatePersistenceValue> persistenceValueHibernateBatchWriteDao() {
+    public HibernateBatchWriteDao<PersistenceValue, HibernatePersistenceValue>
+    persistenceValueHibernateBatchWriteDao() {
         return new HibernateBatchWriteDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(PersistenceValue.class, HibernatePersistenceValue.class, mapper),
+                new MapStructBeanTransformer<>(
+                        PersistenceValue.class, HibernatePersistenceValue.class, HibernateMapper.class
+                ),
                 batchSize
         );
     }
