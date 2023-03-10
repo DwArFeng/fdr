@@ -37,6 +37,7 @@ public interface TriggeredValueDao extends BatchBaseDao<LongIdKey, TriggeredValu
      * @since 1.9.0
      * @deprecated 使用预设查询 {@link TriggeredValueMaintainService#CHILD_FOR_POINT_PREVIOUS} 替代。
      */
+    @Deprecated
     TriggeredValue previous(LongIdKey pointKey, Date date) throws DaoException;
 
     /**
@@ -55,5 +56,6 @@ public interface TriggeredValueDao extends BatchBaseDao<LongIdKey, TriggeredValu
      * @since 1.9.4
      * @deprecated 使用预设查询 {@link TriggeredValueMaintainService#CHILD_FOR_POINT_REAR} 替代。
      */
+    @Deprecated
     TriggeredValue rear(LongIdKey pointKey, Date date) throws DaoException;
 }

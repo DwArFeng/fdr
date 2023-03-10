@@ -37,6 +37,7 @@ public interface FilteredValueDao extends BatchBaseDao<LongIdKey, FilteredValue>
      * @since 1.9.0
      * @deprecated 使用预设查询 {@link FilteredValueMaintainService#CHILD_FOR_POINT_PREVIOUS} 替代。
      */
+    @Deprecated
     FilteredValue previous(LongIdKey pointKey, Date date) throws DaoException;
 
     /**
@@ -55,5 +56,6 @@ public interface FilteredValueDao extends BatchBaseDao<LongIdKey, FilteredValue>
      * @since 1.9.4
      * @deprecated 使用预设查询 {@link FilteredValueMaintainService#CHILD_FOR_POINT_REAR} 替代。
      */
+    @Deprecated
     FilteredValue rear(LongIdKey pointKey, Date date) throws DaoException;
 }

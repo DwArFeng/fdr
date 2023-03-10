@@ -173,6 +173,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
         batchWriteDao.batchWrite(elements);
     }
 
+    @Deprecated
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
@@ -182,6 +183,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
         );
     }
 
+    @Deprecated
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)

@@ -173,6 +173,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
         batchWriteDao.batchWrite(elements);
     }
 
+    @Deprecated
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
@@ -182,6 +183,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
         );
     }
 
+    @Deprecated
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
