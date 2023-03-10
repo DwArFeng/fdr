@@ -4,6 +4,8 @@
 
 #### 功能构建
 
+- 优化 opt 文件的格式。
+
 - 使用 subgrade 工具库替代本地缓存实现。
 
 - 使用 `MapStruct` 重构 `BeanTransformer`。

@@ -1,15 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--suppress SpringFacetInspection -->
-<beans xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns="http://www.springframework.org/schema/beans"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+<beans
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.springframework.org/schema/beans"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context 
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd"
+>
 
     <!--扫描handler的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.filter" use-default-filters="false">
-        <context:include-filter type="assignable" expression="com.dwarfeng.fdr.impl.handler.FilterSupporter"/>
+        <!-- 加载 DoubleFilter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.DoubleFilterRegistry"
+        />
+        -->
+
+        <!-- 加载 GroovyFilter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.GroovyFilterRegistry"
+        />
+        -->
+
+        <!-- 加载 IntegerFilter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.IntegerFilterRegistry"
+        />
+        -->
+
+        <!-- 加载 LongFilter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.LongFilterRegistry"
+        />
+        -->
+
+        <!-- 加载 RangedDoubleFilter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.RangedDoubleFilterRegistry"
+        />
+        -->
+
+        <!-- 加载 RangedIntegerFilter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.RangedIntegerFilterRegistry"
+        />
+        -->
+
+        <!-- 加载 RangedLongFilter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.RangedLongFilterRegistry"
+        />
+        -->
+
+        <!-- 加载 RegexFilter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.RegexFilterRegistry"
+        />
+        -->
     </context:component-scan>
 </beans>
