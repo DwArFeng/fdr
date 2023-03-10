@@ -21,15 +21,31 @@
 
     <!-- 向注册中心注册暴露服务地址,注册服务 -->
     <!--suppress DeprecatedClassUsageInspection -->
-    <dubbo:service interface="com.dwarfeng.fdr.stack.service.MappingLookupService"
-                   ref="mappingLookupServiceImpl"/>
-    <dubbo:service interface="com.dwarfeng.fdr.stack.service.PersistenceValueMappingLookupService"
-                   ref="persistenceValueMappingLookupServiceImpl"/>
-    <dubbo:service interface="com.dwarfeng.fdr.stack.service.FilteredValueMappingLookupService"
-                   ref="filteredValueMappingLookupServiceImpl"/>
-    <dubbo:service interface="com.dwarfeng.fdr.stack.service.TriggeredValueMappingLookupService"
-                   ref="triggeredValueMappingLookupServiceImpl"/>
+    <dubbo:service
+            interface="com.dwarfeng.fdr.stack.service.MappingLookupService"
+            ref="mappingLookupServiceImpl"
+            group="${dubbo.provider.group}"
+    />
+    <dubbo:service
+            interface="com.dwarfeng.fdr.stack.service.PersistenceValueMappingLookupService"
+            ref="persistenceValueMappingLookupServiceImpl"
+            group="${dubbo.provider.group}"
+    />
+    <dubbo:service
+            interface="com.dwarfeng.fdr.stack.service.FilteredValueMappingLookupService"
+            ref="filteredValueMappingLookupServiceImpl"
+            group="${dubbo.provider.group}"
+    />
+    <dubbo:service
+            interface="com.dwarfeng.fdr.stack.service.TriggeredValueMappingLookupService"
+            ref="triggeredValueMappingLookupServiceImpl"
+            group="${dubbo.provider.group}"
+    />
 
-    <!-- 向注册中心注册暴露服务地址,注册消费者服务 -->
-    <dubbo:reference id="longIdService" interface="com.dwarfeng.sfds.stack.service.LongIdService"/>
+    <!-- snowflake -->
+    <dubbo:reference
+            id="longIdService"
+            interface="com.dwarfeng.sfds.stack.service.LongIdService"
+            group="${dubbo.consumer.snowflake.group}"
+    />
 </beans>
