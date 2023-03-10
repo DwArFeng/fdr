@@ -7,101 +7,92 @@ import com.dwarfeng.fdr.stack.handler.*;
 import com.dwarfeng.fdr.stack.service.EnabledFilterInfoLookupService;
 import com.dwarfeng.fdr.stack.service.EnabledTriggerInfoLookupService;
 import com.dwarfeng.fdr.stack.service.PointMaintainService;
+import com.dwarfeng.subgrade.impl.handler.Fetcher;
+import com.dwarfeng.subgrade.impl.handler.GeneralLocalCacheHandler;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class RecordLocalCacheHandlerImpl implements RecordLocalCacheHandler {
 
-    @Autowired
-    private RecordContextFetcher recordContextFetcher;
+    private final GeneralLocalCacheHandler<LongIdKey, RecordContext> handler;
 
-    private final ReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Map<LongIdKey, RecordContext> contextMap = new HashMap<>();
-    private final Set<LongIdKey> notExistPoints = new HashSet<>();
-
-    @SuppressWarnings("DuplicatedCode")
-    @Override
-    public RecordContext getRecordContext(LongIdKey pointKey) throws HandlerException {
-        try {
-            lock.readLock().lock();
-            try {
-                if (contextMap.containsKey(pointKey)) {
-                    return contextMap.get(pointKey);
-                }
-                if (notExistPoints.contains(pointKey)) {
-                    return null;
-                }
-            } finally {
-                lock.readLock().unlock();
-            }
-            lock.writeLock().lock();
-            try {
-                if (contextMap.containsKey(pointKey)) {
-                    return contextMap.get(pointKey);
-                }
-                if (notExistPoints.contains(pointKey)) {
-                    return null;
-                }
-                RecordContext recordContext = recordContextFetcher.fetchContext(pointKey);
-                if (Objects.nonNull(recordContext)) {
-                    contextMap.put(pointKey, recordContext);
-                    return recordContext;
-                }
-                notExistPoints.add(pointKey);
-                return null;
-            } finally {
-                lock.writeLock().unlock();
-            }
-        } catch (Exception e) {
-            throw new HandlerException(e);
-        }
+    public RecordLocalCacheHandlerImpl(RecordContextFetcher recordContextFetcher) {
+        handler = new GeneralLocalCacheHandler<>(recordContextFetcher);
     }
 
+    @BehaviorAnalyse
     @Override
-    public void clear() {
-        lock.writeLock().lock();
-        try {
-            contextMap.clear();
-            notExistPoints.clear();
-        } finally {
-            lock.writeLock().unlock();
-        }
+    public boolean exists(LongIdKey key) throws HandlerException {
+        return handler.exists(key);
+    }
+
+    @BehaviorAnalyse
+    @Override
+    public RecordContext get(LongIdKey key) throws HandlerException {
+        return handler.get(key);
+    }
+
+    @BehaviorAnalyse
+    @Override
+    public boolean remove(LongIdKey key) {
+        return handler.remove(key);
+    }
+
+    @BehaviorAnalyse
+    @Override
+    public void clear() throws HandlerException {
+        handler.clear();
     }
 
     @Component
-    public static class RecordContextFetcher {
+    public static class RecordContextFetcher implements Fetcher<LongIdKey, RecordContext> {
 
-        @Autowired
-        private PointMaintainService pointMaintainService;
-        @Autowired
-        private EnabledFilterInfoLookupService enabledFilterInfoLookupService;
-        @Autowired
-        private EnabledTriggerInfoLookupService enabledTriggerInfoLookupService;
+        private final PointMaintainService pointMaintainService;
+        private final EnabledFilterInfoLookupService enabledFilterInfoLookupService;
+        private final EnabledTriggerInfoLookupService enabledTriggerInfoLookupService;
 
-        @Autowired
-        private FilterHandler filterHandler;
-        @Autowired
-        private TriggerHandler triggerHandler;
+        private final FilterHandler filterHandler;
+        private final TriggerHandler triggerHandler;
 
+        public RecordContextFetcher(
+                PointMaintainService pointMaintainService,
+                EnabledFilterInfoLookupService enabledFilterInfoLookupService,
+                EnabledTriggerInfoLookupService enabledTriggerInfoLookupService,
+                FilterHandler filterHandler,
+                TriggerHandler triggerHandler
+        ) {
+            this.pointMaintainService = pointMaintainService;
+            this.enabledFilterInfoLookupService = enabledFilterInfoLookupService;
+            this.enabledTriggerInfoLookupService = enabledTriggerInfoLookupService;
+            this.filterHandler = filterHandler;
+            this.triggerHandler = triggerHandler;
+        }
+
+        @Override
         @BehaviorAnalyse
-        @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-        public RecordLocalCacheHandler.RecordContext fetchContext(LongIdKey pointKey) throws Exception {
-            if (!pointMaintainService.exists(pointKey)) {
-                return null;
-            }
+        @Transactional(
+                transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class
+        )
+        public boolean exists(LongIdKey key) throws Exception {
+            return pointMaintainService.exists(key);
+        }
 
-            Point point = pointMaintainService.get(pointKey);
-            List<FilterInfo> filterInfos = enabledFilterInfoLookupService.getEnabledFilterInfos(pointKey);
-            List<TriggerInfo> triggerInfos = enabledTriggerInfoLookupService.getEnabledTriggerInfos(pointKey);
+        @Override
+        @BehaviorAnalyse
+        @Transactional(
+                transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class
+        )
+        public RecordContext fetch(LongIdKey key) throws Exception {
+            Point point = pointMaintainService.get(key);
+            List<FilterInfo> filterInfos = enabledFilterInfoLookupService.getEnabledFilterInfos(key);
+            List<TriggerInfo> triggerInfos = enabledTriggerInfoLookupService.getEnabledTriggerInfos(key);
 
             List<Filter> filters = new ArrayList<>();
             List<Trigger> triggers = new ArrayList<>();
@@ -113,11 +104,7 @@ public class RecordLocalCacheHandlerImpl implements RecordLocalCacheHandler {
                 triggers.add(triggerHandler.make(triggerInfo));
             }
 
-            return new RecordLocalCacheHandler.RecordContext(
-                    point,
-                    filters,
-                    triggers
-            );
+            return new RecordLocalCacheHandler.RecordContext(point, filters, triggers);
         }
     }
 }

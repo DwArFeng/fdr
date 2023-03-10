@@ -31,7 +31,7 @@ public class MapQosServiceImpl implements MapQosService {
     public Mapper getMapper(String mapperType) throws ServiceException {
         lock.lock();
         try {
-            return mapLocalCacheHandler.getMapper(mapperType);
+            return mapLocalCacheHandler.get(mapperType);
         } catch (HandlerException e) {
             throw ServiceExceptionHelper.logAndThrow("从本地缓存中获取映射器时发生异常",
                     LogLevel.WARN, sem, e

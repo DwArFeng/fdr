@@ -358,7 +358,7 @@ public class PersistenceValueMappingLookupHandlerImpl implements PersistenceValu
         }
 
         private Mapper checkAndGetMapper(String mapperType) throws HandlerException {
-            Mapper mapper = mapLocalCacheHandler.getMapper(mapperType);
+            Mapper mapper = mapLocalCacheHandler.get(mapperType);
             if (Objects.isNull(mapper)) {
                 throw new UnsupportedMapperTypeException(mapperType);
             }

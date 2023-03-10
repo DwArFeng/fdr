@@ -3,10 +3,11 @@ package com.dwarfeng.fdr.stack.handler;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
-import com.dwarfeng.subgrade.stack.handler.Handler;
+import com.dwarfeng.subgrade.stack.handler.LocalCacheHandler;
 
 import java.util.List;
+
+import static com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler.RecordContext;
 
 /**
  * 记录本地缓存处理器。
@@ -18,23 +19,7 @@ import java.util.List;
  * @author DwArFeng
  * @since 1.2.0.a
  */
-public interface RecordLocalCacheHandler extends Handler {
-
-    /**
-     * 获取指定数据点的记录上下文。
-     *
-     * @param pointKey 指定的数据点。
-     * @return 指定数据点的记录上下文，或者是null。
-     * @throws HandlerException 处理器异常。
-     */
-    RecordContext getRecordContext(LongIdKey pointKey) throws HandlerException;
-
-    /**
-     * 清除本地缓存。
-     *
-     * @throws HandlerException 处理器异常。
-     */
-    void clear() throws HandlerException;
+public interface RecordLocalCacheHandler extends LocalCacheHandler<LongIdKey, RecordContext> {
 
     /**
      * 数据记录上下文。
@@ -44,7 +29,7 @@ public interface RecordLocalCacheHandler extends Handler {
      */
     class RecordContext implements Bean {
 
-        private static final long serialVersionUID = -3206751219977190478L;
+        private static final long serialVersionUID = 7006527237602002570L;
 
         private Point point;
         private List<Filter> filters;

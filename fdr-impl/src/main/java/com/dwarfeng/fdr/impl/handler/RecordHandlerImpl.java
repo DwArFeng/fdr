@@ -327,7 +327,7 @@ public class RecordHandlerImpl implements RecordHandler {
                 LOGGER.debug("记录数据信息: " + dataInfo);
                 LongIdKey pointKey = new LongIdKey(dataInfo.getPointLongId());
                 // 1. 获取 RecordContext。
-                RecordLocalCacheHandler.RecordContext recordContext = recordLocalCacheHandler.getRecordContext(pointKey);
+                RecordLocalCacheHandler.RecordContext recordContext = recordLocalCacheHandler.get(pointKey);
                 if (Objects.isNull(recordContext)) {
                     throw new PointNotExistsException(pointKey);
                 }

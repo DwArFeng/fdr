@@ -12,6 +12,16 @@ import com.dwarfeng.subgrade.stack.handler.Handler;
 public interface MapperHandler extends Handler {
 
     /**
+     * 查询处理器是否支持指定的类型。
+     *
+     * @param type 指定的类型。
+     * @return 处理器是否支持指定的类型。
+     * @throws HandlerException 处理器异常。
+     * @since 1.11.0
+     */
+    boolean supportType(String type) throws HandlerException;
+
+    /**
      * 构造映射器。
      *
      * @param type 映射器的类型。

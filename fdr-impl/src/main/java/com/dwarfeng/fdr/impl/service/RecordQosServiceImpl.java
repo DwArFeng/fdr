@@ -106,7 +106,7 @@ public class RecordQosServiceImpl implements RecordQosService {
     public RecordContext getRecordContext(LongIdKey pointKey) throws ServiceException {
         lock.lock();
         try {
-            return recordLocalCacheHandler.getRecordContext(pointKey);
+            return recordLocalCacheHandler.get(pointKey);
         } catch (HandlerException e) {
             throw ServiceExceptionHelper.logAndThrow("从本地缓存中获取记录上下文时发生异常",
                     LogLevel.WARN, sem, e

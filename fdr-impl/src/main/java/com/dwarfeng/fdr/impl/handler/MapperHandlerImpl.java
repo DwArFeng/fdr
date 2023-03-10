@@ -23,6 +23,15 @@ public class MapperHandlerImpl implements MapperHandler {
     private List<MapperMaker> mapperMakers = Collections.emptyList();
 
     @Override
+    public boolean supportType(String type) throws HandlerException {
+        try {
+            return mapperMakers.stream().anyMatch(maker -> maker.supportType(type));
+        } catch (Exception e) {
+            throw new MapperException(e);
+        }
+    }
+
+    @Override
     public Mapper make(String type) throws HandlerException {
         try {
             // 生成过滤器。
