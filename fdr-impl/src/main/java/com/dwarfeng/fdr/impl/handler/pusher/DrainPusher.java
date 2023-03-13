@@ -56,6 +56,14 @@ public class DrainPusher extends AbstractPusher {
     }
 
     @Override
+    public void recordReset() {
+    }
+
+    @Override
+    public void mapReset() {
+    }
+
+    @Override
     public String toString() {
         return "DrainPusher{" +
                 "pusherType='" + pusherType + '\'' +

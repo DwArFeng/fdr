@@ -87,4 +87,18 @@ public interface Pusher {
      * @throws HandlerException 处理器异常。
      */
     void persistenceRecorded(List<PersistenceValue> persistenceValues) throws HandlerException;
+
+    /**
+     * 记录功能重置时执行的广播操作。
+     *
+     * @throws HandlerException 处理器异常。
+     */
+    void recordReset() throws HandlerException;
+
+    /**
+     * 映射功能重置时执行的广播操作。
+     *
+     * @throws HandlerException 处理器异常。
+     */
+    void mapReset() throws HandlerException;
 }

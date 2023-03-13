@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 标准数据接口Kafka推送器。
+ * 标准数据接口 Kafka 推送器。
  *
  * @author DwArFeng
  * @since 1.5.0
@@ -115,6 +115,14 @@ public class DctiKafkaPusher extends AbstractPusher {
     @Transactional(transactionManager = "dctiKafkaPusher.kafkaTransactionManager")
     public void persistenceRecorded(List<PersistenceValue> persistenceValues) {
         persistenceValues.forEach(this::persistenceRecorded);
+    }
+
+    @Override
+    public void recordReset() {
+    }
+
+    @Override
+    public void mapReset() {
     }
 
     @Override

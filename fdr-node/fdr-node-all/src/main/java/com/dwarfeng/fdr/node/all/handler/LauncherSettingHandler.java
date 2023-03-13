@@ -15,6 +15,8 @@ public class LauncherSettingHandler implements Handler {
     private boolean resetMapperSupport;
     @Value("${launcher.start_record_delay}")
     private long startRecordDelay;
+    @Value("${launcher.start_reset_delay}")
+    private long startResetDelay;
 
     public boolean isResetFilterSupport() {
         return resetFilterSupport;
@@ -30,5 +32,9 @@ public class LauncherSettingHandler implements Handler {
 
     public long getStartRecordDelay() {
         return startRecordDelay;
+    }
+
+    public long getStartResetDelay() {
+        return startResetDelay;
     }
 }

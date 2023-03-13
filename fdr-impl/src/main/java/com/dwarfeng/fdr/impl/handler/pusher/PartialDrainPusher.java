@@ -37,6 +37,10 @@ public class PartialDrainPusher extends AbstractPusher {
     private boolean drainFilteredValue;
     @Value("${pusher.partial_drain.drain_triggered_value}")
     private boolean drainTriggeredValue;
+    @Value("${pusher.partial_drain.drain_record_reset}")
+    private boolean drainRecordReset;
+    @Value("${pusher.partial_drain.drain_map_reset}")
+    private boolean drainMapReset;
 
     private Pusher delegate;
 
@@ -106,6 +110,20 @@ public class PartialDrainPusher extends AbstractPusher {
         }
     }
 
+    @Override
+    public void recordReset() throws HandlerException {
+        if (!drainRecordReset) {
+            delegate.recordReset();
+        }
+    }
+
+    @Override
+    public void mapReset() throws HandlerException {
+        if (!drainMapReset) {
+            delegate.mapReset();
+        }
+    }
+
     public Pusher getDelegate() {
         return delegate;
     }
@@ -144,6 +162,22 @@ public class PartialDrainPusher extends AbstractPusher {
 
     public void setDrainTriggeredValue(boolean drainTriggeredValue) {
         this.drainTriggeredValue = drainTriggeredValue;
+    }
+
+    public boolean isDrainRecordReset() {
+        return drainRecordReset;
+    }
+
+    public void setDrainRecordReset(boolean drainRecordReset) {
+        this.drainRecordReset = drainRecordReset;
+    }
+
+    public boolean isDrainMapReset() {
+        return drainMapReset;
+    }
+
+    public void setDrainMapReset(boolean drainMapReset) {
+        this.drainMapReset = drainMapReset;
     }
 
     @Override

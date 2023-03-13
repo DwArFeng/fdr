@@ -10,6 +10,7 @@ import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 本地Kafka推送器。
+ * 本地 Kafka 推送器。
  *
  * @author DwArFeng
  * @since 1.4.0
@@ -53,6 +54,10 @@ public class NativeKafkaPusher extends AbstractPusher {
     private String realtimeUpdatedTopic;
     @Value("${pusher.native.kafka.topic.persistence_recorded}")
     private String persistenceRecordedTopic;
+    @Value("${pusher.native.kafka.topic.record_reset}")
+    private String recordResetTopic;
+    @Value("${pusher.native.kafka.topic.map_reset}")
+    private String mapResetTopic;
 
     public NativeKafkaPusher() {
         super(PUSHER_TYPE);
@@ -110,6 +115,18 @@ public class NativeKafkaPusher extends AbstractPusher {
         persistenceValues.forEach(this::persistenceRecorded);
     }
 
+    @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
+    @Override
+    public void recordReset() {
+        kafkaTemplate.send(recordResetTopic, StringUtils.EMPTY);
+    }
+
+    @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
+    @Override
+    public void mapReset() {
+        kafkaTemplate.send(mapResetTopic, StringUtils.EMPTY);
+    }
+
     @Override
     public String toString() {
         return "NativeKafkaPusher{" +
@@ -118,6 +135,8 @@ public class NativeKafkaPusher extends AbstractPusher {
                 ", dataTriggeredTopic='" + dataTriggeredTopic + '\'' +
                 ", realtimeUpdatedTopic='" + realtimeUpdatedTopic + '\'' +
                 ", persistenceRecordedTopic='" + persistenceRecordedTopic + '\'' +
+                ", recordResetTopic='" + recordResetTopic + '\'' +
+                ", mapResetTopic='" + mapResetTopic + '\'' +
                 ", pusherType='" + pusherType + '\'' +
                 '}';
     }

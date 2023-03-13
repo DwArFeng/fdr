@@ -21,6 +21,7 @@
             <telqos:command-impl ref="recordLocalCacheCommand"/>
             <telqos:command-impl ref="recordCommand"/>
             <telqos:command-impl ref="recorderCommand"/>
+            <telqos:command-impl ref="resetCommand"/>
         </telqos:command>
     </telqos:config>
 

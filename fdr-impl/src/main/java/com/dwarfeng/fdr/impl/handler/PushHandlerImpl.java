@@ -71,4 +71,14 @@ public class PushHandlerImpl implements PushHandler {
     public void persistenceRecorded(List<PersistenceValue> persistenceValues) throws HandlerException {
         pusher.persistenceRecorded(persistenceValues);
     }
+
+    @Override
+    public void recordReset() throws HandlerException {
+        pusher.recordReset();
+    }
+
+    @Override
+    public void mapReset() throws HandlerException {
+        pusher.mapReset();
+    }
 }

@@ -38,15 +38,11 @@ public class RecordHandlerImpl implements RecordHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RecordHandlerImpl.class);
 
-    @Autowired
-    private ThreadPoolTaskExecutor executor;
-    @Autowired
-    private ThreadPoolTaskScheduler scheduler;
+    private final ThreadPoolTaskExecutor executor;
+    private final ThreadPoolTaskScheduler scheduler;
 
-    @Autowired
-    private Consumer consumer;
-    @Autowired
-    private ConsumeBuffer consumeBuffer;
+    private final Consumer consumer;
+    private final ConsumeBuffer consumeBuffer;
 
     @Value("${record.consumer_thread}")
     private int thread;
@@ -59,6 +55,18 @@ public class RecordHandlerImpl implements RecordHandler {
 
     private boolean startFlag = false;
     ScheduledFuture<?> capacityCheckFuture = null;
+
+    public RecordHandlerImpl(
+            ThreadPoolTaskExecutor executor,
+            ThreadPoolTaskScheduler scheduler,
+            Consumer consumer,
+            ConsumeBuffer consumeBuffer
+    ) {
+        this.executor = executor;
+        this.scheduler = scheduler;
+        this.consumer = consumer;
+        this.consumeBuffer = consumeBuffer;
+    }
 
     @Override
     public boolean isStarted() {

@@ -11,4 +11,6 @@
     <!-- 装配Executor -->
     <task:executor id="executor" pool-size="${executor.pool_size}" queue-capacity="${executor.queue_capacity}"
                    keep-alive="${executor.keep_alive}" rejection-policy="CALLER_RUNS"/>
+    <!-- 装配Scheduler -->
+    <task:scheduler id="scheduler" pool-size="${scheduler.pool_size}"/>
 </beans>

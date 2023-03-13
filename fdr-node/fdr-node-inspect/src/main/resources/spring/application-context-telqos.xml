@@ -21,6 +21,7 @@
             <telqos:command-impl ref="persistenceValueMappingLookupCommand"/>
             <telqos:command-impl ref="filteredValueMappingLookupCommand"/>
             <telqos:command-impl ref="triggeredValueMappingLookupCommand"/>
+            <telqos:command-impl ref="resetCommand"/>
         </telqos:command>
     </telqos:config>
 
