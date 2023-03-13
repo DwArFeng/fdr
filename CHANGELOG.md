@@ -12,7 +12,9 @@
 
 - `Dubbo` 微服务增加分组配置。
 
-- 优化 `opt-*.xml` 文件的格式。
+- 优化文件格式。
+  - 优化 `opt-*.xml` 文件的格式。
+  - 优化 `application-context-*.xml` 文件的格式。
 
 - 使用 `subgrade` 工具库替代本地缓存实现。
 
