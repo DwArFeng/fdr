@@ -1,10 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.source;
 
-import com.dwarfeng.fdr.impl.handler.Source;
-import com.dwarfeng.fdr.sdk.util.ServiceExceptionCodes;
-import com.dwarfeng.fdr.stack.service.RecordService;
+import com.dwarfeng.fdr.stack.exception.RecordStoppedException;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -12,7 +9,6 @@ import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,20 +33,21 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 @Component
-public class DctiKafkaSource implements Source {
+public class DctiKafkaSource extends AbstractSource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DctiKafkaSource.class);
 
-    @Autowired
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    private KafkaListenerEndpointRegistry registry;
-    @Autowired
-    private RecordService recordService;
+    private final KafkaListenerEndpointRegistry registry;
 
     @Value("${source.dcti.kafka.listener_id}")
     private String listenerId;
 
     private final Lock lock = new ReentrantLock();
+
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    public DctiKafkaSource(KafkaListenerEndpointRegistry registry) {
+        this.registry = registry;
+    }
 
     @Override
     public boolean isOnline() throws HandlerException {
@@ -122,22 +119,27 @@ public class DctiKafkaSource implements Source {
         for (ConsumerRecord<String, String> consumerRecord : consumerRecords) {
             String dataInfo = consumerRecord.value();
             try {
-                recordService.record(dataInfo);
-            } catch (ServiceException e) {
-                if (e.getCode().getCode() == ServiceExceptionCodes.RECORD_HANDLER_STOPPED.getCode()) {
-                    LOGGER.warn("记录处理器被禁用， 消息 " + dataInfo + " 以及其后同一批次的消息均不会被提交", e);
-                    // 如果记录处理器被禁用，则放弃其后同一批次的消息记录，并且妥善处理offset的提交。
-                    // Offset 精确设置到没有提交成功的最后一条信息上。
-                    consumer.seek(new TopicPartition(consumerRecord.topic(), consumerRecord.partition()),
-                            consumerRecord.offset());
-                    ack.acknowledge();
-                    return;
-                } else {
-                    LOGGER.warn("记录处理器无法处理, 消息 " + dataInfo + " 将会被忽略", e);
-                }
+                context.record(dataInfo);
+            } catch (RecordStoppedException e) {
+                LOGGER.warn("记录处理器被禁用， 消息 " + dataInfo + " 以及其后同一批次的消息均不会被提交", e);
+                // 如果记录处理器被禁用，则放弃其后同一批次的消息记录，并且妥善处理offset的提交。
+                // Offset 精确设置到没有提交成功的最后一条信息上。
+                consumer.seek(new TopicPartition(consumerRecord.topic(), consumerRecord.partition()),
+                        consumerRecord.offset());
+                ack.acknowledge();
+                return;
+            } catch (Exception e) {
+                LOGGER.warn("记录处理器无法处理, 消息 " + dataInfo + " 将会被忽略", e);
             }
         }
         ack.acknowledge();
+    }
+
+    @Override
+    public String toString() {
+        return "DctiKafkaSource{" +
+                "listenerId='" + listenerId + '\'' +
+                '}';
     }
 
     @Configuration

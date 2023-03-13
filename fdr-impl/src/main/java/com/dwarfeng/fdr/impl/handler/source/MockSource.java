@@ -1,14 +1,11 @@
 package com.dwarfeng.fdr.impl.handler.source;
 
 import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
-import com.dwarfeng.fdr.impl.handler.Source;
-import com.dwarfeng.fdr.sdk.util.ServiceExceptionCodes;
-import com.dwarfeng.fdr.stack.service.RecordService;
+import com.dwarfeng.fdr.stack.exception.RecordStoppedException;
+import com.dwarfeng.fdr.stack.handler.Source;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -23,17 +20,13 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 @Component
-public class MockSource implements Source {
+public class MockSource extends AbstractSource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MockSource.class);
 
-    @Autowired
-    private ThreadPoolTaskScheduler scheduler;
-    @Autowired
-    private RecordService recordService;
-    @Autowired
-    @Qualifier("mockSource.mockBuffer")
-    private MockBuffer mockBuffer;
+    private final ThreadPoolTaskScheduler scheduler;
+
+    private final MockBuffer mockBuffer;
 
     @Value("${source.mock.data_size_per_sec}")
     private int dataSizePerSec;
@@ -50,6 +43,14 @@ public class MockSource implements Source {
     private ScheduledFuture<?> mockMonitorPlanFuture = null;
     private MockProvidePlan mockProvidePlan = null;
     private ScheduledFuture<?> mockProvidePlanFuture = null;
+
+    public MockSource(
+            ThreadPoolTaskScheduler scheduler,
+            @Qualifier("mockSource.mockBuffer") MockBuffer mockBuffer
+    ) {
+        this.scheduler = scheduler;
+        this.mockBuffer = mockBuffer;
+    }
 
     @Override
     public boolean isOnline() {
@@ -68,7 +69,7 @@ public class MockSource implements Source {
             if (!startFlag) {
                 LOGGER.info("Mock source 上线...");
                 mockBuffer.block();
-                mockRecordPlan = new MockRecordPlan(recordService, mockBuffer, dataSizePerSec, dataRecordMaxCoefficient);
+                mockRecordPlan = new MockRecordPlan(context, mockBuffer, dataSizePerSec, dataRecordMaxCoefficient);
                 mockMonitorPlan = new MockMonitorPlan(mockBuffer);
                 mockProvidePlan = new MockProvidePlan(mockBuffer, pointId, dataSizePerSec);
                 mockRecordPlanFuture = scheduler.scheduleAtFixedRate(mockRecordPlan, 1000);
@@ -109,6 +110,16 @@ public class MockSource implements Source {
         } finally {
             lock.unlock();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "MockSource{" +
+                "dataSizePerSec=" + dataSizePerSec +
+                ", dataRecordMaxCoefficient=" + dataRecordMaxCoefficient +
+                ", pointId=" + pointId +
+                ", startFlag=" + startFlag +
+                '}';
     }
 
     @Configuration
@@ -218,7 +229,7 @@ public class MockSource implements Source {
 
     private static class MockRecordPlan implements Runnable {
 
-        private final RecordService recordService;
+        private final Source.Context context;
         private final MockBuffer mockBuffer;
         private final int size;
         private final double dataRecordMaxCoefficient;
@@ -227,8 +238,9 @@ public class MockSource implements Source {
         private boolean runningFlag = true;
 
         public MockRecordPlan(
-                RecordService recordService, MockBuffer mockBuffer, int size, double dataRecordMaxCoefficient) {
-            this.recordService = recordService;
+                Source.Context context, MockBuffer mockBuffer, int size, double dataRecordMaxCoefficient
+        ) {
+            this.context = context;
             this.mockBuffer = mockBuffer;
             this.size = size;
             this.dataRecordMaxCoefficient = dataRecordMaxCoefficient;
@@ -245,13 +257,11 @@ public class MockSource implements Source {
                 for (DataInfo dataInfo : mockBuffer.poll(Math.min((int) (size * dataRecordMaxCoefficient),
                         mockBuffer.bufferedSize()))) {
                     try {
-                        recordService.record(dataInfo);
-                    } catch (ServiceException e) {
-                        if (e.getCode().getCode() == ServiceExceptionCodes.RECORD_HANDLER_STOPPED.getCode()) {
-                            LOGGER.warn("记录处理器被禁用， 消息 " + dataInfo + " 将会被忽略", e);
-                        } else {
-                            LOGGER.warn("记录处理器无法处理, 消息 " + dataInfo + " 将会被忽略", e);
-                        }
+                        context.record(dataInfo);
+                    } catch (RecordStoppedException e) {
+                        LOGGER.warn("记录处理器被禁用， 消息 " + dataInfo + " 将会被忽略", e);
+                    } catch (Exception e) {
+                        LOGGER.warn("记录处理器无法处理, 消息 " + dataInfo + " 将会被忽略", e);
                     }
                 }
             } finally {

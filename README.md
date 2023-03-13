@@ -241,7 +241,7 @@
 
 1. 数据源的扩展
 
-   实现接口 `com.dwarfeng.fdr.impl.handler.Source` 并将实现类注入到spring的IoC容器中。
+   实现接口 `com.dwarfeng.fdr.stack.handler.Source` 并将实现类注入到spring的IoC容器中。
 
 2. 触发器的扩展
 

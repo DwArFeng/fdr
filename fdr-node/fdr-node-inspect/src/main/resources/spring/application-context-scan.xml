@@ -75,15 +75,27 @@
         />
         <context:exclude-filter
                 type="assignable"
-                expression="com.dwarfeng.fdr.impl.handler.RecordHandlerImpl$Consumer"
+                expression="com.dwarfeng.fdr.impl.handler.RecordHandlerImpl$RecordWorker"
         />
         <context:exclude-filter
                 type="assignable"
-                expression="com.dwarfeng.fdr.impl.handler.RecordHandlerImpl$ConsumeBuffer"
+                expression="com.dwarfeng.fdr.impl.handler.SourceHandlerImpl"
         />
         <context:exclude-filter
                 type="assignable"
-                expression="com.dwarfeng.fdr.impl.handler.RecordHandlerImpl$ConsumeTask"
+                expression="com.dwarfeng.fdr.impl.handler.RecordProcessor"
+        />
+        <context:exclude-filter
+                type="assignable"
+                expression="com.dwarfeng.fdr.impl.handler.RecordProcessor$Consumer"
+        />
+        <context:exclude-filter
+                type="assignable"
+                expression="com.dwarfeng.fdr.impl.handler.RecordProcessor$ConsumeBuffer"
+        />
+        <context:exclude-filter
+                type="assignable"
+                expression="com.dwarfeng.fdr.impl.handler.RecordProcessor$ConsumeTask"
         />
         <context:exclude-filter
                 type="assignable"

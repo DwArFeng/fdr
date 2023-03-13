@@ -2,7 +2,7 @@ package com.dwarfeng.fdr.stack.handler;
 
 import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
-import com.dwarfeng.subgrade.stack.handler.Handler;
+import com.dwarfeng.subgrade.stack.handler.StartableHandler;
 
 /**
  * 记录处理器。
@@ -10,29 +10,7 @@ import com.dwarfeng.subgrade.stack.handler.Handler;
  * @author DwArFeng
  * @since 1.4.0
  */
-public interface RecordHandler extends Handler {
-
-    /**
-     * 记录处理器是否启动。
-     *
-     * @return 记录处理器是否启动。
-     * @throws HandlerException 处理器异常。
-     */
-    boolean isStarted() throws HandlerException;
-
-    /**
-     * 开启记录处理器。
-     *
-     * @throws HandlerException 处理器异常。
-     */
-    void start() throws HandlerException;
-
-    /**
-     * 关闭记录处理器。
-     *
-     * @throws HandlerException 处理器异常。
-     */
-    void stop() throws HandlerException;
+public interface RecordHandler extends StartableHandler {
 
     /**
      * 向程序中记录数据。
