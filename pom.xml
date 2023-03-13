@@ -533,22 +533,7 @@
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
-                <artifactId>fdr-node-maintain</artifactId>
-                <version>1.11.0.a-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>fdr-node-record</artifactId>
-                <version>1.11.0.a-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>fdr-node-inspect</artifactId>
-                <version>1.11.0.a-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>fdr-node-all</artifactId>
+                <artifactId>fdr-node</artifactId>
                 <version>1.11.0.a-SNAPSHOT</version>
             </dependency>
         </dependencies>
