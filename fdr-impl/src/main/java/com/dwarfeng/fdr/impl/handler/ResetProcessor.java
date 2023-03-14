@@ -7,10 +7,7 @@ import com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Objects;
 
 /**
  * 重置处理器。
@@ -31,9 +28,9 @@ class ResetProcessor {
     private final PushHandler pushHandler;
 
     public ResetProcessor(
-            @Autowired(required = false) RecordHandler recordHandler,
-            @Autowired(required = false) RecordLocalCacheHandler recordLocalCacheHandler,
-            @Autowired(required = false) MapLocalCacheHandler mapLocalCacheHandler,
+            RecordHandler recordHandler,
+            RecordLocalCacheHandler recordLocalCacheHandler,
+            MapLocalCacheHandler mapLocalCacheHandler,
             PushHandler pushHandler
     ) {
         this.recordHandler = recordHandler;
@@ -43,13 +40,6 @@ class ResetProcessor {
     }
 
     public void resetRecord() throws HandlerException {
-        if (Objects.isNull(recordHandler)) {
-            return;
-        }
-        if (Objects.isNull(recordLocalCacheHandler)) {
-            return;
-        }
-
         recordHandler.stop();
         recordLocalCacheHandler.clear();
         recordHandler.start();
@@ -62,10 +52,6 @@ class ResetProcessor {
     }
 
     public void resetMap() throws HandlerException {
-        if (Objects.isNull(mapLocalCacheHandler)) {
-            return;
-        }
-
         mapLocalCacheHandler.clear();
 
         try {
