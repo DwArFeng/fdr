@@ -11,6 +11,8 @@ java -classpath "lib\*;libext\*" ^
 -Dlog.dir=%logdir% ^
 -Dlog.consoleEncoding=GBK ^
 -Dlog.fileEncoding=UTF-8 ^
+-Dlog4j.shutdownHookEnabled=false ^
+-Dlog4j2.is.webapp=false ^
 ${mainClass}
 
 @pause

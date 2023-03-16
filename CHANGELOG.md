@@ -4,7 +4,9 @@
 
 #### 功能构建
 
-- (无)
+- 在启动脚本中增加系统参数，以进一步明确程序的运行行为。
+  - -Dlog4j.shutdownHookEnabled=false。
+  - -Dlog4j2.is.webapp=false。
 
 #### Bug修复
 
