@@ -9,8 +9,6 @@ import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.CacheException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,9 +18,11 @@ import java.util.List;
 @Repository
 public class EnabledTriggerInfoCacheImpl implements EnabledTriggerInfoCache {
 
-    @Autowired
-    @Qualifier("triggerInfoEnabledRedisKeyListCache")
-    private RedisKeyListCache<LongIdKey, TriggerInfo, FastJsonTriggerInfo> delegate;
+    private final RedisKeyListCache<LongIdKey, TriggerInfo, FastJsonTriggerInfo> delegate;
+
+    public EnabledTriggerInfoCacheImpl(RedisKeyListCache<LongIdKey, TriggerInfo, FastJsonTriggerInfo> delegate) {
+        this.delegate = delegate;
+    }
 
     @Override
     @BehaviorAnalyse

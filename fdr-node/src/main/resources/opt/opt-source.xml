@@ -22,7 +22,7 @@
         <!-- 加载 MockSource -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.fdr.impl.handler.source.MockSource"
+                type="regex" expression="^com\.dwarfeng\.fdr\.impl\.handler\.source\.mock\..*$"
         />
         -->
     </context:component-scan>

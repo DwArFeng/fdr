@@ -12,31 +12,31 @@
 
     <!--扫描handler的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.mapper" use-default-filters="false">
-        <!-- 加载 NumericGridMapper -->
+        <!-- 加载 AlignMapper -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.NumericGridMapperRegistry"
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.AlignMapperRegistry"
         />
         -->
 
-        <!-- 加载 MinMapper -->
+        <!-- 加载 AvgMapper -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.MinMapperRegistry"
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.AvgMapperRegistry"
         />
         -->
 
-        <!-- 加载 MaxMapper -->
+        <!-- 加载 CountMapper -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.MaxMapperRegistry"
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.CountMapperRegistry"
         />
         -->
 
-        <!-- 加载 IdentityMapper -->
+        <!-- 加载 FirstMapper -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.IdentityMapperRegistry"
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.FirstMapperRegistry"
         />
         -->
 
@@ -47,17 +47,45 @@
         />
         -->
 
-        <!-- 加载 GeneralGridMapper -->
+        <!-- 加载 IdentifyMapper -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.GeneralGridMapperRegistry"
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.IdentifyMapperRegistry"
         />
         -->
 
-        <!-- 加载 CountMapper -->
+        <!-- 加载 LastMapper -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.CountMapperRegistry"
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.LastMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 SortMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.SortMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 TimeWeightedAgvMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.TimeWeightedAgvMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 ToDoubleMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.ToDoubleMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 WindowMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.WindowMapperRegistry"
         />
         -->
     </context:component-scan>

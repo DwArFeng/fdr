@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.handler;
 
-import com.dwarfeng.subgrade.stack.bean.entity.Entity;
+import com.dwarfeng.fdr.stack.structure.Data;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 
 import java.util.List;
@@ -11,13 +11,13 @@ import java.util.List;
  * @author DwArFeng
  * @since 1.4.0
  */
-public interface Consumer<E extends Entity<?>> {
+public interface Consumer<D extends Data> {
 
     /**
-     * 消费指定的元素。
+     * 消费指定的数据。
      *
-     * @param elements 指定的元素组成的列表。
+     * @param datas 指定的数据组成的列表。
      * @throws HandlerException 处理器异常。
      */
-    void consume(List<E> elements) throws HandlerException;
+    void consume(List<D> datas) throws HandlerException;
 }

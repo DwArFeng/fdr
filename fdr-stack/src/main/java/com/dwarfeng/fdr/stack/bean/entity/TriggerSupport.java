@@ -11,21 +11,21 @@ import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
  */
 public class TriggerSupport implements Entity<StringIdKey> {
 
-    private static final long serialVersionUID = -4480349745103139721L;
+    private static final long serialVersionUID = -8357178352676090724L;
 
     private StringIdKey key;
     private String label;
     private String description;
-    private String exampleContent;
+    private String exampleParam;
 
     public TriggerSupport() {
     }
 
-    public TriggerSupport(StringIdKey key, String label, String description, String exampleContent) {
+    public TriggerSupport(StringIdKey key, String label, String description, String exampleParam) {
         this.key = key;
         this.label = label;
         this.description = description;
-        this.exampleContent = exampleContent;
+        this.exampleParam = exampleParam;
     }
 
     @Override
@@ -54,12 +54,12 @@ public class TriggerSupport implements Entity<StringIdKey> {
         this.description = description;
     }
 
-    public String getExampleContent() {
-        return exampleContent;
+    public String getExampleParam() {
+        return exampleParam;
     }
 
-    public void setExampleContent(String exampleContent) {
-        this.exampleContent = exampleContent;
+    public void setExampleParam(String exampleParam) {
+        this.exampleParam = exampleParam;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class TriggerSupport implements Entity<StringIdKey> {
                 "key=" + key +
                 ", label='" + label + '\'' +
                 ", description='" + description + '\'' +
-                ", exampleContent='" + exampleContent + '\'' +
+                ", exampleParam='" + exampleParam + '\'' +
                 '}';
     }
 }

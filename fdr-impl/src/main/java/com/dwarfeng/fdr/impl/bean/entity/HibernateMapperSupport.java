@@ -15,7 +15,7 @@ import java.util.Objects;
 @Table(name = "tbl_mapper_support")
 public class HibernateMapperSupport implements Bean {
 
-    private static final long serialVersionUID = 3248835074023298160L;
+    private static final long serialVersionUID = 5926287306531305775L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -29,12 +29,13 @@ public class HibernateMapperSupport implements Bean {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "args_illustrate", columnDefinition = "TEXT")
-    private String argsIllustrate;
+    @Column(name = "example_param", columnDefinition = "TEXT")
+    private String exampleParam;
 
     public HibernateMapperSupport() {
     }
 
+    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
     public HibernateStringIdKey getKey() {
         if (Objects.isNull(stringId)) {
             return null;
@@ -49,6 +50,7 @@ public class HibernateMapperSupport implements Bean {
         this.stringId = key.getStringId();
     }
 
+    // -----------------------------------------------------------常规属性区-----------------------------------------------------------
     public String getStringId() {
         return stringId;
     }
@@ -73,21 +75,20 @@ public class HibernateMapperSupport implements Bean {
         this.description = description;
     }
 
-    public String getArgsIllustrate() {
-        return argsIllustrate;
+    public String getExampleParam() {
+        return exampleParam;
     }
 
-    public void setArgsIllustrate(String argsIllustrate) {
-        this.argsIllustrate = argsIllustrate;
+    public void setExampleParam(String exampleParam) {
+        this.exampleParam = exampleParam;
     }
 
     @Override
     public String toString() {
-        return "HibernateMapperSupport{" +
-                "stringId='" + stringId + '\'' +
-                ", label='" + label + '\'' +
-                ", description='" + description + '\'' +
-                ", argsIllustrate='" + argsIllustrate + '\'' +
-                '}';
+        return getClass().getSimpleName() + "(" +
+                "stringId = " + stringId + ", " +
+                "label = " + label + ", " +
+                "description = " + description + ", " +
+                "exampleParam = " + exampleParam + ")";
     }
 }

@@ -12,7 +12,6 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +20,22 @@ import java.util.List;
 @Service
 public class EnabledTriggerInfoLookupServiceImpl implements EnabledTriggerInfoLookupService {
 
-    @Autowired
-    private TriggerInfoDao dao;
-    @Autowired
-    private EnabledTriggerInfoCache cache;
-    @Autowired
-    private ServiceExceptionMapper sem;
+    private final TriggerInfoDao dao;
+    private final EnabledTriggerInfoCache cache;
+    private final ServiceExceptionMapper sem;
+
     @Value("${cache.timeout.key_list.enabled_trigger_info}")
     private long timeout;
+
+    public EnabledTriggerInfoLookupServiceImpl(
+            TriggerInfoDao dao,
+            EnabledTriggerInfoCache cache,
+            ServiceExceptionMapper sem
+    ) {
+        this.dao = dao;
+        this.cache = cache;
+        this.sem = sem;
+    }
 
     @Override
     @BehaviorAnalyse
@@ -38,13 +45,13 @@ public class EnabledTriggerInfoLookupServiceImpl implements EnabledTriggerInfoLo
             if (cache.exists(pointKey)) {
                 return cache.get(pointKey);
             }
-            List<TriggerInfo> lookup = dao.lookup(TriggerInfoMaintainService.ENABLED_CHILD_FOR_POINT, new Object[]{pointKey});
+            List<TriggerInfo> lookup = dao.lookup(
+                    TriggerInfoMaintainService.ENABLED_CHILD_FOR_POINT_INDEX_ASC, new Object[]{pointKey}
+            );
             cache.set(pointKey, lookup, timeout);
             return lookup;
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询有效的过滤器信息时发生异常",
-                    LogLevel.WARN, sem, e
-            );
+            throw ServiceExceptionHelper.logAndThrow("查询有效的过滤器信息时发生异常", LogLevel.WARN, sem, e);
         }
     }
 }

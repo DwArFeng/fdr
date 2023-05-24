@@ -1,14 +1,12 @@
 package com.dwarfeng.fdr.impl.handler.pusher;
 
 import com.alibaba.fastjson.JSON;
-import com.dwarfeng.fdr.sdk.bean.entity.FastJsonFilteredValue;
-import com.dwarfeng.fdr.sdk.bean.entity.FastJsonPersistenceValue;
-import com.dwarfeng.fdr.sdk.bean.entity.FastJsonRealtimeValue;
-import com.dwarfeng.fdr.sdk.bean.entity.FastJsonTriggeredValue;
-import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
-import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
-import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
+import com.dwarfeng.fdr.sdk.bean.dto.FastJsonFilteredData;
+import com.dwarfeng.fdr.sdk.bean.dto.FastJsonNormalData;
+import com.dwarfeng.fdr.sdk.bean.dto.FastJsonTriggeredData;
+import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
+import com.dwarfeng.fdr.stack.bean.dto.NormalData;
+import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -45,58 +43,86 @@ public class LogPusher extends AbstractPusher {
     }
 
     @Override
-    public void dataFiltered(FilteredValue filteredValue) throws HandlerException {
-        String title = "推送被过滤值:";
-        String message = JSON.toJSONString(FastJsonFilteredValue.of(filteredValue), true);
+    public void normalUpdated(NormalData normalRecord) throws HandlerException {
+        String title = "推送更新一般数据:";
+        String message = JSON.toJSONString(FastJsonNormalData.of(normalRecord), true);
         logData(title, message);
     }
 
     @Override
-    public void dataFiltered(List<FilteredValue> filteredValues) throws HandlerException {
-        for (FilteredValue filteredValue : filteredValues) {
-            dataFiltered(filteredValue);
+    public void normalUpdated(List<NormalData> normalRecords) throws HandlerException {
+        for (NormalData normalRecord : normalRecords) {
+            normalUpdated(normalRecord);
         }
     }
 
     @Override
-    public void dataTriggered(TriggeredValue triggeredValue) throws HandlerException {
-        String title = "推送被触发值:";
-        String message = JSON.toJSONString(FastJsonTriggeredValue.of(triggeredValue), true);
+    public void normalRecorded(NormalData normalRecord) throws HandlerException {
+        String title = "推送记录一般数据:";
+        String message = JSON.toJSONString(FastJsonNormalData.of(normalRecord), true);
         logData(title, message);
     }
 
     @Override
-    public void dataTriggered(List<TriggeredValue> triggeredValues) throws HandlerException {
-        for (TriggeredValue triggeredValue : triggeredValues) {
-            dataTriggered(triggeredValue);
+    public void normalRecorded(List<NormalData> normalRecords) throws HandlerException {
+        for (NormalData normalRecord : normalRecords) {
+            normalRecorded(normalRecord);
         }
     }
 
     @Override
-    public void realtimeUpdated(RealtimeValue realtimeValue) throws HandlerException {
-        String title = "推送更新实时值:";
-        String message = JSON.toJSONString(FastJsonRealtimeValue.of(realtimeValue), true);
+    public void filteredUpdated(FilteredData filteredRecord) throws HandlerException {
+        String title = "推送更新被过滤数据:";
+        String message = JSON.toJSONString(FastJsonFilteredData.of(filteredRecord), true);
         logData(title, message);
     }
 
     @Override
-    public void realtimeUpdated(List<RealtimeValue> realtimeValues) throws HandlerException {
-        for (RealtimeValue realtimeValue : realtimeValues) {
-            realtimeUpdated(realtimeValue);
+    public void filteredUpdated(List<FilteredData> filteredRecords) throws HandlerException {
+        for (FilteredData filteredRecord : filteredRecords) {
+            filteredUpdated(filteredRecord);
         }
     }
 
     @Override
-    public void persistenceRecorded(PersistenceValue persistenceValue) throws HandlerException {
-        String title = "推送记录持久化值:";
-        String message = JSON.toJSONString(FastJsonPersistenceValue.of(persistenceValue), true);
+    public void filteredRecorded(FilteredData filteredRecord) throws HandlerException {
+        String title = "推送记录被过滤数据:";
+        String message = JSON.toJSONString(FastJsonFilteredData.of(filteredRecord), true);
         logData(title, message);
     }
 
     @Override
-    public void persistenceRecorded(List<PersistenceValue> persistenceValues) throws HandlerException {
-        for (PersistenceValue persistenceValue : persistenceValues) {
-            persistenceRecorded(persistenceValue);
+    public void filteredRecorded(List<FilteredData> filteredRecords) throws HandlerException {
+        for (FilteredData filteredRecord : filteredRecords) {
+            filteredRecorded(filteredRecord);
+        }
+    }
+
+    @Override
+    public void triggeredUpdated(TriggeredData triggeredRecord) throws HandlerException {
+        String title = "推送更新被触发数据:";
+        String message = JSON.toJSONString(FastJsonTriggeredData.of(triggeredRecord), true);
+        logData(title, message);
+    }
+
+    @Override
+    public void triggeredUpdated(List<TriggeredData> triggeredRecords) throws HandlerException {
+        for (TriggeredData triggeredRecord : triggeredRecords) {
+            triggeredUpdated(triggeredRecord);
+        }
+    }
+
+    @Override
+    public void triggeredRecorded(TriggeredData triggeredRecord) throws HandlerException {
+        String title = "推送记录被触发数据:";
+        String message = JSON.toJSONString(FastJsonTriggeredData.of(triggeredRecord), true);
+        logData(title, message);
+    }
+
+    @Override
+    public void triggeredRecorded(List<TriggeredData> triggeredRecords) throws HandlerException {
+        for (TriggeredData triggeredRecord : triggeredRecords) {
+            triggeredRecorded(triggeredRecord);
         }
     }
 

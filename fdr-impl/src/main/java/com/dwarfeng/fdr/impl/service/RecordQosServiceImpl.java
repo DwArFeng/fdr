@@ -1,9 +1,8 @@
 package com.dwarfeng.fdr.impl.service;
 
-import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
-import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
-import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
+import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
+import com.dwarfeng.fdr.stack.bean.dto.NormalData;
+import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
 import com.dwarfeng.fdr.stack.handler.ConsumeHandler;
 import com.dwarfeng.fdr.stack.handler.RecordHandler;
 import com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler;
@@ -31,14 +30,12 @@ import static com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler.RecordConte
 public class RecordQosServiceImpl implements RecordQosService {
 
     private final RecordLocalCacheHandler recordLocalCacheHandler;
-    private final ConsumeHandler<FilteredValue> filteredEventConsumeHandler;
-    private final ConsumeHandler<FilteredValue> filteredValueConsumeHandler;
-    private final ConsumeHandler<TriggeredValue> triggeredEventConsumeHandler;
-    private final ConsumeHandler<TriggeredValue> triggeredValueConsumeHandler;
-    private final ConsumeHandler<RealtimeValue> realtimeEventConsumeHandler;
-    private final ConsumeHandler<RealtimeValue> realtimeValueConsumeHandler;
-    private final ConsumeHandler<PersistenceValue> persistenceEventConsumeHandler;
-    private final ConsumeHandler<PersistenceValue> persistenceValueConsumeHandler;
+    private final ConsumeHandler<NormalData> normalKeepConsumeHandler;
+    private final ConsumeHandler<NormalData> normalPersistConsumeHandler;
+    private final ConsumeHandler<FilteredData> filteredKeepConsumeHandler;
+    private final ConsumeHandler<FilteredData> filteredPersistConsumeHandler;
+    private final ConsumeHandler<TriggeredData> triggeredKeepConsumeHandler;
+    private final ConsumeHandler<TriggeredData> triggeredPersistConsumeHandler;
     private final RecordHandler recordHandler;
 
     private final ServiceExceptionMapper sem;
@@ -47,48 +44,40 @@ public class RecordQosServiceImpl implements RecordQosService {
 
     public RecordQosServiceImpl(
             RecordLocalCacheHandler recordLocalCacheHandler,
-            @Qualifier("filteredEventConsumeHandler")
-            ConsumeHandler<FilteredValue> filteredEventConsumeHandler,
-            @Qualifier("filteredValueConsumeHandler")
-            ConsumeHandler<FilteredValue> filteredValueConsumeHandler,
-            @Qualifier("triggeredEventConsumeHandler")
-            ConsumeHandler<TriggeredValue> triggeredEventConsumeHandler,
-            @Qualifier("triggeredValueConsumeHandler")
-            ConsumeHandler<TriggeredValue> triggeredValueConsumeHandler,
-            @Qualifier("realtimeEventConsumeHandler")
-            ConsumeHandler<RealtimeValue> realtimeEventConsumeHandler,
-            @Qualifier("realtimeValueConsumeHandler")
-            ConsumeHandler<RealtimeValue> realtimeValueConsumeHandler,
-            @Qualifier("persistenceEventConsumeHandler")
-            ConsumeHandler<PersistenceValue> persistenceEventConsumeHandler,
-            @Qualifier("persistenceValueConsumeHandler")
-            ConsumeHandler<PersistenceValue> persistenceValueConsumeHandler,
+            @Qualifier("normalKeepConsumeHandler")
+            ConsumeHandler<NormalData> normalKeepConsumeHandler,
+            @Qualifier("normalPersistConsumeHandler")
+            ConsumeHandler<NormalData> normalPersistConsumeHandler,
+            @Qualifier("filteredKeepConsumeHandler")
+            ConsumeHandler<FilteredData> filteredKeepConsumeHandler,
+            @Qualifier("filteredPersistConsumeHandler")
+            ConsumeHandler<FilteredData> filteredPersistConsumeHandler,
+            @Qualifier("triggeredKeepConsumeHandler")
+            ConsumeHandler<TriggeredData> triggeredKeepConsumeHandler,
+            @Qualifier("triggeredPersistConsumeHandler")
+            ConsumeHandler<TriggeredData> triggeredPersistConsumeHandler,
             RecordHandler recordHandler,
             ServiceExceptionMapper sem
     ) {
         this.recordLocalCacheHandler = recordLocalCacheHandler;
-        this.filteredEventConsumeHandler = filteredEventConsumeHandler;
-        this.filteredValueConsumeHandler = filteredValueConsumeHandler;
-        this.triggeredEventConsumeHandler = triggeredEventConsumeHandler;
-        this.triggeredValueConsumeHandler = triggeredValueConsumeHandler;
-        this.realtimeEventConsumeHandler = realtimeEventConsumeHandler;
-        this.realtimeValueConsumeHandler = realtimeValueConsumeHandler;
-        this.persistenceEventConsumeHandler = persistenceEventConsumeHandler;
-        this.persistenceValueConsumeHandler = persistenceValueConsumeHandler;
+        this.normalKeepConsumeHandler = normalKeepConsumeHandler;
+        this.normalPersistConsumeHandler = normalPersistConsumeHandler;
+        this.filteredKeepConsumeHandler = filteredKeepConsumeHandler;
+        this.filteredPersistConsumeHandler = filteredPersistConsumeHandler;
+        this.triggeredKeepConsumeHandler = triggeredKeepConsumeHandler;
+        this.triggeredPersistConsumeHandler = triggeredPersistConsumeHandler;
         this.recordHandler = recordHandler;
         this.sem = sem;
     }
 
     @PostConstruct
     public void init() {
-        consumeHandlerMap.put(ConsumerId.EVENT_FILTERED, filteredEventConsumeHandler);
-        consumeHandlerMap.put(ConsumerId.VALUE_FILTERED, filteredValueConsumeHandler);
-        consumeHandlerMap.put(ConsumerId.EVENT_TRIGGERED, triggeredEventConsumeHandler);
-        consumeHandlerMap.put(ConsumerId.VALUE_TRIGGERED, triggeredValueConsumeHandler);
-        consumeHandlerMap.put(ConsumerId.EVENT_REALTIME, realtimeEventConsumeHandler);
-        consumeHandlerMap.put(ConsumerId.VALUE_REALTIME, realtimeValueConsumeHandler);
-        consumeHandlerMap.put(ConsumerId.EVENT_PERSISTENCE, persistenceEventConsumeHandler);
-        consumeHandlerMap.put(ConsumerId.VALUE_PERSISTENCE, persistenceValueConsumeHandler);
+        consumeHandlerMap.put(ConsumerId.KEEP_NORMAL, normalKeepConsumeHandler);
+        consumeHandlerMap.put(ConsumerId.PERSIST_NORMAL, normalPersistConsumeHandler);
+        consumeHandlerMap.put(ConsumerId.KEEP_FILTERED, filteredKeepConsumeHandler);
+        consumeHandlerMap.put(ConsumerId.PERSIST_FILTERED, filteredPersistConsumeHandler);
+        consumeHandlerMap.put(ConsumerId.KEEP_TRIGGERED, triggeredKeepConsumeHandler);
+        consumeHandlerMap.put(ConsumerId.PERSIST_TRIGGERED, triggeredPersistConsumeHandler);
     }
 
     @PreDestroy

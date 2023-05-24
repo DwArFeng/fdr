@@ -12,7 +12,7 @@ import java.util.Objects;
 @Table(name = "tbl_filter_support")
 public class HibernateFilterSupport implements Bean {
 
-    private static final long serialVersionUID = -8833768341499733518L;
+    private static final long serialVersionUID = 2651110463366547818L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -26,12 +26,13 @@ public class HibernateFilterSupport implements Bean {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "example_content", columnDefinition = "TEXT")
-    private String exampleContent;
+    @Column(name = "example_param", columnDefinition = "TEXT")
+    private String exampleParam;
 
     public HibernateFilterSupport() {
     }
 
+    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
     public HibernateStringIdKey getKey() {
         if (Objects.isNull(stringId)) {
             return null;
@@ -46,6 +47,7 @@ public class HibernateFilterSupport implements Bean {
         this.stringId = key.getStringId();
     }
 
+    // -----------------------------------------------------------常规属性区-----------------------------------------------------------
     public String getStringId() {
         return stringId;
     }
@@ -70,21 +72,20 @@ public class HibernateFilterSupport implements Bean {
         this.description = description;
     }
 
-    public String getExampleContent() {
-        return exampleContent;
+    public String getExampleParam() {
+        return exampleParam;
     }
 
-    public void setExampleContent(String exampleContent) {
-        this.exampleContent = exampleContent;
+    public void setExampleParam(String exampleParam) {
+        this.exampleParam = exampleParam;
     }
 
     @Override
     public String toString() {
-        return "HibernateFilterSupport{" +
-                "stringId='" + stringId + '\'' +
-                ", label='" + label + '\'' +
-                ", description='" + description + '\'' +
-                ", exampleContent='" + exampleContent + '\'' +
-                '}';
+        return getClass().getSimpleName() + "(" +
+                "stringId = " + stringId + ", " +
+                "label = " + label + ", " +
+                "description = " + description + ", " +
+                "exampleParam = " + exampleParam + ")";
     }
 }

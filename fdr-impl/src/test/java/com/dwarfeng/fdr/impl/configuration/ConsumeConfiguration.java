@@ -1,13 +1,17 @@
 package com.dwarfeng.fdr.impl.configuration;
 
 import com.dwarfeng.fdr.impl.handler.ConsumeHandlerImpl;
+import com.dwarfeng.fdr.impl.handler.Consumer;
 import com.dwarfeng.fdr.impl.handler.consumer.*;
-import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
-import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
-import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
+import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
+import com.dwarfeng.fdr.stack.bean.dto.NormalData;
+import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
 import com.dwarfeng.fdr.stack.handler.ConsumeHandler;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.dwarfeng.fdr.stack.handler.KeepHandler;
+import com.dwarfeng.fdr.stack.handler.PersistHandler;
+import com.dwarfeng.fdr.stack.handler.PushHandler;
+import org.apache.curator.framework.CuratorFramework;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,218 +23,264 @@ import java.util.ArrayList;
 @Configuration
 public class ConsumeConfiguration {
 
-    @Autowired
-    private ThreadPoolTaskExecutor executor;
-    @Autowired
-    private ThreadPoolTaskScheduler scheduler;
+    private final KeepHandler<NormalData> normalKeepHandler;
+    private final PersistHandler<NormalData> normalPersistHandler;
+    private final KeepHandler<FilteredData> filteredKeepHandler;
+    private final PersistHandler<FilteredData> filteredPersistHandler;
+    private final KeepHandler<TriggeredData> triggeredKeepHandler;
+    private final PersistHandler<TriggeredData> triggeredPersistHandler;
+    private final PushHandler pushHandler;
+
+    private final CuratorFramework curatorFramework;
+
+    private final ThreadPoolTaskExecutor executor;
+    private final ThreadPoolTaskScheduler scheduler;
+
     @Value("${consume.threshold.warn}")
     private double warnThreshold;
 
-    @Autowired
-    private FilteredEventConsumer filteredEventConsumer;
-    @Value("${consume.filtered_event.consumer_thread}")
-    private int filteredEventConsumerThread;
-    @Value("${consume.filtered_event.buffer_size}")
-    private int filteredEventBufferSize;
-    @Value("${consume.filtered_event.batch_size}")
-    private int filteredEventBatchSize;
-    @Value("${consume.filtered_event.max_idle_time}")
-    private long filteredEventMaxIdleTime;
+    @Value("${consume.normal_keep.consumer_thread}")
+    private int normalKeepConsumerThread;
+    @Value("${consume.normal_keep.buffer_size}")
+    private int normalKeepBufferSize;
+    @Value("${consume.normal_keep.batch_size}")
+    private int normalKeepBatchSize;
+    @Value("${consume.normal_keep.max_idle_time}")
+    private long normalKeepMaxIdleTime;
 
-    @Bean
-    public ConsumeHandler<FilteredValue> filteredEventConsumeHandler() {
-        ConsumeHandlerImpl<FilteredValue> consumeHandler = new ConsumeHandlerImpl<>(
+    @Value("${consume.normal_persist.consumer_thread}")
+    private int normalPersistConsumerThread;
+    @Value("${consume.normal_persist.buffer_size}")
+    private int normalPersistBufferSize;
+    @Value("${consume.normal_persist.batch_size}")
+    private int normalPersistBatchSize;
+    @Value("${consume.normal_persist.max_idle_time}")
+    private long normalPersistMaxIdleTime;
+
+    @Value("${consume.filtered_keep.consumer_thread}")
+    private int filteredKeepConsumerThread;
+    @Value("${consume.filtered_keep.buffer_size}")
+    private int filteredKeepBufferSize;
+    @Value("${consume.filtered_keep.batch_size}")
+    private int filteredKeepBatchSize;
+    @Value("${consume.filtered_keep.max_idle_time}")
+    private long filteredKeepMaxIdleTime;
+
+    @Value("${consume.filtered_persist.consumer_thread}")
+    private int filteredPersistConsumerThread;
+    @Value("${consume.filtered_persist.buffer_size}")
+    private int filteredPersistBufferSize;
+    @Value("${consume.filtered_persist.batch_size}")
+    private int filteredPersistBatchSize;
+    @Value("${consume.filtered_persist.max_idle_time}")
+    private long filteredPersistMaxIdleTime;
+
+    @Value("${consume.triggered_keep.consumer_thread}")
+    private int triggeredKeepConsumerThread;
+    @Value("${consume.triggered_keep.buffer_size}")
+    private int triggeredKeepBufferSize;
+    @Value("${consume.triggered_keep.batch_size}")
+    private int triggeredKeepBatchSize;
+    @Value("${consume.triggered_keep.max_idle_time}")
+    private long triggeredKeepMaxIdleTime;
+
+    @Value("${consume.triggered_persist.consumer_thread}")
+    private int triggeredPersistConsumerThread;
+    @Value("${consume.triggered_persist.buffer_size}")
+    private int triggeredPersistBufferSize;
+    @Value("${consume.triggered_persist.batch_size}")
+    private int triggeredPersistBatchSize;
+    @Value("${consume.triggered_persist.max_idle_time}")
+    private long triggeredPersistMaxIdleTime;
+
+    @Value("${curator.inter_process_mutex.keep_consumer.normal}")
+    private String normalKeepConsumerInterProcessMutexPath;
+    @Value("${curator.inter_process_mutex.keep_consumer.filtered}")
+    private String filteredKeepConsumerInterProcessMutexPath;
+    @Value("${curator.inter_process_mutex.keep_consumer.triggered}")
+    private String triggeredKeepConsumerInterProcessMutexPath;
+
+    public ConsumeConfiguration(
+            KeepHandler<NormalData> normalKeepHandler,
+            PersistHandler<NormalData> normalPersistHandler,
+            KeepHandler<FilteredData> filteredKeepHandler,
+            PersistHandler<FilteredData> filteredPersistHandler,
+            KeepHandler<TriggeredData> triggeredKeepHandler,
+            PersistHandler<TriggeredData> triggeredPersistHandler,
+            PushHandler pushHandler,
+            CuratorFramework curatorFramework,
+            ThreadPoolTaskExecutor executor,
+            ThreadPoolTaskScheduler scheduler
+    ) {
+        this.normalKeepHandler = normalKeepHandler;
+        this.normalPersistHandler = normalPersistHandler;
+        this.filteredKeepHandler = filteredKeepHandler;
+        this.filteredPersistHandler = filteredPersistHandler;
+        this.triggeredKeepHandler = triggeredKeepHandler;
+        this.triggeredPersistHandler = triggeredPersistHandler;
+        this.pushHandler = pushHandler;
+        this.curatorFramework = curatorFramework;
+        this.executor = executor;
+        this.scheduler = scheduler;
+    }
+
+    @Bean("normalKeepConsumer")
+    public Consumer<NormalData> normalKeepConsumer() {
+        return new NormalKeepConsumer(
+                normalKeepHandler,
+                pushHandler,
+                curatorFramework,
+                normalKeepConsumerInterProcessMutexPath
+        );
+    }
+
+    @Bean("normalPersistConsumer")
+    public Consumer<NormalData> normalPersistConsumer() {
+        return new NormalPersistConsumer(
+                normalPersistHandler,
+                pushHandler
+        );
+    }
+
+    @Bean("filteredKeepConsumer")
+    public Consumer<FilteredData> filteredKeepConsumer() {
+        return new FilteredKeepConsumer(
+                filteredKeepHandler,
+                pushHandler,
+                curatorFramework,
+                filteredKeepConsumerInterProcessMutexPath
+        );
+    }
+
+    @Bean("filteredPersistConsumer")
+    public Consumer<FilteredData> filteredPersistConsumer() {
+        return new FilteredPersistConsumer(
+                filteredPersistHandler,
+                pushHandler
+        );
+    }
+
+    @Bean("triggeredKeepConsumer")
+    public Consumer<TriggeredData> triggeredKeepConsumer() {
+        return new TriggeredKeepConsumer(
+                triggeredKeepHandler,
+                pushHandler,
+                curatorFramework,
+                triggeredKeepConsumerInterProcessMutexPath
+        );
+    }
+
+    @Bean("triggeredPersistConsumer")
+    public Consumer<TriggeredData> triggeredPersistConsumer() {
+        return new TriggeredPersistConsumer(
+                triggeredPersistHandler,
+                pushHandler
+        );
+    }
+
+    @Bean("normalKeepConsumeHandler")
+    public ConsumeHandler<NormalData> normalKeepConsumeHandler(
+            @Qualifier("normalKeepConsumer") Consumer<NormalData> normalKeepConsumer
+    ) {
+        ConsumeHandlerImpl<NormalData> consumeHandler = new ConsumeHandlerImpl<>(
                 executor,
                 scheduler,
                 new ArrayList<>(),
                 new ArrayList<>(),
-                filteredEventConsumer,
-                filteredEventConsumerThread,
+                normalKeepConsumer,
+                normalKeepConsumerThread,
                 warnThreshold
         );
-        consumeHandler.setBufferParameters(filteredEventBufferSize, filteredEventBatchSize, filteredEventMaxIdleTime);
+        consumeHandler.setBufferParameters(normalKeepBufferSize, normalKeepBatchSize, normalKeepMaxIdleTime);
         return consumeHandler;
     }
 
-    @Autowired
-    private FilteredValueConsumer filteredValueConsumer;
-    @Value("${consume.filtered_value.consumer_thread}")
-    private int filteredValueConsumerThread;
-    @Value("${consume.filtered_value.buffer_size}")
-    private int filteredValueBufferSize;
-    @Value("${consume.filtered_value.batch_size}")
-    private int filteredValueBatchSize;
-    @Value("${consume.filtered_value.max_idle_time}")
-    private long filteredValueMaxIdleTime;
-
-    @Bean
-    public ConsumeHandler<FilteredValue> filteredValueConsumeHandler() {
-        ConsumeHandlerImpl<FilteredValue> consumeHandler = new ConsumeHandlerImpl<>(
+    @Bean("normalPersistConsumeHandler")
+    public ConsumeHandler<NormalData> normalPersistConsumeHandler(
+            @Qualifier("normalPersistConsumer") Consumer<NormalData> normalPersistConsumer
+    ) {
+        ConsumeHandlerImpl<NormalData> consumeHandler = new ConsumeHandlerImpl<>(
                 executor,
                 scheduler,
                 new ArrayList<>(),
                 new ArrayList<>(),
-                filteredValueConsumer,
-                filteredValueConsumerThread,
+                normalPersistConsumer,
+                normalPersistConsumerThread,
                 warnThreshold
         );
-        consumeHandler.setBufferParameters(filteredValueBufferSize, filteredValueBatchSize, filteredValueMaxIdleTime);
+        consumeHandler.setBufferParameters(normalPersistBufferSize, normalPersistBatchSize, normalPersistMaxIdleTime);
         return consumeHandler;
     }
 
-    @Autowired
-    private TriggeredEventConsumer triggeredEventConsumer;
-    @Value("${consume.triggered_event.consumer_thread}")
-    private int triggeredEventConsumerThread;
-    @Value("${consume.triggered_event.buffer_size}")
-    private int triggeredEventBufferSize;
-    @Value("${consume.triggered_event.batch_size}")
-    private int triggeredEventBatchSize;
-    @Value("${consume.triggered_event.max_idle_time}")
-    private long triggeredEventMaxIdleTime;
-
-    @Bean
-    public ConsumeHandler<TriggeredValue> triggeredEventConsumeHandler() {
-        ConsumeHandlerImpl<TriggeredValue> consumeHandler = new ConsumeHandlerImpl<>(
+    @Bean("filteredKeepConsumeHandler")
+    public ConsumeHandler<FilteredData> filteredKeepConsumeHandler(
+            @Qualifier("filteredKeepConsumer") Consumer<FilteredData> filteredKeepConsumer
+    ) {
+        ConsumeHandlerImpl<FilteredData> consumeHandler = new ConsumeHandlerImpl<>(
                 executor,
                 scheduler,
                 new ArrayList<>(),
                 new ArrayList<>(),
-                triggeredEventConsumer,
-                triggeredEventConsumerThread,
+                filteredKeepConsumer,
+                filteredKeepConsumerThread,
                 warnThreshold
         );
-        consumeHandler.setBufferParameters(triggeredEventBufferSize, triggeredEventBatchSize, triggeredEventMaxIdleTime);
+        consumeHandler.setBufferParameters(filteredKeepBufferSize, filteredKeepBatchSize, filteredKeepMaxIdleTime);
         return consumeHandler;
     }
 
-    @Autowired
-    private TriggeredValueConsumer triggeredValueConsumer;
-    @Value("${consume.triggered_value.consumer_thread}")
-    private int triggeredValueConsumerThread;
-    @Value("${consume.triggered_value.buffer_size}")
-    private int triggeredValueBufferSize;
-    @Value("${consume.triggered_value.batch_size}")
-    private int triggeredValueBatchSize;
-    @Value("${consume.triggered_value.max_idle_time}")
-    private long triggeredValueMaxIdleTime;
-
-    @Bean
-    public ConsumeHandler<TriggeredValue> triggeredValueConsumeHandler() {
-        ConsumeHandlerImpl<TriggeredValue> consumeHandler = new ConsumeHandlerImpl<>(
+    @Bean("filteredPersistConsumeHandler")
+    public ConsumeHandler<FilteredData> filteredPersistConsumeHandler(
+            @Qualifier("filteredPersistConsumer") Consumer<FilteredData> filteredPersistConsumer
+    ) {
+        ConsumeHandlerImpl<FilteredData> consumeHandler = new ConsumeHandlerImpl<>(
                 executor,
                 scheduler,
                 new ArrayList<>(),
                 new ArrayList<>(),
-                triggeredValueConsumer,
-                triggeredValueConsumerThread,
+                filteredPersistConsumer,
+                filteredPersistConsumerThread,
                 warnThreshold
         );
-        consumeHandler.setBufferParameters(triggeredValueBufferSize, triggeredValueBatchSize, triggeredValueMaxIdleTime);
+        consumeHandler.setBufferParameters(
+                filteredPersistBufferSize, filteredPersistBatchSize, filteredPersistMaxIdleTime
+        );
         return consumeHandler;
     }
 
-    @Autowired
-    private RealtimeEventConsumer realtimeEventConsumer;
-    @Value("${consume.realtime_event.consumer_thread}")
-    private int realtimeEventConsumerThread;
-    @Value("${consume.realtime_event.buffer_size}")
-    private int realtimeEventBufferSize;
-    @Value("${consume.realtime_event.batch_size}")
-    private int realtimeEventBatchSize;
-    @Value("${consume.realtime_event.max_idle_time}")
-    private long realtimeEventMaxIdleTime;
-
-    @Bean
-    public ConsumeHandler<RealtimeValue> realtimeEventConsumeHandler() {
-        ConsumeHandlerImpl<RealtimeValue> consumeHandler = new ConsumeHandlerImpl<>(
+    @Bean("triggeredKeepConsumeHandler")
+    public ConsumeHandler<TriggeredData> triggeredKeepConsumeHandler(
+            @Qualifier("triggeredKeepConsumer") Consumer<TriggeredData> triggeredKeepConsumer
+    ) {
+        ConsumeHandlerImpl<TriggeredData> consumeHandler = new ConsumeHandlerImpl<>(
                 executor,
                 scheduler,
                 new ArrayList<>(),
                 new ArrayList<>(),
-                realtimeEventConsumer,
-                realtimeEventConsumerThread,
+                triggeredKeepConsumer,
+                triggeredKeepConsumerThread,
                 warnThreshold
         );
-        consumeHandler.setBufferParameters(realtimeEventBufferSize, realtimeEventBatchSize, realtimeEventMaxIdleTime);
+        consumeHandler.setBufferParameters(triggeredKeepBufferSize, triggeredKeepBatchSize, triggeredKeepMaxIdleTime);
         return consumeHandler;
     }
 
-    @Autowired
-    private RealtimeValueConsumer realtimeValueConsumer;
-    @Value("${consume.realtime_value.consumer_thread}")
-    private int realtimeValueConsumerThread;
-    @Value("${consume.realtime_value.buffer_size}")
-    private int realtimeValueBufferSize;
-    @Value("${consume.realtime_value.batch_size}")
-    private int realtimeValueBatchSize;
-    @Value("${consume.realtime_value.max_idle_time}")
-    private long realtimeValueMaxIdleTime;
-
-    @Bean
-    public ConsumeHandler<RealtimeValue> realtimeValueConsumeHandler() {
-        ConsumeHandlerImpl<RealtimeValue> consumeHandler = new ConsumeHandlerImpl<>(
+    @Bean("triggeredPersistConsumeHandler")
+    public ConsumeHandler<TriggeredData> triggeredPersistConsumeHandler(
+            @Qualifier("triggeredPersistConsumer") Consumer<TriggeredData> triggeredPersistConsumer
+    ) {
+        ConsumeHandlerImpl<TriggeredData> consumeHandler = new ConsumeHandlerImpl<>(
                 executor,
                 scheduler,
                 new ArrayList<>(),
                 new ArrayList<>(),
-                realtimeValueConsumer,
-                realtimeValueConsumerThread,
+                triggeredPersistConsumer,
+                triggeredPersistConsumerThread,
                 warnThreshold
         );
-        consumeHandler.setBufferParameters(realtimeValueBufferSize, realtimeValueBatchSize, realtimeValueMaxIdleTime);
-        return consumeHandler;
-    }
-
-    @Autowired
-    private PersistenceEventConsumer persistenceEventConsumer;
-    @Value("${consume.persistence_event.consumer_thread}")
-    private int persistenceEventConsumerThread;
-    @Value("${consume.persistence_event.buffer_size}")
-    private int persistenceEventBufferSize;
-    @Value("${consume.persistence_event.batch_size}")
-    private int persistenceEventBatchSize;
-    @Value("${consume.persistence_event.max_idle_time}")
-    private long persistenceEventMaxIdleTime;
-
-    @Bean
-    public ConsumeHandler<PersistenceValue> persistenceEventConsumeHandler() {
-        ConsumeHandlerImpl<PersistenceValue> consumeHandler = new ConsumeHandlerImpl<>(
-                executor,
-                scheduler,
-                new ArrayList<>(),
-                new ArrayList<>(),
-                persistenceEventConsumer,
-                persistenceEventConsumerThread,
-                warnThreshold
+        consumeHandler.setBufferParameters(
+                triggeredPersistBufferSize, triggeredPersistBatchSize, triggeredPersistMaxIdleTime
         );
-        consumeHandler.setBufferParameters(persistenceEventBufferSize, persistenceEventBatchSize, persistenceEventMaxIdleTime);
-        return consumeHandler;
-    }
-
-    @Autowired
-    private PersistenceValueConsumer persistenceValueConsumer;
-    @Value("${consume.persistence_value.consumer_thread}")
-    private int persistenceValueConsumerThread;
-    @Value("${consume.persistence_value.buffer_size}")
-    private int persistenceValueBufferSize;
-    @Value("${consume.persistence_value.batch_size}")
-    private int persistenceValueBatchSize;
-    @Value("${consume.persistence_value.max_idle_time}")
-    private long persistenceValueMaxIdleTime;
-
-    @Bean
-    public ConsumeHandler<PersistenceValue> persistenceValueConsumeHandler() {
-        ConsumeHandlerImpl<PersistenceValue> consumeHandler = new ConsumeHandlerImpl<>(
-                executor,
-                scheduler,
-                new ArrayList<>(),
-                new ArrayList<>(),
-                persistenceValueConsumer,
-                persistenceValueConsumerThread,
-                warnThreshold
-        );
-        consumeHandler.setBufferParameters(persistenceValueBufferSize, persistenceValueBatchSize, persistenceValueMaxIdleTime);
         return consumeHandler;
     }
 }

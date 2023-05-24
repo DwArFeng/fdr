@@ -279,7 +279,7 @@ public class TriggerSupportMaintainServiceImpl implements TriggerSupportMaintain
                     new StringIdKey(supporter.provideType()),
                     supporter.provideLabel(),
                     supporter.provideDescription(),
-                    supporter.provideExampleContent()
+                    supporter.provideExampleParam()
             )).collect(Collectors.toList());
             crudService.batchInsert(triggerSupports);
         } catch (Exception e) {

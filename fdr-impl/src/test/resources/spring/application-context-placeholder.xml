@@ -11,13 +11,11 @@
 
     <!-- 设置配置文件的路径 -->
     <context:property-placeholder
-            location=
-                    "classpath:database/*.properties,
-                    classpath:dubbo/*.properties,
-                    classpath:fdr/*.properties,
-                    classpath:redis/*.properties"
+            location="classpath:database/*.properties,classpath:dubbo/*.properties,classpath:fdr/*.properties,
+            classpath:redis/*.properties,classpath:curator/*.properties"
             local-override="true"
-            properties-ref="refProperties"/>
+            properties-ref="refProperties"
+    />
 
     <!-- 设置本地文件覆盖的路径 -->
     <bean id="refProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
@@ -31,6 +29,8 @@
                 <value>file:conf/test.redis/*.properties</value>
                 <!--suppress SpringXmlModelInspection -->
                 <value>file:conf/test.fdr/*.properties</value>
+                <!--suppress SpringXmlModelInspection -->
+                <value>file:conf/test.curator/*.properties</value>
             </list>
         </property>
     </bean>

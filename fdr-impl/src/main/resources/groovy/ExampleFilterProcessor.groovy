@@ -1,34 +1,33 @@
-import com.dwarfeng.dcti.stack.bean.dto.DataInfo
 import com.dwarfeng.fdr.impl.handler.filter.GroovyFilterRegistry
-import com.dwarfeng.fdr.stack.bean.entity.FilteredValue
 import com.dwarfeng.fdr.stack.exception.FilterException
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey
+import com.dwarfeng.fdr.stack.handler.Filter
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /**
- * 通过 DataInfo 的值的长度判断数据信息是否通过过滤的脚本。
- * <p> 如果 DataInfo 中数据的长度大于 5，则不通过，否则通过。
+ * 示例过滤器处理器。
+ *
+ * <p>
+ * 如果数据的发生日期是奇数，则不过滤，否则过滤。
+ *
+ * @author Dwarfeng
+ * @since 1.5.2
  */
 @SuppressWarnings("GrPackage")
 class ExampleFilterProcessor implements GroovyFilterRegistry.Processor {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExampleFilterProcessor.class)
+
     @Override
-    FilteredValue test(LongIdKey pointIdKey, LongIdKey filterIdKey, DataInfo dataInfo) throws FilterException {
-        try {
-            def size = dataInfo.getValue().size()
-            if (size > 5) {
-                return new FilteredValue(
-                        null,
-                        pointIdKey,
-                        filterIdKey,
-                        dataInfo.getHappenedDate(),
-                        dataInfo.getValue(),
-                        "DataInfo 的值大于 5 个字符"
-                )
-            } else {
-                return null
-            }
-        } catch (Exception e) {
-            throw new FilterException(e)
+    Filter.TestResult test(Filter.TestInfo testInfo) throws FilterException {
+        // 获取数据的发生日期的时间戳，如果是奇数，则不过滤。
+        if (testInfo.getHappenedDate().getTime() % 2 == 1) {
+            return Filter.TestResult.NOT_FILTERED
         }
+
+        // 否则过滤。
+        String message = "数据的发生日期是偶数，被过滤。"
+        LOGGER.debug("测试信息 {} 被过滤, 原因: {}", testInfo, message)
+        return Filter.TestResult.filtered(message)
     }
 }

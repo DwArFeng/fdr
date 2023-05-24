@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "tbl_point")
 public class HibernatePoint implements Bean {
 
-    private static final long serialVersionUID = 4923865131580198476L;
+    private static final long serialVersionUID = 2623032625126802930L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -28,11 +28,23 @@ public class HibernatePoint implements Bean {
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
 
-    @Column(name = "persistence_enabled", nullable = false)
-    private boolean persistenceEnabled;
+    @Column(name = "normal_keep_enabled")
+    private boolean normalKeepEnabled;
 
-    @Column(name = "realtime_enabled", nullable = false)
-    private boolean realtimeEnabled;
+    @Column(name = "normal_persist_enabled")
+    private boolean normalPersistEnabled;
+
+    @Column(name = "filtered_keep_enabled")
+    private boolean filteredKeepEnabled;
+
+    @Column(name = "filtered_persist_enabled")
+    private boolean filteredPersistEnabled;
+
+    @Column(name = "triggered_keep_enabled")
+    private boolean triggeredKeepEnabled;
+
+    @Column(name = "triggered_persist_enabled")
+    private boolean triggeredPersistEnabled;
 
     // -----------------------------------------------------------一对多-----------------------------------------------------------
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateFilterInfo.class, mappedBy = "point")
@@ -44,6 +56,7 @@ public class HibernatePoint implements Bean {
     public HibernatePoint() {
     }
 
+    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
     public HibernateLongIdKey getKey() {
         return Optional.ofNullable(longId).map(HibernateLongIdKey::new).orElse(null);
     }
@@ -52,12 +65,13 @@ public class HibernatePoint implements Bean {
         this.longId = Optional.ofNullable(idKey).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
+    // -----------------------------------------------------------常规属性区-----------------------------------------------------------
     public Long getLongId() {
         return longId;
     }
 
-    public void setLongId(Long id) {
-        this.longId = id;
+    public void setLongId(Long longId) {
+        this.longId = longId;
     }
 
     public String getName() {
@@ -76,20 +90,52 @@ public class HibernatePoint implements Bean {
         this.remark = remark;
     }
 
-    public boolean isPersistenceEnabled() {
-        return persistenceEnabled;
+    public boolean isNormalKeepEnabled() {
+        return normalKeepEnabled;
     }
 
-    public void setPersistenceEnabled(boolean persistenceEnabled) {
-        this.persistenceEnabled = persistenceEnabled;
+    public void setNormalKeepEnabled(boolean normalKeepEnabled) {
+        this.normalKeepEnabled = normalKeepEnabled;
     }
 
-    public boolean isRealtimeEnabled() {
-        return realtimeEnabled;
+    public boolean isNormalPersistEnabled() {
+        return normalPersistEnabled;
     }
 
-    public void setRealtimeEnabled(boolean realtimeEnabled) {
-        this.realtimeEnabled = realtimeEnabled;
+    public void setNormalPersistEnabled(boolean normalPersistEnabled) {
+        this.normalPersistEnabled = normalPersistEnabled;
+    }
+
+    public boolean isFilteredKeepEnabled() {
+        return filteredKeepEnabled;
+    }
+
+    public void setFilteredKeepEnabled(boolean filteredKeepEnabled) {
+        this.filteredKeepEnabled = filteredKeepEnabled;
+    }
+
+    public boolean isFilteredPersistEnabled() {
+        return filteredPersistEnabled;
+    }
+
+    public void setFilteredPersistEnabled(boolean filteredPersistEnabled) {
+        this.filteredPersistEnabled = filteredPersistEnabled;
+    }
+
+    public boolean isTriggeredKeepEnabled() {
+        return triggeredKeepEnabled;
+    }
+
+    public void setTriggeredKeepEnabled(boolean triggeredKeepEnabled) {
+        this.triggeredKeepEnabled = triggeredKeepEnabled;
+    }
+
+    public boolean isTriggeredPersistEnabled() {
+        return triggeredPersistEnabled;
+    }
+
+    public void setTriggeredPersistEnabled(boolean triggeredPersistEnabled) {
+        this.triggeredPersistEnabled = triggeredPersistEnabled;
     }
 
     public Set<HibernateFilterInfo> getFilterInfos() {
@@ -110,12 +156,15 @@ public class HibernatePoint implements Bean {
 
     @Override
     public String toString() {
-        return "HibernatePoint{" +
-                "longId=" + longId +
-                ", name='" + name + '\'' +
-                ", remark='" + remark + '\'' +
-                ", persistenceEnabled=" + persistenceEnabled +
-                ", realtimeEnabled=" + realtimeEnabled +
-                '}';
+        return getClass().getSimpleName() + "(" +
+                "longId = " + longId + ", " +
+                "name = " + name + ", " +
+                "remark = " + remark + ", " +
+                "normalKeepEnabled = " + normalKeepEnabled + ", " +
+                "normalPersistEnabled = " + normalPersistEnabled + ", " +
+                "filteredKeepEnabled = " + filteredKeepEnabled + ", " +
+                "filteredPersistEnabled = " + filteredPersistEnabled + ", " +
+                "triggeredKeepEnabled = " + triggeredKeepEnabled + ", " +
+                "triggeredPersistEnabled = " + triggeredPersistEnabled + ")";
     }
 }

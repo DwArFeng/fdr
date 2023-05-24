@@ -11,21 +11,21 @@ import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
  */
 public class MapperSupport implements Entity<StringIdKey> {
 
-    private static final long serialVersionUID = -3776716826749233066L;
+    private static final long serialVersionUID = -7842553562131218140L;
 
     private StringIdKey key;
     private String label;
     private String description;
-    private String argsIllustrate;
+    private String exampleParam;
 
     public MapperSupport() {
     }
 
-    public MapperSupport(StringIdKey key, String label, String description, String argsIllustrate) {
+    public MapperSupport(StringIdKey key, String label, String description, String exampleParam) {
         this.key = key;
         this.label = label;
         this.description = description;
-        this.argsIllustrate = argsIllustrate;
+        this.exampleParam = exampleParam;
     }
 
     @Override
@@ -54,12 +54,12 @@ public class MapperSupport implements Entity<StringIdKey> {
         this.description = description;
     }
 
-    public String getArgsIllustrate() {
-        return argsIllustrate;
+    public String getExampleParam() {
+        return exampleParam;
     }
 
-    public void setArgsIllustrate(String argsIllustrate) {
-        this.argsIllustrate = argsIllustrate;
+    public void setExampleParam(String exampleParam) {
+        this.exampleParam = exampleParam;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class MapperSupport implements Entity<StringIdKey> {
                 "key=" + key +
                 ", label='" + label + '\'' +
                 ", description='" + description + '\'' +
-                ", argsIllustrate='" + argsIllustrate + '\'' +
+                ", exampleParam='" + exampleParam + '\'' +
                 '}';
     }
 }

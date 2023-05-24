@@ -7,22 +7,30 @@ import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import java.util.Objects;
 
+/**
+ * JSFixed FastJson 过滤器信息。
+ *
+ * @author DwArFeng
+ * @since 0.0.1-alpha
+ */
 public class JSFixedFastJsonFilterInfo implements Bean {
 
-    private static final long serialVersionUID = -3853321213360199542L;
+    private static final long serialVersionUID = -3983558480941594005L;
 
     public static JSFixedFastJsonFilterInfo of(FilterInfo filterInfo) {
         if (Objects.isNull(filterInfo)) {
             return null;
+        } else {
+            return new JSFixedFastJsonFilterInfo(
+                    JSFixedFastJsonLongIdKey.of(filterInfo.getKey()),
+                    JSFixedFastJsonLongIdKey.of(filterInfo.getPointKey()),
+                    filterInfo.getIndex(),
+                    filterInfo.isEnabled(),
+                    filterInfo.getType(),
+                    filterInfo.getParam(),
+                    filterInfo.getRemark()
+            );
         }
-        return new JSFixedFastJsonFilterInfo(
-                JSFixedFastJsonLongIdKey.of(filterInfo.getKey()),
-                JSFixedFastJsonLongIdKey.of(filterInfo.getPointKey()),
-                filterInfo.isEnabled(),
-                filterInfo.getRemark(),
-                filterInfo.getContent(),
-                filterInfo.getType()
-        );
     }
 
     @JSONField(name = "key", ordinal = 1)
@@ -31,30 +39,35 @@ public class JSFixedFastJsonFilterInfo implements Bean {
     @JSONField(name = "point_key", ordinal = 2)
     private JSFixedFastJsonLongIdKey pointKey;
 
-    @JSONField(name = "enabled", ordinal = 3)
+    @JSONField(name = "index", ordinal = 3)
+    private int index;
+
+    @JSONField(name = "enabled", ordinal = 4)
     private boolean enabled;
 
-    @JSONField(name = "remark", ordinal = 4)
-    private String remark;
-
-    @JSONField(name = "content", ordinal = 5)
-    private String content;
-
-    @JSONField(name = "type", ordinal = 6)
+    @JSONField(name = "type", ordinal = 5)
     private String type;
+
+    @JSONField(name = "param", ordinal = 6)
+    private String param;
+
+    @JSONField(name = "remark", ordinal = 7)
+    private String remark;
 
     public JSFixedFastJsonFilterInfo() {
     }
 
     public JSFixedFastJsonFilterInfo(
-            JSFixedFastJsonLongIdKey key, JSFixedFastJsonLongIdKey pointKey, boolean enabled, String remark,
-            String content, String type) {
+            JSFixedFastJsonLongIdKey key, JSFixedFastJsonLongIdKey pointKey, int index, boolean enabled, String type,
+            String param, String remark
+    ) {
         this.key = key;
         this.pointKey = pointKey;
+        this.index = index;
         this.enabled = enabled;
-        this.remark = remark;
-        this.content = content;
         this.type = type;
+        this.param = param;
+        this.remark = remark;
     }
 
     public JSFixedFastJsonLongIdKey getKey() {
@@ -73,28 +86,20 @@ public class JSFixedFastJsonFilterInfo implements Bean {
         this.pointKey = pointKey;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public String getType() {
@@ -105,15 +110,32 @@ public class JSFixedFastJsonFilterInfo implements Bean {
         this.type = type;
     }
 
+    public String getParam() {
+        return param;
+    }
+
+    public void setParam(String param) {
+        this.param = param;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @Override
     public String toString() {
         return "JSFixedFastJsonFilterInfo{" +
                 "key=" + key +
                 ", pointKey=" + pointKey +
+                ", index=" + index +
                 ", enabled=" + enabled +
-                ", remark='" + remark + '\'' +
-                ", content='" + content + '\'' +
                 ", type='" + type + '\'' +
+                ", param='" + param + '\'' +
+                ", remark='" + remark + '\'' +
                 '}';
     }
 }

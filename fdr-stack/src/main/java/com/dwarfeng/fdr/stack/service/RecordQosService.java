@@ -10,7 +10,7 @@ import com.dwarfeng.subgrade.stack.service.Service;
  * 服务质量服务。
  *
  * @author DwArFeng
- * @since 1.2.0.a
+ * @since 1.2.0
  */
 public interface RecordQosService extends Service {
 
@@ -92,16 +92,14 @@ public interface RecordQosService extends Service {
      */
     enum ConsumerId {
 
-        EVENT_FILTERED("event", "filtered"),
-        VALUE_FILTERED("value", "filtered"),
-        EVENT_TRIGGERED("event", "triggered"),
-        VALUE_TRIGGERED("value", "triggered"),
-        EVENT_REALTIME("event", "realtime"),
-        VALUE_REALTIME("value", "realtime"),
-        EVENT_PERSISTENCE("event", "persistence"),
-        VALUE_PERSISTENCE("value", "persistence"),
-
+        KEEP_FILTERED("keep", "filtered"),
+        PERSIST_FILTERED("persist", "filtered"),
+        KEEP_TRIGGERED("keep", "triggered"),
+        PERSIST_TRIGGERED("persist", "triggered"),
+        KEEP_NORMAL("keep", "normal"),
+        PERSIST_NORMAL("persist", "normal"),
         ;
+
         private final String type;
         private final String label;
 

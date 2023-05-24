@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.stack.handler;
 
-import com.dwarfeng.subgrade.stack.bean.entity.Entity;
+import com.dwarfeng.fdr.stack.structure.Data;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.handler.Handler;
 
@@ -8,9 +8,9 @@ import com.dwarfeng.subgrade.stack.handler.Handler;
  * 消费处理器。
  *
  * @author DwArFeng
- * @since 1.2.0.a
+ * @since 1.2.0
  */
-public interface ConsumeHandler<E extends Entity<?>> extends Handler {
+public interface ConsumeHandler<D extends Data> extends Handler {
 
     /**
      * 消费处理器是否启动。
@@ -35,12 +35,12 @@ public interface ConsumeHandler<E extends Entity<?>> extends Handler {
     void stop() throws HandlerException;
 
     /**
-     * 使消费处理器接受指定的元素。
+     * 接受一条数据。
      *
-     * @param element 指定的元素。
+     * @param data 指定的数据。
      * @throws HandlerException 处理器异常。
      */
-    void accept(E element) throws HandlerException;
+    void accept(D data) throws HandlerException;
 
     /**
      * 获取缓冲器已经缓冲的容量。

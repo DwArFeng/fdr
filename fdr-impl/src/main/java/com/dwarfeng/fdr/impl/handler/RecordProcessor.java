@@ -1,35 +1,29 @@
 package com.dwarfeng.fdr.impl.handler;
 
-import com.dwarfeng.dcti.sdk.util.DataInfoUtil;
-import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
 import com.dwarfeng.dutil.develop.backgr.AbstractTask;
 import com.dwarfeng.fdr.sdk.util.Constants;
-import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
-import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
-import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
+import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
+import com.dwarfeng.fdr.stack.bean.dto.NormalData;
+import com.dwarfeng.fdr.stack.bean.dto.RecordInfo;
+import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
+import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.exception.PointNotExistsException;
 import com.dwarfeng.fdr.stack.exception.RecordStoppedException;
 import com.dwarfeng.fdr.stack.handler.ConsumeHandler;
 import com.dwarfeng.fdr.stack.handler.Filter;
 import com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler;
 import com.dwarfeng.fdr.stack.handler.Trigger;
-import com.dwarfeng.subgrade.stack.bean.key.KeyFetcher;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
@@ -80,61 +74,64 @@ class RecordProcessor {
     public void start() {
         lock.lock();
         try {
-            if (!startFlag) {
-                LOGGER.info("启用 record handler...");
-                consumeBuffer.block();
-                for (int i = 0; i < thread; i++) {
-                    ConsumeTask consumeTask = new ConsumeTask(consumeBuffer, consumer);
-                    executor.execute(consumeTask);
-                    processingConsumeTasks.add(consumeTask);
-                }
-                capacityCheckFuture = scheduler.scheduleAtFixedRate(() -> {
-                    double ratio = (double) consumeBuffer.bufferedSize() / (double) consumeBuffer.getBufferSize();
-                    if (ratio >= warnThreshold) {
-                        LOGGER.warn("记录者的待消费元素占用缓存比例为 {}，超过报警值 {}，请检查",
-                                ratio,
-                                warnThreshold
-                        );
-                    }
-                }, Constants.SCHEDULER_CHECK_INTERVAL);
-                startFlag = true;
+            if (startFlag) {
+                return;
             }
+
+            consumeBuffer.block();
+            for (int i = 0; i < thread; i++) {
+                ConsumeTask consumeTask = new ConsumeTask(consumeBuffer, consumer);
+                executor.execute(consumeTask);
+                processingConsumeTasks.add(consumeTask);
+            }
+            capacityCheckFuture = scheduler.scheduleAtFixedRate(() -> {
+                double ratio = (double) consumeBuffer.bufferedSize() / (double) consumeBuffer.getBufferSize();
+                if (ratio >= warnThreshold) {
+                    String message = "逻辑侧的待消费元素占用缓存比例为 {}，超过报警值 {}，请检查";
+                    LOGGER.warn(message, ratio, warnThreshold);
+                }
+            }, Constants.SCHEDULER_CHECK_INTERVAL);
+
+            startFlag = true;
         } finally {
             lock.unlock();
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public void stop() {
         lock.lock();
         try {
-            if (startFlag) {
-                LOGGER.info("禁用 record handler...");
-                if (Objects.nonNull(capacityCheckFuture)) {
-                    capacityCheckFuture.cancel(true);
-                    capacityCheckFuture = null;
-                }
-                processingConsumeTasks.forEach(ConsumeTask::shutdown);
-                endingConsumeTasks.addAll(processingConsumeTasks);
-                processingConsumeTasks.clear();
-                consumeBuffer.unblock();
-                processRemainingElement();
-                endingConsumeTasks.removeIf(AbstractTask::isFinished);
-                if (!endingConsumeTasks.isEmpty()) {
-                    LOGGER.info("Record handler 中的线程还未完全结束, 等待线程结束...");
-                    endingConsumeTasks.forEach(
-                            task -> {
-                                try {
-                                    task.awaitFinish();
-                                } catch (InterruptedException ignored) {
-                                }
-                            }
-                    );
-                }
-                processingConsumeTasks.clear();
-                endingConsumeTasks.clear();
-                LOGGER.info("Record handler 已经妥善处理数据, 消费线程结束");
-                startFlag = false;
+            if (!startFlag) {
+                return;
             }
+
+            if (Objects.nonNull(capacityCheckFuture)) {
+                capacityCheckFuture.cancel(true);
+                capacityCheckFuture = null;
+            }
+            processingConsumeTasks.forEach(ConsumeTask::shutdown);
+            endingConsumeTasks.addAll(processingConsumeTasks);
+            processingConsumeTasks.clear();
+            consumeBuffer.unblock();
+            processRemainingElement();
+            endingConsumeTasks.removeIf(AbstractTask::isFinished);
+            if (!endingConsumeTasks.isEmpty()) {
+                LOGGER.info("逻辑侧消费处理器中的线程还未完全结束, 等待线程结束...");
+                endingConsumeTasks.forEach(
+                        task -> {
+                            try {
+                                task.awaitFinish();
+                            } catch (InterruptedException ignored) {
+                            }
+                        }
+                );
+            }
+            processingConsumeTasks.clear();
+            endingConsumeTasks.clear();
+            LOGGER.info("逻辑侧消费处理器已经妥善处理数据, 消费线程结束");
+
+            startFlag = false;
         } finally {
             lock.unlock();
         }
@@ -142,49 +139,46 @@ class RecordProcessor {
 
     private void processRemainingElement() {
         // 如果没有剩余元素，直接跳过。
-        if (consumeBuffer.bufferedSize() <= 0) return;
-        LOGGER.info("消费 record handler 中剩余的元素 {} 个...", consumeBuffer.bufferedSize());
-        LOGGER.info("Record handler 中剩余的元素过多时，需要较长时间消费，请耐心等待...");
-        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(() ->
-                        LOGGER.info("消费 consume handler 中剩余的元素 {} 个，请耐心等待...", consumeBuffer.bufferedSize()),
-                new Date(System.currentTimeMillis() + Constants.SCHEDULER_CHECK_INTERVAL), Constants.SCHEDULER_CHECK_INTERVAL);
-        DataInfo dataInfo2Consume;
-        while (Objects.nonNull(dataInfo2Consume = consumeBuffer.poll())) {
+        if (consumeBuffer.bufferedSize() <= 0) {
+            return;
+        }
+
+        LOGGER.info("消费逻辑侧消费处理器中剩余的元素 {} 个...", consumeBuffer.bufferedSize());
+        LOGGER.info("逻辑侧消费处理器中剩余的元素过多时，需要较长时间消费，请耐心等待...");
+        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(
+                () -> {
+                    String message = "消费逻辑侧消费处理器中剩余的元素 {} 个，请耐心等待...";
+                    LOGGER.info(message, consumeBuffer.bufferedSize());
+                },
+                new Date(System.currentTimeMillis() + Constants.SCHEDULER_CHECK_INTERVAL),
+                Constants.SCHEDULER_CHECK_INTERVAL
+        );
+        RecordInfo recordInfo2Consume;
+        while (Objects.nonNull(recordInfo2Consume = consumeBuffer.poll())) {
             try {
-                consumer.consume(dataInfo2Consume);
+                consumer.consume(recordInfo2Consume);
             } catch (Exception e) {
-                LOGGER.warn("消费元素时发生异常, 抛弃 DataInfo: " + dataInfo2Consume, e);
+                LOGGER.warn("逻辑侧消费处理器消费元素时发生异常, 抛弃 RecordInfo: " + recordInfo2Consume, e);
             }
         }
         scheduledFuture.cancel(true);
     }
 
-    public void record(String message) throws HandlerException {
-        lock.lock();
-        try {
-            internalRecord(DataInfoUtil.fromMessage(message));
-        } catch (HandlerException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new HandlerException(e);
-        } finally {
-            lock.unlock();
-        }
-    }
-
     /**
      * 优化的记录方法。
-     * <p>该记录方法经过优化，在记录期间，绝大部分数据不需要与缓存和数据访问层进行任何交互。尽一切可能的优化了执行效率。</p>
-     * <p>仅当数据点第一次被调用的时候，该方法才会访问缓存和数据访问层，将元数据取出并缓存在内存后便不再需要继续访问。</p>
+     * <p>
+     * 该记录方法经过优化，在记录期间，绝大部分数据不需要与缓存和数据访问层进行任何交互。尽一切可能的优化了执行效率。
+     * <p>
+     * 仅当数据点第一次被调用的时候，该方法才会访问缓存和数据访问层，将元数据取出并缓存在内存后便不再需要继续访问。
      *
-     * @param dataInfo 指定的数据信息。
+     * @param recordInfo 记录信息。
      * @throws HandlerException 处理器异常。
      * @since 1.4.0
      */
-    public void record(DataInfo dataInfo) throws HandlerException {
+    public void record(RecordInfo recordInfo) throws HandlerException {
         lock.lock();
         try {
-            internalRecord(dataInfo);
+            internalRecord(recordInfo);
         } catch (HandlerException e) {
             throw e;
         } catch (Exception e) {
@@ -194,12 +188,12 @@ class RecordProcessor {
         }
     }
 
-    private void internalRecord(DataInfo dataInfo) throws Exception {
+    private void internalRecord(RecordInfo recordInfo) throws Exception {
         // 判断是否允许记录，如果不允许，直接报错。
         if (!startFlag) {
             throw new RecordStoppedException();
         }
-        consumeBuffer.accept(dataInfo);
+        consumeBuffer.accept(recordInfo);
     }
 
     public int bufferedSize() {
@@ -287,89 +281,114 @@ class RecordProcessor {
 
         private static final Logger LOGGER = LoggerFactory.getLogger(Consumer.class);
 
-        @Autowired
-        private KeyFetcher<LongIdKey> keyFetcher;
-        @Autowired
-        private RecordLocalCacheHandler recordLocalCacheHandler;
+        private final RecordLocalCacheHandler recordLocalCacheHandler;
 
-        @Autowired
-        @Qualifier("filteredEventConsumeHandler")
-        private ConsumeHandler<FilteredValue> filteredEventConsumeHandler;
-        @Autowired
-        @Qualifier("filteredValueConsumeHandler")
-        private ConsumeHandler<FilteredValue> filteredValueConsumeHandler;
-        @Autowired
-        @Qualifier("triggeredEventConsumeHandler")
-        private ConsumeHandler<TriggeredValue> triggeredEventConsumeHandler;
-        @Autowired
-        @Qualifier("triggeredValueConsumeHandler")
-        private ConsumeHandler<TriggeredValue> triggeredValueConsumeHandler;
-        @Autowired
-        @Qualifier("realtimeEventConsumeHandler")
-        private ConsumeHandler<RealtimeValue> realtimeEventConsumeHandler;
-        @Autowired
-        @Qualifier("realtimeValueConsumeHandler")
-        private ConsumeHandler<RealtimeValue> realtimeValueConsumeHandler;
-        @Autowired
-        @Qualifier("persistenceEventConsumeHandler")
-        private ConsumeHandler<PersistenceValue> persistenceEventConsumeHandler;
-        @Autowired
-        @Qualifier("persistenceValueConsumeHandler")
-        private ConsumeHandler<PersistenceValue> persistenceValueConsumeHandler;
+        private final ConsumeHandler<NormalData> normalKeepConsumeHandler;
+        private final ConsumeHandler<NormalData> normalPersistConsumeHandler;
+        private final ConsumeHandler<FilteredData> filteredKeepConsumeHandler;
+        private final ConsumeHandler<FilteredData> filteredPersistConsumeHandler;
+        private final ConsumeHandler<TriggeredData> triggeredKeepConsumeHandler;
+        private final ConsumeHandler<TriggeredData> triggeredPersistConsumeHandler;
 
-        public void consume(DataInfo dataInfo) throws HandlerException {
+        public Consumer(
+                RecordLocalCacheHandler recordLocalCacheHandler,
+                @Qualifier("normalKeepConsumeHandler")
+                ConsumeHandler<NormalData> normalKeepConsumeHandler,
+                @Qualifier("normalPersistConsumeHandler")
+                ConsumeHandler<NormalData> normalPersistConsumeHandler,
+                @Qualifier("filteredKeepConsumeHandler")
+                ConsumeHandler<FilteredData> filteredKeepConsumeHandler,
+                @Qualifier("filteredPersistConsumeHandler")
+                ConsumeHandler<FilteredData> filteredPersistConsumeHandler,
+                @Qualifier("triggeredKeepConsumeHandler")
+                ConsumeHandler<TriggeredData> triggeredKeepConsumeHandler,
+                @Qualifier("triggeredPersistConsumeHandler")
+                ConsumeHandler<TriggeredData> triggeredPersistConsumeHandler
+        ) {
+            this.recordLocalCacheHandler = recordLocalCacheHandler;
+            this.normalKeepConsumeHandler = normalKeepConsumeHandler;
+            this.normalPersistConsumeHandler = normalPersistConsumeHandler;
+            this.filteredKeepConsumeHandler = filteredKeepConsumeHandler;
+            this.filteredPersistConsumeHandler = filteredPersistConsumeHandler;
+            this.triggeredKeepConsumeHandler = triggeredKeepConsumeHandler;
+            this.triggeredPersistConsumeHandler = triggeredPersistConsumeHandler;
+        }
+
+        public void consume(RecordInfo recordInfo) throws HandlerException {
             try {
-                // 0. 记录日志，准备工作。
-                LOGGER.debug("记录数据信息: " + dataInfo);
-                LongIdKey pointKey = new LongIdKey(dataInfo.getPointLongId());
-                // 1. 获取 RecordContext。
+                // 记录日志，准备工作。
+                LOGGER.debug("记录数据信息: " + recordInfo);
+                LongIdKey pointKey = recordInfo.getPointKey();
+                Object value = recordInfo.getValue();
+                Date happenedDate = recordInfo.getHappenedDate();
+
+                // 获取 RecordContext。
                 RecordLocalCacheHandler.RecordContext recordContext = recordLocalCacheHandler.get(pointKey);
                 if (Objects.isNull(recordContext)) {
                     throw new PointNotExistsException(pointKey);
                 }
-                // 1. 判断数据点是否通过所有的过滤器，任意一个过滤器未通过时，记录并广播过滤点信息并中止整个记录过程。
-                for (Filter filter : recordContext.getFilters()) {
-                    FilteredValue filteredValue = filter.test(dataInfo);
-                    if (Objects.nonNull(filteredValue)) {
-                        filteredValue.setKey(keyFetcher.fetchKey());
-                        LOGGER.debug("数据信息未通过过滤, 过滤数据点信息: " + filteredValue);
-                        filteredEventConsumeHandler.accept(filteredValue);
-                        filteredValueConsumeHandler.accept(filteredValue);
+                Point point = recordContext.getPoint();
+                Map<LongIdKey, Filter> filterMap = recordContext.getFilterMap();
+                Map<LongIdKey, Trigger> triggerMap = recordContext.getTriggerMap();
+
+                // 遍历所有的过滤器，任意一个过滤器未通过时，根据数据点配置保持或持久被过滤数据，随后终止。
+                for (Map.Entry<LongIdKey, Filter> entry : filterMap.entrySet()) {
+                    LongIdKey filterKey = entry.getKey();
+                    Filter filter = entry.getValue();
+
+                    Filter.TestInfo testInfo = new Filter.TestInfo(pointKey, value, happenedDate);
+                    Filter.TestResult testResult = filter.test(testInfo);
+
+                    if (testResult.isFiltered()) {
+                        FilteredData filteredRecord = new FilteredData(
+                                pointKey, filterKey, value, testResult.getMessage(), new Date()
+                        );
+                        LOGGER.debug("数据信息未通过过滤, 过滤数据点信息: " + filteredRecord);
+
+                        if (point.isFilteredKeepEnabled()) {
+                            filteredKeepConsumeHandler.accept(filteredRecord);
+                        }
+                        if (point.isFilteredPersistEnabled()) {
+                            filteredPersistConsumeHandler.accept(filteredRecord);
+                        }
                         return;
                     }
                 }
-                // 3. 遍历所有触发器，获取所有的触发数据点。记录并广播触发信息。
-                for (Trigger trigger : recordContext.getTriggers()) {
-                    TriggeredValue triggeredValue = trigger.test(dataInfo);
-                    if (Objects.nonNull(triggeredValue)) {
-                        triggeredValue.setKey(keyFetcher.fetchKey());
-                        LOGGER.debug("数据信息满足触发条件, 触发数据点信息: " + triggeredValue);
-                        triggeredEventConsumeHandler.accept(triggeredValue);
-                        triggeredValueConsumeHandler.accept(triggeredValue);
+
+                // 遍历所有的触发器，任意一个触发器触发时，根据数据点配置保持或持久触发数据。
+                for (Map.Entry<LongIdKey, Trigger> entry : triggerMap.entrySet()) {
+                    LongIdKey triggerKey = entry.getKey();
+                    Trigger trigger = entry.getValue();
+
+                    Trigger.TestInfo testInfo = new Trigger.TestInfo(pointKey, value, happenedDate);
+                    Trigger.TestResult testResult = trigger.test(testInfo);
+
+                    if (testResult.isTriggered()) {
+                        TriggeredData triggeredRecord = new TriggeredData(
+                                pointKey, triggerKey, value, testResult.getMessage(), new Date()
+                        );
+                        LOGGER.debug("数据信息满足触发条件, 触发数据点信息: " + triggeredRecord);
+
+                        if (point.isTriggeredKeepEnabled()) {
+                            triggeredKeepConsumeHandler.accept(triggeredRecord);
+                        }
+                        if (point.isTriggeredPersistEnabled()) {
+                            triggeredPersistConsumeHandler.accept(triggeredRecord);
+                        }
                     }
                 }
-                // 4. 如果数据点的实时数据使能且数据的发生时间晚于之前的实时数据发生时间，记录实时数据并广播。
-                if (recordContext.getPoint().isRealtimeEnabled()) {
-                    RealtimeValue realtimeValue = new RealtimeValue(
-                            recordContext.getPoint().getKey(),
-                            dataInfo.getHappenedDate(),
-                            dataInfo.getValue()
-                    );
-                    LOGGER.debug("数据点实时数据记录使能, 实时数据信息: " + realtimeValue);
-                    realtimeEventConsumeHandler.accept(realtimeValue);
-                    realtimeValueConsumeHandler.accept(realtimeValue);
+
+                // 生成一般数据，根据数据点配置保持或持久一般数据。
+                NormalData normalRecord = new NormalData(
+                        pointKey, value, new Date()
+                );
+                LOGGER.debug("记录一般数据: " + normalRecord);
+
+                if (point.isNormalKeepEnabled()) {
+                    normalKeepConsumeHandler.accept(normalRecord);
                 }
-                // 5. 如果数据点的持久数据使能，记录持久数据并广播。
-                if (recordContext.getPoint().isPersistenceEnabled()) {
-                    PersistenceValue persistenceValue = new PersistenceValue(
-                            keyFetcher.fetchKey(),
-                            recordContext.getPoint().getKey(),
-                            dataInfo.getHappenedDate(),
-                            dataInfo.getValue()
-                    );
-                    LOGGER.debug("数据点持久数据记录使能, 持久数据信息: " + persistenceValue);
-                    persistenceEventConsumeHandler.accept(persistenceValue);
-                    persistenceValueConsumeHandler.accept(persistenceValue);
+                if (point.isNormalPersistEnabled()) {
+                    normalPersistConsumeHandler.accept(normalRecord);
                 }
             } catch (HandlerException e) {
                 throw e;
@@ -388,25 +407,25 @@ class RecordProcessor {
         private final Lock lock = new ReentrantLock();
         private final Condition provideCondition = lock.newCondition();
         private final Condition consumeCondition = lock.newCondition();
-        private final List<DataInfo> buffer = new ArrayList<>();
+        private final List<RecordInfo> buffer = new ArrayList<>();
 
         private boolean blockEnabled = true;
 
-        public void accept(DataInfo dataInfo) {
+        public void accept(RecordInfo recordInfo) {
             lock.lock();
             try {
                 while (buffer.size() >= bufferSize) {
                     provideCondition.awaitUninterruptibly();
                 }
 
-                buffer.add(dataInfo);
+                buffer.add(recordInfo);
                 consumeCondition.signalAll();
             } finally {
                 lock.unlock();
             }
         }
 
-        public DataInfo poll() {
+        public RecordInfo poll() {
             lock.lock();
             try {
                 /*
@@ -419,14 +438,14 @@ class RecordProcessor {
                     consumeCondition.awaitUninterruptibly();
                 }
 
-                // 取出第一个DataInfo，并判断buffer中为空的情形。
-                DataInfo dataInfo = null;
+                // 取出第一个RecordInfo，并判断buffer中为空的情形。
+                RecordInfo recordInfo = null;
                 if (!buffer.isEmpty()) {
-                    dataInfo = buffer.remove(0);
+                    recordInfo = buffer.remove(0);
                 }
 
                 provideCondition.signalAll();
-                return dataInfo;
+                return recordInfo;
             } finally {
                 lock.unlock();
             }
@@ -501,14 +520,14 @@ class RecordProcessor {
 
         protected void todo() {
             while (runningFlag.get()) {
-                DataInfo dataInfo = null;
+                RecordInfo recordInfo = null;
                 try {
-                    dataInfo = consumeBuffer.poll();
-                    if (Objects.isNull(dataInfo)) return;
-                    consumer.consume(dataInfo);
+                    recordInfo = consumeBuffer.poll();
+                    if (Objects.isNull(recordInfo)) return;
+                    consumer.consume(recordInfo);
                 } catch (Exception e) {
-                    if (Objects.nonNull(dataInfo)) {
-                        LOGGER.warn("记录数据信息时发生异常, 抛弃 DataInfo: " + dataInfo, e);
+                    if (Objects.nonNull(recordInfo)) {
+                        LOGGER.warn("记录数据信息时发生异常, 抛弃 RecordInfo: " + recordInfo, e);
                     }
                 }
             }

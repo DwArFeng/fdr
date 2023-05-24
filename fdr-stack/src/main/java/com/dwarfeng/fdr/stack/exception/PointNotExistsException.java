@@ -1,6 +1,7 @@
 package com.dwarfeng.fdr.stack.exception;
 
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.exception.HandlerException;
 
 /**
  * 数据点不存在异常。
@@ -8,9 +9,9 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
  * @author DwArFeng
  * @since 1.1.0
  */
-public class PointNotExistsException extends Exception {
+public class PointNotExistsException extends HandlerException {
 
-    private static final long serialVersionUID = 5584249920639455084L;
+    private static final long serialVersionUID = -5619410067543153933L;
 
     private final LongIdKey pointKey;
 
@@ -18,8 +19,9 @@ public class PointNotExistsException extends Exception {
         this.pointKey = pointKey;
     }
 
-    public LongIdKey getPointKey() {
-        return pointKey;
+    public PointNotExistsException(Throwable cause, LongIdKey pointKey) {
+        super(cause);
+        this.pointKey = pointKey;
     }
 
     @Override

@@ -32,23 +32,10 @@ public class FilterInfoMaintainServiceImplTest {
 
     @Before
     public void setUp() {
-        parentPoint = new Point(
-                null,
-                "parent-point",
-                "test-point",
-                true,
-                true
-        );
+        parentPoint = new Point(null, "name", "remark", true, true, true, true, true, true);
         filterInfos = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            FilterInfo filterInfo = new FilterInfo(
-                    null,
-                    parentPoint.getKey(),
-                    true,
-                    "filter-info-" + i,
-                    "this is a test",
-                    "test"
-            );
+            FilterInfo filterInfo = new FilterInfo(null, null, i, true, "type", "param", "remark");
             filterInfos.add(filterInfo);
         }
     }

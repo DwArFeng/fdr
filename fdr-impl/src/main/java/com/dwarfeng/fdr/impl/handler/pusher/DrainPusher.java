@@ -1,9 +1,8 @@
 package com.dwarfeng.fdr.impl.handler.pusher;
 
-import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
-import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
-import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
+import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
+import com.dwarfeng.fdr.stack.bean.dto.NormalData;
+import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,35 +23,51 @@ public class DrainPusher extends AbstractPusher {
     }
 
     @Override
-    public void dataFiltered(FilteredValue filteredValue) {
+    public void normalUpdated(NormalData normalRecord) {
     }
 
     @Override
-    public void dataFiltered(List<FilteredValue> filteredValues) {
+    public void normalUpdated(List<NormalData> normalRecords) {
     }
 
     @Override
-    public void dataTriggered(TriggeredValue triggeredValue) {
+    public void normalRecorded(NormalData normalRecord) {
     }
 
     @Override
-    public void dataTriggered(List<TriggeredValue> triggeredValues) {
+    public void normalRecorded(List<NormalData> normalRecords) {
     }
 
     @Override
-    public void realtimeUpdated(RealtimeValue realtimeValue) {
+    public void filteredUpdated(FilteredData filteredRecord) {
     }
 
     @Override
-    public void realtimeUpdated(List<RealtimeValue> realtimeValues) {
+    public void filteredUpdated(List<FilteredData> filteredRecords) {
     }
 
     @Override
-    public void persistenceRecorded(PersistenceValue persistenceValue) {
+    public void filteredRecorded(FilteredData filteredRecord) {
     }
 
     @Override
-    public void persistenceRecorded(List<PersistenceValue> persistenceValues) {
+    public void filteredRecorded(List<FilteredData> filteredRecords) {
+    }
+
+    @Override
+    public void triggeredUpdated(TriggeredData triggeredRecord) {
+    }
+
+    @Override
+    public void triggeredUpdated(List<TriggeredData> triggeredRecords) {
+    }
+
+    @Override
+    public void triggeredRecorded(TriggeredData triggeredRecord) {
+    }
+
+    @Override
+    public void triggeredRecorded(List<TriggeredData> triggeredRecords) {
     }
 
     @Override

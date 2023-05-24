@@ -12,7 +12,6 @@ import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.DaoException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +20,19 @@ import java.util.List;
 @Repository
 public class FilterInfoDaoImpl implements FilterInfoDao {
 
-    @Autowired
-    private HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, FilterInfo, HibernateFilterInfo> batchBaseDao;
-    @Autowired
-    private HibernateEntireLookupDao<FilterInfo, HibernateFilterInfo> entireLookupDao;
-    @Autowired
-    private HibernatePresetLookupDao<FilterInfo, HibernateFilterInfo> presetLookupDao;
+    private final HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, FilterInfo, HibernateFilterInfo> batchBaseDao;
+    private final HibernateEntireLookupDao<FilterInfo, HibernateFilterInfo> entireLookupDao;
+    private final HibernatePresetLookupDao<FilterInfo, HibernateFilterInfo> presetLookupDao;
+
+    public FilterInfoDaoImpl(
+            HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, FilterInfo, HibernateFilterInfo> batchBaseDao,
+            HibernateEntireLookupDao<FilterInfo, HibernateFilterInfo> entireLookupDao,
+            HibernatePresetLookupDao<FilterInfo, HibernateFilterInfo> presetLookupDao
+    ) {
+        this.batchBaseDao = batchBaseDao;
+        this.entireLookupDao = entireLookupDao;
+        this.presetLookupDao = presetLookupDao;
+    }
 
     @Override
     @BehaviorAnalyse

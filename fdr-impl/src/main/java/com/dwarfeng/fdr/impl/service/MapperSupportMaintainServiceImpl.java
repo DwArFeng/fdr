@@ -279,7 +279,7 @@ public class MapperSupportMaintainServiceImpl implements MapperSupportMaintainSe
                     new StringIdKey(supporter.provideType()),
                     supporter.provideLabel(),
                     supporter.provideDescription(),
-                    supporter.provideArgsIllustrate()
+                    supporter.provideExampleParam()
             )).collect(Collectors.toList());
             crudService.batchInsert(mapperSupports);
         } catch (Exception e) {

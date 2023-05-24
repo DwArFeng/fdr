@@ -30,14 +30,6 @@ public interface HibernateMapper {
     StringIdKey stringIdKeyFromHibernate(HibernateStringIdKey hibernateStringIdKey);
 
     @Mapping(target = "pointLongId", ignore = true)
-    @Mapping(target = "longId", ignore = true)
-    @Mapping(target = "filterLongId", ignore = true)
-    HibernateFilteredValue filteredValueToHibernate(FilteredValue filteredValue);
-
-    @InheritInverseConfiguration
-    FilteredValue filteredValueFromHibernate(HibernateFilteredValue hibernateFilteredValue);
-
-    @Mapping(target = "pointLongId", ignore = true)
     @Mapping(target = "point", ignore = true)
     @Mapping(target = "longId", ignore = true)
     HibernateFilterInfo filterInfoToHibernate(FilterInfo filterInfo);
@@ -57,13 +49,6 @@ public interface HibernateMapper {
     @InheritInverseConfiguration
     MapperSupport mapperSupportFromHibernate(HibernateMapperSupport hibernateMapperSupport);
 
-    @Mapping(target = "pointLongId", ignore = true)
-    @Mapping(target = "longId", ignore = true)
-    HibernatePersistenceValue persistenceValueToHibernate(PersistenceValue persistenceValue);
-
-    @InheritInverseConfiguration
-    PersistenceValue persistenceValueFromHibernate(HibernatePersistenceValue hibernatePersistenceValue);
-
     @Mapping(target = "triggerInfos", ignore = true)
     @Mapping(target = "longId", ignore = true)
     @Mapping(target = "filterInfos", ignore = true)
@@ -71,14 +56,6 @@ public interface HibernateMapper {
 
     @InheritInverseConfiguration
     Point pointFromHibernate(HibernatePoint hibernatePoint);
-
-    @Mapping(target = "triggerLongId", ignore = true)
-    @Mapping(target = "pointLongId", ignore = true)
-    @Mapping(target = "longId", ignore = true)
-    HibernateTriggeredValue triggeredValueToHibernate(TriggeredValue triggeredValue);
-
-    @InheritInverseConfiguration
-    TriggeredValue triggeredValueFromHibernate(HibernateTriggeredValue hibernateTriggeredValue);
 
     @Mapping(target = "pointLongId", ignore = true)
     @Mapping(target = "point", ignore = true)

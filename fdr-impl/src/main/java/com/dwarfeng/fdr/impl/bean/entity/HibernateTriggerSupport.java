@@ -12,7 +12,7 @@ import java.util.Objects;
 @Table(name = "tbl_trigger_support")
 public class HibernateTriggerSupport implements Bean {
 
-    private static final long serialVersionUID = 3125109794036151494L;
+    private static final long serialVersionUID = -6397934273113631539L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -26,12 +26,13 @@ public class HibernateTriggerSupport implements Bean {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "example_content", columnDefinition = "TEXT")
-    private String exampleContent;
+    @Column(name = "example_param", columnDefinition = "TEXT")
+    private String exampleParam;
 
     public HibernateTriggerSupport() {
     }
 
+    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
     public HibernateStringIdKey getKey() {
         if (Objects.isNull(stringId)) {
             return null;
@@ -46,6 +47,7 @@ public class HibernateTriggerSupport implements Bean {
         this.stringId = key.getStringId();
     }
 
+    // -----------------------------------------------------------常规属性区-----------------------------------------------------------
     public String getStringId() {
         return stringId;
     }
@@ -70,21 +72,20 @@ public class HibernateTriggerSupport implements Bean {
         this.description = description;
     }
 
-    public String getExampleContent() {
-        return exampleContent;
+    public String getExampleParam() {
+        return exampleParam;
     }
 
-    public void setExampleContent(String exampleContent) {
-        this.exampleContent = exampleContent;
+    public void setExampleParam(String exampleParam) {
+        this.exampleParam = exampleParam;
     }
 
     @Override
     public String toString() {
-        return "HibernateTriggerSupport{" +
-                "stringId='" + stringId + '\'' +
-                ", label='" + label + '\'' +
-                ", description='" + description + '\'' +
-                ", exampleContent='" + exampleContent + '\'' +
-                '}';
+        return getClass().getSimpleName() + "(" +
+                "stringId = " + stringId + ", " +
+                "label = " + label + ", " +
+                "description = " + description + ", " +
+                "exampleParam = " + exampleParam + ")";
     }
 }

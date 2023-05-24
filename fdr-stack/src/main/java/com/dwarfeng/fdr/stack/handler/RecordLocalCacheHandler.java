@@ -1,11 +1,10 @@
 package com.dwarfeng.fdr.stack.handler;
 
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.subgrade.stack.bean.Bean;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.handler.LocalCacheHandler;
 
-import java.util.List;
+import java.util.Map;
 
 import static com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler.RecordContext;
 
@@ -17,63 +16,49 @@ import static com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler.RecordConte
  * <p>该处理器线程安全。</p>
  *
  * @author DwArFeng
- * @since 1.2.0.a
+ * @since 1.2.0
  */
 public interface RecordLocalCacheHandler extends LocalCacheHandler<LongIdKey, RecordContext> {
 
     /**
      * 数据记录上下文。
      *
+     * <p>
+     * 注意： 该类中的字段 filterMap 和 triggerMap 需要保证遍历顺序，建议使用 LinkedHashMap 实现。
+     *
      * @author DwArFeng
-     * @since 1.2.0.a
+     * @since 1.2.0
      */
-    class RecordContext implements Bean {
+    final class RecordContext {
 
-        private static final long serialVersionUID = 7006527237602002570L;
+        private final Point point;
+        private final Map<LongIdKey, Filter> filterMap;
+        private final Map<LongIdKey, Trigger> triggerMap;
 
-        private Point point;
-        private List<Filter> filters;
-        private List<Trigger> triggers;
-
-        public RecordContext() {
-        }
-
-        public RecordContext(Point point, List<Filter> filters, List<Trigger> triggers) {
+        public RecordContext(Point point, Map<LongIdKey, Filter> filterMap, Map<LongIdKey, Trigger> triggerMap) {
             this.point = point;
-            this.filters = filters;
-            this.triggers = triggers;
+            this.filterMap = filterMap;
+            this.triggerMap = triggerMap;
         }
 
         public Point getPoint() {
             return point;
         }
 
-        public void setPoint(Point point) {
-            this.point = point;
+        public Map<LongIdKey, Filter> getFilterMap() {
+            return filterMap;
         }
 
-        public List<Filter> getFilters() {
-            return filters;
-        }
-
-        public void setFilters(List<Filter> filters) {
-            this.filters = filters;
-        }
-
-        public List<Trigger> getTriggers() {
-            return triggers;
-        }
-
-        public void setTriggers(List<Trigger> triggers) {
-            this.triggers = triggers;
+        public Map<LongIdKey, Trigger> getTriggerMap() {
+            return triggerMap;
         }
 
         @Override
         public String toString() {
             return "RecordContext{" +
                     "point=" + point +
-                    ", filters=" + filters +
-                    ", triggers=" + triggers +
+                    ", filterMap=" + filterMap +
+                    ", triggerMap=" + triggerMap +
                     '}';
         }
     }

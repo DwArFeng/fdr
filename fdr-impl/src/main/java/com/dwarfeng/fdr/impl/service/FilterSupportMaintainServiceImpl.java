@@ -264,7 +264,8 @@ public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainSe
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<FilterSupport> lookupAsList(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
+    public List<FilterSupport> lookupAsList(String preset, Object[] objs, PagingInfo pagingInfo)
+            throws ServiceException {
         return presetLookupService.lookupAsList(preset, objs, pagingInfo);
     }
 
@@ -279,7 +280,7 @@ public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainSe
                     new StringIdKey(supporter.provideType()),
                     supporter.provideLabel(),
                     supporter.provideDescription(),
-                    supporter.provideExampleContent()
+                    supporter.provideExampleParam()
             )).collect(Collectors.toList());
             crudService.batchInsert(filterSupports);
         } catch (Exception e) {

@@ -2,20 +2,17 @@ package com.dwarfeng.fdr.impl.handler.pusher;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.dwarfeng.fdr.sdk.bean.entity.FastJsonFilteredValue;
-import com.dwarfeng.fdr.sdk.bean.entity.FastJsonPersistenceValue;
-import com.dwarfeng.fdr.sdk.bean.entity.FastJsonRealtimeValue;
-import com.dwarfeng.fdr.sdk.bean.entity.FastJsonTriggeredValue;
-import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
-import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
-import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
+import com.dwarfeng.fdr.sdk.bean.dto.FastJsonFilteredData;
+import com.dwarfeng.fdr.sdk.bean.dto.FastJsonNormalData;
+import com.dwarfeng.fdr.sdk.bean.dto.FastJsonTriggeredData;
+import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
+import com.dwarfeng.fdr.stack.bean.dto.NormalData;
+import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -42,77 +39,108 @@ public class NativeKafkaPusher extends AbstractPusher {
 
     public static final String PUSHER_TYPE = "native.kafka";
 
-    @Autowired
-    @Qualifier("nativeKafkaPusher.kafkaTemplate")
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
-    @Value("${pusher.native.kafka.topic.data_filtered}")
-    private String dataFilteredTopic;
-    @Value("${pusher.native.kafka.topic.data_triggered}")
-    private String dataTriggeredTopic;
-    @Value("${pusher.native.kafka.topic.realtime_updated}")
-    private String realtimeUpdatedTopic;
-    @Value("${pusher.native.kafka.topic.persistence_recorded}")
-    private String persistenceRecordedTopic;
+    @Value("${pusher.native.kafka.topic.normal_updated}")
+    private String normalUpdatedTopic;
+    @Value("${pusher.native.kafka.topic.normal_recorded}")
+    private String normalRecordedTopic;
+    @Value("${pusher.native.kafka.topic.filtered_updated}")
+    private String filteredUpdatedTopic;
+    @Value("${pusher.native.kafka.topic.filtered_recorded}")
+    private String filteredRecordedTopic;
+    @Value("${pusher.native.kafka.topic.triggered_updated}")
+    private String triggeredUpdatedTopic;
+    @Value("${pusher.native.kafka.topic.triggered_recorded}")
+    private String triggeredRecordedTopic;
     @Value("${pusher.native.kafka.topic.record_reset}")
     private String recordResetTopic;
     @Value("${pusher.native.kafka.topic.map_reset}")
     private String mapResetTopic;
 
-    public NativeKafkaPusher() {
+    public NativeKafkaPusher(
+            @Qualifier("nativeKafkaPusher.kafkaTemplate") KafkaTemplate<String, String> kafkaTemplate
+    ) {
         super(PUSHER_TYPE);
+        this.kafkaTemplate = kafkaTemplate;
     }
 
-    @Override
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
-    public void dataFiltered(FilteredValue filteredValue) {
-        String message = JSON.toJSONString(FastJsonFilteredValue.of(filteredValue), SerializerFeature.WriteClassName);
-        kafkaTemplate.send(dataFilteredTopic, message);
+    @Override
+    public void normalUpdated(NormalData normalRecord) {
+        String message = JSON.toJSONString(FastJsonNormalData.of(normalRecord), SerializerFeature.WriteClassName);
+        kafkaTemplate.send(normalUpdatedTopic, message);
     }
 
-    @Override
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
-    public void dataFiltered(List<FilteredValue> filteredValues) {
-        filteredValues.forEach(this::dataFiltered);
+    @Override
+    public void normalUpdated(List<NormalData> normalRecords) {
+        normalRecords.forEach(this::normalUpdated);
     }
 
-    @Override
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
-    public void dataTriggered(TriggeredValue triggeredValue) {
-        String message = JSON.toJSONString(FastJsonTriggeredValue.of(triggeredValue), SerializerFeature.WriteClassName);
-        kafkaTemplate.send(dataTriggeredTopic, message);
+    @Override
+    public void normalRecorded(NormalData normalRecord) {
+        String message = JSON.toJSONString(FastJsonNormalData.of(normalRecord), SerializerFeature.WriteClassName);
+        kafkaTemplate.send(normalRecordedTopic, message);
     }
 
-    @Override
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
-    public void dataTriggered(List<TriggeredValue> triggeredValues) {
-        triggeredValues.forEach(this::dataTriggered);
+    @Override
+    public void normalRecorded(List<NormalData> normalRecords) {
+        normalRecords.forEach(this::normalRecorded);
     }
 
-    @Override
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
-    public void realtimeUpdated(RealtimeValue realtimeValue) {
-        String message = JSON.toJSONString(FastJsonRealtimeValue.of(realtimeValue), SerializerFeature.WriteClassName);
-        kafkaTemplate.send(realtimeUpdatedTopic, message);
+    @Override
+    public void filteredUpdated(FilteredData filteredRecord) {
+        String message = JSON.toJSONString(FastJsonFilteredData.of(filteredRecord), SerializerFeature.WriteClassName);
+        kafkaTemplate.send(filteredUpdatedTopic, message);
     }
 
-    @Override
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
-    public void realtimeUpdated(List<RealtimeValue> realtimeValues) {
-        realtimeValues.forEach(this::realtimeUpdated);
+    @Override
+    public void filteredUpdated(List<FilteredData> filteredRecords) {
+        filteredRecords.forEach(this::filteredUpdated);
     }
 
-    @Override
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
-    public void persistenceRecorded(PersistenceValue persistenceValue) {
-        String message = JSON.toJSONString(FastJsonPersistenceValue.of(persistenceValue), SerializerFeature.WriteClassName);
-        kafkaTemplate.send(persistenceRecordedTopic, message);
+    @Override
+    public void filteredRecorded(FilteredData filteredRecord) {
+        String message = JSON.toJSONString(FastJsonFilteredData.of(filteredRecord), SerializerFeature.WriteClassName);
+        kafkaTemplate.send(filteredRecordedTopic, message);
     }
 
-    @Override
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
-    public void persistenceRecorded(List<PersistenceValue> persistenceValues) {
-        persistenceValues.forEach(this::persistenceRecorded);
+    @Override
+    public void filteredRecorded(List<FilteredData> filteredRecords) {
+
+    }
+
+    @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
+    @Override
+    public void triggeredUpdated(TriggeredData triggeredRecord) {
+        String message = JSON.toJSONString(FastJsonTriggeredData.of(triggeredRecord), SerializerFeature.WriteClassName);
+        kafkaTemplate.send(triggeredUpdatedTopic, message);
+    }
+
+    @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
+    @Override
+    public void triggeredUpdated(List<TriggeredData> triggeredRecords) {
+        triggeredRecords.forEach(this::triggeredUpdated);
+    }
+
+    @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
+    @Override
+    public void triggeredRecorded(TriggeredData triggeredRecord) {
+        String message = JSON.toJSONString(FastJsonTriggeredData.of(triggeredRecord), SerializerFeature.WriteClassName);
+        kafkaTemplate.send(triggeredRecordedTopic, message);
+    }
+
+    @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
+    @Override
+    public void triggeredRecorded(List<TriggeredData> triggeredRecords) {
+        triggeredRecords.forEach(this::triggeredRecorded);
     }
 
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
@@ -131,13 +159,14 @@ public class NativeKafkaPusher extends AbstractPusher {
     public String toString() {
         return "NativeKafkaPusher{" +
                 "kafkaTemplate=" + kafkaTemplate +
-                ", dataFilteredTopic='" + dataFilteredTopic + '\'' +
-                ", dataTriggeredTopic='" + dataTriggeredTopic + '\'' +
-                ", realtimeUpdatedTopic='" + realtimeUpdatedTopic + '\'' +
-                ", persistenceRecordedTopic='" + persistenceRecordedTopic + '\'' +
+                ", normalUpdatedTopic='" + normalUpdatedTopic + '\'' +
+                ", normalRecordedTopic='" + normalRecordedTopic + '\'' +
+                ", filteredUpdatedTopic='" + filteredUpdatedTopic + '\'' +
+                ", filteredRecordedTopic='" + filteredRecordedTopic + '\'' +
+                ", triggeredUpdatedTopic='" + triggeredUpdatedTopic + '\'' +
+                ", triggeredRecordedTopic='" + triggeredRecordedTopic + '\'' +
                 ", recordResetTopic='" + recordResetTopic + '\'' +
                 ", mapResetTopic='" + mapResetTopic + '\'' +
-                ", pusherType='" + pusherType + '\'' +
                 '}';
     }
 
@@ -161,7 +190,6 @@ public class NativeKafkaPusher extends AbstractPusher {
         @Value("${pusher.native.kafka.transaction_prefix}")
         private String transactionPrefix;
 
-        @SuppressWarnings("DuplicatedCode")
         @Bean("nativeKafkaPusher.producerProperties")
         public Map<String, Object> producerProperties() {
             LOGGER.info("配置Kafka生产者属性...");
@@ -176,7 +204,6 @@ public class NativeKafkaPusher extends AbstractPusher {
             return props;
         }
 
-        @SuppressWarnings("DuplicatedCode")
         @Bean("nativeKafkaPusher.producerFactory")
         public ProducerFactory<String, String> producerFactory() {
             LOGGER.info("配置Kafka生产者工厂...");

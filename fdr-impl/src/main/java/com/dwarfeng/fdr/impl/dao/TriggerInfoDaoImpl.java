@@ -12,7 +12,6 @@ import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.DaoException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +20,19 @@ import java.util.List;
 @Repository
 public class TriggerInfoDaoImpl implements TriggerInfoDao {
 
-    @Autowired
-    private HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, TriggerInfo, HibernateTriggerInfo> batchBaseDao;
-    @Autowired
-    private HibernateEntireLookupDao<TriggerInfo, HibernateTriggerInfo> entireLookupDao;
-    @Autowired
-    private HibernatePresetLookupDao<TriggerInfo, HibernateTriggerInfo> presetLookupDao;
+    private final HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, TriggerInfo, HibernateTriggerInfo> batchBaseDao;
+    private final HibernateEntireLookupDao<TriggerInfo, HibernateTriggerInfo> entireLookupDao;
+    private final HibernatePresetLookupDao<TriggerInfo, HibernateTriggerInfo> presetLookupDao;
+
+    public TriggerInfoDaoImpl(
+            HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, TriggerInfo, HibernateTriggerInfo> batchBaseDao,
+            HibernateEntireLookupDao<TriggerInfo, HibernateTriggerInfo> entireLookupDao,
+            HibernatePresetLookupDao<TriggerInfo, HibernateTriggerInfo> presetLookupDao
+    ) {
+        this.batchBaseDao = batchBaseDao;
+        this.entireLookupDao = entireLookupDao;
+        this.presetLookupDao = presetLookupDao;
+    }
 
     @Override
     @BehaviorAnalyse

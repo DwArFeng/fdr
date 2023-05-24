@@ -16,6 +16,9 @@ public interface FilterInfoMaintainService extends BatchCrudService<LongIdKey, F
         EntireLookupService<FilterInfo>, PresetLookupService<FilterInfo> {
 
     String CHILD_FOR_POINT = "child_for_point";
-    String CHILD_FOR_POINT_SET = "child_for_point_set";
-    String ENABLED_CHILD_FOR_POINT = "enabled_child_for_point";
+
+    /**
+     * @since 2.0.0
+     */
+    String ENABLED_CHILD_FOR_POINT_INDEX_ASC = "enabled_child_for_point_index_asc";
 }

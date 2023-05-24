@@ -32,23 +32,10 @@ public class TriggerInfoMaintainServiceImplTest {
 
     @Before
     public void setUp() {
-        parentPoint = new Point(
-                null,
-                "parent-point",
-                "test-point",
-                true,
-                true
-        );
+        parentPoint = new Point(null, "name", "remark", true, true, true, true, true, true);
         triggerInfos = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            TriggerInfo triggerInfo = new TriggerInfo(
-                    null,
-                    parentPoint.getKey(),
-                    true,
-                    "trigger-info-" + i,
-                    "this is a test",
-                    "test"
-            );
+            TriggerInfo triggerInfo = new TriggerInfo(null, null, i, true, "type", "param", "remark");
             triggerInfos.add(triggerInfo);
         }
     }

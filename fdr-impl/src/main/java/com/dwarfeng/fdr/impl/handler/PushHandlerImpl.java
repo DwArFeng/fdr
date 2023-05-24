@@ -1,30 +1,31 @@
 package com.dwarfeng.fdr.impl.handler;
 
-import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
-import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
-import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
+import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
+import com.dwarfeng.fdr.stack.bean.dto.NormalData;
+import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
 import com.dwarfeng.fdr.stack.handler.PushHandler;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class PushHandlerImpl implements PushHandler {
 
-    @Autowired(required = false)
-    @SuppressWarnings("FieldMayBeFinal")
-    private List<Pusher> pushers = Collections.emptyList();
+    private final List<Pusher> pushers;
 
     @Value("${pusher.type}")
     private String pusherType;
 
     private Pusher pusher;
+
+    public PushHandlerImpl(List<Pusher> pushers) {
+        this.pushers = Optional.ofNullable(pushers).orElse(Collections.emptyList());
+    }
 
     @PostConstruct
     public void init() throws HandlerException {
@@ -33,43 +34,63 @@ public class PushHandlerImpl implements PushHandler {
     }
 
     @Override
-    public void dataFiltered(FilteredValue filteredValue) throws HandlerException {
-        pusher.dataFiltered(filteredValue);
+    public void normalUpdated(NormalData normalRecord) throws HandlerException {
+        pusher.normalUpdated(normalRecord);
     }
 
     @Override
-    public void dataFiltered(List<FilteredValue> filteredValues) throws HandlerException {
-        pusher.dataFiltered(filteredValues);
+    public void normalUpdated(List<NormalData> normalRecords) throws HandlerException {
+        pusher.normalUpdated(normalRecords);
     }
 
     @Override
-    public void dataTriggered(TriggeredValue triggeredValue) throws HandlerException {
-        pusher.dataTriggered(triggeredValue);
+    public void normalRecorded(NormalData normalRecord) throws HandlerException {
+        pusher.normalRecorded(normalRecord);
     }
 
     @Override
-    public void dataTriggered(List<TriggeredValue> triggeredValues) throws HandlerException {
-        pusher.dataTriggered(triggeredValues);
+    public void normalRecorded(List<NormalData> normalRecords) throws HandlerException {
+        pusher.normalRecorded(normalRecords);
     }
 
     @Override
-    public void realtimeUpdated(RealtimeValue realtimeValue) throws HandlerException {
-        pusher.realtimeUpdated(realtimeValue);
+    public void filteredUpdated(FilteredData filteredRecord) throws HandlerException {
+        pusher.filteredUpdated(filteredRecord);
     }
 
     @Override
-    public void realtimeUpdated(List<RealtimeValue> realtimeValues) throws HandlerException {
-        pusher.realtimeUpdated(realtimeValues);
+    public void filteredUpdated(List<FilteredData> filteredRecords) throws HandlerException {
+        pusher.filteredUpdated(filteredRecords);
     }
 
     @Override
-    public void persistenceRecorded(PersistenceValue persistenceValue) throws HandlerException {
-        pusher.persistenceRecorded(persistenceValue);
+    public void filteredRecorded(FilteredData filteredRecord) throws HandlerException {
+        pusher.filteredRecorded(filteredRecord);
     }
 
     @Override
-    public void persistenceRecorded(List<PersistenceValue> persistenceValues) throws HandlerException {
-        pusher.persistenceRecorded(persistenceValues);
+    public void filteredRecorded(List<FilteredData> filteredRecords) throws HandlerException {
+        pusher.filteredRecorded(filteredRecords);
+    }
+
+    @Override
+    public void triggeredUpdated(TriggeredData triggeredRecord) throws HandlerException {
+        pusher.triggeredUpdated(triggeredRecord);
+    }
+
+    @Override
+    public void triggeredUpdated(List<TriggeredData> triggeredRecords) throws HandlerException {
+        pusher.triggeredUpdated(triggeredRecords);
+    }
+
+    @Override
+    public void triggeredRecorded(TriggeredData triggeredRecord) throws HandlerException {
+        pusher.triggeredRecorded(triggeredRecord);
+    }
+
+    @Override
+    public void triggeredRecorded(List<TriggeredData> triggeredRecords) throws HandlerException {
+        pusher.triggeredRecorded(triggeredRecords);
     }
 
     @Override

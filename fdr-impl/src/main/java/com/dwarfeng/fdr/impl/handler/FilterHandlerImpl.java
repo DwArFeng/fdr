@@ -1,35 +1,37 @@
 package com.dwarfeng.fdr.impl.handler;
 
-import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.exception.FilterException;
 import com.dwarfeng.fdr.stack.exception.UnsupportedFilterTypeException;
 import com.dwarfeng.fdr.stack.handler.Filter;
 import com.dwarfeng.fdr.stack.handler.FilterHandler;
+import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class FilterHandlerImpl implements FilterHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FilterHandlerImpl.class);
 
-    @Autowired(required = false)
-    @SuppressWarnings("FieldMayBeFinal")
-    private List<FilterMaker> filterMakers = Collections.emptyList();
+    private final List<FilterMaker> filterMakers;
+
+    public FilterHandlerImpl(List<FilterMaker> filterMakers) {
+        this.filterMakers = Optional.ofNullable(filterMakers).orElse(Collections.emptyList());
+    }
 
     @Override
-    public Filter make(FilterInfo filterInfo) throws FilterException {
+    public Filter make(String type, String param) throws HandlerException {
         try {
             // 生成过滤器。
             LOGGER.debug("通过过滤器信息构建新的的过滤器...");
-            FilterMaker filterMaker = filterMakers.stream().filter(maker -> maker.supportType(filterInfo.getType()))
-                    .findFirst().orElseThrow(() -> new UnsupportedFilterTypeException(filterInfo.getType()));
-            Filter filter = filterMaker.makeFilter(filterInfo);
+            FilterMaker filterMaker = filterMakers.stream().filter(maker -> maker.supportType(type))
+                    .findFirst().orElseThrow(() -> new UnsupportedFilterTypeException(type));
+            Filter filter = filterMaker.makeFilter(type, param);
             LOGGER.debug("过滤器构建成功!");
             LOGGER.debug("过滤器: " + filter);
             return filter;

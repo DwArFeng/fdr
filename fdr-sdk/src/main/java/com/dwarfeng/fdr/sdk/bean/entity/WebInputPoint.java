@@ -1,27 +1,44 @@
 package com.dwarfeng.fdr.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.fdr.sdk.util.Constraints;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.subgrade.sdk.bean.key.WebInputLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
+import java.util.Objects;
 
+/**
+ * WebInput 数据点。
+ *
+ * @author DwArFeng
+ * @since 0.0.1-alpha
+ */
 public class WebInputPoint implements Bean {
 
-    private static final long serialVersionUID = 2847799975187245306L;
+    private static final long serialVersionUID = 7514909111583453251L;
 
     public static Point toStackBean(WebInputPoint webInputPoint) {
-        return new Point(
-                WebInputLongIdKey.toStackBean(webInputPoint.getKey()),
-                webInputPoint.getName(),
-                webInputPoint.getRemark(),
-                webInputPoint.isPersistenceEnabled(),
-                webInputPoint.isRealtimeEnabled()
-        );
+        if (Objects.isNull(webInputPoint)) {
+            return null;
+        } else {
+            return new Point(
+                    WebInputLongIdKey.toStackBean(webInputPoint.getKey()),
+                    webInputPoint.getName(),
+                    webInputPoint.getRemark(),
+                    webInputPoint.isNormalKeepEnabled(),
+                    webInputPoint.isNormalPersistEnabled(),
+                    webInputPoint.isFilteredKeepEnabled(),
+                    webInputPoint.isFilteredPersistEnabled(),
+                    webInputPoint.isTriggeredKeepEnabled(),
+                    webInputPoint.isTriggeredPersistEnabled()
+            );
+        }
     }
 
     @JSONField(name = "key")
@@ -32,16 +49,30 @@ public class WebInputPoint implements Bean {
     @JSONField(name = "name")
     @NotNull
     @NotEmpty
+    @Length(max = Constraints.LENGTH_NAME)
     private String name;
 
     @JSONField(name = "remark")
+    @Length(max = Constraints.LENGTH_REMARK)
     private String remark;
 
-    @JSONField(name = "persistence_enabled")
-    private boolean persistenceEnabled;
+    @JSONField(name = "normal_keep_enabled")
+    private boolean normalKeepEnabled;
 
-    @JSONField(name = "realtime_enabled")
-    private boolean realtimeEnabled;
+    @JSONField(name = "normal_persist_enabled")
+    private boolean normalPersistEnabled;
+
+    @JSONField(name = "filtered_keep_enabled")
+    private boolean filteredKeepEnabled;
+
+    @JSONField(name = "filtered_persist_enabled")
+    private boolean filteredPersistEnabled;
+
+    @JSONField(name = "triggered_keep_enabled")
+    private boolean triggeredKeepEnabled;
+
+    @JSONField(name = "triggered_persist_enabled")
+    private boolean triggeredPersistEnabled;
 
     public WebInputPoint() {
     }
@@ -70,20 +101,52 @@ public class WebInputPoint implements Bean {
         this.remark = remark;
     }
 
-    public boolean isPersistenceEnabled() {
-        return persistenceEnabled;
+    public boolean isNormalKeepEnabled() {
+        return normalKeepEnabled;
     }
 
-    public void setPersistenceEnabled(boolean persistenceEnabled) {
-        this.persistenceEnabled = persistenceEnabled;
+    public void setNormalKeepEnabled(boolean normalKeepEnabled) {
+        this.normalKeepEnabled = normalKeepEnabled;
     }
 
-    public boolean isRealtimeEnabled() {
-        return realtimeEnabled;
+    public boolean isNormalPersistEnabled() {
+        return normalPersistEnabled;
     }
 
-    public void setRealtimeEnabled(boolean realtimeEnabled) {
-        this.realtimeEnabled = realtimeEnabled;
+    public void setNormalPersistEnabled(boolean normalPersistEnabled) {
+        this.normalPersistEnabled = normalPersistEnabled;
+    }
+
+    public boolean isFilteredKeepEnabled() {
+        return filteredKeepEnabled;
+    }
+
+    public void setFilteredKeepEnabled(boolean filteredKeepEnabled) {
+        this.filteredKeepEnabled = filteredKeepEnabled;
+    }
+
+    public boolean isFilteredPersistEnabled() {
+        return filteredPersistEnabled;
+    }
+
+    public void setFilteredPersistEnabled(boolean filteredPersistEnabled) {
+        this.filteredPersistEnabled = filteredPersistEnabled;
+    }
+
+    public boolean isTriggeredKeepEnabled() {
+        return triggeredKeepEnabled;
+    }
+
+    public void setTriggeredKeepEnabled(boolean triggeredKeepEnabled) {
+        this.triggeredKeepEnabled = triggeredKeepEnabled;
+    }
+
+    public boolean isTriggeredPersistEnabled() {
+        return triggeredPersistEnabled;
+    }
+
+    public void setTriggeredPersistEnabled(boolean triggeredPersistEnabled) {
+        this.triggeredPersistEnabled = triggeredPersistEnabled;
     }
 
     @Override
@@ -92,8 +155,12 @@ public class WebInputPoint implements Bean {
                 "key=" + key +
                 ", name='" + name + '\'' +
                 ", remark='" + remark + '\'' +
-                ", persistenceEnabled=" + persistenceEnabled +
-                ", realtimeEnabled=" + realtimeEnabled +
+                ", normalKeepEnabled=" + normalKeepEnabled +
+                ", normalPersistEnabled=" + normalPersistEnabled +
+                ", filteredKeepEnabled=" + filteredKeepEnabled +
+                ", filteredPersistEnabled=" + filteredPersistEnabled +
+                ", triggeredKeepEnabled=" + triggeredKeepEnabled +
+                ", triggeredPersistEnabled=" + triggeredPersistEnabled +
                 '}';
     }
 }

@@ -39,34 +39,15 @@ public class EnabledTriggerInfoLookupServiceImplTest {
 
     @Before
     public void setUp() {
-        parentPoint = new Point(
-                null,
-                "parent-point",
-                "test-point",
-                true,
-                true
-        );
+        parentPoint = new Point(null, "name", "remark", true, true, true, true, true, true);
         triggerInfos = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            TriggerInfo triggerInfo = new TriggerInfo(
-                    null,
-                    parentPoint.getKey(),
-                    true,
-                    "trigger-info-enabled-" + i,
-                    "this is a test",
-                    "test"
-            );
+        int i = 0;
+        for (; i < 5; i++) {
+            TriggerInfo triggerInfo = new TriggerInfo(null, null, i, true, "type", "param", "trigger_info.enabled");
             triggerInfos.add(triggerInfo);
         }
-        for (int i = 0; i < 5; i++) {
-            TriggerInfo triggerInfo = new TriggerInfo(
-                    null,
-                    parentPoint.getKey(),
-                    false,
-                    "trigger-info-disabled-" + i,
-                    "this is a test",
-                    "test"
-            );
+        for (; i < 10; i++) {
+            TriggerInfo triggerInfo = new TriggerInfo(null, null, i, false, "type", "param", "trigger_info.disabled");
             triggerInfos.add(triggerInfo);
         }
     }
@@ -86,7 +67,9 @@ public class EnabledTriggerInfoLookupServiceImplTest {
                 triggerInfo.setPointKey(parentPoint.getKey());
                 triggerInfoMaintainService.update(triggerInfo);
             }
-            assertEquals(5, triggerInfoMaintainService.lookup(TriggerInfoMaintainService.ENABLED_CHILD_FOR_POINT, new Object[]{parentPoint.getKey()}).getCount());
+            assertEquals(5, triggerInfoMaintainService.lookup(
+                    TriggerInfoMaintainService.ENABLED_CHILD_FOR_POINT_INDEX_ASC, new Object[]{parentPoint.getKey()}
+            ).getCount());
             assertEquals(5, enabledTriggerInfoLookupService.getEnabledTriggerInfos(parentPoint.getKey()).size());
             assertEquals(5, enabledTriggerInfoCache.get(parentPoint.getKey()).size());
             TriggerInfo triggerInfo = triggerInfos.get(0);
@@ -94,7 +77,9 @@ public class EnabledTriggerInfoLookupServiceImplTest {
             assertEquals(0, enabledTriggerInfoCache.get(parentPoint.getKey()).size());
             triggerInfoMaintainService.insert(triggerInfo);
             assertEquals(0, enabledTriggerInfoCache.get(parentPoint.getKey()).size());
-            assertEquals(5, triggerInfoMaintainService.lookup(TriggerInfoMaintainService.ENABLED_CHILD_FOR_POINT, new Object[]{parentPoint.getKey()}).getCount());
+            assertEquals(5, triggerInfoMaintainService.lookup(
+                    TriggerInfoMaintainService.ENABLED_CHILD_FOR_POINT_INDEX_ASC, new Object[]{parentPoint.getKey()}
+            ).getCount());
             assertEquals(5, enabledTriggerInfoLookupService.getEnabledTriggerInfos(parentPoint.getKey()).size());
             assertEquals(5, enabledTriggerInfoCache.get(parentPoint.getKey()).size());
         } finally {

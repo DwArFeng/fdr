@@ -8,25 +8,26 @@ import com.dwarfeng.subgrade.stack.bean.Bean;
 import java.util.Objects;
 
 /**
- * FastJson映射器支持。
+ * FastJson 映射器支持。
  *
  * @author DwArFeng
  * @since 1.6.0
  */
 public class FastJsonMapperSupport implements Bean {
 
-    private static final long serialVersionUID = -7046798288553307802L;
+    private static final long serialVersionUID = -2088037026464519249L;
 
     public static FastJsonMapperSupport of(MapperSupport mapperSupport) {
         if (Objects.isNull(mapperSupport)) {
             return null;
+        } else {
+            return new FastJsonMapperSupport(
+                    FastJsonStringIdKey.of(mapperSupport.getKey()),
+                    mapperSupport.getLabel(),
+                    mapperSupport.getDescription(),
+                    mapperSupport.getExampleParam()
+            );
         }
-        return new FastJsonMapperSupport(
-                FastJsonStringIdKey.of(mapperSupport.getKey()),
-                mapperSupport.getLabel(),
-                mapperSupport.getDescription(),
-                mapperSupport.getArgsIllustrate()
-        );
     }
 
     @JSONField(name = "key", ordinal = 1)
@@ -38,17 +39,19 @@ public class FastJsonMapperSupport implements Bean {
     @JSONField(name = "description", ordinal = 3)
     private String description;
 
-    @JSONField(name = "args_illustrate", ordinal = 4)
-    private String argsIllustrate;
+    @JSONField(name = "example_param", ordinal = 4)
+    private String exampleParam;
 
     public FastJsonMapperSupport() {
     }
 
-    public FastJsonMapperSupport(FastJsonStringIdKey key, String label, String description, String argsIllustrate) {
+    public FastJsonMapperSupport(
+            FastJsonStringIdKey key, String label, String description, String exampleParam
+    ) {
         this.key = key;
         this.label = label;
         this.description = description;
-        this.argsIllustrate = argsIllustrate;
+        this.exampleParam = exampleParam;
     }
 
     public FastJsonStringIdKey getKey() {
@@ -75,12 +78,12 @@ public class FastJsonMapperSupport implements Bean {
         this.description = description;
     }
 
-    public String getArgsIllustrate() {
-        return argsIllustrate;
+    public String getExampleParam() {
+        return exampleParam;
     }
 
-    public void setArgsIllustrate(String argsIllustrate) {
-        this.argsIllustrate = argsIllustrate;
+    public void setExampleParam(String exampleParam) {
+        this.exampleParam = exampleParam;
     }
 
     @Override
@@ -89,7 +92,7 @@ public class FastJsonMapperSupport implements Bean {
                 "key=" + key +
                 ", label='" + label + '\'' +
                 ", description='" + description + '\'' +
-                ", argsIllustrate='" + argsIllustrate + '\'' +
+                ", exampleParam='" + exampleParam + '\'' +
                 '}';
     }
 }

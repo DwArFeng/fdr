@@ -1,10 +1,9 @@
 package com.dwarfeng.fdr.impl.handler;
 
-import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
-import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
-import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
-import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
+import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
+import com.dwarfeng.fdr.stack.bean.dto.NormalData;
+import com.dwarfeng.fdr.stack.bean.dto.RecordInfo;
+import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
 import com.dwarfeng.fdr.stack.handler.ConsumeHandler;
 import com.dwarfeng.fdr.stack.handler.RecordHandler;
 import com.dwarfeng.fdr.stack.handler.Source;
@@ -71,21 +70,10 @@ public class RecordHandlerImpl implements RecordHandler {
 
     @BehaviorAnalyse
     @Override
-    public void record(String message) throws HandlerException {
-        lock.lock();
+    public void record(RecordInfo recordInfo) throws HandlerException {
         try {
-            recordProcessor.record(message);
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    @BehaviorAnalyse
-    @Override
-    public void record(DataInfo dataInfo) throws HandlerException {
-        lock.lock();
-        try {
-            recordProcessor.record(dataInfo);
+            lock.lock();
+            recordProcessor.record(recordInfo);
         } finally {
             lock.unlock();
         }
@@ -163,65 +151,60 @@ public class RecordHandlerImpl implements RecordHandler {
         private static final Logger LOGGER = LoggerFactory.getLogger(RecordWorker.class);
 
         private final SourceHandler sourceHandler;
+        private final ConsumeHandler<NormalData> normalKeepConsumeHandler;
+        private final ConsumeHandler<NormalData> normalPersistConsumeHandler;
+        private final ConsumeHandler<FilteredData> filteredKeepConsumeHandler;
+        private final ConsumeHandler<FilteredData> filteredPersistConsumeHandler;
+        private final ConsumeHandler<TriggeredData> triggeredKeepConsumeHandler;
+        private final ConsumeHandler<TriggeredData> triggeredPersistConsumeHandler;
 
         private final RecordProcessor recordProcessor;
 
-        private final ConsumeHandler<FilteredValue> filteredEventConsumeHandler;
-        private final ConsumeHandler<FilteredValue> filteredValueConsumeHandler;
-        private final ConsumeHandler<TriggeredValue> triggeredEventConsumeHandler;
-        private final ConsumeHandler<TriggeredValue> triggeredValueConsumeHandler;
-        private final ConsumeHandler<RealtimeValue> realtimeEventConsumeHandler;
-        private final ConsumeHandler<RealtimeValue> realtimeValueConsumeHandler;
-        private final ConsumeHandler<PersistenceValue> persistenceEventConsumeHandler;
-        private final ConsumeHandler<PersistenceValue> persistenceValueConsumeHandler;
-
         public RecordWorker(
                 SourceHandler sourceHandler,
-                RecordProcessor recordProcessor,
-                @Qualifier("filteredEventConsumeHandler")
-                ConsumeHandler<FilteredValue> filteredEventConsumeHandler,
-                @Qualifier("filteredValueConsumeHandler")
-                ConsumeHandler<FilteredValue> filteredValueConsumeHandler,
-                @Qualifier("triggeredEventConsumeHandler")
-                ConsumeHandler<TriggeredValue> triggeredEventConsumeHandler,
-                @Qualifier("triggeredValueConsumeHandler")
-                ConsumeHandler<TriggeredValue> triggeredValueConsumeHandler,
-                @Qualifier("realtimeEventConsumeHandler")
-                ConsumeHandler<RealtimeValue> realtimeEventConsumeHandler,
-                @Qualifier("realtimeValueConsumeHandler")
-                ConsumeHandler<RealtimeValue> realtimeValueConsumeHandler,
-                @Qualifier("persistenceEventConsumeHandler")
-                ConsumeHandler<PersistenceValue> persistenceEventConsumeHandler,
-                @Qualifier("persistenceValueConsumeHandler")
-                ConsumeHandler<PersistenceValue> persistenceValueConsumeHandler
+                @Qualifier("normalKeepConsumeHandler")
+                ConsumeHandler<NormalData> normalKeepConsumeHandler,
+                @Qualifier("normalPersistConsumeHandler")
+                ConsumeHandler<NormalData> normalPersistConsumeHandler,
+                @Qualifier("filteredKeepConsumeHandler")
+                ConsumeHandler<FilteredData> filteredKeepConsumeHandler,
+                @Qualifier("filteredPersistConsumeHandler")
+                ConsumeHandler<FilteredData> filteredPersistConsumeHandler,
+                @Qualifier("triggeredKeepConsumeHandler")
+                ConsumeHandler<TriggeredData> triggeredKeepConsumeHandler,
+                @Qualifier("triggeredPersistConsumeHandler")
+                ConsumeHandler<TriggeredData> triggeredPersistConsumeHandler,
+                RecordProcessor recordProcessor
         ) {
             this.sourceHandler = sourceHandler;
+            this.normalKeepConsumeHandler = normalKeepConsumeHandler;
+            this.normalPersistConsumeHandler = normalPersistConsumeHandler;
+            this.filteredKeepConsumeHandler = filteredKeepConsumeHandler;
+            this.filteredPersistConsumeHandler = filteredPersistConsumeHandler;
+            this.triggeredKeepConsumeHandler = triggeredKeepConsumeHandler;
+            this.triggeredPersistConsumeHandler = triggeredPersistConsumeHandler;
             this.recordProcessor = recordProcessor;
-            this.filteredEventConsumeHandler = filteredEventConsumeHandler;
-            this.filteredValueConsumeHandler = filteredValueConsumeHandler;
-            this.triggeredEventConsumeHandler = triggeredEventConsumeHandler;
-            this.triggeredValueConsumeHandler = triggeredValueConsumeHandler;
-            this.realtimeEventConsumeHandler = realtimeEventConsumeHandler;
-            this.realtimeValueConsumeHandler = realtimeValueConsumeHandler;
-            this.persistenceEventConsumeHandler = persistenceEventConsumeHandler;
-            this.persistenceValueConsumeHandler = persistenceValueConsumeHandler;
         }
 
         @Override
         public void work() throws Exception {
-            LOGGER.info("开启记录服务...");
+            LOGGER.info("记录侧消费处理器启动...");
+            normalKeepConsumeHandler.start();
+            normalPersistConsumeHandler.start();
+            filteredKeepConsumeHandler.start();
+            filteredPersistConsumeHandler.start();
+            triggeredKeepConsumeHandler.start();
+            triggeredPersistConsumeHandler.start();
 
-            filteredEventConsumeHandler.start();
-            filteredValueConsumeHandler.start();
-            triggeredEventConsumeHandler.start();
-            triggeredValueConsumeHandler.start();
-            realtimeEventConsumeHandler.start();
-            realtimeValueConsumeHandler.start();
-            persistenceEventConsumeHandler.start();
-            persistenceValueConsumeHandler.start();
-
+            LOGGER.info("逻辑侧消费处理器启动...");
             recordProcessor.start();
 
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ignored) {
+            }
+
+            LOGGER.info("数据源上线...");
             List<Source> sources = sourceHandler.all();
             for (Source source : sources) {
                 source.online();
@@ -230,8 +213,7 @@ public class RecordHandlerImpl implements RecordHandler {
 
         @Override
         public void rest() throws Exception {
-            LOGGER.info("关闭记录服务...");
-
+            LOGGER.info("数据源下线...");
             List<Source> sources = sourceHandler.all();
             for (Source source : sources) {
                 source.offline();
@@ -241,16 +223,17 @@ public class RecordHandlerImpl implements RecordHandler {
                 Thread.sleep(1000);
             } catch (InterruptedException ignored) {
             }
+
+            LOGGER.info("逻辑侧消费处理器关闭...");
             recordProcessor.stop();
 
-            filteredEventConsumeHandler.stop();
-            filteredValueConsumeHandler.stop();
-            triggeredEventConsumeHandler.stop();
-            triggeredValueConsumeHandler.stop();
-            realtimeEventConsumeHandler.stop();
-            realtimeValueConsumeHandler.stop();
-            persistenceEventConsumeHandler.stop();
-            persistenceValueConsumeHandler.stop();
+            LOGGER.info("记录侧消费处理器关闭...");
+            normalKeepConsumeHandler.stop();
+            normalPersistConsumeHandler.stop();
+            filteredKeepConsumeHandler.stop();
+            filteredPersistConsumeHandler.stop();
+            triggeredKeepConsumeHandler.stop();
+            triggeredPersistConsumeHandler.stop();
         }
     }
 }

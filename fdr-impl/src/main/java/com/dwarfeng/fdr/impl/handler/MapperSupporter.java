@@ -30,9 +30,9 @@ public interface MapperSupporter {
     String provideDescription();
 
     /**
-     * 提供参数说明。
+     * 提供示例参数。
      *
-     * @return 参数说明。
+     * @return 示例参数。
      */
-    String provideArgsIllustrate();
+    String provideExampleParam();
 }

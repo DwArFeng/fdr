@@ -1,21 +1,17 @@
 package com.dwarfeng.fdr.impl.handler.pusher;
 
 import com.dwarfeng.fdr.impl.handler.Pusher;
-import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
-import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
-import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
+import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
+import com.dwarfeng.fdr.stack.bean.dto.NormalData;
+import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * 同时将消息推送给所有代理的多重推送器。
@@ -29,16 +25,16 @@ public class MultiPusher extends AbstractPusher {
     public static final String PUSHER_TYPE = "multi";
     private static final Logger LOGGER = LoggerFactory.getLogger(MultiPusher.class);
 
-    @Autowired
-    private List<Pusher> pushers;
+    private final List<Pusher> pushers;
 
     @Value("${pusher.multi.delegate_types}")
     private String delegateTypes;
 
     private final List<Pusher> delegates = new ArrayList<>();
 
-    public MultiPusher() {
+    public MultiPusher(List<Pusher> pushers) {
         super(PUSHER_TYPE);
+        this.pushers = Optional.ofNullable(pushers).orElse(Collections.emptyList());
     }
 
     @PostConstruct
@@ -52,10 +48,10 @@ public class MultiPusher extends AbstractPusher {
     }
 
     @Override
-    public void dataFiltered(FilteredValue filteredValue) {
+    public void normalUpdated(NormalData normalRecord) {
         for (Pusher delegate : delegates) {
             try {
-                delegate.dataFiltered(filteredValue);
+                delegate.normalUpdated(normalRecord);
             } catch (Exception e) {
                 LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
             }
@@ -63,10 +59,10 @@ public class MultiPusher extends AbstractPusher {
     }
 
     @Override
-    public void dataFiltered(List<FilteredValue> filteredValues) {
+    public void normalUpdated(List<NormalData> normalRecords) {
         for (Pusher delegate : delegates) {
             try {
-                delegate.dataFiltered(filteredValues);
+                delegate.normalUpdated(normalRecords);
             } catch (Exception e) {
                 LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
             }
@@ -74,10 +70,10 @@ public class MultiPusher extends AbstractPusher {
     }
 
     @Override
-    public void dataTriggered(TriggeredValue triggeredValue) {
+    public void normalRecorded(NormalData normalRecord) {
         for (Pusher delegate : delegates) {
             try {
-                delegate.dataTriggered(triggeredValue);
+                delegate.normalRecorded(normalRecord);
             } catch (Exception e) {
                 LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
             }
@@ -85,10 +81,10 @@ public class MultiPusher extends AbstractPusher {
     }
 
     @Override
-    public void dataTriggered(List<TriggeredValue> triggeredValues) {
+    public void normalRecorded(List<NormalData> normalRecords) {
         for (Pusher delegate : delegates) {
             try {
-                delegate.dataTriggered(triggeredValues);
+                delegate.normalRecorded(normalRecords);
             } catch (Exception e) {
                 LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
             }
@@ -96,10 +92,10 @@ public class MultiPusher extends AbstractPusher {
     }
 
     @Override
-    public void realtimeUpdated(RealtimeValue realtimeValue) {
+    public void filteredUpdated(FilteredData filteredRecord) {
         for (Pusher delegate : delegates) {
             try {
-                delegate.realtimeUpdated(realtimeValue);
+                delegate.filteredUpdated(filteredRecord);
             } catch (Exception e) {
                 LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
             }
@@ -107,10 +103,10 @@ public class MultiPusher extends AbstractPusher {
     }
 
     @Override
-    public void realtimeUpdated(List<RealtimeValue> realtimeValues) {
+    public void filteredUpdated(List<FilteredData> filteredRecords) {
         for (Pusher delegate : delegates) {
             try {
-                delegate.realtimeUpdated(realtimeValues);
+                delegate.filteredUpdated(filteredRecords);
             } catch (Exception e) {
                 LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
             }
@@ -118,10 +114,10 @@ public class MultiPusher extends AbstractPusher {
     }
 
     @Override
-    public void persistenceRecorded(PersistenceValue persistenceValue) {
+    public void filteredRecorded(FilteredData filteredRecord) {
         for (Pusher delegate : delegates) {
             try {
-                delegate.persistenceRecorded(persistenceValue);
+                delegate.filteredRecorded(filteredRecord);
             } catch (Exception e) {
                 LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
             }
@@ -129,10 +125,54 @@ public class MultiPusher extends AbstractPusher {
     }
 
     @Override
-    public void persistenceRecorded(List<PersistenceValue> persistenceValues) {
+    public void filteredRecorded(List<FilteredData> filteredRecords) {
         for (Pusher delegate : delegates) {
             try {
-                delegate.persistenceRecorded(persistenceValues);
+                delegate.filteredRecorded(filteredRecords);
+            } catch (Exception e) {
+                LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
+            }
+        }
+    }
+
+    @Override
+    public void triggeredUpdated(TriggeredData triggeredRecord) {
+        for (Pusher delegate : delegates) {
+            try {
+                delegate.triggeredUpdated(triggeredRecord);
+            } catch (Exception e) {
+                LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
+            }
+        }
+    }
+
+    @Override
+    public void triggeredUpdated(List<TriggeredData> triggeredRecords) {
+        for (Pusher delegate : delegates) {
+            try {
+                delegate.triggeredUpdated(triggeredRecords);
+            } catch (Exception e) {
+                LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
+            }
+        }
+    }
+
+    @Override
+    public void triggeredRecorded(TriggeredData triggeredRecord) {
+        for (Pusher delegate : delegates) {
+            try {
+                delegate.triggeredRecorded(triggeredRecord);
+            } catch (Exception e) {
+                LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
+            }
+        }
+    }
+
+    @Override
+    public void triggeredRecorded(List<TriggeredData> triggeredRecords) {
+        for (Pusher delegate : delegates) {
+            try {
+                delegate.triggeredRecorded(triggeredRecords);
             } catch (Exception e) {
                 LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
             }

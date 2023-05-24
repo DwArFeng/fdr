@@ -1,27 +1,36 @@
 package com.dwarfeng.fdr.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.fdr.sdk.util.Constraints;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.subgrade.sdk.bean.key.WebInputLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 
+/**
+ * WebInput 触发器信息。
+ *
+ * @author DwArFeng
+ * @since 1.1.0
+ */
 public class WebInputTriggerInfo implements Bean {
 
-    private static final long serialVersionUID = 7612877731858879613L;
+    private static final long serialVersionUID = -3611862529027248181L;
 
     public static TriggerInfo toStackBean(WebInputTriggerInfo webInputTriggerInfo) {
         return new TriggerInfo(
                 WebInputLongIdKey.toStackBean(webInputTriggerInfo.getKey()),
                 WebInputLongIdKey.toStackBean(webInputTriggerInfo.getPointKey()),
+                webInputTriggerInfo.getIndex(),
                 webInputTriggerInfo.isEnabled(),
-                webInputTriggerInfo.getRemark(),
-                webInputTriggerInfo.getContent(),
-                webInputTriggerInfo.getType()
+                webInputTriggerInfo.getType(),
+                webInputTriggerInfo.getParam(),
+                webInputTriggerInfo.getRemark()
         );
     }
 
@@ -34,20 +43,24 @@ public class WebInputTriggerInfo implements Bean {
     @Valid
     private WebInputLongIdKey pointKey;
 
+    @JSONField(name = "index")
+    private int index;
+
     @JSONField(name = "enabled")
     private boolean enabled;
-
-    @JSONField(name = "remark")
-    private String remark;
-
-    @JSONField(name = "content")
-    @NotNull
-    private String content;
 
     @JSONField(name = "type")
     @NotNull
     @NotEmpty
+    @Length(max = Constraints.LENGTH_TYPE)
     private String type;
+
+    @JSONField(name = "param")
+    private String param;
+
+    @JSONField(name = "remark")
+    @Length(max = Constraints.LENGTH_REMARK)
+    private String remark;
 
     public WebInputTriggerInfo() {
     }
@@ -68,28 +81,20 @@ public class WebInputTriggerInfo implements Bean {
         this.pointKey = pointKey;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public String getType() {
@@ -100,15 +105,32 @@ public class WebInputTriggerInfo implements Bean {
         this.type = type;
     }
 
+    public String getParam() {
+        return param;
+    }
+
+    public void setParam(String param) {
+        this.param = param;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @Override
     public String toString() {
         return "WebInputTriggerInfo{" +
                 "key=" + key +
                 ", pointKey=" + pointKey +
+                ", index=" + index +
                 ", enabled=" + enabled +
-                ", remark='" + remark + '\'' +
-                ", content='" + content + '\'' +
                 ", type='" + type + '\'' +
+                ", param='" + param + '\'' +
+                ", remark='" + remark + '\'' +
                 '}';
     }
 }

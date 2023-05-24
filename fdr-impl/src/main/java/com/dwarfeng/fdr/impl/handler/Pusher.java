@@ -1,9 +1,8 @@
 package com.dwarfeng.fdr.impl.handler;
 
-import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
-import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
-import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
+import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
+import com.dwarfeng.fdr.stack.bean.dto.NormalData;
+import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 
 import java.util.List;
@@ -25,68 +24,100 @@ public interface Pusher {
     boolean supportType(String type);
 
     /**
-     * 数据被过滤时执行的广播操作。
+     * 一般数据更新时执行的广播操作。
      *
-     * @param filteredValue 指定的被过滤数据值。
+     * @param normalRecord 一般数据记录。
      * @throws HandlerException 处理器异常。
      */
-    void dataFiltered(FilteredValue filteredValue) throws HandlerException;
+    void normalUpdated(NormalData normalRecord) throws HandlerException;
 
     /**
-     * 数据被过滤时执行的广播操作。
+     * 一般数据更新时执行的广播操作。
      *
-     * @param filteredValues 指定的被过滤数据值组成的列表。
+     * @param normalRecords 一般数据记录组成的列表。
      * @throws HandlerException 处理器异常。
      */
-    void dataFiltered(List<FilteredValue> filteredValues) throws HandlerException;
+    void normalUpdated(List<NormalData> normalRecords) throws HandlerException;
 
     /**
-     * 数据被触发时执行的广播操作。
+     * 一般数据记录时执行的广播操作。
      *
-     * @param triggeredValue 指定的数据被触发数据点。
+     * @param normalRecord 一般数据记录。
      * @throws HandlerException 处理器异常。
      */
-    void dataTriggered(TriggeredValue triggeredValue) throws HandlerException;
+    void normalRecorded(NormalData normalRecord) throws HandlerException;
 
     /**
-     * 数据被触发时执行的广播操作。
+     * 一般数据记录时执行的广播操作。
      *
-     * @param triggeredValues 指定的数据被触发数据点组成的列表。
+     * @param normalRecords 一般数据记录组成的列表。
      * @throws HandlerException 处理器异常。
      */
-    void dataTriggered(List<TriggeredValue> triggeredValues) throws HandlerException;
+    void normalRecorded(List<NormalData> normalRecords) throws HandlerException;
 
     /**
-     * 实时数据更新时执行的广播操作。
+     * 被过滤数据更新时执行的广播操作。
      *
-     * @param realtimeValue 指定的实时数据值。
+     * @param filteredRecord 被过滤数据记录。
      * @throws HandlerException 处理器异常。
      */
-    void realtimeUpdated(RealtimeValue realtimeValue) throws HandlerException;
+    void filteredUpdated(FilteredData filteredRecord) throws HandlerException;
 
     /**
-     * 实时数据更新时执行的广播操作。
+     * 被过滤数据更新时执行的广播操作。
      *
-     * @param realtimeValues 指定的实时数据值组成的列表。
+     * @param filteredRecords 被过滤数据记录组成的列表。
      * @throws HandlerException 处理器异常。
      */
-    void realtimeUpdated(List<RealtimeValue> realtimeValues) throws HandlerException;
+    void filteredUpdated(List<FilteredData> filteredRecords) throws HandlerException;
 
     /**
-     * 持久数据记录时执行的广播操作。
+     * 被过滤数据记录时执行的广播操作。
      *
-     * @param persistenceValue 指定的持久数据值。
+     * @param filteredRecord 被过滤数据记录。
      * @throws HandlerException 处理器异常。
      */
-    void persistenceRecorded(PersistenceValue persistenceValue) throws HandlerException;
+    void filteredRecorded(FilteredData filteredRecord) throws HandlerException;
 
     /**
-     * 持久数据记录时执行的广播操作。
+     * 被过滤数据记录时执行的广播操作。
      *
-     * @param persistenceValues 指定的持久数据值组成的列表。
+     * @param filteredRecords 被过滤数据记录组成的列表。
      * @throws HandlerException 处理器异常。
      */
-    void persistenceRecorded(List<PersistenceValue> persistenceValues) throws HandlerException;
+    void filteredRecorded(List<FilteredData> filteredRecords) throws HandlerException;
+
+    /**
+     * 被触发数据更新时执行的广播操作。
+     *
+     * @param triggeredRecord 被触发数据记录。
+     * @throws HandlerException 处理器异常。
+     */
+    void triggeredUpdated(TriggeredData triggeredRecord) throws HandlerException;
+
+    /**
+     * 被触发数据更新时执行的广播操作。
+     *
+     * @param triggeredRecords 被触发数据记录组成的列表。
+     * @throws HandlerException 处理器异常。
+     */
+    void triggeredUpdated(List<TriggeredData> triggeredRecords) throws HandlerException;
+
+    /**
+     * 被触发数据记录时执行的广播操作。
+     *
+     * @param triggeredRecord 被触发数据记录。
+     * @throws HandlerException 处理器异常。
+     */
+    void triggeredRecorded(TriggeredData triggeredRecord) throws HandlerException;
+
+    /**
+     * 被触发数据记录时执行的广播操作。
+     *
+     * @param triggeredRecords 被触发数据记录组成的列表。
+     * @throws HandlerException 处理器异常。
+     */
+    void triggeredRecorded(List<TriggeredData> triggeredRecords) throws HandlerException;
 
     /**
      * 记录功能重置时执行的广播操作。

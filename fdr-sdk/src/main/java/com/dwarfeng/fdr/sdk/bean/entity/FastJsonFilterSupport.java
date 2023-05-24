@@ -8,25 +8,26 @@ import com.dwarfeng.subgrade.stack.bean.Bean;
 import java.util.Objects;
 
 /**
- * FastJson过滤器支持。
+ * FastJson 过滤器支持。
  *
  * @author DwArFeng
  * @since 1.1.0
  */
 public class FastJsonFilterSupport implements Bean {
 
-    private static final long serialVersionUID = -3821348344682281897L;
+    private static final long serialVersionUID = 2600439653540410614L;
 
     public static FastJsonFilterSupport of(FilterSupport filterSupport) {
         if (Objects.isNull(filterSupport)) {
             return null;
+        } else {
+            return new FastJsonFilterSupport(
+                    FastJsonStringIdKey.of(filterSupport.getKey()),
+                    filterSupport.getLabel(),
+                    filterSupport.getDescription(),
+                    filterSupport.getExampleParam()
+            );
         }
-        return new FastJsonFilterSupport(
-                FastJsonStringIdKey.of(filterSupport.getKey()),
-                filterSupport.getLabel(),
-                filterSupport.getDescription(),
-                filterSupport.getExampleContent()
-        );
     }
 
     @JSONField(name = "key", ordinal = 1)
@@ -38,17 +39,19 @@ public class FastJsonFilterSupport implements Bean {
     @JSONField(name = "description", ordinal = 3)
     private String description;
 
-    @JSONField(name = "example_content", ordinal = 4)
-    private String exampleContent;
+    @JSONField(name = "example_param", ordinal = 4)
+    private String exampleParam;
 
     public FastJsonFilterSupport() {
     }
 
-    public FastJsonFilterSupport(FastJsonStringIdKey key, String label, String description, String exampleContent) {
+    public FastJsonFilterSupport(
+            FastJsonStringIdKey key, String label, String description, String exampleParam
+    ) {
         this.key = key;
         this.label = label;
         this.description = description;
-        this.exampleContent = exampleContent;
+        this.exampleParam = exampleParam;
     }
 
     public FastJsonStringIdKey getKey() {
@@ -75,12 +78,12 @@ public class FastJsonFilterSupport implements Bean {
         this.description = description;
     }
 
-    public String getExampleContent() {
-        return exampleContent;
+    public String getExampleParam() {
+        return exampleParam;
     }
 
-    public void setExampleContent(String exampleContent) {
-        this.exampleContent = exampleContent;
+    public void setExampleParam(String exampleParam) {
+        this.exampleParam = exampleParam;
     }
 
     @Override
@@ -89,7 +92,7 @@ public class FastJsonFilterSupport implements Bean {
                 "key=" + key +
                 ", label='" + label + '\'' +
                 ", description='" + description + '\'' +
-                ", exampleContent='" + exampleContent + '\'' +
+                ", exampleParam='" + exampleParam + '\'' +
                 '}';
     }
 }

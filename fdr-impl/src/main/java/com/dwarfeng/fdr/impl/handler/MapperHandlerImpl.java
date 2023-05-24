@@ -7,20 +7,22 @@ import com.dwarfeng.fdr.stack.handler.MapperHandler;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class MapperHandlerImpl implements MapperHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MapperHandlerImpl.class);
 
-    @Autowired(required = false)
-    @SuppressWarnings("FieldMayBeFinal")
-    private List<MapperMaker> mapperMakers = Collections.emptyList();
+    private final List<MapperMaker> mapperMakers;
+
+    public MapperHandlerImpl(List<MapperMaker> mapperMakers) {
+        this.mapperMakers = Optional.ofNullable(mapperMakers).orElse(Collections.emptyList());
+    }
 
     @Override
     public boolean supportType(String type) throws HandlerException {

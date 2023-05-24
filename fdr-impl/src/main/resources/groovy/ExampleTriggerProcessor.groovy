@@ -1,34 +1,33 @@
-import com.dwarfeng.dcti.stack.bean.dto.DataInfo
 import com.dwarfeng.fdr.impl.handler.trigger.GroovyTriggerRegistry
-import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue
 import com.dwarfeng.fdr.stack.exception.TriggerException
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey
+import com.dwarfeng.fdr.stack.handler.Trigger
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /**
- * 通过 DataInfo 的值的长度判断是否触发的脚本。
- * <p> 如果DataInfo 中数据的长度小于 5，则触发，否则不触发。
+ * 示例触发器处理器。
+ *
+ * <p>
+ * 如果数据的发生日期是偶数，则不触发，否则触发。
+ *
+ * @author Dwarfeng
+ * @since 1.5.2
  */
 @SuppressWarnings("GrPackage")
 class ExampleTriggerProcessor implements GroovyTriggerRegistry.Processor {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExampleTriggerProcessor.class)
+
     @Override
-    TriggeredValue test(LongIdKey pointIdKey, LongIdKey triggerIdKey, DataInfo dataInfo) throws TriggerException {
-        try {
-            def size = dataInfo.getValue().size()
-            if (size < 5) {
-                return new TriggeredValue(
-                        null,
-                        pointIdKey,
-                        triggerIdKey,
-                        dataInfo.getHappenedDate(),
-                        dataInfo.getValue(),
-                        "DataInfo 的值小于 5 个字符"
-                )
-            } else {
-                return null
-            }
-        } catch (Exception e) {
-            throw new TriggerException(e)
+    Trigger.TestResult test(Trigger.TestInfo testInfo) throws TriggerException {
+        // 获取数据的发生日期的时间戳，如果是偶数，则不触发。
+        if (testInfo.getHappenedDate().getTime() % 2 == 0) {
+            return Trigger.TestResult.NOT_TRIGGERED
         }
+
+        // 否则触发。
+        String message = "数据的发生日期是奇数，被触发。"
+        LOGGER.debug("测试信息 {} 被触发, 原因: {}", testInfo, message)
+        return Trigger.TestResult.triggered(message)
     }
 }

@@ -7,21 +7,32 @@ import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import java.util.Objects;
 
+/**
+ * JSFixed FastJson 数据点对象。
+ *
+ * @author DwArFeng
+ * @since 0.0.1-alpha
+ */
 public class JSFixedFastJsonPoint implements Bean {
 
-    private static final long serialVersionUID = -8148864106012951708L;
+    private static final long serialVersionUID = -8480345420695531968L;
 
     public static JSFixedFastJsonPoint of(Point point) {
         if (Objects.isNull(point)) {
             return null;
+        } else {
+            return new JSFixedFastJsonPoint(
+                    JSFixedFastJsonLongIdKey.of(point.getKey()),
+                    point.getName(),
+                    point.getRemark(),
+                    point.isNormalKeepEnabled(),
+                    point.isNormalPersistEnabled(),
+                    point.isFilteredKeepEnabled(),
+                    point.isFilteredPersistEnabled(),
+                    point.isTriggeredKeepEnabled(),
+                    point.isTriggeredPersistEnabled()
+            );
         }
-        return new JSFixedFastJsonPoint(
-                JSFixedFastJsonLongIdKey.of(point.getKey()),
-                point.getName(),
-                point.getRemark(),
-                point.isPersistenceEnabled(),
-                point.isRealtimeEnabled()
-        );
     }
 
     @JSONField(name = "key", ordinal = 1)
@@ -33,22 +44,41 @@ public class JSFixedFastJsonPoint implements Bean {
     @JSONField(name = "remark", ordinal = 3)
     private String remark;
 
-    @JSONField(name = "persistence_enabled", ordinal = 4)
-    private boolean persistenceEnabled;
+    @JSONField(name = "normal_keep_enabled", ordinal = 4)
+    private boolean normalKeepEnabled;
 
-    @JSONField(name = "realtime_enabled", ordinal = 5)
-    private boolean realtimeEnabled;
+    @JSONField(name = "normal_persist_enabled", ordinal = 5)
+    private boolean normalPersistEnabled;
+
+    @JSONField(name = "filtered_keep_enabled", ordinal = 6)
+    private boolean filteredKeepEnabled;
+
+    @JSONField(name = "filtered_persist_enabled", ordinal = 7)
+    private boolean filteredPersistEnabled;
+
+    @JSONField(name = "triggered_keep_enabled", ordinal = 8)
+    private boolean triggeredKeepEnabled;
+
+    @JSONField(name = "triggered_persist_enabled", ordinal = 9)
+    private boolean triggeredPersistEnabled;
 
     public JSFixedFastJsonPoint() {
     }
 
     public JSFixedFastJsonPoint(
-            JSFixedFastJsonLongIdKey key, String name, String remark, boolean persistenceEnabled, boolean realtimeEnabled) {
+            JSFixedFastJsonLongIdKey key, String name, String remark, boolean normalKeepEnabled,
+            boolean normalPersistEnabled, boolean filteredKeepEnabled, boolean filteredPersistEnabled,
+            boolean triggeredKeepEnabled, boolean triggeredPersistEnabled
+    ) {
         this.key = key;
         this.name = name;
         this.remark = remark;
-        this.persistenceEnabled = persistenceEnabled;
-        this.realtimeEnabled = realtimeEnabled;
+        this.normalKeepEnabled = normalKeepEnabled;
+        this.normalPersistEnabled = normalPersistEnabled;
+        this.filteredKeepEnabled = filteredKeepEnabled;
+        this.filteredPersistEnabled = filteredPersistEnabled;
+        this.triggeredKeepEnabled = triggeredKeepEnabled;
+        this.triggeredPersistEnabled = triggeredPersistEnabled;
     }
 
     public JSFixedFastJsonLongIdKey getKey() {
@@ -75,20 +105,52 @@ public class JSFixedFastJsonPoint implements Bean {
         this.remark = remark;
     }
 
-    public boolean isPersistenceEnabled() {
-        return persistenceEnabled;
+    public boolean isNormalKeepEnabled() {
+        return normalKeepEnabled;
     }
 
-    public void setPersistenceEnabled(boolean persistenceEnabled) {
-        this.persistenceEnabled = persistenceEnabled;
+    public void setNormalKeepEnabled(boolean normalKeepEnabled) {
+        this.normalKeepEnabled = normalKeepEnabled;
     }
 
-    public boolean isRealtimeEnabled() {
-        return realtimeEnabled;
+    public boolean isNormalPersistEnabled() {
+        return normalPersistEnabled;
     }
 
-    public void setRealtimeEnabled(boolean realtimeEnabled) {
-        this.realtimeEnabled = realtimeEnabled;
+    public void setNormalPersistEnabled(boolean normalPersistEnabled) {
+        this.normalPersistEnabled = normalPersistEnabled;
+    }
+
+    public boolean isFilteredKeepEnabled() {
+        return filteredKeepEnabled;
+    }
+
+    public void setFilteredKeepEnabled(boolean filteredKeepEnabled) {
+        this.filteredKeepEnabled = filteredKeepEnabled;
+    }
+
+    public boolean isFilteredPersistEnabled() {
+        return filteredPersistEnabled;
+    }
+
+    public void setFilteredPersistEnabled(boolean filteredPersistEnabled) {
+        this.filteredPersistEnabled = filteredPersistEnabled;
+    }
+
+    public boolean isTriggeredKeepEnabled() {
+        return triggeredKeepEnabled;
+    }
+
+    public void setTriggeredKeepEnabled(boolean triggeredKeepEnabled) {
+        this.triggeredKeepEnabled = triggeredKeepEnabled;
+    }
+
+    public boolean isTriggeredPersistEnabled() {
+        return triggeredPersistEnabled;
+    }
+
+    public void setTriggeredPersistEnabled(boolean triggeredPersistEnabled) {
+        this.triggeredPersistEnabled = triggeredPersistEnabled;
     }
 
     @Override
@@ -97,8 +159,12 @@ public class JSFixedFastJsonPoint implements Bean {
                 "key=" + key +
                 ", name='" + name + '\'' +
                 ", remark='" + remark + '\'' +
-                ", persistenceEnabled=" + persistenceEnabled +
-                ", realtimeEnabled=" + realtimeEnabled +
+                ", normalKeepEnabled=" + normalKeepEnabled +
+                ", normalPersistEnabled=" + normalPersistEnabled +
+                ", filteredKeepEnabled=" + filteredKeepEnabled +
+                ", filteredPersistEnabled=" + filteredPersistEnabled +
+                ", triggeredKeepEnabled=" + triggeredKeepEnabled +
+                ", triggeredPersistEnabled=" + triggeredPersistEnabled +
                 '}';
     }
 }

@@ -5,41 +5,88 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
 /**
  * 数据点。
+ *
+ * @author DwArFeng
+ * @since 0.0.1-alpha
  */
 public class Point implements Entity<LongIdKey> {
 
-    private static final long serialVersionUID = 9116129592160719291L;
+    private static final long serialVersionUID = -1945106807046843385L;
 
     /**
      * 主键。
      */
     private LongIdKey key;
+
     /**
      * 数据点的名称。
      */
     private String name;
+
     /**
      * 备注。
      */
     private String remark;
+
     /**
-     * 是否启用持久化。
+     * 一般数据保持使能。
+     *
+     * @since 2.0.0
      */
-    private boolean persistenceEnabled;
+    private boolean normalKeepEnabled;
+
     /**
-     * 是否启用实时化。
+     * 一般数据持久使能。
+     *
+     * @since 2.0.0
      */
-    private boolean realtimeEnabled;
+    private boolean normalPersistEnabled;
+
+    /**
+     * 被过滤数据保持使能。
+     *
+     * @since 2.0.0
+     */
+    private boolean filteredKeepEnabled;
+
+    /**
+     * 被过滤数据持久使能。
+     *
+     * @since 2.0.0
+     */
+    private boolean filteredPersistEnabled;
+
+    /**
+     * 被触发数据保持使能。
+     *
+     * @since 2.0.0
+     */
+    private boolean triggeredKeepEnabled;
+
+    /**
+     * 被触发数据持久使能。
+     *
+     * @since 2.0.0
+     */
+    private boolean triggeredPersistEnabled;
 
     public Point() {
     }
 
-    public Point(LongIdKey key, String name, String remark, boolean persistenceEnabled, boolean realtimeEnabled) {
+    public Point(
+            LongIdKey key, String name, String remark, boolean normalKeepEnabled, boolean normalPersistEnabled,
+            boolean filteredKeepEnabled, boolean filteredPersistEnabled, boolean triggeredKeepEnabled,
+            boolean triggeredPersistEnabled
+    ) {
         this.key = key;
         this.name = name;
         this.remark = remark;
-        this.persistenceEnabled = persistenceEnabled;
-        this.realtimeEnabled = realtimeEnabled;
+        this.normalKeepEnabled = normalKeepEnabled;
+        this.normalPersistEnabled = normalPersistEnabled;
+        this.filteredKeepEnabled = filteredKeepEnabled;
+        this.filteredPersistEnabled = filteredPersistEnabled;
+        this.triggeredKeepEnabled = triggeredKeepEnabled;
+        this.triggeredPersistEnabled = triggeredPersistEnabled;
     }
 
     @Override
@@ -68,20 +115,52 @@ public class Point implements Entity<LongIdKey> {
         this.remark = remark;
     }
 
-    public boolean isPersistenceEnabled() {
-        return persistenceEnabled;
+    public boolean isNormalKeepEnabled() {
+        return normalKeepEnabled;
     }
 
-    public void setPersistenceEnabled(boolean persistenceEnabled) {
-        this.persistenceEnabled = persistenceEnabled;
+    public void setNormalKeepEnabled(boolean normalKeepEnabled) {
+        this.normalKeepEnabled = normalKeepEnabled;
     }
 
-    public boolean isRealtimeEnabled() {
-        return realtimeEnabled;
+    public boolean isNormalPersistEnabled() {
+        return normalPersistEnabled;
     }
 
-    public void setRealtimeEnabled(boolean realtimeEnabled) {
-        this.realtimeEnabled = realtimeEnabled;
+    public void setNormalPersistEnabled(boolean normalPersistEnabled) {
+        this.normalPersistEnabled = normalPersistEnabled;
+    }
+
+    public boolean isFilteredKeepEnabled() {
+        return filteredKeepEnabled;
+    }
+
+    public void setFilteredKeepEnabled(boolean filteredKeepEnabled) {
+        this.filteredKeepEnabled = filteredKeepEnabled;
+    }
+
+    public boolean isFilteredPersistEnabled() {
+        return filteredPersistEnabled;
+    }
+
+    public void setFilteredPersistEnabled(boolean filteredPersistEnabled) {
+        this.filteredPersistEnabled = filteredPersistEnabled;
+    }
+
+    public boolean isTriggeredKeepEnabled() {
+        return triggeredKeepEnabled;
+    }
+
+    public void setTriggeredKeepEnabled(boolean triggeredKeepEnabled) {
+        this.triggeredKeepEnabled = triggeredKeepEnabled;
+    }
+
+    public boolean isTriggeredPersistEnabled() {
+        return triggeredPersistEnabled;
+    }
+
+    public void setTriggeredPersistEnabled(boolean triggeredPersistEnabled) {
+        this.triggeredPersistEnabled = triggeredPersistEnabled;
     }
 
     @Override
@@ -90,8 +169,12 @@ public class Point implements Entity<LongIdKey> {
                 "key=" + key +
                 ", name='" + name + '\'' +
                 ", remark='" + remark + '\'' +
-                ", persistenceEnabled=" + persistenceEnabled +
-                ", realtimeEnabled=" + realtimeEnabled +
+                ", normalKeepEnabled=" + normalKeepEnabled +
+                ", normalPersistEnabled=" + normalPersistEnabled +
+                ", filteredKeepEnabled=" + filteredKeepEnabled +
+                ", filteredPersistEnabled=" + filteredPersistEnabled +
+                ", triggeredKeepEnabled=" + triggeredKeepEnabled +
+                ", triggeredPersistEnabled=" + triggeredPersistEnabled +
                 '}';
     }
 }

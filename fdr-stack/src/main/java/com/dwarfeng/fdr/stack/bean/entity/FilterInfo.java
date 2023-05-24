@@ -11,25 +11,29 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
  */
 public class FilterInfo implements Entity<LongIdKey> {
 
-    private static final long serialVersionUID = 3393705759584503229L;
+    private static final long serialVersionUID = 1718556999742209362L;
 
     private LongIdKey key;
     private LongIdKey pointKey;
+    private int index;
     private boolean enabled;
-    private String remark;
-    private String content;
     private String type;
+    private String param;
+    private String remark;
 
     public FilterInfo() {
     }
 
-    public FilterInfo(LongIdKey key, LongIdKey pointKey, boolean enabled, String remark, String content, String type) {
+    public FilterInfo(
+            LongIdKey key, LongIdKey pointKey, int index, boolean enabled, String type, String param, String remark
+    ) {
         this.key = key;
         this.pointKey = pointKey;
+        this.index = index;
         this.enabled = enabled;
-        this.remark = remark;
-        this.content = content;
         this.type = type;
+        this.param = param;
+        this.remark = remark;
     }
 
     @Override
@@ -50,28 +54,20 @@ public class FilterInfo implements Entity<LongIdKey> {
         this.pointKey = pointKey;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public String getType() {
@@ -82,15 +78,32 @@ public class FilterInfo implements Entity<LongIdKey> {
         this.type = type;
     }
 
+    public String getParam() {
+        return param;
+    }
+
+    public void setParam(String param) {
+        this.param = param;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @Override
     public String toString() {
         return "FilterInfo{" +
                 "key=" + key +
                 ", pointKey=" + pointKey +
+                ", index=" + index +
                 ", enabled=" + enabled +
-                ", remark='" + remark + '\'' +
-                ", content='" + content + '\'' +
                 ", type='" + type + '\'' +
+                ", param='" + param + '\'' +
+                ", remark='" + remark + '\'' +
                 '}';
     }
 }

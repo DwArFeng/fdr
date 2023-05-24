@@ -2,17 +2,12 @@ package com.dwarfeng.fdr.impl.handler.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
-import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
-import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.fdr.stack.exception.FilterException;
 import com.dwarfeng.fdr.stack.exception.FilterMakeException;
 import com.dwarfeng.fdr.stack.handler.Filter;
 import com.dwarfeng.subgrade.stack.bean.Bean;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -29,11 +24,11 @@ public class RegexFilterRegistry extends AbstractFilterRegistry {
 
     public static final String FILTER_TYPE = "regex_filter";
 
-    @Autowired
-    private ApplicationContext ctx;
+    private final ApplicationContext ctx;
 
-    public RegexFilterRegistry() {
+    public RegexFilterRegistry(ApplicationContext ctx) {
         super(FILTER_TYPE);
+        this.ctx = ctx;
     }
 
     @Override
@@ -43,22 +38,19 @@ public class RegexFilterRegistry extends AbstractFilterRegistry {
 
     @Override
     public String provideDescription() {
-        return "如果数据值匹配指定的正则表达式，则通过过滤。";
+        return "如果数据值的类型是字符串，并且能够匹配指定的正则表达式，则不被过滤。";
     }
 
     @Override
-    public String provideExampleContent() {
+    public String provideExampleParam() {
         return JSON.toJSONString(new Config("^\\d+$"), true);
     }
 
     @Override
-    public Filter makeFilter(FilterInfo filterInfo) throws FilterException {
+    public Filter makeFilter(String type, String param) throws FilterException {
         try {
-            RegexFilter filter = ctx.getBean(RegexFilter.class);
-            filter.setPointKey(filterInfo.getPointKey());
-            filter.setFilterInfoKey(filterInfo.getKey());
-            filter.setConfig(JSON.parseObject(filterInfo.getContent(), Config.class));
-            return filter;
+            Config config = JSON.parseObject(param, Config.class);
+            return ctx.getBean(RegexFilter.class, config);
         } catch (Exception e) {
             throw new FilterMakeException(e);
         }
@@ -67,86 +59,63 @@ public class RegexFilterRegistry extends AbstractFilterRegistry {
     @Override
     public String toString() {
         return "RegexFilterRegistry{" +
-                "ctx=" + ctx +
-                ", filterType='" + filterType + '\'' +
+                "filterType='" + filterType + '\'' +
                 '}';
     }
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class RegexFilter implements Filter, Bean {
+    public static class RegexFilter extends AbstractFilter {
 
-        private static final long serialVersionUID = 970186550656361331L;
         private static final Logger LOGGER = LoggerFactory.getLogger(RegexFilter.class);
 
-        private LongIdKey pointKey;
-        private LongIdKey filterInfoKey;
-        private Config config;
+        private final Config config;
 
-        public RegexFilter() {
+        public RegexFilter(Config config) {
+            this.config = config;
         }
 
         @Override
-        public FilteredValue test(DataInfo dataInfo) throws FilterException {
-            try {
-                String value = dataInfo.getValue();
-                if (!value.matches(config.getPattern())) {
-                    LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 不能匹配正则表达式 " + config.getPattern()
-                            + ", 不能通过过滤...");
-                    return new FilteredValue(
-                            null,
-                            pointKey,
-                            filterInfoKey,
-                            dataInfo.getHappenedDate(),
-                            dataInfo.getValue(),
-                            "数据值不能匹配指定的正则表达式: " + config.getPattern()
-                    );
+        protected TestResult doTest(TestInfo testInfo) {
+            // 获取 testInfo 的值。
+            Object value = testInfo.getValue();
 
-                }
-                LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 通过过滤器...");
-                return null;
-            } catch (Exception e) {
-                throw new FilterException(e);
+            // 如果值为 null，显然无法匹配正则表达式，因此被过滤。
+            if (value == null) {
+                String message = "数据值为 null, 被过滤";
+                LOGGER.debug("测试信息 {} 被过滤, 原因: {}", testInfo, message);
+                return TestResult.filtered(message);
             }
-        }
 
-        public LongIdKey getPointKey() {
-            return pointKey;
-        }
+            // 如果值不是字符串，显然无法匹配正则表达式，因此被过滤。
+            if (!(value instanceof String)) {
+                String message = "数据值不是字符串, 被过滤";
+                LOGGER.debug("测试信息 {} 被过滤, 原因: {}", testInfo, message);
+                return TestResult.filtered(message);
+            }
 
-        public void setPointKey(LongIdKey pointKey) {
-            this.pointKey = pointKey;
-        }
+            // 判断值是否能够匹配正则表达式，如果无法匹配，则被过滤。
+            if (!((String) value).matches(config.getPattern())) {
+                String message = "数据值无法匹配正则表达式, 被过滤";
+                LOGGER.debug("测试信息 {} 被过滤, 原因: {}", testInfo, message);
+                return TestResult.filtered(message);
+            }
 
-        public LongIdKey getFilterInfoKey() {
-            return filterInfoKey;
-        }
-
-        public void setFilterInfoKey(LongIdKey filterInfoKey) {
-            this.filterInfoKey = filterInfoKey;
-        }
-
-        public Config getConfig() {
-            return config;
-        }
-
-        public void setConfig(Config config) {
-            this.config = config;
+            // 如果能够匹配正则表达式，则不被过滤。
+            return TestResult.NOT_FILTERED;
         }
 
         @Override
         public String toString() {
             return "RegexFilter{" +
-                    "pointKey=" + pointKey +
-                    ", filterInfoKey=" + filterInfoKey +
-                    ", config=" + config +
+                    "config=" + config +
                     '}';
         }
     }
 
     public static class Config implements Bean {
 
-        private static final long serialVersionUID = -4947434410530771676L;
+        private static final long serialVersionUID = 1367732196407928740L;
 
         @JSONField(name = "pattern")
         private String pattern;

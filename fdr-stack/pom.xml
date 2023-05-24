@@ -31,10 +31,5 @@
             <groupId>com.dwarfeng</groupId>
             <artifactId>subgrade-stack</artifactId>
         </dependency>
-        <!-- Dcti 标准接口 -->
-        <dependency>
-            <groupId>com.dwarfeng</groupId>
-            <artifactId>dcti</artifactId>
-        </dependency>
     </dependencies>
 </project>

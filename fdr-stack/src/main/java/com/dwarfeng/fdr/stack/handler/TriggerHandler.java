@@ -1,11 +1,16 @@
 package com.dwarfeng.fdr.stack.handler;
 
-import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.handler.Handler;
 
 /**
  * 触发器处理器。
+ *
+ * <p>
+ * 该处理器用于构造触发器。
+ *
+ * <p>
+ * 有关触发器的详细信息，请参阅术语。
  *
  * @author DwArFeng
  * @since 0.0.1-alpha
@@ -13,11 +18,12 @@ import com.dwarfeng.subgrade.stack.handler.Handler;
 public interface TriggerHandler extends Handler {
 
     /**
-     * 通过指定的触发器信息构造一个触发器。
+     * 根据指定的触发器信息构造一个触发器。
      *
-     * @param filterInfo 指定的触发器信息。
+     * @param type  触发器类型。
+     * @param param 触发器参数。
      * @return 构造的触发器。
      * @throws HandlerException 处理器异常。
      */
-    Trigger make(TriggerInfo filterInfo) throws HandlerException;
+    Trigger make(String type, String param) throws HandlerException;
 }

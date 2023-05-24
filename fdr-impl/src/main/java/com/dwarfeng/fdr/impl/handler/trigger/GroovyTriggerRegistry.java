@@ -1,18 +1,13 @@
 package com.dwarfeng.fdr.impl.handler.trigger;
 
-import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
 import com.dwarfeng.dutil.basic.io.IOUtil;
 import com.dwarfeng.dutil.basic.io.StringOutputStream;
-import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
-import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.fdr.stack.exception.TriggerException;
 import com.dwarfeng.fdr.stack.exception.TriggerMakeException;
 import com.dwarfeng.fdr.stack.handler.Trigger;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import groovy.lang.GroovyClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -35,11 +30,11 @@ public class GroovyTriggerRegistry extends AbstractTriggerRegistry {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GroovyTriggerRegistry.class);
 
-    @Autowired
-    private ApplicationContext ctx;
+    private final ApplicationContext ctx;
 
-    public GroovyTriggerRegistry() {
+    public GroovyTriggerRegistry(ApplicationContext ctx) {
         super(TRIGGER_TYPE);
+        this.ctx = ctx;
     }
 
     @Override
@@ -53,7 +48,7 @@ public class GroovyTriggerRegistry extends AbstractTriggerRegistry {
     }
 
     @Override
-    public String provideExampleContent() {
+    public String provideExampleParam() {
         try {
             Resource resource = ctx.getResource("classpath:groovy/ExampleTriggerProcessor.groovy");
             String example;
@@ -71,17 +66,13 @@ public class GroovyTriggerRegistry extends AbstractTriggerRegistry {
     }
 
     @Override
-    public Trigger makeTrigger(TriggerInfo triggerInfo) throws TriggerException {
+    public Trigger makeTrigger(String type, String param) throws TriggerException {
         try (GroovyClassLoader classLoader = new GroovyClassLoader()) {
             // 通过Groovy脚本生成处理器。
-            Class<?> aClass = classLoader.parseClass(triggerInfo.getContent());
+            Class<?> aClass = classLoader.parseClass(param);
             Processor processor = (Processor) aClass.newInstance();
-            // 构建触发器对象。
-            GroovyTrigger trigger = ctx.getBean(GroovyTrigger.class);
-            trigger.setPointKey(triggerInfo.getPointKey());
-            trigger.setTriggerInfoKey(triggerInfo.getKey());
-            trigger.setProcessor(processor);
-            return trigger;
+            // 生成并返回触发器。
+            return ctx.getBean(GroovyTrigger.class, processor);
         } catch (Exception e) {
             throw new TriggerMakeException(e);
         }
@@ -90,63 +81,30 @@ public class GroovyTriggerRegistry extends AbstractTriggerRegistry {
     @Override
     public String toString() {
         return "GroovyTriggerRegistry{" +
-                "ctx=" + ctx +
-                ", triggerType='" + triggerType + '\'' +
+                "triggerType='" + triggerType + '\'' +
                 '}';
     }
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class GroovyTrigger implements Trigger {
+    public static class GroovyTrigger extends AbstractTrigger {
 
-        private LongIdKey pointKey;
-        private LongIdKey triggerInfoKey;
-        private Processor processor;
+        private final Processor processor;
 
-        public GroovyTrigger() {
+        public GroovyTrigger(Processor processor) {
+            this.processor = processor;
         }
 
         @Override
-        public TriggeredValue test(DataInfo dataInfo) throws TriggerException {
-            try {
-                return processor.test(pointKey, triggerInfoKey, dataInfo);
-            } catch (TriggerException e) {
-                throw e;
-            } catch (Exception e) {
-                throw new TriggerException(e);
-            }
-        }
-
-        public LongIdKey getPointKey() {
-            return pointKey;
-        }
-
-        public void setPointKey(LongIdKey pointKey) {
-            this.pointKey = pointKey;
-        }
-
-        public LongIdKey getTriggerInfoKey() {
-            return triggerInfoKey;
-        }
-
-        public void setTriggerInfoKey(LongIdKey triggerInfoKey) {
-            this.triggerInfoKey = triggerInfoKey;
-        }
-
-        public Processor getProcessor() {
-            return processor;
-        }
-
-        public void setProcessor(Processor processor) {
-            this.processor = processor;
+        protected TestResult doTest(TestInfo testInfo) throws Exception {
+            // 返回 processor 的测试结果。
+            return processor.test(testInfo);
         }
 
         @Override
         public String toString() {
             return "GroovyTrigger{" +
-                    "pointKey=" + pointKey +
-                    ", triggerInfoKey=" + triggerInfoKey +
-                    ", groovyProcessor=" + processor +
+                    "processor=" + processor +
                     '}';
         }
     }
@@ -160,16 +118,12 @@ public class GroovyTriggerRegistry extends AbstractTriggerRegistry {
     public interface Processor {
 
         /**
-         * 测试一个数据是否能通过触发器。
+         * 测试一个数据是否能不被触发器。
          *
-         * <p> 如果指定的数据不能通过触发器，则返回被过滤的数据值;否则返回 null。</>
-         *
-         * @param pointIdKey   数据点的主键。
-         * @param triggerIdKey 触发器的主键。
-         * @param dataInfo     指定的数据。
-         * @return 被过滤的数据值，其主键为 null 即可。
-         * @throws TriggerException 触发器异常。
+         * @param testInfo 测试信息。
+         * @return 测试结果。
+         * @throws Exception 处理器执行过程中发生的任何异常。
          */
-        TriggeredValue test(LongIdKey pointIdKey, LongIdKey triggerIdKey, DataInfo dataInfo) throws TriggerException;
+        Trigger.TestResult test(Trigger.TestInfo testInfo) throws Exception;
     }
 }

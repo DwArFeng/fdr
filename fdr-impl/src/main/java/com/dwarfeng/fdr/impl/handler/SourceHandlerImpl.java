@@ -1,9 +1,8 @@
 package com.dwarfeng.fdr.impl.handler;
 
-import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
+import com.dwarfeng.fdr.stack.bean.dto.RecordInfo;
 import com.dwarfeng.fdr.stack.handler.Source;
 import com.dwarfeng.fdr.stack.handler.SourceHandler;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -36,20 +35,15 @@ public class SourceHandlerImpl implements SourceHandler {
     }
 
     @Override
-    public List<Source> all() throws HandlerException {
+    public List<Source> all() {
         return sources;
     }
 
     private class InternalSourceContext implements Source.Context {
 
         @Override
-        public void record(String message) throws Exception {
-            recordProcessor.record(message);
-        }
-
-        @Override
-        public void record(DataInfo dataInfo) throws Exception {
-            recordProcessor.record(dataInfo);
+        public void record(RecordInfo recordInfo) throws Exception {
+            recordProcessor.record(recordInfo);
         }
     }
 }

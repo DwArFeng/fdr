@@ -28,11 +28,6 @@ public interface FastJsonMapper {
     @InheritInverseConfiguration
     StringIdKey stringIdKeyFromFastJson(FastJsonStringIdKey fastJsonStringIdKey);
 
-    FastJsonFilteredValue filteredValueToFastJson(FilteredValue filteredValue);
-
-    @InheritInverseConfiguration
-    FilteredValue filteredValueFromFastJson(FastJsonFilteredValue fastJsonFilteredValue);
-
     FastJsonFilterInfo filterInfoToFastJson(FilterInfo filterInfo);
 
     @InheritInverseConfiguration
@@ -48,20 +43,10 @@ public interface FastJsonMapper {
     @InheritInverseConfiguration
     MapperSupport mapperSupportFromFastJson(FastJsonMapperSupport fastJsonMapperSupport);
 
-    FastJsonPersistenceValue persistenceValueToFastJson(PersistenceValue persistenceValue);
-
-    @InheritInverseConfiguration
-    PersistenceValue persistenceValueFromFastJson(FastJsonPersistenceValue fastJsonPersistenceValue);
-
     FastJsonPoint pointToFastJson(Point point);
 
     @InheritInverseConfiguration
     Point pointFromFastJson(FastJsonPoint fastJsonPoint);
-
-    FastJsonTriggeredValue triggeredValueToFastJson(TriggeredValue triggeredValue);
-
-    @InheritInverseConfiguration
-    TriggeredValue triggeredValueFromFastJson(FastJsonTriggeredValue fastJsonTriggeredValue);
 
     FastJsonTriggerInfo triggerInfoToFastJson(TriggerInfo triggerInfo);
 
@@ -72,9 +57,4 @@ public interface FastJsonMapper {
 
     @InheritInverseConfiguration
     TriggerSupport triggerSupportFromFastJson(FastJsonTriggerSupport fastJsonTriggerSupport);
-
-    FastJsonRealtimeValue realtimeValueToFastJson(RealtimeValue realtimeValue);
-
-    @InheritInverseConfiguration
-    RealtimeValue realtimeValueFromFastJson(FastJsonRealtimeValue fastJsonRealtimeValue);
 }

@@ -15,18 +15,19 @@ import java.util.Objects;
  */
 public class FastJsonTriggerSupport implements Bean {
 
-    private static final long serialVersionUID = -3821348344682281897L;
+    private static final long serialVersionUID = 6207521205562891701L;
 
     public static FastJsonTriggerSupport of(TriggerSupport triggerSupport) {
         if (Objects.isNull(triggerSupport)) {
             return null;
+        } else {
+            return new FastJsonTriggerSupport(
+                    FastJsonStringIdKey.of(triggerSupport.getKey()),
+                    triggerSupport.getLabel(),
+                    triggerSupport.getDescription(),
+                    triggerSupport.getExampleParam()
+            );
         }
-        return new FastJsonTriggerSupport(
-                FastJsonStringIdKey.of(triggerSupport.getKey()),
-                triggerSupport.getLabel(),
-                triggerSupport.getDescription(),
-                triggerSupport.getExampleContent()
-        );
     }
 
     @JSONField(name = "key", ordinal = 1)
@@ -38,17 +39,19 @@ public class FastJsonTriggerSupport implements Bean {
     @JSONField(name = "description", ordinal = 3)
     private String description;
 
-    @JSONField(name = "example_content", ordinal = 4)
-    private String exampleContent;
+    @JSONField(name = "example_param", ordinal = 4)
+    private String exampleParam;
 
     public FastJsonTriggerSupport() {
     }
 
-    public FastJsonTriggerSupport(FastJsonStringIdKey key, String label, String description, String exampleContent) {
+    public FastJsonTriggerSupport(
+            FastJsonStringIdKey key, String label, String description, String exampleParam
+    ) {
         this.key = key;
         this.label = label;
         this.description = description;
-        this.exampleContent = exampleContent;
+        this.exampleParam = exampleParam;
     }
 
     public FastJsonStringIdKey getKey() {
@@ -75,12 +78,12 @@ public class FastJsonTriggerSupport implements Bean {
         this.description = description;
     }
 
-    public String getExampleContent() {
-        return exampleContent;
+    public String getExampleParam() {
+        return exampleParam;
     }
 
-    public void setExampleContent(String exampleContent) {
-        this.exampleContent = exampleContent;
+    public void setExampleParam(String exampleParam) {
+        this.exampleParam = exampleParam;
     }
 
     @Override
@@ -89,7 +92,7 @@ public class FastJsonTriggerSupport implements Bean {
                 "key=" + key +
                 ", label='" + label + '\'' +
                 ", description='" + description + '\'' +
-                ", exampleContent='" + exampleContent + '\'' +
+                ", exampleParam='" + exampleParam + '\'' +
                 '}';
     }
 }

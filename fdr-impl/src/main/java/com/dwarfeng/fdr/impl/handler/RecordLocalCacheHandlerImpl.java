@@ -15,8 +15,9 @@ import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class RecordLocalCacheHandlerImpl implements RecordLocalCacheHandler {
@@ -94,17 +95,23 @@ public class RecordLocalCacheHandlerImpl implements RecordLocalCacheHandler {
             List<FilterInfo> filterInfos = enabledFilterInfoLookupService.getEnabledFilterInfos(key);
             List<TriggerInfo> triggerInfos = enabledTriggerInfoLookupService.getEnabledTriggerInfos(key);
 
-            List<Filter> filters = new ArrayList<>();
-            List<Trigger> triggers = new ArrayList<>();
+            Map<LongIdKey, Filter> filterMap = new LinkedHashMap<>(filterInfos.size());
+            Map<LongIdKey, Trigger> triggerMap = new LinkedHashMap<>(triggerInfos.size());
 
             for (FilterInfo filterInfo : filterInfos) {
-                filters.add(filterHandler.make(filterInfo));
+                filterMap.put(
+                        filterInfo.getKey(),
+                        filterHandler.make(filterInfo.getType(), filterInfo.getParam())
+                );
             }
             for (TriggerInfo triggerInfo : triggerInfos) {
-                triggers.add(triggerHandler.make(triggerInfo));
+                triggerMap.put(
+                        triggerInfo.getKey(),
+                        triggerHandler.make(triggerInfo.getType(), triggerInfo.getParam())
+                );
             }
 
-            return new RecordLocalCacheHandler.RecordContext(point, filters, triggers);
+            return new RecordLocalCacheHandler.RecordContext(point, filterMap, triggerMap);
         }
     }
 }

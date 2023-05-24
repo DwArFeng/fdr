@@ -8,7 +8,6 @@ import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.CacheException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +16,11 @@ import java.util.List;
 @Repository
 public class FilterInfoCacheImpl implements FilterInfoCache {
 
-    @Autowired
-    private RedisBatchBaseCache<LongIdKey, FilterInfo, FastJsonFilterInfo> batchBaseCache;
+    private final RedisBatchBaseCache<LongIdKey, FilterInfo, FastJsonFilterInfo> batchBaseCache;
+
+    public FilterInfoCacheImpl(RedisBatchBaseCache<LongIdKey, FilterInfo, FastJsonFilterInfo> batchBaseCache) {
+        this.batchBaseCache = batchBaseCache;
+    }
 
     @Override
     @BehaviorAnalyse

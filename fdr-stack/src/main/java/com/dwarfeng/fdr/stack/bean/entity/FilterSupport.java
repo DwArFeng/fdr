@@ -11,21 +11,21 @@ import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
  */
 public class FilterSupport implements Entity<StringIdKey> {
 
-    private static final long serialVersionUID = 3679266832324419089L;
+    private static final long serialVersionUID = -3851641918055117160L;
 
     private StringIdKey key;
     private String label;
     private String description;
-    private String exampleContent;
+    private String exampleParam;
 
     public FilterSupport() {
     }
 
-    public FilterSupport(StringIdKey key, String label, String description, String exampleContent) {
+    public FilterSupport(StringIdKey key, String label, String description, String exampleParam) {
         this.key = key;
         this.label = label;
         this.description = description;
-        this.exampleContent = exampleContent;
+        this.exampleParam = exampleParam;
     }
 
     @Override
@@ -54,12 +54,12 @@ public class FilterSupport implements Entity<StringIdKey> {
         this.description = description;
     }
 
-    public String getExampleContent() {
-        return exampleContent;
+    public String getExampleParam() {
+        return exampleParam;
     }
 
-    public void setExampleContent(String exampleContent) {
-        this.exampleContent = exampleContent;
+    public void setExampleParam(String exampleParam) {
+        this.exampleParam = exampleParam;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class FilterSupport implements Entity<StringIdKey> {
                 "key=" + key +
                 ", label='" + label + '\'' +
                 ", description='" + description + '\'' +
-                ", exampleContent='" + exampleContent + '\'' +
+                ", exampleParam='" + exampleParam + '\'' +
                 '}';
     }
 }

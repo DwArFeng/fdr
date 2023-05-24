@@ -17,10 +17,6 @@ public class FastJsonConfiguration {
         ParserConfig.getGlobalInstance().addAccept(FastJsonPoint.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonFilterInfo.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonTriggerInfo.class.getCanonicalName());
-        ParserConfig.getGlobalInstance().addAccept(FastJsonFilteredValue.class.getCanonicalName());
-        ParserConfig.getGlobalInstance().addAccept(FastJsonPersistenceValue.class.getCanonicalName());
-        ParserConfig.getGlobalInstance().addAccept(FastJsonRealtimeValue.class.getCanonicalName());
-        ParserConfig.getGlobalInstance().addAccept(FastJsonTriggeredValue.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonFilterSupport.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonTriggerSupport.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonMapperSupport.class.getCanonicalName());

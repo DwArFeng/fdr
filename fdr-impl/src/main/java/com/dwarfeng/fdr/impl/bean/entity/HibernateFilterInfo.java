@@ -12,7 +12,7 @@ import java.util.Optional;
 @Table(name = "tbl_filter_info")
 public class HibernateFilterInfo implements Bean {
 
-    private static final long serialVersionUID = 4918058731153688475L;
+    private static final long serialVersionUID = 5590241994998099612L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -24,17 +24,20 @@ public class HibernateFilterInfo implements Bean {
     private Long pointLongId;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    @Column(name = "column_index")
+    private int index;
+
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @Column(name = "remark", length = Constraints.LENGTH_REMARK)
-    private String remark;
-
-    @Column(name = "content", columnDefinition = "TEXT")
-    private String content;
-
     @Column(name = "type", length = Constraints.LENGTH_TYPE)
     private String type;
+
+    @Column(name = "param", columnDefinition = "TEXT")
+    private String param;
+
+    @Column(name = "remark", length = Constraints.LENGTH_REMARK)
+    private String remark;
 
     // -----------------------------------------------------------多对一-----------------------------------------------------------
     @ManyToOne(targetEntity = HibernatePoint.class)
@@ -46,28 +49,13 @@ public class HibernateFilterInfo implements Bean {
     public HibernateFilterInfo() {
     }
 
-    public Long getLongId() {
-        return longId;
-    }
-
-    public void setLongId(Long id) {
-        this.longId = id;
-    }
-
+    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
     public HibernateLongIdKey getKey() {
         return Optional.ofNullable(longId).map(HibernateLongIdKey::new).orElse(null);
     }
 
     public void setKey(HibernateLongIdKey idKey) {
         this.longId = Optional.ofNullable(idKey).map(HibernateLongIdKey::getLongId).orElse(null);
-    }
-
-    public Long getPointLongId() {
-        return pointLongId;
-    }
-
-    public void setPointLongId(Long pointGuid) {
-        this.pointLongId = pointGuid;
     }
 
     public HibernateLongIdKey getPointKey() {
@@ -78,6 +66,31 @@ public class HibernateFilterInfo implements Bean {
         this.pointLongId = Optional.ofNullable(parentKey).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
+    // -----------------------------------------------------------常规属性区-----------------------------------------------------------
+    public Long getLongId() {
+        return longId;
+    }
+
+    public void setLongId(Long longId) {
+        this.longId = longId;
+    }
+
+    public Long getPointLongId() {
+        return pointLongId;
+    }
+
+    public void setPointLongId(Long pointLongId) {
+        this.pointLongId = pointLongId;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
@@ -86,12 +99,20 @@ public class HibernateFilterInfo implements Bean {
         this.enabled = enabled;
     }
 
-    public String getContent() {
-        return content;
+    public String getType() {
+        return type;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getParam() {
+        return param;
+    }
+
+    public void setParam(String param) {
+        this.param = param;
     }
 
     public String getRemark() {
@@ -100,14 +121,6 @@ public class HibernateFilterInfo implements Bean {
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public HibernatePoint getPoint() {
@@ -120,13 +133,14 @@ public class HibernateFilterInfo implements Bean {
 
     @Override
     public String toString() {
-        return "HibernateFilterInfo{" +
-                "longId=" + longId +
-                ", pointLongId=" + pointLongId +
-                ", enabled=" + enabled +
-                ", remark='" + remark + '\'' +
-                ", content='" + content + '\'' +
-                ", type='" + type + '\'' +
-                '}';
+        return getClass().getSimpleName() + "(" +
+                "longId = " + longId + ", " +
+                "pointLongId = " + pointLongId + ", " +
+                "index = " + index + ", " +
+                "enabled = " + enabled + ", " +
+                "type = " + type + ", " +
+                "param = " + param + ", " +
+                "remark = " + remark + ", " +
+                "point = " + point + ")";
     }
 }

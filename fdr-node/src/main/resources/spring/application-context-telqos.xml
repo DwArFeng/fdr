@@ -17,15 +17,15 @@
             <telqos:command-impl ref="shutdownCommand"/>
             <telqos:command-impl ref="dubboCommand"/>
             <telqos:command-impl ref="memoryCommand"/>
-            <telqos:command-impl ref="consumerCommand"/>
+            <telqos:command-impl ref="recordConsumerCommand"/>
             <telqos:command-impl ref="recordLocalCacheCommand"/>
             <telqos:command-impl ref="recordCommand"/>
-            <telqos:command-impl ref="recorderCommand"/>
+            <telqos:command-impl ref="logicConsumerCommand"/>
             <telqos:command-impl ref="mapLocalCacheCommand"/>
-            <telqos:command-impl ref="persistenceValueMappingLookupCommand"/>
-            <telqos:command-impl ref="filteredValueMappingLookupCommand"/>
-            <telqos:command-impl ref="triggeredValueMappingLookupCommand"/>
             <telqos:command-impl ref="resetCommand"/>
+            <telqos:command-impl ref="normalWatchCommand"/>
+            <telqos:command-impl ref="filteredWatchCommand"/>
+            <telqos:command-impl ref="triggeredWatchCommand"/>
         </telqos:command>
     </telqos:config>
 

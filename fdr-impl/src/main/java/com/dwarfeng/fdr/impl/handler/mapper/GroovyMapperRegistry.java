@@ -1,16 +1,16 @@
 package com.dwarfeng.fdr.impl.handler.mapper;
 
-import com.dwarfeng.dcti.stack.bean.dto.TimedValue;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.dutil.basic.io.IOUtil;
 import com.dwarfeng.dutil.basic.io.StringOutputStream;
 import com.dwarfeng.fdr.stack.exception.MapperException;
 import com.dwarfeng.fdr.stack.exception.MapperMakeException;
 import com.dwarfeng.fdr.stack.handler.Mapper;
-import com.dwarfeng.fdr.stack.handler.Mapper.MapData;
+import com.dwarfeng.subgrade.stack.bean.Bean;
 import groovy.lang.GroovyClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -19,10 +19,11 @@ import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 
 /**
- * 使用Groovy脚本的过滤器注册。
+ * 使用 Groovy 脚本的过滤器注册。
  *
  * @author DwArFeng
  * @since 1.7.2
@@ -34,11 +35,11 @@ public class GroovyMapperRegistry extends AbstractMapperRegistry {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GroovyMapperRegistry.class);
 
-    @Autowired
-    private ApplicationContext ctx;
+    private final ApplicationContext ctx;
 
-    public GroovyMapperRegistry() {
+    public GroovyMapperRegistry(ApplicationContext ctx) {
         super(MAPPER_TYPE);
+        this.ctx = ctx;
     }
 
     @Override
@@ -52,20 +53,18 @@ public class GroovyMapperRegistry extends AbstractMapperRegistry {
     }
 
     @Override
-    public String provideArgsIllustrate() {
+    public String provideExampleParam() {
         try {
-            StringBuilder sb = new StringBuilder();
-            sb.append("元素0: String, Groovy代码, 需要实现 GroovyMapperRegistry.Processor 示例如下。\n");
+            String groovyScript;
             Resource resource = ctx.getResource("classpath:groovy/ExampleMapperProcessor.groovy");
             try (InputStream in = resource.getInputStream();
                  StringOutputStream out = new StringOutputStream(StandardCharsets.UTF_8, true)) {
                 IOUtil.trans(in, out, 4096);
                 out.flush();
-                sb.append(out.toString().replaceAll("(.*)", "    $1"));
+                groovyScript = out.toString();
             }
-            sb.append("\n");
-            sb.append("元素1-n: GroovyMapperRegistry.Processor.map 方法中 mapData 的参数, 元素 n 对应 mapData 中第 n-1 个参数。");
-            return sb.toString();
+            String[] params = new String[]{"0"};
+            return JSON.toJSONString(new Config(groovyScript, params));
         } catch (Exception e) {
             LOGGER.warn("读取文件 classpath:groovy/ExampleFilterProcessor.groovy 时出现异常", e);
             return "";
@@ -85,37 +84,28 @@ public class GroovyMapperRegistry extends AbstractMapperRegistry {
     public String toString() {
         return "GroovyMapperRegistry{" +
                 "ctx=" + ctx +
-                ", mapperType='" + mapperType + '\'' +
                 '}';
     }
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class GroovyMapper implements Mapper {
+    public static class GroovyMapper extends AbstractMapper {
 
         @Override
-        public List<TimedValue> map(MapData mapData) throws MapperException {
+        protected List<Sequence> doMap(MapParam mapParam, List<Sequence> sequences) throws Exception {
+            // 获得配置。
+            Config config = JSON.parseObject(mapParam.getParam(), Config.class);
+
+            // 将配置中的 groovyScript 解析为 Processor。
+            Processor processor;
             try (GroovyClassLoader classLoader = new GroovyClassLoader()) {
-                // 构建 args。
-                Object[] mapperArgs = mapData.getArgs();
-                Object[] processorArgs;
-                if (mapperArgs.length <= 1) {
-                    processorArgs = new Object[0];
-                } else {
-                    processorArgs = new Object[mapperArgs.length - 1];
-                    System.arraycopy(mapperArgs, 1, processorArgs, 0, mapperArgs.length - 1);
-                }
                 // 通过Groovy脚本生成处理器。
-                Class<?> aClass = classLoader.parseClass((String) mapperArgs[0]);
-                Processor processor = (Processor) aClass.newInstance();
-                // 映射数据值。
-                mapData.setArgs(processorArgs);
-                return processor.map(mapData);
-            } catch (MapperException e) {
-                throw e;
-            } catch (Exception e) {
-                throw new MapperException(e);
+                Class<?> aClass = classLoader.parseClass(config.getGroovyScript());
+                processor = (Processor) aClass.newInstance();
             }
+
+            // 调用处理器执行映射方法，返回映射后的序列。
+            return processor.map(config.getParams(), sequences);
         }
     }
 
@@ -128,12 +118,56 @@ public class GroovyMapperRegistry extends AbstractMapperRegistry {
     public interface Processor {
 
         /**
-         * 映射拥有发生时间的数据值。
+         * 映射序列列表。
          *
-         * @param mapData 待映射的数据。
-         * @return 映射后的拥有发生时间的数据值。
+         * @param params    映射器的参数。
+         * @param sequences 待映射的序列组成的列表。
+         * @return 映射后的序列组成的列表。
          * @throws MapperException 映射器异常。
          */
-        List<TimedValue> map(MapData mapData) throws MapperException;
+        List<Mapper.Sequence> map(String[] params, List<Mapper.Sequence> sequences) throws Exception;
+    }
+
+    public static class Config implements Bean {
+
+        private static final long serialVersionUID = -1587648696691122100L;
+
+        @JSONField(name = "groovy_script", ordinal = 1)
+        private String groovyScript;
+
+        @JSONField(name = "params", ordinal = 2)
+        private String[] params;
+
+        public Config() {
+        }
+
+        public Config(String groovyScript, String[] params) {
+            this.groovyScript = groovyScript;
+            this.params = params;
+        }
+
+        public String getGroovyScript() {
+            return groovyScript;
+        }
+
+        public void setGroovyScript(String groovyScript) {
+            this.groovyScript = groovyScript;
+        }
+
+        public String[] getParams() {
+            return params;
+        }
+
+        public void setParams(String[] params) {
+            this.params = params;
+        }
+
+        @Override
+        public String toString() {
+            return "Config{" +
+                    "groovyScript='" + groovyScript + '\'' +
+                    ", params=" + Arrays.toString(params) +
+                    '}';
+        }
     }
 }

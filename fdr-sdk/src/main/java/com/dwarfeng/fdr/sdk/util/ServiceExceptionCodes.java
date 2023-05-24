@@ -18,12 +18,16 @@ public final class ServiceExceptionCodes {
             new ServiceException.Code(offset(1), "filter make failed");
     public static final ServiceException.Code FILTER_TYPE_UNSUPPORTED =
             new ServiceException.Code(offset(2), "filter type unsupported");
+    public static final ServiceException.Code FILTER_EXECUTION_FAILED =
+            new ServiceException.Code(offset(3), "filter execution failed");
     public static final ServiceException.Code TRIGGER_FAILED =
             new ServiceException.Code(offset(10), "trigger failed");
     public static final ServiceException.Code TRIGGER_MAKE_FAILED =
             new ServiceException.Code(offset(11), "trigger make failed");
     public static final ServiceException.Code TRIGGER_TYPE_UNSUPPORTED =
             new ServiceException.Code(offset(12), "trigger type unsupported");
+    public static final ServiceException.Code TRIGGER_EXECUTION_FAILED =
+            new ServiceException.Code(offset(13), "trigger execution failed");
     public static final ServiceException.Code POINT_NOT_EXISTS =
             new ServiceException.Code(offset(20), "point not exists");
     public static final ServiceException.Code RECORD_HANDLER_STOPPED =
@@ -36,18 +40,10 @@ public final class ServiceExceptionCodes {
             new ServiceException.Code(offset(41), "mapper make failed");
     public static final ServiceException.Code MAPPER_TYPE_UNSUPPORTED =
             new ServiceException.Code(offset(42), "mapper type unsupported");
-    public static final ServiceException.Code PERSISTENCE_DISABLED =
-            new ServiceException.Code(offset(50), "persistence disabled");
-    public static final ServiceException.Code REALTIME_DISABLED =
-            new ServiceException.Code(offset(51), "realtime disabled");
-    public static final ServiceException.Code MAPPING_LOOKUP_FAILED =
-            new ServiceException.Code(offset(60), "mapping lookup failed");
-    public static final ServiceException.Code MAPPING_LOOKUP_SESSION_CANCELED =
-            new ServiceException.Code(offset(61), "mapping lookup session canceled");
-    public static final ServiceException.Code MAPPING_LOOKUP_SESSION_NOT_EXISTS =
-            new ServiceException.Code(offset(62), "mapping lookup session not exists");
-    public static final ServiceException.Code MAPPING_LOOKUP_TIMEOUT =
-            new ServiceException.Code(offset(63), "mapping lookup timeout");
+    public static final ServiceException.Code MAPPER_EXECUTION_FAILED =
+            new ServiceException.Code(offset(43), "mapper execution failed");
+    public static final ServiceException.Code METHOD_NOT_SUPPORTED =
+            new ServiceException.Code(offset(50), "method not supported");
 
     private static int offset(int i) {
         return EXCEPTION_CODE_OFFSET + i;
@@ -75,21 +71,19 @@ public final class ServiceExceptionCodes {
         FILTER_FAILED.setCode(offset(0));
         FILTER_MAKE_FAILED.setCode(offset(1));
         FILTER_TYPE_UNSUPPORTED.setCode(offset(2));
+        FILTER_EXECUTION_FAILED.setCode(offset(3));
         TRIGGER_FAILED.setCode(offset(10));
         TRIGGER_MAKE_FAILED.setCode(offset(11));
         TRIGGER_TYPE_UNSUPPORTED.setCode(offset(12));
+        TRIGGER_EXECUTION_FAILED.setCode(offset(13));
         POINT_NOT_EXISTS.setCode(offset(20));
         RECORD_HANDLER_STOPPED.setCode(offset(30));
         CONSUME_HANDLER_STOPPED.setCode(offset(31));
         MAPPER_FAILED.setCode(offset(40));
         MAPPER_MAKE_FAILED.setCode(offset(41));
         MAPPER_TYPE_UNSUPPORTED.setCode(offset(42));
-        PERSISTENCE_DISABLED.setCode(offset(50));
-        REALTIME_DISABLED.setCode(offset(51));
-        MAPPING_LOOKUP_FAILED.setCode(offset(60));
-        MAPPING_LOOKUP_SESSION_CANCELED.setCode(offset(61));
-        MAPPING_LOOKUP_SESSION_NOT_EXISTS.setCode(offset(62));
-        MAPPING_LOOKUP_TIMEOUT.setCode(offset(63));
+        MAPPER_EXECUTION_FAILED.setCode(offset(43));
+        METHOD_NOT_SUPPORTED.setCode(offset(50));
     }
 
     private ServiceExceptionCodes() {

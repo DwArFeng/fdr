@@ -36,26 +36,6 @@
             group="${dubbo.provider.group}"
     />
     <dubbo:service
-            interface="com.dwarfeng.fdr.stack.service.FilteredValueMaintainService"
-            ref="filteredValueMaintainServiceImpl"
-            group="${dubbo.provider.group}"
-    />
-    <dubbo:service
-            interface="com.dwarfeng.fdr.stack.service.PersistenceValueMaintainService"
-            ref="persistenceValueMaintainServiceImpl"
-            group="${dubbo.provider.group}"
-    />
-    <dubbo:service
-            interface="com.dwarfeng.fdr.stack.service.RealtimeValueMaintainService"
-            ref="realtimeValueMaintainServiceImpl"
-            group="${dubbo.provider.group}"
-    />
-    <dubbo:service
-            interface="com.dwarfeng.fdr.stack.service.TriggeredValueMaintainService"
-            ref="triggeredValueMaintainServiceImpl"
-            group="${dubbo.provider.group}"
-    />
-    <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.EnabledFilterInfoLookupService"
             ref="enabledFilterInfoLookupServiceImpl"
             group="${dubbo.provider.group}"
@@ -80,25 +60,19 @@
             ref="mapperSupportMaintainServiceImpl"
             group="${dubbo.provider.group}"
     />
-    <!--suppress DeprecatedClassUsageInspection -->
     <dubbo:service
-            interface="com.dwarfeng.fdr.stack.service.MappingLookupService"
-            ref="mappingLookupServiceImpl"
+            interface="com.dwarfeng.fdr.stack.service.NormalWatchService"
+            ref="normalWatchServiceImpl"
             group="${dubbo.provider.group}"
     />
     <dubbo:service
-            interface="com.dwarfeng.fdr.stack.service.PersistenceValueMappingLookupService"
-            ref="persistenceValueMappingLookupServiceImpl"
+            interface="com.dwarfeng.fdr.stack.service.FilteredWatchService"
+            ref="filteredWatchServiceImpl"
             group="${dubbo.provider.group}"
     />
     <dubbo:service
-            interface="com.dwarfeng.fdr.stack.service.FilteredValueMappingLookupService"
-            ref="filteredValueMappingLookupServiceImpl"
-            group="${dubbo.provider.group}"
-    />
-    <dubbo:service
-            interface="com.dwarfeng.fdr.stack.service.TriggeredValueMappingLookupService"
-            ref="triggeredValueMappingLookupServiceImpl"
+            interface="com.dwarfeng.fdr.stack.service.TriggeredWatchService"
+            ref="triggeredWatchServiceImpl"
             group="${dubbo.provider.group}"
     />
 

@@ -14,11 +14,11 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Component
@@ -48,12 +48,12 @@ public class RecordLocalCacheCommand extends CliCommand {
 
     private static final String CMD_LINE_SYNTAX = CommandUtil.syntax(CMD_LINE_ARRAY);
 
-    public RecordLocalCacheCommand() {
-        super(IDENTITY, DESCRIPTION, CMD_LINE_SYNTAX);
-    }
+    private final RecordQosService recordQosService;
 
-    @Autowired
-    private RecordQosService recordQosService;
+    public RecordLocalCacheCommand(RecordQosService recordQosService) {
+        super(IDENTITY, DESCRIPTION, CMD_LINE_SYNTAX);
+        this.recordQosService = recordQosService;
+    }
 
     @Override
     protected List<Option> buildOptions() {
@@ -64,6 +64,7 @@ public class RecordLocalCacheCommand extends CliCommand {
         return list;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     protected void executeWithCmd(Context context, CommandLine cmd) throws TelqosException {
         try {
@@ -104,13 +105,17 @@ public class RecordLocalCacheCommand extends CliCommand {
         context.sendMessage(String.format("point: %s", recordContext.getPoint().toString()));
         context.sendMessage("filters:");
         int index = 0;
-        for (Filter filter : recordContext.getFilters()) {
-            context.sendMessage(String.format("  %-3d %s", ++index, filter.toString()));
+        for (Map.Entry<LongIdKey, Filter> entry : recordContext.getFilterMap().entrySet()) {
+            LongIdKey key = entry.getKey();
+            Filter value = entry.getValue();
+            context.sendMessage(String.format("  %-3d key:%s value:%s", ++index, key, value));
         }
         context.sendMessage("triggers:");
         index = 0;
-        for (Trigger trigger : recordContext.getTriggers()) {
-            context.sendMessage(String.format("  %-3d %s", ++index, trigger.toString()));
+        for (Map.Entry<LongIdKey, Trigger> entry : recordContext.getTriggerMap().entrySet()) {
+            LongIdKey key = entry.getKey();
+            Trigger value = entry.getValue();
+            context.sendMessage(String.format("  %-3d key:%s value:%s", ++index, key, value));
         }
     }
 

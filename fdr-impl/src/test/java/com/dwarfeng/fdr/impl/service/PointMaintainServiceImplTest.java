@@ -29,13 +29,7 @@ public class PointMaintainServiceImplTest {
     public void setUp() {
         points = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            Point point = new Point(
-                    null,
-                    "point-" + (i + 1),
-                    "test-point",
-                    true,
-                    true
-            );
+            Point point = new Point(null, "name", "remark", true, true, true, true, true, true);
             points.add(point);
         }
     }

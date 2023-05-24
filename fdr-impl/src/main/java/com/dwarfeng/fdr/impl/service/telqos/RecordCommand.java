@@ -7,7 +7,6 @@ import com.dwarfeng.springtelqos.stack.exception.TelqosException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -38,12 +37,12 @@ public class RecordCommand extends CliCommand {
 
     private static final String CMD_LINE_SYNTAX = CommandUtil.syntax(CMD_LINE_ARRAY);
 
-    public RecordCommand() {
-        super(IDENTITY, DESCRIPTION, CMD_LINE_SYNTAX);
-    }
+    private final RecordQosService recordQosService;
 
-    @Autowired
-    private RecordQosService recordQosService;
+    public RecordCommand(RecordQosService recordQosService) {
+        super(IDENTITY, DESCRIPTION, CMD_LINE_SYNTAX);
+        this.recordQosService = recordQosService;
+    }
 
     @Override
     protected List<Option> buildOptions() {
