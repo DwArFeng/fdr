@@ -26,7 +26,7 @@ import java.util.List;
 @Component
 public class WindowMapperRegistry extends AbstractMapperRegistry {
 
-    public static final String MAPPER_TYPE = "windowed_mapper";
+    public static final String MAPPER_TYPE = "window_mapper";
 
     private final ApplicationContext ctx;
 

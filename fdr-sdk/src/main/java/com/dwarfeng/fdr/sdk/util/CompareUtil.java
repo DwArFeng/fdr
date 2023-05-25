@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.sdk.util;
 
+import com.dwarfeng.fdr.stack.handler.Mapper;
 import com.dwarfeng.fdr.stack.structure.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
@@ -59,6 +60,21 @@ public final class CompareUtil {
      */
     public static final Comparator<Data> DATA_HAPPENED_DATE_DESC_COMPARATOR =
             Comparator.comparing(Data::getHappenedDate, DATE_DESC_COMPARATOR);
+
+    /**
+     * 序列比较器，按照序列的默认顺序进行比较。
+     */
+    public static final Comparator<Mapper.Sequence> SEQUENCE_DEFAULT_COMPARATOR =
+            Comparator.comparing(Mapper.Sequence::getPointKey, LONG_ID_KEY_ASC_COMPARATOR);
+
+    /**
+     * 序列比较器，按照序列的数据点主键的升序进行比较。
+     */
+    public static final Comparator<Mapper.Sequence> SEQUENCE_POINT_KEY_ASC_COMPARATOR =
+            Comparator.comparing(Mapper.Sequence::getPointKey, LONG_ID_KEY_ASC_COMPARATOR);
+
+    public static final Comparator<Mapper.Sequence> SEQUENCE_POINT_KEY_DESC_COMPARATOR =
+            Comparator.comparing(Mapper.Sequence::getPointKey, LONG_ID_KEY_DESC_COMPARATOR);
 
     private CompareUtil() {
         throw new IllegalStateException("禁止外部实例化");

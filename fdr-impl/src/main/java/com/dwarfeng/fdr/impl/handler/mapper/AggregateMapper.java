@@ -1,9 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.mapper;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 聚合映射器。
@@ -48,7 +45,8 @@ public abstract class AggregateMapper extends OneToOneMapper {
             );
 
             // 将新的数据条目添加到数据条目列表中。
-            items = Collections.singletonList(item);
+            items = new ArrayList<>();
+            items.add(item);
         }
 
         // 返回新的序列。

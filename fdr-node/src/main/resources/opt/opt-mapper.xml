@@ -88,5 +88,12 @@
                 type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.WindowMapperRegistry"
         />
         -->
+
+        <!-- 加载 MergeMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.MergeMapperRegistry"
+        />
+        -->
     </context:component-scan>
 </beans>
