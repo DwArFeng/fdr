@@ -272,7 +272,7 @@ public class MapperSupportMaintainServiceImpl implements MapperSupportMaintainSe
     @BehaviorAnalyse
     public void reset() throws ServiceException {
         try {
-            List<StringIdKey> mapperKeys = entireLookupService.lookup().getData().stream()
+            List<StringIdKey> mapperKeys = entireLookupService.lookupAsList().stream()
                     .map(MapperSupport::getKey).collect(Collectors.toList());
             crudService.batchDelete(mapperKeys);
             List<MapperSupport> mapperSupports = mapperSupporters.stream().map(supporter -> new MapperSupport(

@@ -273,7 +273,7 @@ public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainSe
     @BehaviorAnalyse
     public void reset() throws ServiceException {
         try {
-            List<StringIdKey> filterKeys = entireLookupService.lookup().getData().stream()
+            List<StringIdKey> filterKeys = entireLookupService.lookupAsList().stream()
                     .map(FilterSupport::getKey).collect(Collectors.toList());
             crudService.batchDelete(filterKeys);
             List<FilterSupport> filterSupports = filterSupporters.stream().map(supporter -> new FilterSupport(

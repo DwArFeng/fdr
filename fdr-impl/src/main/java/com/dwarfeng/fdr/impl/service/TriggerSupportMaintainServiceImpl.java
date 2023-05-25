@@ -272,7 +272,7 @@ public class TriggerSupportMaintainServiceImpl implements TriggerSupportMaintain
     @BehaviorAnalyse
     public void reset() throws ServiceException {
         try {
-            List<StringIdKey> triggerKeys = entireLookupService.lookup().getData().stream()
+            List<StringIdKey> triggerKeys = entireLookupService.lookupAsList().stream()
                     .map(TriggerSupport::getKey).collect(Collectors.toList());
             crudService.batchDelete(triggerKeys);
             List<TriggerSupport> triggerSupports = triggerSupporters.stream().map(supporter -> new TriggerSupport(

@@ -275,7 +275,7 @@ public class QuerySupportMaintainServiceImpl implements QuerySupportMaintainServ
     @BehaviorAnalyse
     public void reset() throws ServiceException {
         try {
-            List<QuerySupportKey> querySupportKeys = entireLookupService.lookup().getData().stream()
+            List<QuerySupportKey> querySupportKeys = entireLookupService.lookupAsList().stream()
                     .map(QuerySupport::getKey).collect(Collectors.toList());
             crudService.batchDelete(querySupportKeys);
 
