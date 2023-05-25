@@ -12,13 +12,6 @@
 
     <!--扫描handler的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.filter" use-default-filters="false">
-        <!-- 加载 DoubleFilter -->
-        <!--
-        <context:include-filter
-                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.DoubleFilterRegistry"
-        />
-        -->
-
         <!-- 加载 GroovyFilter -->
         <!--
         <context:include-filter
@@ -26,38 +19,38 @@
         />
         -->
 
-        <!-- 加载 IntegerFilter -->
+        <!-- 加载 LogicAndFilter -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.IntegerFilterRegistry"
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.LogicAndFilterRegistry"
         />
         -->
 
-        <!-- 加载 LongFilter -->
+        <!-- 加载 LogicNotFilter -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.LongFilterRegistry"
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.LogicNotFilterRegistry"
         />
         -->
 
-        <!-- 加载 RangedDoubleFilter -->
+        <!-- 加载 NonNullFilter -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.RangedDoubleFilterRegistry"
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.NonNullFilterRegistry"
         />
         -->
 
-        <!-- 加载 RangedIntegerFilter -->
+        <!-- 加载 NumberStringFilter -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.RangedIntegerFilterRegistry"
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.NumberStringFilterRegistry"
         />
         -->
 
-        <!-- 加载 RangedLongFilter -->
+        <!-- 加载 RangedNumberFilter -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.RangedLongFilterRegistry"
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.RangedNumberFilterRegistry"
         />
         -->
 
@@ -65,6 +58,13 @@
         <!--
         <context:include-filter
                 type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.RegexFilterRegistry"
+        />
+        -->
+
+        <!-- 加载 ValueTypeFilter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.ValueTypeFilterRegistry"
         />
         -->
     </context:component-scan>

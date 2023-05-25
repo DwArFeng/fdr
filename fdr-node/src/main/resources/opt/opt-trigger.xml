@@ -12,6 +12,13 @@
 
     <!--扫描handler的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.trigger" use-default-filters="false">
+        <!-- 加载 BooleanTrigger -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.trigger.BooleanTriggerRegistry"
+        />
+        -->
+
         <!-- 加载 GroovyTrigger -->
         <!--
         <context:include-filter
@@ -19,24 +26,31 @@
         />
         -->
 
-        <!-- 加载 RangedDoubleTrigger -->
+        <!-- 加载 LogicAndTrigger -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.fdr.impl.handler.trigger.RangedDoubleTriggerRegistry"
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.trigger.LogicAndTriggerRegistry"
         />
         -->
 
-        <!-- 加载 RangedIntegerTrigger -->
+        <!-- 加载 LogicNotTrigger -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.fdr.impl.handler.trigger.RangedIntegerTriggerRegistry"
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.trigger.LogicNotTriggerRegistry"
         />
         -->
 
-        <!-- 加载 RangedLongTrigger -->
+        <!-- 加载 RangedNumberTrigger -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.fdr.impl.handler.trigger.RangedLongTriggerRegistry"
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.trigger.RangedNumberTriggerRegistry"
+        />
+        -->
+
+        <!-- 加载 RegexTrigger -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.trigger.RegexTriggerRegistry"
         />
         -->
     </context:component-scan>
