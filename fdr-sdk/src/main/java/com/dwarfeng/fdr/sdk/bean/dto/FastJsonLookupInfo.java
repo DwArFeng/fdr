@@ -7,6 +7,8 @@ import com.dwarfeng.fdr.stack.bean.dto.LookupInfo.QueryInfo;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -59,6 +61,7 @@ public class FastJsonLookupInfo implements Dto {
         this.mapInfos = mapInfos;
     }
 
+    @Nonnull
     public List<FastJsonQueryInfo> getQueryInfos() {
         return queryInfos;
     }
@@ -67,6 +70,7 @@ public class FastJsonLookupInfo implements Dto {
         this.queryInfos = queryInfos;
     }
 
+    @Nonnull
     public List<FastJsonMapInfo> getMapInfos() {
         return mapInfos;
     }
@@ -162,6 +166,7 @@ public class FastJsonLookupInfo implements Dto {
             this.includeEndDate = includeEndDate;
         }
 
+        @Nonnull
         public String getPreset() {
             return preset;
         }
@@ -170,6 +175,7 @@ public class FastJsonLookupInfo implements Dto {
             this.preset = preset;
         }
 
+        @Nonnull
         public String[] getParams() {
             return params;
         }
@@ -178,6 +184,7 @@ public class FastJsonLookupInfo implements Dto {
             this.params = params;
         }
 
+        @Nonnull
         public FastJsonLongIdKey getPointKey() {
             return pointKey;
         }
@@ -186,6 +193,7 @@ public class FastJsonLookupInfo implements Dto {
             this.pointKey = pointKey;
         }
 
+        @Nullable
         public Date getStartDate() {
             return startDate;
         }
@@ -194,6 +202,7 @@ public class FastJsonLookupInfo implements Dto {
             this.startDate = startDate;
         }
 
+        @Nullable
         public Date getEndDate() {
             return endDate;
         }
@@ -278,6 +287,7 @@ public class FastJsonLookupInfo implements Dto {
             this.param = param;
         }
 
+        @Nonnull
         public String getType() {
             return type;
         }
@@ -286,6 +296,7 @@ public class FastJsonLookupInfo implements Dto {
             this.type = type;
         }
 
+        @Nonnull
         public String getParam() {
             return param;
         }

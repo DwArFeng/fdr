@@ -6,6 +6,8 @@ import com.dwarfeng.fdr.stack.bean.dto.LookupInfo.QueryInfo;
 import com.dwarfeng.subgrade.sdk.bean.key.WebInputLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -45,6 +47,7 @@ public class WebInputLookupInfo implements Dto {
     public WebInputLookupInfo() {
     }
 
+    @Nonnull
     public List<WebInputQueryInfo> getQueryInfos() {
         return queryInfos;
     }
@@ -53,6 +56,7 @@ public class WebInputLookupInfo implements Dto {
         this.queryInfos = queryInfos;
     }
 
+    @Nonnull
     public List<WebInputMapInfo> getMapInfos() {
         return mapInfos;
     }
@@ -126,6 +130,7 @@ public class WebInputLookupInfo implements Dto {
         public WebInputQueryInfo() {
         }
 
+        @Nonnull
         public String getPreset() {
             return preset;
         }
@@ -134,6 +139,7 @@ public class WebInputLookupInfo implements Dto {
             this.preset = preset;
         }
 
+        @Nonnull
         public String[] getParams() {
             return params;
         }
@@ -142,6 +148,7 @@ public class WebInputLookupInfo implements Dto {
             this.params = params;
         }
 
+        @Nonnull
         public WebInputLongIdKey getPointKey() {
             return pointKey;
         }
@@ -150,6 +157,7 @@ public class WebInputLookupInfo implements Dto {
             this.pointKey = pointKey;
         }
 
+        @Nullable
         public Date getStartDate() {
             return startDate;
         }
@@ -158,6 +166,7 @@ public class WebInputLookupInfo implements Dto {
             this.startDate = startDate;
         }
 
+        @Nullable
         public Date getEndDate() {
             return endDate;
         }
@@ -228,6 +237,7 @@ public class WebInputLookupInfo implements Dto {
         public WebInputMapInfo() {
         }
 
+        @Nonnull
         public String getType() {
             return type;
         }
@@ -236,6 +246,7 @@ public class WebInputLookupInfo implements Dto {
             this.type = type;
         }
 
+        @Nonnull
         public String getParam() {
             return param;
         }

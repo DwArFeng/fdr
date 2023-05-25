@@ -1,6 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.bridge.mock;
 
 import com.dwarfeng.fdr.impl.handler.bridge.AbstractPersister;
+import com.dwarfeng.fdr.sdk.util.WatchUtil;
 import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
 import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
 import com.dwarfeng.fdr.stack.handler.PersistHandler;
@@ -11,7 +12,6 @@ import org.slf4j.Logger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 模拟的持久化器。
@@ -103,24 +103,13 @@ public abstract class MockBridgePersister<D extends Data> extends AbstractPersis
 
     @Override
     protected QueryResult<D> doQuery(QueryInfo queryInfo) throws Exception {
-        // 检查查询的时间范围是否合法。
-        long queryStartTimestamp = queryInfo.getStartDate().getTime();
-        long queryEndTimestamp = queryInfo.getEndDate().getTime();
-        if (queryStartTimestamp > queryEndTimestamp) {
-            throw new IllegalArgumentException("查询的开始时间大于结束时间");
-        }
-        // 检查偏移量是否合法。
-        int offset = queryInfo.getOffset();
-        if (offset < 0) {
-            throw new IllegalArgumentException("偏移量不能小于 0");
-        }
-        // 检查限制量是否合法。
-        int limit = Objects.isNull(queryInfo.getLimit()) ? Integer.MAX_VALUE : queryInfo.getLimit();
-        if (limit < 0) {
-            throw new IllegalArgumentException("限制量不能小于 0");
-        }
+        // 展开查询信息。
+        long queryStartTimestamp = WatchUtil.validStartDate(queryInfo.getStartDate()).getTime();
+        long queryEndTimestamp = WatchUtil.validEndDate(queryInfo.getEndDate()).getTime();
+        int page = WatchUtil.validPage(queryInfo.getPage());
+        int rows = WatchUtil.validRows(queryInfo.getRows());
 
-        // 检查预设是否合法，并获得点位主键。
+        // 检查预设是否合法。
         String preset = queryInfo.getPreset();
         if (!DEFAULT.equals(preset)) {
             throw new IllegalArgumentException("预设不合法");
@@ -130,15 +119,13 @@ public abstract class MockBridgePersister<D extends Data> extends AbstractPersis
                 queryInfo.getPointKey(),
                 queryStartTimestamp, queryEndTimestamp,
                 queryInfo.isIncludeStartDate(), queryInfo.isIncludeEndDate(),
-                offset, limit
+                page, rows
         );
     }
 
     private QueryResult<D> mockQuery(
-            LongIdKey pointKey,
-            long queryStartTimestamp, long queryEndTimestamp,
-            boolean includeStartDate, boolean includeEndDate,
-            int offset, int limit
+            LongIdKey pointKey, long queryStartTimestamp, long queryEndTimestamp,
+            boolean includeStartDate, boolean includeEndDate, int page, int rows
     ) throws Exception {
         long startTimestamp = System.currentTimeMillis();
         long anchorTimestamp = System.currentTimeMillis();
@@ -165,9 +152,9 @@ public abstract class MockBridgePersister<D extends Data> extends AbstractPersis
             dataCount--;
         }
         // 计算实际偏移量。
-        int actualOffset = Math.min(offset, dataCount);
+        int actualOffset = Math.min(page * rows, dataCount);
         // 计算返回数据量。
-        int actualLimit = Math.min(limit, dataCount - actualOffset);
+        int actualLimit = Math.min(rows, dataCount - actualOffset);
         // 判断数据是否还有更多的数据。
         boolean hasMore = dataCount - actualOffset - actualLimit > 0;
         // 根据发生日期的顺序生成返回的数据。

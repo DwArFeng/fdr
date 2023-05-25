@@ -5,6 +5,8 @@ import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
@@ -17,7 +19,7 @@ import java.util.Objects;
  */
 public class FastJsonQueryInfo implements Dto {
 
-    private static final long serialVersionUID = -4040096429908542693L;
+    private static final long serialVersionUID = -8159396891899279614L;
 
     public static FastJsonQueryInfo of(QueryInfo queryInfo) {
         if (Objects.isNull(queryInfo)) {
@@ -31,8 +33,8 @@ public class FastJsonQueryInfo implements Dto {
                     queryInfo.getEndDate(),
                     queryInfo.isIncludeStartDate(),
                     queryInfo.isIncludeEndDate(),
-                    queryInfo.getLimit(),
-                    queryInfo.getOffset()
+                    queryInfo.getPage(),
+                    queryInfo.getRows()
             );
         }
     }
@@ -49,8 +51,8 @@ public class FastJsonQueryInfo implements Dto {
                     fastJsonQueryInfo.getEndDate(),
                     fastJsonQueryInfo.isIncludeStartDate(),
                     fastJsonQueryInfo.isIncludeEndDate(),
-                    fastJsonQueryInfo.getLimit(),
-                    fastJsonQueryInfo.getOffset()
+                    fastJsonQueryInfo.getPage(),
+                    fastJsonQueryInfo.getRows()
             );
         }
     }
@@ -76,18 +78,18 @@ public class FastJsonQueryInfo implements Dto {
     @JSONField(name = "include_end_date", ordinal = 7)
     private boolean includeEndDate;
 
-    @JSONField(name = "limit", ordinal = 8)
-    private Integer limit;
+    @JSONField(name = "page", ordinal = 8)
+    private Integer page;
 
-    @JSONField(name = "offset", ordinal = 9)
-    private int offset;
+    @JSONField(name = "rows", ordinal = 9)
+    private Integer rows;
 
     public FastJsonQueryInfo() {
     }
 
     public FastJsonQueryInfo(
             String preset, String[] params, FastJsonLongIdKey pointKey, Date startDate, Date endDate,
-            boolean includeStartDate, boolean includeEndDate, Integer limit, int offset
+            boolean includeStartDate, boolean includeEndDate, Integer page, Integer rows
     ) {
         this.preset = preset;
         this.params = params;
@@ -96,10 +98,11 @@ public class FastJsonQueryInfo implements Dto {
         this.endDate = endDate;
         this.includeStartDate = includeStartDate;
         this.includeEndDate = includeEndDate;
-        this.limit = limit;
-        this.offset = offset;
+        this.page = page;
+        this.rows = rows;
     }
 
+    @Nonnull
     public String getPreset() {
         return preset;
     }
@@ -108,6 +111,7 @@ public class FastJsonQueryInfo implements Dto {
         this.preset = preset;
     }
 
+    @Nonnull
     public String[] getParams() {
         return params;
     }
@@ -116,6 +120,7 @@ public class FastJsonQueryInfo implements Dto {
         this.params = params;
     }
 
+    @Nonnull
     public FastJsonLongIdKey getPointKey() {
         return pointKey;
     }
@@ -124,6 +129,7 @@ public class FastJsonQueryInfo implements Dto {
         this.pointKey = pointKey;
     }
 
+    @Nullable
     public Date getStartDate() {
         return startDate;
     }
@@ -132,6 +138,7 @@ public class FastJsonQueryInfo implements Dto {
         this.startDate = startDate;
     }
 
+    @Nullable
     public Date getEndDate() {
         return endDate;
     }
@@ -156,20 +163,22 @@ public class FastJsonQueryInfo implements Dto {
         this.includeEndDate = includeEndDate;
     }
 
-    public Integer getLimit() {
-        return limit;
+    @Nullable
+    public Integer getPage() {
+        return page;
     }
 
-    public void setLimit(Integer limit) {
-        this.limit = limit;
+    public void setPage(Integer page) {
+        this.page = page;
     }
 
-    public int getOffset() {
-        return offset;
+    @Nullable
+    public Integer getRows() {
+        return rows;
     }
 
-    public void setOffset(int offset) {
-        this.offset = offset;
+    public void setRows(Integer rows) {
+        this.rows = rows;
     }
 
     @Override
@@ -182,8 +191,8 @@ public class FastJsonQueryInfo implements Dto {
                 ", endDate=" + endDate +
                 ", includeStartDate=" + includeStartDate +
                 ", includeEndDate=" + includeEndDate +
-                ", limit=" + limit +
-                ", offset=" + offset +
+                ", page=" + page +
+                ", rows=" + rows +
                 '}';
     }
 }

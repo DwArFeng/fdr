@@ -3,6 +3,8 @@ package com.dwarfeng.fdr.stack.bean.dto;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -21,8 +23,8 @@ import java.util.Date;
  */
 public class QueryInfo implements Dto {
 
-    private static final long serialVersionUID = -7240908645935078002L;
-
+    private static final long serialVersionUID = 3138325149784306382L;
+    
     private String preset;
     private String[] params;
     private LongIdKey pointKey;
@@ -30,15 +32,15 @@ public class QueryInfo implements Dto {
     private Date endDate;
     private boolean includeStartDate;
     private boolean includeEndDate;
-    private Integer limit;
-    private int offset;
+    private Integer page;
+    private Integer rows;
 
     public QueryInfo() {
     }
 
     public QueryInfo(
-            String preset, String[] params, LongIdKey pointKey, Date startDate, Date endDate,
-            boolean includeStartDate, boolean includeEndDate, Integer limit, int offset
+            String preset, String[] params, LongIdKey pointKey, Date startDate, Date endDate, boolean includeStartDate,
+            boolean includeEndDate, Integer page, Integer rows
     ) {
         this.preset = preset;
         this.params = params;
@@ -47,10 +49,11 @@ public class QueryInfo implements Dto {
         this.endDate = endDate;
         this.includeStartDate = includeStartDate;
         this.includeEndDate = includeEndDate;
-        this.limit = limit;
-        this.offset = offset;
+        this.page = page;
+        this.rows = rows;
     }
 
+    @Nonnull
     public String getPreset() {
         return preset;
     }
@@ -59,6 +62,7 @@ public class QueryInfo implements Dto {
         this.preset = preset;
     }
 
+    @Nonnull
     public String[] getParams() {
         return params;
     }
@@ -67,6 +71,7 @@ public class QueryInfo implements Dto {
         this.params = params;
     }
 
+    @Nonnull
     public LongIdKey getPointKey() {
         return pointKey;
     }
@@ -75,6 +80,7 @@ public class QueryInfo implements Dto {
         this.pointKey = pointKey;
     }
 
+    @Nullable
     public Date getStartDate() {
         return startDate;
     }
@@ -83,6 +89,7 @@ public class QueryInfo implements Dto {
         this.startDate = startDate;
     }
 
+    @Nullable
     public Date getEndDate() {
         return endDate;
     }
@@ -107,20 +114,22 @@ public class QueryInfo implements Dto {
         this.includeEndDate = includeEndDate;
     }
 
-    public Integer getLimit() {
-        return limit;
+    @Nullable
+    public Integer getPage() {
+        return page;
     }
 
-    public void setLimit(Integer limit) {
-        this.limit = limit;
+    public void setPage(Integer page) {
+        this.page = page;
     }
 
-    public int getOffset() {
-        return offset;
+    @Nullable
+    public Integer getRows() {
+        return rows;
     }
 
-    public void setOffset(int offset) {
-        this.offset = offset;
+    public void setRows(Integer rows) {
+        this.rows = rows;
     }
 
     @Override
@@ -133,8 +142,8 @@ public class QueryInfo implements Dto {
                 ", endDate=" + endDate +
                 ", includeStartDate=" + includeStartDate +
                 ", includeEndDate=" + includeEndDate +
-                ", limit=" + limit +
-                ", offset=" + offset +
+                ", page=" + page +
+                ", rows=" + rows +
                 '}';
     }
 }

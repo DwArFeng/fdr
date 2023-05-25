@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
 import com.dwarfeng.subgrade.sdk.bean.key.WebInputLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 
+import javax.annotation.Nullable;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -21,7 +22,7 @@ import java.util.Objects;
  */
 public class WebInputQueryInfo implements Dto {
 
-    private static final long serialVersionUID = 1097359902014054892L;
+    private static final long serialVersionUID = -8381261576239240113L;
 
     public static QueryInfo toStackBean(WebInputQueryInfo webInputQueryInfo) {
         if (Objects.isNull(webInputQueryInfo)) {
@@ -35,8 +36,8 @@ public class WebInputQueryInfo implements Dto {
                     webInputQueryInfo.getEndDate(),
                     webInputQueryInfo.isIncludeStartDate(),
                     webInputQueryInfo.isIncludeEndDate(),
-                    webInputQueryInfo.getLimit(),
-                    webInputQueryInfo.getOffset()
+                    webInputQueryInfo.getPage(),
+                    webInputQueryInfo.getRows()
             );
         }
     }
@@ -69,17 +70,18 @@ public class WebInputQueryInfo implements Dto {
     @JSONField(name = "include_end_date")
     private boolean includeEndDate;
 
-    @JSONField(name = "limit")
+    @JSONField(name = "page")
     @PositiveOrZero
-    private Integer limit;
+    private Integer page;
 
-    @JSONField(name = "offset")
+    @JSONField(name = "rows")
     @PositiveOrZero
-    private int offset;
+    private Integer rows;
 
     public WebInputQueryInfo() {
     }
 
+    @NotNull
     public String getPreset() {
         return preset;
     }
@@ -88,6 +90,7 @@ public class WebInputQueryInfo implements Dto {
         this.preset = preset;
     }
 
+    @NotNull
     public String[] getParams() {
         return params;
     }
@@ -96,6 +99,7 @@ public class WebInputQueryInfo implements Dto {
         this.params = params;
     }
 
+    @NotNull
     public WebInputLongIdKey getPointKey() {
         return pointKey;
     }
@@ -104,6 +108,7 @@ public class WebInputQueryInfo implements Dto {
         this.pointKey = pointKey;
     }
 
+    @Nullable
     public Date getStartDate() {
         return startDate;
     }
@@ -112,6 +117,7 @@ public class WebInputQueryInfo implements Dto {
         this.startDate = startDate;
     }
 
+    @Nullable
     public Date getEndDate() {
         return endDate;
     }
@@ -136,20 +142,22 @@ public class WebInputQueryInfo implements Dto {
         this.includeEndDate = includeEndDate;
     }
 
-    public Integer getLimit() {
-        return limit;
+    @Nullable
+    public Integer getPage() {
+        return page;
     }
 
-    public void setLimit(Integer limit) {
-        this.limit = limit;
+    public void setPage(Integer page) {
+        this.page = page;
     }
 
-    public int getOffset() {
-        return offset;
+    @Nullable
+    public Integer getRows() {
+        return rows;
     }
 
-    public void setOffset(int offset) {
-        this.offset = offset;
+    public void setRows(Integer rows) {
+        this.rows = rows;
     }
 
     @Override
@@ -162,8 +170,8 @@ public class WebInputQueryInfo implements Dto {
                 ", endDate=" + endDate +
                 ", includeStartDate=" + includeStartDate +
                 ", includeEndDate=" + includeEndDate +
-                ", limit=" + limit +
-                ", offset=" + offset +
+                ", page=" + page +
+                ", rows=" + rows +
                 '}';
     }
 }

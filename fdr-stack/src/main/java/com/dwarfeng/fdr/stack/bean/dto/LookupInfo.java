@@ -3,6 +3,8 @@ package com.dwarfeng.fdr.stack.bean.dto;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +36,7 @@ public class LookupInfo implements Dto {
         this.mapInfos = mapInfos;
     }
 
+    @Nonnull
     public List<QueryInfo> getQueryInfos() {
         return queryInfos;
     }
@@ -42,6 +45,7 @@ public class LookupInfo implements Dto {
         this.queryInfos = queryInfos;
     }
 
+    @Nonnull
     public List<MapInfo> getMapInfos() {
         return mapInfos;
     }
@@ -101,6 +105,7 @@ public class LookupInfo implements Dto {
             this.includeEndDate = includeEndDate;
         }
 
+        @Nonnull
         public String getPreset() {
             return preset;
         }
@@ -109,6 +114,7 @@ public class LookupInfo implements Dto {
             this.preset = preset;
         }
 
+        @Nonnull
         public String[] getParams() {
             return params;
         }
@@ -117,6 +123,7 @@ public class LookupInfo implements Dto {
             this.params = params;
         }
 
+        @Nonnull
         public LongIdKey getPointKey() {
             return pointKey;
         }
@@ -125,6 +132,7 @@ public class LookupInfo implements Dto {
             this.pointKey = pointKey;
         }
 
+        @Nullable
         public Date getStartDate() {
             return startDate;
         }
@@ -133,6 +141,7 @@ public class LookupInfo implements Dto {
             this.startDate = startDate;
         }
 
+        @Nullable
         public Date getEndDate() {
             return endDate;
         }
@@ -189,7 +198,7 @@ public class LookupInfo implements Dto {
     public static class MapInfo implements Dto {
 
         private static final long serialVersionUID = -8831662619732433270L;
-
+        
         private String type;
         private String param;
 
@@ -201,6 +210,7 @@ public class LookupInfo implements Dto {
             this.param = param;
         }
 
+        @Nonnull
         public String getType() {
             return type;
         }
@@ -209,6 +219,7 @@ public class LookupInfo implements Dto {
             this.type = type;
         }
 
+        @Nonnull
         public String getParam() {
             return param;
         }
