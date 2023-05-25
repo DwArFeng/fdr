@@ -2,7 +2,9 @@ package com.dwarfeng.fdr.node.configuration;
 
 import com.dwarfeng.fdr.sdk.bean.FastJsonMapper;
 import com.dwarfeng.fdr.sdk.bean.entity.*;
+import com.dwarfeng.fdr.sdk.bean.key.formatter.QuerySupportStringKeyFormatter;
 import com.dwarfeng.fdr.stack.bean.entity.*;
+import com.dwarfeng.fdr.stack.bean.key.QuerySupportKey;
 import com.dwarfeng.subgrade.impl.bean.MapStructBeanTransformer;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.impl.cache.RedisKeyListCache;
@@ -36,6 +38,8 @@ public class CacheConfiguration {
     private String enabledTriggerInfoPrefix;
     @Value("${cache.prefix.entity.mapper_support}")
     private String mapperSupportPrefix;
+    @Value("${cache.prefix.entity.query_support}")
+    private String querySupportPrefix;
 
     public CacheConfiguration(RedisTemplate<String, ?> template) {
         this.template = template;
@@ -119,6 +123,16 @@ public class CacheConfiguration {
                 (RedisTemplate<String, FastJsonMapperSupport>) template,
                 new StringIdStringKeyFormatter(mapperSupportPrefix),
                 new MapStructBeanTransformer<>(MapperSupport.class, FastJsonMapperSupport.class, FastJsonMapper.class)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<QuerySupportKey, QuerySupport, FastJsonQuerySupport> querySupportRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonQuerySupport>) template,
+                new QuerySupportStringKeyFormatter(querySupportPrefix),
+                new MapStructBeanTransformer<>(QuerySupport.class, FastJsonQuerySupport.class, FastJsonMapper.class)
         );
     }
 }

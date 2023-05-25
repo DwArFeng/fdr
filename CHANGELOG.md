@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 建立实体以及维护服务，并通过单元测试。
+  - com.dwarfeng.fdr.stack.bean.entity.QuerySupport。
+
 - 重构数据记录处理与数据持久化模块。
 
 #### Bug修复

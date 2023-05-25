@@ -61,6 +61,11 @@
             group="${dubbo.provider.group}"
     />
     <dubbo:service
+            interface="com.dwarfeng.fdr.stack.service.QuerySupportMaintainService"
+            ref="querySupportMaintainServiceImpl"
+            group="${dubbo.provider.group}"
+    />
+    <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.NormalWatchService"
             ref="normalWatchServiceImpl"
             group="${dubbo.provider.group}"

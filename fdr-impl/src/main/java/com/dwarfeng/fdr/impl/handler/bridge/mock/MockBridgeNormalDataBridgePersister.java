@@ -42,7 +42,7 @@ public class MockBridgeNormalDataBridgePersister extends MockBridgePersister<Nor
                 "config=" + config +
                 ", dataValueGenerator=" + dataValueGenerator +
                 ", writeOnly=" + writeOnly +
-                ", queryManuals=" + queryManuals +
+                ", queryGuides=" + queryGuides +
                 '}';
     }
 }

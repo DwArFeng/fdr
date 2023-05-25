@@ -4,7 +4,8 @@ import com.dwarfeng.fdr.impl.handler.Bridge.Persister;
 import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
 import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
 import com.dwarfeng.fdr.stack.exception.MethodNotSupportedException;
-import com.dwarfeng.fdr.stack.handler.PersistHandler.QueryManual;
+import com.dwarfeng.fdr.stack.handler.PersistHandler;
+import com.dwarfeng.fdr.stack.handler.PersistHandler.QueryGuide;
 import com.dwarfeng.fdr.stack.structure.Data;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 
@@ -20,15 +21,15 @@ import java.util.List;
 public abstract class AbstractPersister<D extends Data> implements Persister<D> {
 
     protected final boolean writeOnly;
-    protected final List<QueryManual> queryManuals;
+    protected final List<PersistHandler.QueryGuide> queryGuides;
 
     protected AbstractPersister(boolean writeOnly) {
         this(writeOnly, Collections.emptyList());
     }
 
-    protected AbstractPersister(boolean writeOnly, List<QueryManual> queryManuals) {
+    protected AbstractPersister(boolean writeOnly, List<PersistHandler.QueryGuide> queryGuides) {
         this.writeOnly = writeOnly;
-        this.queryManuals = queryManuals;
+        this.queryGuides = queryGuides;
     }
 
     @Override
@@ -50,8 +51,8 @@ public abstract class AbstractPersister<D extends Data> implements Persister<D> 
     protected abstract void doRecord(D dataRecord) throws Exception;
 
     @Override
-    public List<QueryManual> getQueryManuals() {
-        return queryManuals;
+    public List<QueryGuide> queryGuides() {
+        return queryGuides;
     }
 
     @Override

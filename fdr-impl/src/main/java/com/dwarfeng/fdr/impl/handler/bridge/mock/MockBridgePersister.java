@@ -23,11 +23,11 @@ public abstract class MockBridgePersister<D extends Data> extends AbstractPersis
 
     public static final String DEFAULT = "default";
 
-    private static final List<PersistHandler.QueryManual> QUERY_MANUALS;
+    private static final List<PersistHandler.QueryGuide> QUERY_MANUALS;
 
     static {
         QUERY_MANUALS = new ArrayList<>();
-        QUERY_MANUALS.add(new PersistHandler.QueryManual(
+        QUERY_MANUALS.add(new PersistHandler.QueryGuide(
                 DEFAULT, new String[0], "默认的查询方法"
         ));
     }
@@ -213,7 +213,7 @@ public abstract class MockBridgePersister<D extends Data> extends AbstractPersis
                 "config=" + config +
                 ", dataValueGenerator=" + dataValueGenerator +
                 ", writeOnly=" + writeOnly +
-                ", queryManuals=" + queryManuals +
+                ", queryGuides=" + queryGuides +
                 '}';
     }
 }

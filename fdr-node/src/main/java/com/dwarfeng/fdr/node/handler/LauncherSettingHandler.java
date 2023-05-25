@@ -13,6 +13,8 @@ public class LauncherSettingHandler implements Handler {
     private boolean resetTriggerSupport;
     @Value("${launcher.reset_mapper_support}")
     private boolean resetMapperSupport;
+    @Value("${launcher.reset_query_support}")
+    private boolean resetQuerySupport;
     @Value("${launcher.start_record_delay}")
     private long startRecordDelay;
     @Value("${launcher.start_reset_delay}")
@@ -30,11 +32,27 @@ public class LauncherSettingHandler implements Handler {
         return resetMapperSupport;
     }
 
+    public boolean isResetQuerySupport() {
+        return resetQuerySupport;
+    }
+
     public long getStartRecordDelay() {
         return startRecordDelay;
     }
 
     public long getStartResetDelay() {
         return startResetDelay;
+    }
+
+    @Override
+    public String toString() {
+        return "LauncherSettingHandler{" +
+                "resetFilterSupport=" + resetFilterSupport +
+                ", resetTriggerSupport=" + resetTriggerSupport +
+                ", resetMapperSupport=" + resetMapperSupport +
+                ", resetQuerySupport=" + resetQuerySupport +
+                ", startRecordDelay=" + startRecordDelay +
+                ", startResetDelay=" + startResetDelay +
+                '}';
     }
 }

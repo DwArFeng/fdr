@@ -2,7 +2,7 @@ package com.dwarfeng.fdr.impl.handler;
 
 import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
 import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
-import com.dwarfeng.fdr.stack.handler.PersistHandler.QueryManual;
+import com.dwarfeng.fdr.stack.handler.PersistHandler.QueryGuide;
 import com.dwarfeng.fdr.stack.structure.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
@@ -141,11 +141,14 @@ public interface Bridge {
         void record(List<D> dataRecords) throws HandlerException;
 
         /**
-         * 获取该持久处理器的查询手册。
+         * 获取该持久处理器的查询指导。
          *
-         * @return 该持久处理器的查询手册。
+         * <p>
+         * 需要注意的是，返回的列表中，{@link QueryGuide#getPreset()} 方法返回的字符串应该是唯一的。
+         *
+         * @return 查询指导组成的列表。
          */
-        List<QueryManual> getQueryManuals();
+        List<QueryGuide> queryGuides();
 
         /**
          * 查询。

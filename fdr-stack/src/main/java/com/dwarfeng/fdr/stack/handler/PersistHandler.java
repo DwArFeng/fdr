@@ -57,11 +57,14 @@ public interface PersistHandler<D extends Data> extends Handler {
     void record(List<D> dataRecords) throws HandlerException;
 
     /**
-     * 获取该持久处理器的查询手册。
+     * 获取该持久处理器的查询指导。
      *
-     * @return 该持久处理器的查询手册。
+     * <p>
+     * 需要注意的是，返回的列表中，{@link QueryGuide#getPreset()} 方法返回的字符串应该是唯一的。
+     *
+     * @return 查询指导组成的列表。
      */
-    List<QueryManual> getQueryManuals();
+    List<QueryGuide> queryGuides();
 
     /**
      * 查询。
@@ -73,18 +76,18 @@ public interface PersistHandler<D extends Data> extends Handler {
     QueryResult<D> query(QueryInfo queryInfo) throws HandlerException;
 
     /**
-     * 查询手册。
+     * 查询指导。
      *
      * @author DwArFeng
      * @since 2.0.0
      */
-    final class QueryManual {
+    final class QueryGuide {
 
         private final String preset;
         private final String[] exampleParams;
         private final String description;
 
-        public QueryManual(String preset, String[] exampleParams, String description) {
+        public QueryGuide(String preset, String[] exampleParams, String description) {
             this.preset = preset;
             this.exampleParams = exampleParams;
             this.description = description;
@@ -104,7 +107,7 @@ public interface PersistHandler<D extends Data> extends Handler {
 
         @Override
         public String toString() {
-            return "QueryManual{" +
+            return "QueryGuide{" +
                     "preset='" + preset + '\'' +
                     ", exampleParams=" + Arrays.toString(exampleParams) +
                     ", description='" + description + '\'' +

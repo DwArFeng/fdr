@@ -58,8 +58,8 @@ public abstract class AbstractPersistHandler<D extends Data> implements PersistH
     }
 
     @Override
-    public List<QueryManual> getQueryManuals() {
-        return persister.getQueryManuals();
+    public List<QueryGuide> queryGuides() {
+        return persister.queryGuides();
     }
 
     @Override

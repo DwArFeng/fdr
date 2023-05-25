@@ -4,8 +4,10 @@ import com.dwarfeng.fdr.impl.service.operation.FilterInfoCrudOperation;
 import com.dwarfeng.fdr.impl.service.operation.PointCrudOperation;
 import com.dwarfeng.fdr.impl.service.operation.TriggerInfoCrudOperation;
 import com.dwarfeng.fdr.stack.bean.entity.*;
+import com.dwarfeng.fdr.stack.bean.key.QuerySupportKey;
 import com.dwarfeng.fdr.stack.cache.FilterSupportCache;
 import com.dwarfeng.fdr.stack.cache.MapperSupportCache;
+import com.dwarfeng.fdr.stack.cache.QuerySupportCache;
 import com.dwarfeng.fdr.stack.cache.TriggerSupportCache;
 import com.dwarfeng.fdr.stack.dao.*;
 import com.dwarfeng.sfds.api.integration.subgrade.SnowFlakeLongIdKeyFetcher;
@@ -39,6 +41,8 @@ public class ServiceConfiguration {
     private final TriggerSupportDao triggerSupportDao;
     private final MapperSupportCache mapperSupportCache;
     private final MapperSupportDao mapperSupportDao;
+    private final QuerySupportCache querySupportCache;
+    private final QuerySupportDao querySupportDao;
 
     @Value("${cache.timeout.entity.filter_support}")
     private long filterSupportTimeout;
@@ -46,6 +50,8 @@ public class ServiceConfiguration {
     private long triggerSupportTimeout;
     @Value("${cache.timeout.entity.mapper_support}")
     private long mapperSupportTimeout;
+    @Value("${cache.timeout.entity.query_support}")
+    private long querySupportTimeout;
 
     public ServiceConfiguration(
             ServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration,
@@ -54,7 +60,8 @@ public class ServiceConfiguration {
             TriggerInfoCrudOperation triggerInfoCrudOperation, TriggerInfoDao triggerInfoDao,
             FilterSupportCache filterSupportCache, FilterSupportDao filterSupportDao,
             TriggerSupportCache triggerSupportCache, TriggerSupportDao triggerSupportDao,
-            MapperSupportCache mapperSupportCache, MapperSupportDao mapperSupportDao
+            MapperSupportCache mapperSupportCache, MapperSupportDao mapperSupportDao,
+            QuerySupportCache querySupportCache, QuerySupportDao querySupportDao
     ) {
         this.serviceExceptionMapperConfiguration = serviceExceptionMapperConfiguration;
         this.filterInfoCrudOperation = filterInfoCrudOperation;
@@ -69,6 +76,8 @@ public class ServiceConfiguration {
         this.triggerSupportDao = triggerSupportDao;
         this.mapperSupportCache = mapperSupportCache;
         this.mapperSupportDao = mapperSupportDao;
+        this.querySupportCache = querySupportCache;
+        this.querySupportDao = querySupportDao;
     }
 
 
@@ -246,6 +255,36 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<MapperSupport> mapperSupportDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 mapperSupportDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public GeneralBatchCrudService<QuerySupportKey, QuerySupport> querySupportGeneralBatchCrudService() {
+        return new GeneralBatchCrudService<>(
+                querySupportDao,
+                querySupportCache,
+                new ExceptionKeyFetcher<>(),
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN,
+                querySupportTimeout
+        );
+    }
+
+    @Bean
+    public DaoOnlyEntireLookupService<QuerySupport> querySupportDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                querySupportDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyPresetLookupService<QuerySupport> querySupportDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
+                querySupportDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );

@@ -2,8 +2,10 @@ package com.dwarfeng.fdr.impl.configuration;
 
 import com.dwarfeng.fdr.impl.bean.HibernateMapper;
 import com.dwarfeng.fdr.impl.bean.entity.*;
+import com.dwarfeng.fdr.impl.bean.key.HibernateQuerySupportKey;
 import com.dwarfeng.fdr.impl.dao.preset.*;
 import com.dwarfeng.fdr.stack.bean.entity.*;
+import com.dwarfeng.fdr.stack.bean.key.QuerySupportKey;
 import com.dwarfeng.subgrade.impl.bean.MapStructBeanTransformer;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
@@ -29,6 +31,7 @@ public class DaoConfiguration {
     private final FilterSupportPresetCriteriaMaker filterSupportPresetCriteriaMaker;
     private final TriggerSupportPresetCriteriaMaker triggerSupportPresetCriteriaMaker;
     private final MapperSupportPresetCriteriaMaker mapperSupportPresetCriteriaMaker;
+    private final QuerySupportPresetCriteriaMaker querySupportPresetCriteriaMaker;
 
     @Value("${hibernate.jdbc.batch_size}")
     private int batchSize;
@@ -40,7 +43,8 @@ public class DaoConfiguration {
             TriggerInfoPresetCriteriaMaker triggerInfoPresetCriteriaMaker,
             FilterSupportPresetCriteriaMaker filterSupportPresetCriteriaMaker,
             TriggerSupportPresetCriteriaMaker triggerSupportPresetCriteriaMaker,
-            MapperSupportPresetCriteriaMaker mapperSupportPresetCriteriaMaker
+            MapperSupportPresetCriteriaMaker mapperSupportPresetCriteriaMaker,
+            QuerySupportPresetCriteriaMaker querySupportPresetCriteriaMaker
     ) {
         this.template = template;
         this.filterInfoPresetCriteriaMaker = filterInfoPresetCriteriaMaker;
@@ -49,6 +53,7 @@ public class DaoConfiguration {
         this.filterSupportPresetCriteriaMaker = filterSupportPresetCriteriaMaker;
         this.triggerSupportPresetCriteriaMaker = triggerSupportPresetCriteriaMaker;
         this.mapperSupportPresetCriteriaMaker = mapperSupportPresetCriteriaMaker;
+        this.querySupportPresetCriteriaMaker = querySupportPresetCriteriaMaker;
     }
 
     @Bean
@@ -251,6 +256,44 @@ public class DaoConfiguration {
                 ),
                 HibernateMapperSupport.class,
                 mapperSupportPresetCriteriaMaker
+        );
+    }
+
+    @Bean
+    public HibernateBatchBaseDao<QuerySupportKey, HibernateQuerySupportKey, QuerySupport, HibernateQuerySupport>
+    querySupportHibernateBatchBaseDao() {
+        return new HibernateBatchBaseDao<>(
+                template,
+                new MapStructBeanTransformer<>(
+                        QuerySupportKey.class, HibernateQuerySupportKey.class, HibernateMapper.class
+                ),
+                new MapStructBeanTransformer<>(
+                        QuerySupport.class, HibernateQuerySupport.class, HibernateMapper.class
+                ),
+                HibernateQuerySupport.class
+        );
+    }
+
+    @Bean
+    public HibernateEntireLookupDao<QuerySupport, HibernateQuerySupport> querySupportHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                template,
+                new MapStructBeanTransformer<>(
+                        QuerySupport.class, HibernateQuerySupport.class, HibernateMapper.class
+                ),
+                HibernateQuerySupport.class
+        );
+    }
+
+    @Bean
+    public HibernatePresetLookupDao<QuerySupport, HibernateQuerySupport> querySupportHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
+                template,
+                new MapStructBeanTransformer<>(
+                        QuerySupport.class, HibernateQuerySupport.class, HibernateMapper.class
+                ),
+                HibernateQuerySupport.class,
+                querySupportPresetCriteriaMaker
         );
     }
 }
