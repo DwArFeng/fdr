@@ -11,7 +11,6 @@ import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +19,19 @@ import java.util.List;
 @Service
 public class TriggerInfoMaintainServiceImpl implements TriggerInfoMaintainService {
 
-    @Autowired
-    private CustomBatchCrudService<LongIdKey, TriggerInfo> crudService;
-    @Autowired
-    private DaoOnlyEntireLookupService<TriggerInfo> entireLookupService;
-    @Autowired
-    private DaoOnlyPresetLookupService<TriggerInfo> presetLookupService;
+    private final CustomBatchCrudService<LongIdKey, TriggerInfo> crudService;
+    private final DaoOnlyEntireLookupService<TriggerInfo> entireLookupService;
+    private final DaoOnlyPresetLookupService<TriggerInfo> presetLookupService;
+
+    public TriggerInfoMaintainServiceImpl(
+            CustomBatchCrudService<LongIdKey, TriggerInfo> crudService,
+            DaoOnlyEntireLookupService<TriggerInfo> entireLookupService,
+            DaoOnlyPresetLookupService<TriggerInfo> presetLookupService
+    ) {
+        this.crudService = crudService;
+        this.entireLookupService = entireLookupService;
+        this.presetLookupService = presetLookupService;
+    }
 
     @Override
     @BehaviorAnalyse

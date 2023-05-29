@@ -53,33 +53,33 @@ public class HibernateBridgeFilteredDataPersister extends AbstractPersister<Filt
     }
 
     @Override
-    protected void doRecord(FilteredData dataRecord) throws Exception {
-        Object value = dataRecord.getValue();
+    protected void doRecord(FilteredData data) throws Exception {
+        Object value = data.getValue();
         String serializedValue = serializerFactory.getSerializer(value.getClass()).serialize(value);
-        HibernateBridgeFilteredData filteredData = transformData(dataRecord, serializedValue);
+        HibernateBridgeFilteredData filteredData = transformData(data, serializedValue);
         service.write(filteredData);
     }
 
     @Override
-    protected void doRecord(List<FilteredData> dataRecords) throws Exception {
+    protected void doRecord(List<FilteredData> datas) throws Exception {
         List<HibernateBridgeFilteredData> entities = new ArrayList<>();
-        for (FilteredData dataRecord : dataRecords) {
-            Object value = dataRecord.getValue();
+        for (FilteredData data : datas) {
+            Object value = data.getValue();
             String serializedValue = serializerFactory.getSerializer(value.getClass()).serialize(value);
-            HibernateBridgeFilteredData filteredData = transformData(dataRecord, serializedValue);
+            HibernateBridgeFilteredData filteredData = transformData(data, serializedValue);
             entities.add(filteredData);
         }
         service.batchWrite(entities);
     }
 
-    private HibernateBridgeFilteredData transformData(FilteredData dataRecord, String serializedValue) {
+    private HibernateBridgeFilteredData transformData(FilteredData data, String serializedValue) {
         return new HibernateBridgeFilteredData(
                 null,
-                dataRecord.getPointKey(),
-                dataRecord.getFilterKey(),
+                data.getPointKey(),
+                data.getFilterKey(),
                 serializedValue,
-                dataRecord.getMessage(),
-                dataRecord.getHappenedDate()
+                data.getMessage(),
+                data.getHappenedDate()
         );
     }
 

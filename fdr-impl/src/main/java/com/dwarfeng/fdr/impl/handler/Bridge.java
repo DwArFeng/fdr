@@ -127,18 +127,18 @@ public interface Bridge {
         /**
          * 记录数据。
          *
-         * @param dataRecord 数据记录。
+         * @param data 数据。
          * @throws HandlerException 处理器异常。
          */
-        void record(D dataRecord) throws HandlerException;
+        void record(D data) throws HandlerException;
 
         /**
          * 记录数据。
          *
-         * @param dataRecords 数据记录组成的列表。
+         * @param datas 数据组成的列表。
          * @throws HandlerException 处理器异常。
          */
-        void record(List<D> dataRecords) throws HandlerException;
+        void record(List<D> datas) throws HandlerException;
 
         /**
          * 获取该持久处理器的查询指导。

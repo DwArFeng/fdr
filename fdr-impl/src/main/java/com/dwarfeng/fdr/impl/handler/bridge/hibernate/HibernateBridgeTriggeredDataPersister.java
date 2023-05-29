@@ -53,33 +53,33 @@ public class HibernateBridgeTriggeredDataPersister extends AbstractPersister<Tri
     }
 
     @Override
-    protected void doRecord(TriggeredData dataRecord) throws Exception {
-        Object value = dataRecord.getValue();
+    protected void doRecord(TriggeredData data) throws Exception {
+        Object value = data.getValue();
         String serializedValue = serializerFactory.getSerializer(value.getClass()).serialize(value);
-        HibernateBridgeTriggeredData triggeredData = transformData(dataRecord, serializedValue);
+        HibernateBridgeTriggeredData triggeredData = transformData(data, serializedValue);
         service.write(triggeredData);
     }
 
     @Override
-    protected void doRecord(List<TriggeredData> dataRecords) throws Exception {
+    protected void doRecord(List<TriggeredData> datas) throws Exception {
         List<HibernateBridgeTriggeredData> entities = new ArrayList<>();
-        for (TriggeredData dataRecord : dataRecords) {
-            Object value = dataRecord.getValue();
+        for (TriggeredData data : datas) {
+            Object value = data.getValue();
             String serializedValue = serializerFactory.getSerializer(value.getClass()).serialize(value);
-            HibernateBridgeTriggeredData triggeredData = transformData(dataRecord, serializedValue);
+            HibernateBridgeTriggeredData triggeredData = transformData(data, serializedValue);
             entities.add(triggeredData);
         }
         service.batchWrite(entities);
     }
 
-    private HibernateBridgeTriggeredData transformData(TriggeredData dataRecord, String serializedValue) {
+    private HibernateBridgeTriggeredData transformData(TriggeredData data, String serializedValue) {
         return new HibernateBridgeTriggeredData(
                 null,
-                dataRecord.getPointKey(),
-                dataRecord.getTriggerKey(),
+                data.getPointKey(),
+                data.getTriggerKey(),
                 serializedValue,
-                dataRecord.getMessage(),
-                dataRecord.getHappenedDate()
+                data.getMessage(),
+                data.getHappenedDate()
         );
     }
 

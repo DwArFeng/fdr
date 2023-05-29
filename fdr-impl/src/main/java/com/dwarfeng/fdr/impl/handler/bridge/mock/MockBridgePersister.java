@@ -43,7 +43,7 @@ public abstract class MockBridgePersister<D extends Data> extends AbstractPersis
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    protected void doRecord(D dataRecord) {
+    protected void doRecord(D data) {
         long startTimestamp = System.currentTimeMillis();
         long anchorTimestamp = System.currentTimeMillis();
 
@@ -68,12 +68,12 @@ public abstract class MockBridgePersister<D extends Data> extends AbstractPersis
 
         long endTimestamp = System.currentTimeMillis();
         getLogger().info("模拟记录数据, 耗时 {} 毫秒", endTimestamp - startTimestamp);
-        getLogger().debug("数据内容: {}", dataRecord);
+        getLogger().debug("数据内容: {}", data);
     }
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    protected void doRecord(List<D> dataRecords) {
+    protected void doRecord(List<D> datas) {
         long startTimestamp = System.currentTimeMillis();
         long anchorTimestamp = System.currentTimeMillis();
 
@@ -87,7 +87,7 @@ public abstract class MockBridgePersister<D extends Data> extends AbstractPersis
         }
 
         if (recordDelay > 0) {
-            anchorTimestamp += recordDelay * dataRecords.size();
+            anchorTimestamp += recordDelay * datas.size();
             ThreadUtil.sleepUntil(anchorTimestamp);
         }
 
@@ -98,7 +98,7 @@ public abstract class MockBridgePersister<D extends Data> extends AbstractPersis
 
         long endTimestamp = System.currentTimeMillis();
         getLogger().info("模拟记录数据, 耗时 {} 毫秒", endTimestamp - startTimestamp);
-        getLogger().debug("数据内容: {}", dataRecords);
+        getLogger().debug("数据内容: {}", datas);
     }
 
     @Override

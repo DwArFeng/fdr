@@ -8,7 +8,6 @@ import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
 import com.dwarfeng.subgrade.sdk.service.custom.operation.BatchCrudOperation;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -19,16 +18,22 @@ import java.util.Objects;
 @Component
 public class FilterInfoCrudOperation implements BatchCrudOperation<LongIdKey, FilterInfo> {
 
-    @Autowired
-    private FilterInfoDao filterInfoDao;
+    private final FilterInfoDao filterInfoDao;
+    private final FilterInfoCache filterInfoCache;
 
-    @Autowired
-    private FilterInfoCache filterInfoCache;
-    @Autowired
-    private EnabledFilterInfoCache enabledFilterInfoCache;
+    private final EnabledFilterInfoCache enabledFilterInfoCache;
 
     @Value("${cache.timeout.entity.filter_info}")
     private long filterInfoTimeout;
+
+    public FilterInfoCrudOperation(
+            FilterInfoDao filterInfoDao, FilterInfoCache filterInfoCache,
+            EnabledFilterInfoCache enabledFilterInfoCache
+    ) {
+        this.filterInfoDao = filterInfoDao;
+        this.filterInfoCache = filterInfoCache;
+        this.enabledFilterInfoCache = enabledFilterInfoCache;
+    }
 
     @Override
     public boolean exists(LongIdKey key) throws Exception {

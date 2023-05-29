@@ -53,31 +53,31 @@ public class HibernateBridgeNormalDataPersister extends AbstractPersister<Normal
     }
 
     @Override
-    protected void doRecord(NormalData dataRecord) throws Exception {
-        Object value = dataRecord.getValue();
+    protected void doRecord(NormalData data) throws Exception {
+        Object value = data.getValue();
         String serializedValue = serializerFactory.getSerializer(value.getClass()).serialize(value);
-        HibernateBridgeNormalData normalData = transformData(dataRecord, serializedValue);
+        HibernateBridgeNormalData normalData = transformData(data, serializedValue);
         service.write(normalData);
     }
 
     @Override
-    protected void doRecord(List<NormalData> dataRecords) throws Exception {
+    protected void doRecord(List<NormalData> datas) throws Exception {
         List<HibernateBridgeNormalData> entities = new ArrayList<>();
-        for (NormalData dataRecord : dataRecords) {
-            Object value = dataRecord.getValue();
+        for (NormalData data : datas) {
+            Object value = data.getValue();
             String serializedValue = serializerFactory.getSerializer(value.getClass()).serialize(value);
-            HibernateBridgeNormalData normalData = transformData(dataRecord, serializedValue);
+            HibernateBridgeNormalData normalData = transformData(data, serializedValue);
             entities.add(normalData);
         }
         service.batchWrite(entities);
     }
 
-    private HibernateBridgeNormalData transformData(NormalData dataRecord, String serializedValue) {
+    private HibernateBridgeNormalData transformData(NormalData data, String serializedValue) {
         return new HibernateBridgeNormalData(
                 null,
-                dataRecord.getPointKey(),
+                data.getPointKey(),
                 serializedValue,
-                dataRecord.getHappenedDate()
+                data.getHappenedDate()
         );
     }
 

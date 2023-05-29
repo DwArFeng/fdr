@@ -38,9 +38,9 @@ public abstract class AbstractPersister<D extends Data> implements Persister<D> 
     }
 
     @Override
-    public void record(D dataRecord) throws HandlerException {
+    public void record(D data) throws HandlerException {
         try {
-            doRecord(dataRecord);
+            doRecord(data);
         } catch (HandlerException e) {
             throw e;
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public abstract class AbstractPersister<D extends Data> implements Persister<D> 
         }
     }
 
-    protected abstract void doRecord(D dataRecord) throws Exception;
+    protected abstract void doRecord(D data) throws Exception;
 
     @Override
     public List<QueryGuide> queryGuides() {
@@ -56,9 +56,9 @@ public abstract class AbstractPersister<D extends Data> implements Persister<D> 
     }
 
     @Override
-    public void record(List<D> dataRecords) throws HandlerException {
+    public void record(List<D> datas) throws HandlerException {
         try {
-            doRecord(dataRecords);
+            doRecord(datas);
         } catch (HandlerException e) {
             throw e;
         } catch (Exception e) {
@@ -66,7 +66,7 @@ public abstract class AbstractPersister<D extends Data> implements Persister<D> 
         }
     }
 
-    protected abstract void doRecord(List<D> dataRecords) throws Exception;
+    protected abstract void doRecord(List<D> datas) throws Exception;
 
     @Override
     public QueryResult<D> query(QueryInfo queryInfo) throws HandlerException {

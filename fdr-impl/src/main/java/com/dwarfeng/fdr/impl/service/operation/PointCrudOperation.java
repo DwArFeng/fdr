@@ -13,7 +13,6 @@ import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
 import com.dwarfeng.subgrade.sdk.service.custom.operation.BatchCrudOperation;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -23,27 +22,38 @@ import java.util.stream.Collectors;
 @Component
 public class PointCrudOperation implements BatchCrudOperation<LongIdKey, Point> {
 
-    @Autowired
-    private PointDao pointDao;
-    @Autowired
-    private FilterInfoDao filterInfoDao;
-    @Autowired
-    private TriggerInfoDao triggerInfoDao;
+    private final PointDao pointDao;
+    private final PointCache pointCache;
 
-    @Autowired
-    private PointCache pointCache;
-    @Autowired
-    private FilterInfoCache filterInfoCache;
-    @Autowired
-    private TriggerInfoCache triggerInfoCache;
+    private final FilterInfoDao filterInfoDao;
+    private final FilterInfoCache filterInfoCache;
 
-    @Autowired
-    private EnabledFilterInfoCache enabledFilterInfoCache;
-    @Autowired
-    private EnabledTriggerInfoCache enabledTriggerInfoCache;
+    private final TriggerInfoDao triggerInfoDao;
+    private final TriggerInfoCache triggerInfoCache;
+
+    private final EnabledFilterInfoCache enabledFilterInfoCache;
+
+    private final EnabledTriggerInfoCache enabledTriggerInfoCache;
 
     @Value("${cache.timeout.entity.point}")
     private long pointTimeout;
+
+    public PointCrudOperation(
+            PointDao pointDao, PointCache pointCache,
+            FilterInfoDao filterInfoDao, FilterInfoCache filterInfoCache,
+            TriggerInfoDao triggerInfoDao, TriggerInfoCache triggerInfoCache,
+            EnabledFilterInfoCache enabledFilterInfoCache,
+            EnabledTriggerInfoCache enabledTriggerInfoCache
+    ) {
+        this.pointDao = pointDao;
+        this.pointCache = pointCache;
+        this.filterInfoDao = filterInfoDao;
+        this.filterInfoCache = filterInfoCache;
+        this.triggerInfoDao = triggerInfoDao;
+        this.triggerInfoCache = triggerInfoCache;
+        this.enabledFilterInfoCache = enabledFilterInfoCache;
+        this.enabledTriggerInfoCache = enabledTriggerInfoCache;
+    }
 
     @Override
     public boolean exists(LongIdKey key) throws Exception {

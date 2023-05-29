@@ -48,13 +48,13 @@ public abstract class AbstractPersistHandler<D extends Data> implements PersistH
     }
 
     @Override
-    public void record(D dataRecord) throws HandlerException {
-        persister.record(dataRecord);
+    public void record(D data) throws HandlerException {
+        persister.record(data);
     }
 
     @Override
-    public void record(List<D> dataRecords) throws HandlerException {
-        persister.record(dataRecords);
+    public void record(List<D> datas) throws HandlerException {
+        persister.record(datas);
     }
 
     @Override

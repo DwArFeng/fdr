@@ -8,7 +8,6 @@ import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
 import com.dwarfeng.subgrade.sdk.service.custom.operation.BatchCrudOperation;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -19,16 +18,22 @@ import java.util.Objects;
 @Component
 public class TriggerInfoCrudOperation implements BatchCrudOperation<LongIdKey, TriggerInfo> {
 
-    @Autowired
-    private TriggerInfoDao triggerInfoDao;
+    private final TriggerInfoDao triggerInfoDao;
+    private final TriggerInfoCache triggerInfoCache;
 
-    @Autowired
-    private TriggerInfoCache triggerInfoCache;
-    @Autowired
-    private EnabledTriggerInfoCache enabledTriggerInfoCache;
+    private final EnabledTriggerInfoCache enabledTriggerInfoCache;
 
     @Value("${cache.timeout.entity.trigger_info}")
     private long triggerInfoTimeout;
+
+    public TriggerInfoCrudOperation(
+            TriggerInfoDao triggerInfoDao, TriggerInfoCache triggerInfoCache,
+            EnabledTriggerInfoCache enabledTriggerInfoCache
+    ) {
+        this.triggerInfoDao = triggerInfoDao;
+        this.triggerInfoCache = triggerInfoCache;
+        this.enabledTriggerInfoCache = enabledTriggerInfoCache;
+    }
 
     @Override
     public boolean exists(LongIdKey key) throws Exception {

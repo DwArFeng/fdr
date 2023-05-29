@@ -8,7 +8,6 @@ import com.dwarfeng.springtelqos.stack.exception.TelqosException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -40,12 +39,12 @@ public class MapLocalCacheCommand extends CliCommand {
 
     private static final String CMD_LINE_SYNTAX = CommandUtil.syntax(CMD_LINE_ARRAY);
 
-    public MapLocalCacheCommand() {
-        super(IDENTITY, DESCRIPTION, CMD_LINE_SYNTAX);
-    }
+    private final MapQosService mapQosService;
 
-    @Autowired
-    private MapQosService mapQosService;
+    public MapLocalCacheCommand(MapQosService mapQosService) {
+        super(IDENTITY, DESCRIPTION, CMD_LINE_SYNTAX);
+        this.mapQosService = mapQosService;
+    }
 
     @Override
     protected List<Option> buildOptions() {

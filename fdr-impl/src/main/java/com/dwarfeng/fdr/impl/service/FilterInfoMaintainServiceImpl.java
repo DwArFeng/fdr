@@ -11,7 +11,6 @@ import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +19,19 @@ import java.util.List;
 @Service
 public class FilterInfoMaintainServiceImpl implements FilterInfoMaintainService {
 
-    @Autowired
-    private CustomBatchCrudService<LongIdKey, FilterInfo> crudService;
-    @Autowired
-    private DaoOnlyEntireLookupService<FilterInfo> entireLookupService;
-    @Autowired
-    private DaoOnlyPresetLookupService<FilterInfo> presetLookupService;
+    private final CustomBatchCrudService<LongIdKey, FilterInfo> crudService;
+    private final DaoOnlyEntireLookupService<FilterInfo> entireLookupService;
+    private final DaoOnlyPresetLookupService<FilterInfo> presetLookupService;
+
+    public FilterInfoMaintainServiceImpl(
+            CustomBatchCrudService<LongIdKey, FilterInfo> crudService,
+            DaoOnlyEntireLookupService<FilterInfo> entireLookupService,
+            DaoOnlyPresetLookupService<FilterInfo> presetLookupService
+    ) {
+        this.crudService = crudService;
+        this.entireLookupService = entireLookupService;
+        this.presetLookupService = presetLookupService;
+    }
 
     @Override
     @BehaviorAnalyse
