@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.impl.handler;
 
+import com.dwarfeng.fdr.sdk.util.WatchUtil;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo.MapInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
@@ -74,8 +75,8 @@ public abstract class AbstractOrganizeHandler implements OrganizeHandler {
         String preset = queryItem.getPreset();
         String[] params = queryItem.getParams();
         LongIdKey pointKey = queryItem.getPointKey();
-        Date startDate = queryItem.getStartDate();
-        Date endDate = queryItem.getEndDate();
+        Date startDate = WatchUtil.validStartDate(queryItem.getStartDate());
+        Date endDate = WatchUtil.validEndDate(queryItem.getEndDate());
         boolean includeStartDate = queryItem.isIncludeStartDate();
         boolean includeEndDate = queryItem.isIncludeEndDate();
 
@@ -89,13 +90,13 @@ public abstract class AbstractOrganizeHandler implements OrganizeHandler {
         boolean anchorIncludeEndDate = notLastPeriodFlag ? false : includeEndDate;
         do {
             // 循环查询数据，每次查询的数据量最大为 maxPageSize。
-            int anchorOffset = 0;
+            int anchorPage = 0;
             QueryResult<? extends Data> anchorQueryResult;
             do {
                 // 构造查询信息，进行查询。
                 QueryInfo queryInfo = new QueryInfo(
                         preset, params, pointKey, anchorStartDate, anchorEndDate, anchorIncludeStartDate,
-                        anchorIncludeEndDate, maxPageSize, anchorOffset
+                        anchorIncludeEndDate, anchorPage, maxPageSize
                 );
                 anchorQueryResult = persistHandler.query(queryInfo);
 
@@ -106,7 +107,7 @@ public abstract class AbstractOrganizeHandler implements OrganizeHandler {
 
                 // 如果 anchorQueryResult.isHasMore() 为 true，则更新查询数据。
                 if (anchorQueryResult.isHasMore()) {
-                    anchorOffset += anchorQueryResult.getDatas().size();
+                    anchorPage++;
                 }
             } while (anchorQueryResult.isHasMore());
 

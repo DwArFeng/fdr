@@ -3,6 +3,7 @@ package com.dwarfeng.fdr.stack.handler;
 import com.dwarfeng.fdr.stack.exception.TriggerException;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
+import javax.annotation.Nonnull;
 import java.util.Date;
 
 /**
@@ -85,21 +86,21 @@ public interface Trigger {
         /**
          * 未被触发的测试结果。
          */
-        public static final TestResult NOT_TRIGGERED = new TestResult(false, null);
+        public static final TestResult NOT_TRIGGERED = new TestResult(false, "");
 
         /**
          * 生成一个被触发的测试结果。
          *
          * @return 被触发的测试结果。
          */
-        public static TestResult triggered(String message) {
+        public static TestResult triggered(@Nonnull String message) {
             return new TestResult(true, message);
         }
 
         private final boolean triggered;
         private final String message;
 
-        public TestResult(boolean triggered, String message) {
+        public TestResult(boolean triggered, @Nonnull String message) {
             this.triggered = triggered;
             this.message = message;
         }
@@ -108,6 +109,7 @@ public interface Trigger {
             return triggered;
         }
 
+        @Nonnull
         public String getMessage() {
             return message;
         }

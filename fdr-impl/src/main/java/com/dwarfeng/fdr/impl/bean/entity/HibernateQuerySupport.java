@@ -14,7 +14,7 @@ import java.util.Objects;
 public class HibernateQuerySupport implements Bean {
 
     private static final long serialVersionUID = -622679147980932923L;
-    
+
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
     @Column(name = "category", length = Constraints.LENGTH_CATEGORY, nullable = false)

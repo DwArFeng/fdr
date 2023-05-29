@@ -50,7 +50,7 @@ public class ToDoubleMapperRegistry extends AbstractMapperRegistry {
 
     @Override
     public String provideExampleParam() {
-        return JSON.toJSONString(new Config(1.0, 0.0, 0, 0.0));
+        return JSON.toJSONString(new Config(1.0, 0.0, 0, 0));
     }
 
     @Override
@@ -135,7 +135,7 @@ public class ToDoubleMapperRegistry extends AbstractMapperRegistry {
 
     public static class Config implements Bean {
 
-        private static final long serialVersionUID = -3651973933442697219L;
+        private static final long serialVersionUID = 6070172089803753761L;
 
         @JSONField(name = "boolean_true_value", ordinal = 1)
         private double booleanTrueValue;
@@ -150,13 +150,13 @@ public class ToDoubleMapperRegistry extends AbstractMapperRegistry {
         private String otherTypeStrategyRem = "0: 默认值, 1: null, 2: 忽略该数据条目。";
 
         @JSONField(name = "other_type_default_value", ordinal = 5)
-        private double otherTypeDefaultValue;
+        private int otherTypeDefaultValue;
 
         public Config() {
         }
 
         public Config(
-                double booleanTrueValue, double booleanFalseValue, int otherTypeStrategy, double otherTypeDefaultValue
+                double booleanTrueValue, double booleanFalseValue, int otherTypeStrategy, int otherTypeDefaultValue
         ) {
             this.booleanTrueValue = booleanTrueValue;
             this.booleanFalseValue = booleanFalseValue;
@@ -196,11 +196,11 @@ public class ToDoubleMapperRegistry extends AbstractMapperRegistry {
             this.otherTypeStrategyRem = otherTypeStrategyRem;
         }
 
-        public double getOtherTypeDefaultValue() {
+        public int getOtherTypeDefaultValue() {
             return otherTypeDefaultValue;
         }
 
-        public void setOtherTypeDefaultValue(double otherTypeDefaultValue) {
+        public void setOtherTypeDefaultValue(int otherTypeDefaultValue) {
             this.otherTypeDefaultValue = otherTypeDefaultValue;
         }
 

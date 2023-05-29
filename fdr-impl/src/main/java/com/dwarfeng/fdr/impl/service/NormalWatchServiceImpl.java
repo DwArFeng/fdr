@@ -4,6 +4,7 @@ import com.dwarfeng.fdr.stack.bean.dto.NormalData;
 import com.dwarfeng.fdr.stack.handler.NormalWatchHandler;
 import com.dwarfeng.fdr.stack.service.NormalWatchService;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,7 +12,7 @@ public class NormalWatchServiceImpl extends AbstractWatchService<NormalData> imp
 
     public NormalWatchServiceImpl(
             NormalWatchHandler normalWatchHandler,
-            ServiceExceptionMapper sem
+            @Qualifier("mapServiceExceptionMapper") ServiceExceptionMapper sem
     ) {
         super(normalWatchHandler, sem);
     }

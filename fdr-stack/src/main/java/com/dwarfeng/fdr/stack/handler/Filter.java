@@ -3,6 +3,7 @@ package com.dwarfeng.fdr.stack.handler;
 import com.dwarfeng.fdr.stack.exception.FilterException;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
+import javax.annotation.Nonnull;
 import java.util.Date;
 
 /**
@@ -91,21 +92,21 @@ public interface Filter {
         /**
          * 未被过滤的测试结果。
          */
-        public static final TestResult NOT_FILTERED = new TestResult(false, null);
+        public static final TestResult NOT_FILTERED = new TestResult(false, "");
 
         /**
          * 生成一个被过滤的测试结果。
          *
          * @return 被过滤的测试结果。
          */
-        public static TestResult filtered(String message) {
+        public static TestResult filtered(@Nonnull String message) {
             return new TestResult(true, message);
         }
 
         private final boolean filtered;
         private final String message;
 
-        public TestResult(boolean filtered, String message) {
+        public TestResult(boolean filtered, @Nonnull String message) {
             this.filtered = filtered;
             this.message = message;
         }
@@ -114,6 +115,7 @@ public interface Filter {
             return filtered;
         }
 
+        @Nonnull
         public String getMessage() {
             return message;
         }

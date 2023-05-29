@@ -4,6 +4,7 @@ import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
 import com.dwarfeng.fdr.stack.handler.FilteredWatchHandler;
 import com.dwarfeng.fdr.stack.service.FilteredWatchQosService;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,7 +13,7 @@ public class FilteredWatchQosServiceImpl extends AbstractWatchQosService<Filtere
 
     public FilteredWatchQosServiceImpl(
             FilteredWatchHandler filteredWatchHandler,
-            ServiceExceptionMapper sem
+            @Qualifier("mapServiceExceptionMapper") ServiceExceptionMapper sem
     ) {
         super(filteredWatchHandler, sem);
     }

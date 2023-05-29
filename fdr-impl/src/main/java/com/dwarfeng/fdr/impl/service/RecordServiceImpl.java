@@ -8,6 +8,7 @@ import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,7 +17,10 @@ public class RecordServiceImpl implements RecordService {
     private final RecordHandler recordHandler;
     private final ServiceExceptionMapper sem;
 
-    public RecordServiceImpl(RecordHandler recordHandler, ServiceExceptionMapper sem) {
+    public RecordServiceImpl(
+            RecordHandler recordHandler,
+            @Qualifier("mapServiceExceptionMapper") ServiceExceptionMapper sem
+    ) {
         this.recordHandler = recordHandler;
         this.sem = sem;
     }

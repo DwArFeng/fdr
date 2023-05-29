@@ -9,6 +9,10 @@
 
 - 重构数据记录处理与数据持久化模块。
 
+- 实现桥接器。
+  - com.dwarfeng.fdr.impl.handler.bridge.mock.MockBridge。
+  - com.dwarfeng.fdr.impl.handler.bridge.hibernate.HibernateBridge。
+
 #### Bug修复
 
 - (无)

@@ -12,6 +12,7 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 
@@ -27,7 +28,10 @@ public abstract class AbstractWatchQosService<D extends Data> implements WatchQo
 
     protected final ServiceExceptionMapper sem;
 
-    protected AbstractWatchQosService(WatchHandler<D> watchHandler, ServiceExceptionMapper sem) {
+    protected AbstractWatchQosService(
+            WatchHandler<D> watchHandler,
+            @Qualifier("mapServiceExceptionMapper") ServiceExceptionMapper sem
+    ) {
         this.watchHandler = watchHandler;
         this.sem = sem;
     }

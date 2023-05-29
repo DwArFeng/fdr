@@ -128,7 +128,7 @@ public class SortMapperRegistry extends AbstractMapperRegistry {
     public static class Config implements Bean {
 
         private static final long serialVersionUID = 8892297543650020147L;
-        
+
         @JSONField(name = "sequence_point_key_order", ordinal = 1)
         private int sequencePointKeyOrder;
 

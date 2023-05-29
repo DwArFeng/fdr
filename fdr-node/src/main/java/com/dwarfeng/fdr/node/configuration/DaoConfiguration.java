@@ -15,6 +15,7 @@ import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
 import com.dwarfeng.subgrade.sdk.hibernate.modification.DefaultDeletionMod;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,7 +38,7 @@ public class DaoConfiguration {
     private int batchSize;
 
     public DaoConfiguration(
-            HibernateTemplate template,
+            @Qualifier("hibernateTemplate") HibernateTemplate template,
             FilterInfoPresetCriteriaMaker filterInfoPresetCriteriaMaker,
             PointPresetCriteriaMaker pointPresetCriteriaMaker,
             TriggerInfoPresetCriteriaMaker triggerInfoPresetCriteriaMaker,

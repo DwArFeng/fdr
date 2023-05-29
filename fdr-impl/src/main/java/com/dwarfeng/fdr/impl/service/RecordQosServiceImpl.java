@@ -57,7 +57,7 @@ public class RecordQosServiceImpl implements RecordQosService {
             @Qualifier("triggeredPersistConsumeHandler")
             ConsumeHandler<TriggeredData> triggeredPersistConsumeHandler,
             RecordHandler recordHandler,
-            ServiceExceptionMapper sem
+            @Qualifier("mapServiceExceptionMapper") ServiceExceptionMapper sem
     ) {
         this.recordLocalCacheHandler = recordLocalCacheHandler;
         this.normalKeepConsumeHandler = normalKeepConsumeHandler;

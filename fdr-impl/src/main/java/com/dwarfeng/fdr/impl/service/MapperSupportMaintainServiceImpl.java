@@ -15,6 +15,7 @@ import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +40,7 @@ public class MapperSupportMaintainServiceImpl implements MapperSupportMaintainSe
             DaoOnlyEntireLookupService<MapperSupport> entireLookupService,
             DaoOnlyPresetLookupService<MapperSupport> presetLookupService,
             List<MapperSupporter> mapperSupporters,
-            ServiceExceptionMapper sem
+            @Qualifier("mapServiceExceptionMapper") ServiceExceptionMapper sem
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;
