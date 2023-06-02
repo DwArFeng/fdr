@@ -135,7 +135,7 @@ public class HibernateBridgeBaseConfiguration {
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
         sessionFactoryBean.setDataSource(dataSource);
         sessionFactoryBean.setHibernateProperties(hibernateProperties);
-        sessionFactoryBean.setPackagesToScan("com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.entity");
+        sessionFactoryBean.setPackagesToScan("com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean");
         return sessionFactoryBean;
     }
 

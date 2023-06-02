@@ -58,6 +58,7 @@
         <spring-terminator.version>1.0.10.a</spring-terminator.version>
         <spring-telqos.version>1.1.5.a</spring-telqos.version>
         <dcti.version>1.1.5.a</dcti.version>
+        <dwarfeng-dct.version>1.0.0.a-SNAPSHOT</dwarfeng-dct.version>
         <jackson.version>2.14.0</jackson.version>
         <groovy.version>4.0.6</groovy.version>
         <!-- Maven插件版本声明 -->
@@ -466,6 +467,12 @@
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>dcti</artifactId>
                 <version>${dcti.version}</version>
+            </dependency>
+            <!-- Dwarfeng-dct 组件 -->
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>dwarfeng-dct</artifactId>
+                <version>${dwarfeng-dct.version}</version>
             </dependency>
             <!-- Jackson 组件 -->
             <dependency>

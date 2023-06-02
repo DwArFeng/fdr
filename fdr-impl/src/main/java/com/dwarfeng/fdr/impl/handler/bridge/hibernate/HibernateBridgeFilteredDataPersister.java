@@ -1,8 +1,8 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate;
 
+import com.dwarfeng.dct.handler.ValueCodingHandler;
 import com.dwarfeng.fdr.impl.handler.bridge.AbstractPersister;
-import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.entity.HibernateBridgeFilteredData;
-import com.dwarfeng.fdr.impl.handler.bridge.hibernate.serialize.SerializerFactory;
+import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeFilteredData;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.service.HibernateBridgeFilteredDataMaintainService;
 import com.dwarfeng.fdr.sdk.util.WatchUtil;
 import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
@@ -12,15 +12,15 @@ import com.dwarfeng.fdr.stack.handler.PersistHandler;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * Hibernate 桥接一般数据持久化器。
+ * Hibernate 桥接被过滤数据持久化器。
  *
  * @author DwArFeng
  * @since 2.0.0
@@ -41,22 +41,20 @@ public class HibernateBridgeFilteredDataPersister extends AbstractPersister<Filt
 
     private final HibernateBridgeFilteredDataMaintainService service;
 
-    private final SerializerFactory serializerFactory;
+    private final ValueCodingHandler valueCodingHandler;
 
     protected HibernateBridgeFilteredDataPersister(
             HibernateBridgeFilteredDataMaintainService service,
-            SerializerFactory serializerFactory
+            @Qualifier("hibernateBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler
     ) {
         super(false, QUERY_MANUALS);
         this.service = service;
-        this.serializerFactory = serializerFactory;
+        this.valueCodingHandler = valueCodingHandler;
     }
 
     @Override
     protected void doRecord(FilteredData data) throws Exception {
-        Object value = data.getValue();
-        String serializedValue = serializerFactory.getSerializer(value.getClass()).serialize(value);
-        HibernateBridgeFilteredData filteredData = transformData(data, serializedValue);
+        HibernateBridgeFilteredData filteredData = transform(data);
         service.write(filteredData);
     }
 
@@ -64,20 +62,19 @@ public class HibernateBridgeFilteredDataPersister extends AbstractPersister<Filt
     protected void doRecord(List<FilteredData> datas) throws Exception {
         List<HibernateBridgeFilteredData> entities = new ArrayList<>();
         for (FilteredData data : datas) {
-            Object value = data.getValue();
-            String serializedValue = serializerFactory.getSerializer(value.getClass()).serialize(value);
-            HibernateBridgeFilteredData filteredData = transformData(data, serializedValue);
+            HibernateBridgeFilteredData filteredData = transform(data);
             entities.add(filteredData);
         }
         service.batchWrite(entities);
     }
 
-    private HibernateBridgeFilteredData transformData(FilteredData data, String serializedValue) {
+    private HibernateBridgeFilteredData transform(FilteredData data) throws Exception {
+        String flatValue = valueCodingHandler.encode(data.getValue());
         return new HibernateBridgeFilteredData(
                 null,
                 data.getPointKey(),
                 data.getFilterKey(),
-                serializedValue,
+                flatValue,
                 data.getMessage(),
                 data.getHappenedDate()
         );
@@ -116,13 +113,27 @@ public class HibernateBridgeFilteredDataPersister extends AbstractPersister<Filt
                 servicePreset, new Object[]{pointKey, startDate, endDate}, new PagingInfo(page, rows)
         );
 
-        // 转换数据。
-        List<FilteredData> datas = lookup.getData().stream().map(
-                d -> new FilteredData(
-                        d.getPointKey(), d.getFilterKey(), d.getValue(), d.getMessage(), d.getHappenedDate()
-                )
-        ).collect(Collectors.toList());
+        // 处理数据。
+        List<HibernateBridgeFilteredData> hibernateBridgeDatas = lookup.getData();
+        List<FilteredData> datas = new ArrayList<>(hibernateBridgeDatas.size());
+        for (HibernateBridgeFilteredData hibernateBridgeData : hibernateBridgeDatas) {
+            FilteredData data = reverseTransform(hibernateBridgeData);
+            datas.add(data);
+        }
         boolean hasMore = lookup.getTotalPages() > page + 1;
+
+        // 返回结果。
         return new QueryResult<>(pointKey, datas, hasMore);
+    }
+
+    private FilteredData reverseTransform(HibernateBridgeFilteredData data) throws Exception {
+        Object value = valueCodingHandler.decode(data.getValue());
+        return new FilteredData(
+                data.getPointKey(),
+                data.getFilterKey(),
+                value,
+                data.getMessage(),
+                data.getHappenedDate()
+        );
     }
 }

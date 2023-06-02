@@ -1,7 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate.configuration;
 
-import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateMapper;
-import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.entity.*;
+import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.*;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao.preset.HibernateBridgeFilteredDataPresetCriteriaMaker;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao.preset.HibernateBridgeNormalDataPresetCriteriaMaker;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao.preset.HibernateBridgeTriggeredDataPresetCriteriaMaker;
@@ -76,37 +75,39 @@ public class HibernateBridgeDaoConfiguration {
                 hibernateBridgeFilteredDataDialectNativeLookups
         );
         this.hibernateBridgeTriggeredDataPresetCriteriaMaker = hibernateBridgeTriggeredDataPresetCriteriaMaker;
-        this.hibernateBridgeTriggeredDataDialectNativeLookups = hibernateBridgeTriggeredDataDialectNativeLookups;
+        this.hibernateBridgeTriggeredDataDialectNativeLookups = validList(
+                hibernateBridgeTriggeredDataDialectNativeLookups
+        );
     }
 
     @Bean
     public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, HibernateBridgeNormalData,
-            HibernateHibernateBridgeNormalData> hibernateBridgeNormalDataHibernateBatchBaseDao() {
+            HibernateBridgeHibernateNormalData> hibernateBridgeNormalDataHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
                 new MapStructBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, HibernateMapper.class),
                 new MapStructBeanTransformer<>(
                         HibernateBridgeNormalData.class,
-                        HibernateHibernateBridgeNormalData.class,
+                        HibernateBridgeHibernateNormalData.class,
                         HibernateMapper.class
                 ),
-                HibernateHibernateBridgeNormalData.class,
+                HibernateBridgeHibernateNormalData.class,
                 new DefaultDeletionMod<>(),
                 hibernateJdbcBatchSize()
         );
     }
 
     @Bean
-    public HibernateEntireLookupDao<HibernateBridgeNormalData, HibernateHibernateBridgeNormalData>
+    public HibernateEntireLookupDao<HibernateBridgeNormalData, HibernateBridgeHibernateNormalData>
     hibernateBridgeNormalDataHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
                 hibernateTemplate,
                 new MapStructBeanTransformer<>(
                         HibernateBridgeNormalData.class,
-                        HibernateHibernateBridgeNormalData.class,
+                        HibernateBridgeHibernateNormalData.class,
                         HibernateMapper.class
                 ),
-                HibernateHibernateBridgeNormalData.class
+                HibernateBridgeHibernateNormalData.class
         );
     }
 
@@ -116,10 +117,10 @@ public class HibernateBridgeDaoConfiguration {
                 hibernateTemplate,
                 new MapStructBeanTransformer<>(
                         HibernateBridgeNormalData.class,
-                        HibernateHibernateBridgeNormalData.class,
+                        HibernateBridgeHibernateNormalData.class,
                         HibernateMapper.class
                 ),
-                HibernateHibernateBridgeNormalData.class,
+                HibernateBridgeHibernateNormalData.class,
                 hibernateBridgeNormalDataPresetCriteriaMaker,
                 hibernateBridgeNormalDataDialectNativeLookups,
                 hibernateDialect(),
@@ -128,13 +129,13 @@ public class HibernateBridgeDaoConfiguration {
     }
 
     @Bean
-    public HibernateBatchWriteDao<HibernateBridgeNormalData, HibernateHibernateBridgeNormalData>
+    public HibernateBatchWriteDao<HibernateBridgeNormalData, HibernateBridgeHibernateNormalData>
     hibernateBridgeNormalDataHibernateBatchWriteDao() {
         return new HibernateBatchWriteDao<>(
                 hibernateTemplate,
                 new MapStructBeanTransformer<>(
                         HibernateBridgeNormalData.class,
-                        HibernateHibernateBridgeNormalData.class,
+                        HibernateBridgeHibernateNormalData.class,
                         HibernateMapper.class
                 ),
                 hibernateJdbcBatchSize()
@@ -143,32 +144,32 @@ public class HibernateBridgeDaoConfiguration {
 
     @Bean
     public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, HibernateBridgeFilteredData,
-            HibernateHibernateBridgeFilteredData> hibernateBridgeFilteredDataHibernateBatchBaseDao() {
+            HibernateBridgeHibernateFilteredData> hibernateBridgeFilteredDataHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
                 new MapStructBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, HibernateMapper.class),
                 new MapStructBeanTransformer<>(
                         HibernateBridgeFilteredData.class,
-                        HibernateHibernateBridgeFilteredData.class,
+                        HibernateBridgeHibernateFilteredData.class,
                         HibernateMapper.class
                 ),
-                HibernateHibernateBridgeFilteredData.class,
+                HibernateBridgeHibernateFilteredData.class,
                 new DefaultDeletionMod<>(),
                 hibernateJdbcBatchSize()
         );
     }
 
     @Bean
-    public HibernateEntireLookupDao<HibernateBridgeFilteredData, HibernateHibernateBridgeFilteredData>
+    public HibernateEntireLookupDao<HibernateBridgeFilteredData, HibernateBridgeHibernateFilteredData>
     hibernateBridgeFilteredDataHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
                 hibernateTemplate,
                 new MapStructBeanTransformer<>(
                         HibernateBridgeFilteredData.class,
-                        HibernateHibernateBridgeFilteredData.class,
+                        HibernateBridgeHibernateFilteredData.class,
                         HibernateMapper.class
                 ),
-                HibernateHibernateBridgeFilteredData.class
+                HibernateBridgeHibernateFilteredData.class
         );
     }
 
@@ -178,10 +179,10 @@ public class HibernateBridgeDaoConfiguration {
                 hibernateTemplate,
                 new MapStructBeanTransformer<>(
                         HibernateBridgeFilteredData.class,
-                        HibernateHibernateBridgeFilteredData.class,
+                        HibernateBridgeHibernateFilteredData.class,
                         HibernateMapper.class
                 ),
-                HibernateHibernateBridgeFilteredData.class,
+                HibernateBridgeHibernateFilteredData.class,
                 hibernateBridgeFilteredDataPresetCriteriaMaker,
                 hibernateBridgeFilteredDataDialectNativeLookups,
                 hibernateDialect(),
@@ -190,13 +191,13 @@ public class HibernateBridgeDaoConfiguration {
     }
 
     @Bean
-    public HibernateBatchWriteDao<HibernateBridgeFilteredData, HibernateHibernateBridgeFilteredData>
+    public HibernateBatchWriteDao<HibernateBridgeFilteredData, HibernateBridgeHibernateFilteredData>
     hibernateBridgeFilteredDataHibernateBatchWriteDao() {
         return new HibernateBatchWriteDao<>(
                 hibernateTemplate,
                 new MapStructBeanTransformer<>(
                         HibernateBridgeFilteredData.class,
-                        HibernateHibernateBridgeFilteredData.class,
+                        HibernateBridgeHibernateFilteredData.class,
                         HibernateMapper.class
                 ),
                 hibernateJdbcBatchSize()
@@ -205,32 +206,32 @@ public class HibernateBridgeDaoConfiguration {
 
     @Bean
     public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, HibernateBridgeTriggeredData,
-            HibernateHibernateBridgeTriggeredData> hibernateBridgeTriggeredDataHibernateBatchBaseDao() {
+            HibernateBridgeHibernateTriggeredData> hibernateBridgeTriggeredDataHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
                 new MapStructBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, HibernateMapper.class),
                 new MapStructBeanTransformer<>(
                         HibernateBridgeTriggeredData.class,
-                        HibernateHibernateBridgeTriggeredData.class,
+                        HibernateBridgeHibernateTriggeredData.class,
                         HibernateMapper.class
                 ),
-                HibernateHibernateBridgeTriggeredData.class,
+                HibernateBridgeHibernateTriggeredData.class,
                 new DefaultDeletionMod<>(),
                 hibernateJdbcBatchSize()
         );
     }
 
     @Bean
-    public HibernateEntireLookupDao<HibernateBridgeTriggeredData, HibernateHibernateBridgeTriggeredData>
+    public HibernateEntireLookupDao<HibernateBridgeTriggeredData, HibernateBridgeHibernateTriggeredData>
     hibernateBridgeTriggeredDataHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
                 hibernateTemplate,
                 new MapStructBeanTransformer<>(
                         HibernateBridgeTriggeredData.class,
-                        HibernateHibernateBridgeTriggeredData.class,
+                        HibernateBridgeHibernateTriggeredData.class,
                         HibernateMapper.class
                 ),
-                HibernateHibernateBridgeTriggeredData.class
+                HibernateBridgeHibernateTriggeredData.class
         );
     }
 
@@ -240,10 +241,10 @@ public class HibernateBridgeDaoConfiguration {
                 hibernateTemplate,
                 new MapStructBeanTransformer<>(
                         HibernateBridgeTriggeredData.class,
-                        HibernateHibernateBridgeTriggeredData.class,
+                        HibernateBridgeHibernateTriggeredData.class,
                         HibernateMapper.class
                 ),
-                HibernateHibernateBridgeTriggeredData.class,
+                HibernateBridgeHibernateTriggeredData.class,
                 hibernateBridgeTriggeredDataPresetCriteriaMaker,
                 hibernateBridgeTriggeredDataDialectNativeLookups,
                 hibernateDialect(),
@@ -252,13 +253,13 @@ public class HibernateBridgeDaoConfiguration {
     }
 
     @Bean
-    public HibernateBatchWriteDao<HibernateBridgeTriggeredData, HibernateHibernateBridgeTriggeredData>
+    public HibernateBatchWriteDao<HibernateBridgeTriggeredData, HibernateBridgeHibernateTriggeredData>
     hibernateBridgeTriggeredDataHibernateBatchWriteDao() {
         return new HibernateBatchWriteDao<>(
                 hibernateTemplate,
                 new MapStructBeanTransformer<>(
                         HibernateBridgeTriggeredData.class,
-                        HibernateHibernateBridgeTriggeredData.class,
+                        HibernateBridgeHibernateTriggeredData.class,
                         HibernateMapper.class
                 ),
                 hibernateJdbcBatchSize()

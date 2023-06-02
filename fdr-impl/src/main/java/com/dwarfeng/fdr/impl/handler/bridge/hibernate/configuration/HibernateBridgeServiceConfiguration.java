@@ -1,8 +1,8 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate.configuration;
 
-import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.entity.HibernateBridgeFilteredData;
-import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.entity.HibernateBridgeNormalData;
-import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.entity.HibernateBridgeTriggeredData;
+import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeFilteredData;
+import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeNormalData;
+import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeTriggeredData;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao.HibernateBridgeFilteredDataDao;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao.HibernateBridgeNormalDataDao;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao.HibernateBridgeTriggeredDataDao;

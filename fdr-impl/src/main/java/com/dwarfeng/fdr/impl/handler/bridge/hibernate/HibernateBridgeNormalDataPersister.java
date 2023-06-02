@@ -1,8 +1,8 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate;
 
+import com.dwarfeng.dct.handler.ValueCodingHandler;
 import com.dwarfeng.fdr.impl.handler.bridge.AbstractPersister;
-import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.entity.HibernateBridgeNormalData;
-import com.dwarfeng.fdr.impl.handler.bridge.hibernate.serialize.SerializerFactory;
+import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeNormalData;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.service.HibernateBridgeNormalDataMaintainService;
 import com.dwarfeng.fdr.sdk.util.WatchUtil;
 import com.dwarfeng.fdr.stack.bean.dto.NormalData;
@@ -12,12 +12,12 @@ import com.dwarfeng.fdr.stack.handler.PersistHandler;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Hibernate 桥接被过滤数据持久化器。
@@ -41,22 +41,20 @@ public class HibernateBridgeNormalDataPersister extends AbstractPersister<Normal
 
     private final HibernateBridgeNormalDataMaintainService service;
 
-    private final SerializerFactory serializerFactory;
+    private final ValueCodingHandler valueCodingHandler;
 
     protected HibernateBridgeNormalDataPersister(
             HibernateBridgeNormalDataMaintainService service,
-            SerializerFactory serializerFactory
+            @Qualifier("hibernateBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler
     ) {
         super(false, QUERY_MANUALS);
         this.service = service;
-        this.serializerFactory = serializerFactory;
+        this.valueCodingHandler = valueCodingHandler;
     }
 
     @Override
     protected void doRecord(NormalData data) throws Exception {
-        Object value = data.getValue();
-        String serializedValue = serializerFactory.getSerializer(value.getClass()).serialize(value);
-        HibernateBridgeNormalData normalData = transformData(data, serializedValue);
+        HibernateBridgeNormalData normalData = transform(data);
         service.write(normalData);
     }
 
@@ -64,19 +62,18 @@ public class HibernateBridgeNormalDataPersister extends AbstractPersister<Normal
     protected void doRecord(List<NormalData> datas) throws Exception {
         List<HibernateBridgeNormalData> entities = new ArrayList<>();
         for (NormalData data : datas) {
-            Object value = data.getValue();
-            String serializedValue = serializerFactory.getSerializer(value.getClass()).serialize(value);
-            HibernateBridgeNormalData normalData = transformData(data, serializedValue);
+            HibernateBridgeNormalData normalData = transform(data);
             entities.add(normalData);
         }
         service.batchWrite(entities);
     }
 
-    private HibernateBridgeNormalData transformData(NormalData data, String serializedValue) {
+    private HibernateBridgeNormalData transform(NormalData data) throws Exception {
+        String flatValue = valueCodingHandler.encode(data.getValue());
         return new HibernateBridgeNormalData(
                 null,
                 data.getPointKey(),
-                serializedValue,
+                flatValue,
                 data.getHappenedDate()
         );
     }
@@ -114,11 +111,25 @@ public class HibernateBridgeNormalDataPersister extends AbstractPersister<Normal
                 servicePreset, new Object[]{pointKey, startDate, endDate}, new PagingInfo(page, rows)
         );
 
-        // 转换数据。
-        List<NormalData> datas = lookup.getData().stream().map(
-                d -> new NormalData(d.getPointKey(), d.getValue(), d.getHappenedDate())
-        ).collect(Collectors.toList());
+        // 处理数据。
+        List<HibernateBridgeNormalData> hibernateBridgeDatas = lookup.getData();
+        List<NormalData> datas = new ArrayList<>(hibernateBridgeDatas.size());
+        for (HibernateBridgeNormalData hibernateBridgeData : hibernateBridgeDatas) {
+            NormalData data = reverseTransform(hibernateBridgeData);
+            datas.add(data);
+        }
         boolean hasMore = lookup.getTotalPages() > page + 1;
+
+        // 返回结果。
         return new QueryResult<>(pointKey, datas, hasMore);
+    }
+
+    private NormalData reverseTransform(HibernateBridgeNormalData data) throws Exception {
+        Object value = valueCodingHandler.decode(data.getValue());
+        return new NormalData(
+                data.getPointKey(),
+                value,
+                data.getHappenedDate()
+        );
     }
 }

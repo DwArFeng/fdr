@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate.service;
 
-import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.entity.HibernateBridgeTriggeredData;
+import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeTriggeredData;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyBatchCrudService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyBatchWriteService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;

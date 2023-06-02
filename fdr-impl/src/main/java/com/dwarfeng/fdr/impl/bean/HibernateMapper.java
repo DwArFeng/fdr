@@ -78,6 +78,8 @@ public interface HibernateMapper {
     @InheritInverseConfiguration
     TriggerSupport triggerSupportFromHibernate(HibernateTriggerSupport hibernateTriggerSupport);
 
+    @Mapping(target = "preset", ignore = true)
+    @Mapping(target = "category", ignore = true)
     HibernateQuerySupport querySupportToHibernate(QuerySupport querySupport);
 
     @InheritInverseConfiguration

@@ -12,6 +12,7 @@ import com.dwarfeng.subgrade.sdk.redis.formatter.LongIdStringKeyFormatter;
 import com.dwarfeng.subgrade.sdk.redis.formatter.StringIdStringKeyFormatter;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,7 +42,9 @@ public class CacheConfiguration {
     @Value("${cache.prefix.entity.query_support}")
     private String querySupportPrefix;
 
-    public CacheConfiguration(RedisTemplate<String, ?> template) {
+    public CacheConfiguration(
+            @Qualifier("redisTemplate") RedisTemplate<String, ?> template
+    ) {
         this.template = template;
     }
 

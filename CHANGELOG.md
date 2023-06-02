@@ -12,6 +12,7 @@
 - 实现桥接器。
   - com.dwarfeng.fdr.impl.handler.bridge.mock.MockBridge。
   - com.dwarfeng.fdr.impl.handler.bridge.hibernate.HibernateBridge。
+  - com.dwarfeng.fdr.impl.handler.bridge.redis.RedisBridge。
 
 #### Bug修复
 

@@ -181,6 +181,11 @@
             <groupId>com.dwarfeng</groupId>
             <artifactId>dcti</artifactId>
         </dependency>
+        <!-- Dwarfeng-dct 组件 -->
+        <dependency>
+            <groupId>com.dwarfeng</groupId>
+            <artifactId>dwarfeng-dct</artifactId>
+        </dependency>
         <!-- Jackson 组件 -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

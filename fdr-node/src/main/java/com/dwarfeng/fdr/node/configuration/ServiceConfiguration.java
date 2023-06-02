@@ -80,7 +80,6 @@ public class ServiceConfiguration {
         this.querySupportDao = querySupportDao;
     }
 
-
     @Bean
     public KeyFetcher<LongIdKey> longIdKeyKeyFetcher() {
         return new SnowFlakeLongIdKeyFetcher();

@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao.nativelookup;
 
-import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.entity.HibernateBridgeFilteredData;
+import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeFilteredData;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.service.HibernateBridgeFilteredDataMaintainService;
 import com.dwarfeng.subgrade.sdk.hibernate.nativelookup.AbstractDialectNativeLookup;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;

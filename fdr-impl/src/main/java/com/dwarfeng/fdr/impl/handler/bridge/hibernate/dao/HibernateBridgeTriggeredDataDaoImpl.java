@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao;
 
-import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.entity.HibernateBridgeTriggeredData;
-import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.entity.HibernateHibernateBridgeTriggeredData;
+import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeHibernateTriggeredData;
+import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeTriggeredData;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchWriteDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
@@ -21,20 +21,20 @@ import java.util.List;
 public class HibernateBridgeTriggeredDataDaoImpl implements HibernateBridgeTriggeredDataDao {
 
     private final HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, HibernateBridgeTriggeredData,
-            HibernateHibernateBridgeTriggeredData> batchBaseDao;
-    private final HibernateEntireLookupDao<HibernateBridgeTriggeredData, HibernateHibernateBridgeTriggeredData>
+            HibernateBridgeHibernateTriggeredData> batchBaseDao;
+    private final HibernateEntireLookupDao<HibernateBridgeTriggeredData, HibernateBridgeHibernateTriggeredData>
             entireLookupDao;
     private final PresetLookupDao<HibernateBridgeTriggeredData> presetLookupDao;
-    private final HibernateBatchWriteDao<HibernateBridgeTriggeredData, HibernateHibernateBridgeTriggeredData>
+    private final HibernateBatchWriteDao<HibernateBridgeTriggeredData, HibernateBridgeHibernateTriggeredData>
             batchWriteDao;
 
     public HibernateBridgeTriggeredDataDaoImpl(
             HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, HibernateBridgeTriggeredData,
-                    HibernateHibernateBridgeTriggeredData> batchBaseDao,
-            HibernateEntireLookupDao<HibernateBridgeTriggeredData, HibernateHibernateBridgeTriggeredData>
+                    HibernateBridgeHibernateTriggeredData> batchBaseDao,
+            HibernateEntireLookupDao<HibernateBridgeTriggeredData, HibernateBridgeHibernateTriggeredData>
                     entireLookupDao,
             PresetLookupDao<HibernateBridgeTriggeredData> presetLookupDao,
-            HibernateBatchWriteDao<HibernateBridgeTriggeredData, HibernateHibernateBridgeTriggeredData> batchWriteDao
+            HibernateBatchWriteDao<HibernateBridgeTriggeredData, HibernateBridgeHibernateTriggeredData> batchWriteDao
     ) {
         this.batchBaseDao = batchBaseDao;
         this.entireLookupDao = entireLookupDao;

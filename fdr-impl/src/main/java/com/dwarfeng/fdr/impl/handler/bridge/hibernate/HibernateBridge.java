@@ -46,4 +46,14 @@ public class HibernateBridge extends AbstractBridge {
     protected Persister<TriggeredData> getTriggeredDataPersister() {
         return triggeredDataPersister;
     }
+
+    @Override
+    public String toString() {
+        return "HibernateBridge{" +
+                "normalDataPersister=" + normalDataPersister +
+                ", filteredDataPersister=" + filteredDataPersister +
+                ", triggeredDataPersister=" + triggeredDataPersister +
+                ", bridgeType='" + bridgeType + '\'' +
+                '}';
+    }
 }

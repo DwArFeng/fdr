@@ -1,6 +1,5 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean;
 
-import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.entity.*;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.mapstruct.InheritInverseConfiguration;
@@ -23,36 +22,36 @@ public interface HibernateMapper {
 
     @Mapping(target = "longId", ignore = true)
     @Mapping(target = "pointLongId", ignore = true)
-    HibernateHibernateBridgeNormalData hibernateBridgeNormalDataToHibernate(
+    HibernateBridgeHibernateNormalData hibernateBridgeNormalDataToHibernate(
             HibernateBridgeNormalData hibernateBridgeNormalData
     );
 
     @InheritInverseConfiguration
     HibernateBridgeNormalData hibernateBridgeNormalDataFromHibernate(
-            HibernateHibernateBridgeNormalData hibernateHibernateBridgeNormalData
+            HibernateBridgeHibernateNormalData hibernateBridgeHibernateNormalData
     );
 
     @Mapping(target = "longId", ignore = true)
     @Mapping(target = "pointLongId", ignore = true)
     @Mapping(target = "filterLongId", ignore = true)
-    HibernateHibernateBridgeFilteredData hibernateBridgeFilteredDataToHibernate(
+    HibernateBridgeHibernateFilteredData hibernateBridgeFilteredDataToHibernate(
             HibernateBridgeFilteredData hibernateBridgeFilteredData
     );
 
     @InheritInverseConfiguration
     HibernateBridgeFilteredData hibernateBridgeFilteredDataFromHibernate(
-            HibernateHibernateBridgeFilteredData hibernateHibernateBridgeFilteredData
+            HibernateBridgeHibernateFilteredData hibernateBridgeHibernateFilteredData
     );
 
     @Mapping(target = "longId", ignore = true)
     @Mapping(target = "pointLongId", ignore = true)
     @Mapping(target = "triggerLongId", ignore = true)
-    HibernateHibernateBridgeTriggeredData hibernateBridgeTriggeredDataToHibernate(
+    HibernateBridgeHibernateTriggeredData hibernateBridgeTriggeredDataToHibernate(
             HibernateBridgeTriggeredData hibernateBridgeTriggeredData
     );
 
     @InheritInverseConfiguration
     HibernateBridgeTriggeredData hibernateBridgeTriggeredDataFromHibernate(
-            HibernateHibernateBridgeTriggeredData hibernateHibernateBridgeTriggeredData
+            HibernateBridgeHibernateTriggeredData hibernateBridgeHibernateTriggeredData
     );
 }
