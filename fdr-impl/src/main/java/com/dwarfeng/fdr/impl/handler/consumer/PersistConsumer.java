@@ -3,7 +3,7 @@ package com.dwarfeng.fdr.impl.handler.consumer;
 import com.dwarfeng.fdr.impl.handler.Consumer;
 import com.dwarfeng.fdr.stack.handler.PersistHandler;
 import com.dwarfeng.fdr.stack.handler.PushHandler;
-import com.dwarfeng.fdr.stack.structure.Data;
+import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

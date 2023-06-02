@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.stack.bean.dto;
 
-import com.dwarfeng.fdr.stack.structure.Data;
+import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
@@ -21,7 +21,7 @@ import java.util.Date;
  */
 public class TriggeredData implements Data, Dto {
 
-    private static final long serialVersionUID = -6889132103786517457L;
+    private static final long serialVersionUID = -2535367965977677088L;
 
     private LongIdKey pointKey;
     private LongIdKey triggerKey;

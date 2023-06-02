@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.stack.bean.dto;
 
-import com.dwarfeng.fdr.stack.structure.Data;
+import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
@@ -142,8 +142,8 @@ public class LookupResult implements Dto {
      */
     public static class Item implements Data, Dto {
 
-        private static final long serialVersionUID = -7398206742287616156L;
-
+        private static final long serialVersionUID = -8065843061230108964L;
+        
         private LongIdKey pointKey;
         private Object value;
         private Date happenedDate;

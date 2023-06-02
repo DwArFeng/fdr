@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.stack.bean.dto;
 
-import com.dwarfeng.fdr.stack.structure.Data;
+import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
@@ -21,7 +21,7 @@ import java.util.List;
 public class QueryResult<D extends Data> implements Dto {
 
     private static final long serialVersionUID = -6885644374938088363L;
-
+    
     private LongIdKey pointKey;
     private List<D> datas;
     private boolean hasMore;

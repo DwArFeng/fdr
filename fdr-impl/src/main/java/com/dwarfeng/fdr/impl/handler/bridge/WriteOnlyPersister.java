@@ -3,7 +3,7 @@ package com.dwarfeng.fdr.impl.handler.bridge;
 import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
 import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
 import com.dwarfeng.fdr.stack.exception.MethodNotSupportedException;
-import com.dwarfeng.fdr.stack.structure.Data;
+import com.dwarfeng.fdr.stack.struct.Data;
 
 /**
  * 只写持久化器。

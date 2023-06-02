@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.stack.bean.dto;
 
-import com.dwarfeng.fdr.stack.structure.Data;
+import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
@@ -21,8 +21,8 @@ import java.util.Date;
  */
 public class NormalData implements Data, Dto {
 
-    private static final long serialVersionUID = 8974709216835006306L;
-
+    private static final long serialVersionUID = -6694722564989291310L;
+    
     private LongIdKey pointKey;
     private Object value;
     private Date happenedDate;

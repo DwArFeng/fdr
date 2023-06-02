@@ -6,7 +6,7 @@ import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
 import com.dwarfeng.fdr.stack.exception.MethodNotSupportedException;
 import com.dwarfeng.fdr.stack.handler.PersistHandler;
 import com.dwarfeng.fdr.stack.handler.PersistHandler.QueryGuide;
-import com.dwarfeng.fdr.stack.structure.Data;
+import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 
 import java.util.Collections;

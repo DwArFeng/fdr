@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.stack.structure;
+package com.dwarfeng.fdr.stack.struct;
 
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 

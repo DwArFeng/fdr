@@ -11,7 +11,7 @@ import com.dwarfeng.fdr.stack.handler.MapLocalCacheHandler;
 import com.dwarfeng.fdr.stack.handler.Mapper;
 import com.dwarfeng.fdr.stack.handler.OrganizeHandler;
 import com.dwarfeng.fdr.stack.handler.PersistHandler;
-import com.dwarfeng.fdr.stack.structure.Data;
+import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 

@@ -10,7 +10,7 @@ import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
 import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
 import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
 import com.dwarfeng.fdr.stack.service.WatchQosService;
-import com.dwarfeng.fdr.stack.structure.Data;
+import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.springtelqos.sdk.command.CliCommand;
 import com.dwarfeng.springtelqos.stack.command.Context;
 import com.dwarfeng.springtelqos.stack.exception.TelqosException;

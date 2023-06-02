@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.stack.bean.dto;
 
-import com.dwarfeng.fdr.stack.structure.Data;
+import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
@@ -21,8 +21,8 @@ import java.util.Date;
  */
 public class FilteredData implements Data, Dto {
 
-    private static final long serialVersionUID = 5308112329259956723L;
-
+    private static final long serialVersionUID = -8406790677895109177L;
+    
     private LongIdKey pointKey;
     private LongIdKey filterKey;
     private Object value;

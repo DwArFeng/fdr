@@ -5,7 +5,7 @@ import com.dwarfeng.fdr.sdk.util.WatchUtil;
 import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
 import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
 import com.dwarfeng.fdr.stack.handler.PersistHandler;
-import com.dwarfeng.fdr.stack.structure.Data;
+import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.slf4j.Logger;
 

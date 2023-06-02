@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.sdk.util;
 
 import com.dwarfeng.fdr.stack.handler.Mapper;
-import com.dwarfeng.fdr.stack.structure.Data;
+import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
 import java.util.Comparator;

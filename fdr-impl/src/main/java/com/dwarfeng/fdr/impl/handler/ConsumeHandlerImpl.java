@@ -4,7 +4,7 @@ import com.dwarfeng.dutil.develop.backgr.AbstractTask;
 import com.dwarfeng.fdr.sdk.util.Constants;
 import com.dwarfeng.fdr.stack.exception.ConsumeStoppedException;
 import com.dwarfeng.fdr.stack.handler.ConsumeHandler;
-import com.dwarfeng.fdr.stack.structure.Data;
+import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
