@@ -55,13 +55,13 @@ public class Launcher {
                     LOGGER.warn("映射器支持重置失败，异常信息如下", e);
                 }
             }
-            if (launcherSettingHandler.isResetQuerySupport()) {
-                LOGGER.info("重置查询支持...");
-                QuerySupportMaintainService maintainService = ctx.getBean(QuerySupportMaintainService.class);
+            if (launcherSettingHandler.isResetLookupSupport()) {
+                LOGGER.info("重置查看支持...");
+                LookupSupportMaintainService maintainService = ctx.getBean(LookupSupportMaintainService.class);
                 try {
                     maintainService.reset();
                 } catch (ServiceException e) {
-                    LOGGER.warn("查询支持重置失败，异常信息如下", e);
+                    LOGGER.warn("查看支持重置失败，异常信息如下", e);
                 }
             }
 

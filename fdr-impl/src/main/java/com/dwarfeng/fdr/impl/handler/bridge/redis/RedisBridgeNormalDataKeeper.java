@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.bridge.redis;
 
 import com.dwarfeng.dct.handler.ValueCodingHandler;
-import com.dwarfeng.fdr.impl.handler.bridge.AbstractKeeper;
+import com.dwarfeng.fdr.impl.handler.bridge.FulltKeeper;
 import com.dwarfeng.fdr.impl.handler.bridge.redis.bean.RedisBridgeNormalData;
 import com.dwarfeng.fdr.impl.handler.bridge.redis.service.RedisBridgeNormalDataMaintainService;
 import com.dwarfeng.fdr.stack.bean.dto.NormalData;
@@ -20,7 +20,7 @@ import java.util.Objects;
  * @since 2.0.0
  */
 @Component
-public class RedisBridgeNormalDataKeeper extends AbstractKeeper<NormalData> {
+public class RedisBridgeNormalDataKeeper extends FulltKeeper<NormalData> {
 
     private final RedisBridgeNormalDataMaintainService service;
 
@@ -30,7 +30,6 @@ public class RedisBridgeNormalDataKeeper extends AbstractKeeper<NormalData> {
             RedisBridgeNormalDataMaintainService service,
             @Qualifier("redisBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler
     ) {
-        super(false);
         this.service = service;
         this.valueCodingHandler = valueCodingHandler;
     }
@@ -64,13 +63,13 @@ public class RedisBridgeNormalDataKeeper extends AbstractKeeper<NormalData> {
     }
 
     @Override
-    protected NormalData doInspect(LongIdKey pointKey) throws Exception {
+    protected NormalData doLatest(LongIdKey pointKey) throws Exception {
         RedisBridgeNormalData normalData = service.getIfExists(pointKey);
         return reverseTransform(normalData);
     }
 
     @Override
-    protected List<NormalData> doInspect(List<LongIdKey> pointKeys) throws Exception {
+    protected List<NormalData> doLatest(List<LongIdKey> pointKeys) throws Exception {
         List<RedisBridgeNormalData> normalDatas = service.batchGetIfExists(pointKeys);
         List<NormalData> datas = new ArrayList<>(normalDatas.size());
         for (RedisBridgeNormalData normalData : normalDatas) {
@@ -89,5 +88,13 @@ public class RedisBridgeNormalDataKeeper extends AbstractKeeper<NormalData> {
                 value,
                 data.getHappenedDate()
         );
+    }
+
+    @Override
+    public String toString() {
+        return "RedisBridgeNormalDataKeeper{" +
+                "service=" + service +
+                ", valueCodingHandler=" + valueCodingHandler +
+                '}';
     }
 }

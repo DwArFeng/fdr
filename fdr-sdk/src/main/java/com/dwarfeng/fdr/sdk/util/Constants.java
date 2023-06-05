@@ -16,19 +16,19 @@ public final class Constants {
     public static final long SCHEDULER_CHECK_INTERVAL = 5000L;
 
     /**
-     * 查询支持的类别：一般。
+     * 查看支持的类别：一般。
      */
-    public static final String QUERY_SUPPORT_CATEGORY_NORMAL = "normal";
+    public static final String LOOKUP_SUPPORT_CATEGORY_NORMAL = "normal";
 
     /**
-     * 查询支持的类别：被过滤。
+     * 查看支持的类别：被过滤。
      */
-    public static final String QUERY_SUPPORT_CATEGORY_FILTERED = "filtered";
+    public static final String LOOKUP_SUPPORT_CATEGORY_FILTERED = "filtered";
 
     /**
-     * 查询支持的类别：被触发。
+     * 查看支持的类别：被触发。
      */
-    public static final String QUERY_SUPPORT_CATEGORY_TRIGGERED = "triggered";
+    public static final String LOOKUP_SUPPORT_CATEGORY_TRIGGERED = "triggered";
 
     /**
      * 观察操作：缺省起始日期。
@@ -39,7 +39,7 @@ public final class Constants {
      * 观察操作：缺省结束日期。
      *
      * <p>
-     * 该日期为 4423 年 1 月 1 日 0 时 0 分 0 秒。
+     * 该日期为 4423-01-01 00:00:00.000。
      */
     public static final Date WATCH_DEFAULT_END_DATE = new Date(77409216000000L);
 

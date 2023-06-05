@@ -1,9 +1,9 @@
 package com.dwarfeng.fdr.impl.bean;
 
 import com.dwarfeng.fdr.impl.bean.entity.*;
-import com.dwarfeng.fdr.impl.bean.key.HibernateQuerySupportKey;
+import com.dwarfeng.fdr.impl.bean.key.HibernateLookupSupportKey;
 import com.dwarfeng.fdr.stack.bean.entity.*;
-import com.dwarfeng.fdr.stack.bean.key.QuerySupportKey;
+import com.dwarfeng.fdr.stack.bean.key.LookupSupportKey;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -31,10 +31,10 @@ public interface HibernateMapper {
     @InheritInverseConfiguration
     StringIdKey stringIdKeyFromHibernate(HibernateStringIdKey hibernateStringIdKey);
 
-    HibernateQuerySupportKey querySupportKeyToHibernate(QuerySupportKey querySupportKey);
+    HibernateLookupSupportKey lookupSupportKeyToHibernate(LookupSupportKey lookupSupportKey);
 
     @InheritInverseConfiguration
-    QuerySupportKey querySupportKeyFromHibernate(HibernateQuerySupportKey hibernateQuerySupportKey);
+    LookupSupportKey lookupSupportKeyFromHibernate(HibernateLookupSupportKey hibernateLookupSupportKey);
 
     @Mapping(target = "pointLongId", ignore = true)
     @Mapping(target = "point", ignore = true)
@@ -80,8 +80,8 @@ public interface HibernateMapper {
 
     @Mapping(target = "preset", ignore = true)
     @Mapping(target = "category", ignore = true)
-    HibernateQuerySupport querySupportToHibernate(QuerySupport querySupport);
+    HibernateLookupSupport lookupSupportToHibernate(LookupSupport lookupSupport);
 
     @InheritInverseConfiguration
-    QuerySupport querySupportFromHibernate(HibernateQuerySupport hibernateQuerySupport);
+    LookupSupport lookupSupportFromHibernate(HibernateLookupSupport hibernateLookupSupport);
 }

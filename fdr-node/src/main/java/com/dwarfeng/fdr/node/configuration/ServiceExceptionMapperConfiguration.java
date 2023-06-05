@@ -31,7 +31,10 @@ public class ServiceExceptionMapperConfiguration {
         destination.put(MapperMakeException.class, ServiceExceptionCodes.MAPPER_MAKE_FAILED);
         destination.put(UnsupportedMapperTypeException.class, ServiceExceptionCodes.MAPPER_TYPE_UNSUPPORTED);
         destination.put(MapperExecutionException.class, ServiceExceptionCodes.MAPPER_EXECUTION_FAILED);
-        destination.put(MethodNotSupportedException.class, ServiceExceptionCodes.METHOD_NOT_SUPPORTED);
+        destination.put(FunctionNotSupportedException.class, ServiceExceptionCodes.FUNCTION_NOT_SUPPORTED);
+        destination.put(LatestNotSupportedException.class, ServiceExceptionCodes.LATEST_NOT_SUPPORTED);
+        destination.put(LookupNotSupportedException.class, ServiceExceptionCodes.LOOKUP_NOT_SUPPORTED);
+        destination.put(QueryNotSupportedException.class, ServiceExceptionCodes.QUERY_NOT_SUPPORTED);
         return new MapServiceExceptionMapper(destination, com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes.UNDEFINE);
     }
 }

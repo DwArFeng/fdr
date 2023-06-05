@@ -48,8 +48,7 @@ public class MockBridgeFilteredDataBridgePersister extends MockBridgePersister<F
                 "randomGenerator=" + randomGenerator +
                 ", config=" + config +
                 ", dataValueGenerator=" + dataValueGenerator +
-                ", writeOnly=" + writeOnly +
-                ", queryGuides=" + queryGuides +
+                ", lookupGuides=" + lookupGuides +
                 '}';
     }
 }

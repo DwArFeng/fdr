@@ -23,9 +23,9 @@
             <telqos:command-impl ref="logicConsumerCommand"/>
             <telqos:command-impl ref="mapLocalCacheCommand"/>
             <telqos:command-impl ref="resetCommand"/>
-            <telqos:command-impl ref="normalWatchCommand"/>
-            <telqos:command-impl ref="filteredWatchCommand"/>
-            <telqos:command-impl ref="triggeredWatchCommand"/>
+            <telqos:command-impl ref="normalViewCommand"/>
+            <telqos:command-impl ref="filteredViewCommand"/>
+            <telqos:command-impl ref="triggeredViewCommand"/>
         </telqos:command>
     </telqos:config>
 

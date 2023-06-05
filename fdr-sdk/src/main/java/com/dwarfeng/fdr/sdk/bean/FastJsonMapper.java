@@ -1,9 +1,9 @@
 package com.dwarfeng.fdr.sdk.bean;
 
 import com.dwarfeng.fdr.sdk.bean.entity.*;
-import com.dwarfeng.fdr.sdk.bean.key.FastJsonQuerySupportKey;
+import com.dwarfeng.fdr.sdk.bean.key.FastJsonLookupSupportKey;
 import com.dwarfeng.fdr.stack.bean.entity.*;
-import com.dwarfeng.fdr.stack.bean.key.QuerySupportKey;
+import com.dwarfeng.fdr.stack.bean.key.LookupSupportKey;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonStringIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -30,10 +30,10 @@ public interface FastJsonMapper {
     @InheritInverseConfiguration
     StringIdKey stringIdKeyFromFastJson(FastJsonStringIdKey fastJsonStringIdKey);
 
-    FastJsonQuerySupportKey querySupportKeyToFastJson(QuerySupportKey querySupportKey);
+    FastJsonLookupSupportKey lookupSupportKeyToFastJson(LookupSupportKey lookupSupportKey);
 
     @InheritInverseConfiguration
-    QuerySupportKey querySupportKeyFromFastJson(FastJsonQuerySupportKey fastJsonQuerySupportKey);
+    LookupSupportKey lookupSupportKeyFromFastJson(FastJsonLookupSupportKey fastJsonLookupSupportKey);
 
     FastJsonFilterInfo filterInfoToFastJson(FilterInfo filterInfo);
 
@@ -65,8 +65,8 @@ public interface FastJsonMapper {
     @InheritInverseConfiguration
     TriggerSupport triggerSupportFromFastJson(FastJsonTriggerSupport fastJsonTriggerSupport);
 
-    FastJsonQuerySupport querySupportToFastJson(QuerySupport querySupport);
+    FastJsonLookupSupport lookupSupportToFastJson(LookupSupport lookupSupport);
 
     @InheritInverseConfiguration
-    QuerySupport querySupportFromFastJson(FastJsonQuerySupport fastJsonQuerySupport);
+    LookupSupport lookupSupportFromFastJson(FastJsonLookupSupport fastJsonLookupSupport);
 }

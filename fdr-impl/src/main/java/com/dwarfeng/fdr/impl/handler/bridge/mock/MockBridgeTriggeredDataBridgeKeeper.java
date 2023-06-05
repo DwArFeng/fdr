@@ -48,7 +48,6 @@ public class MockBridgeTriggeredDataBridgeKeeper extends MockBridgeKeeper<Trigge
                 "randomGenerator=" + randomGenerator +
                 ", config=" + config +
                 ", dataValueGenerator=" + dataValueGenerator +
-                ", writeOnly=" + writeOnly +
                 '}';
     }
 }

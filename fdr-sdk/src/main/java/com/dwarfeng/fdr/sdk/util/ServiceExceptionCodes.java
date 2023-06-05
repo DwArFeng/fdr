@@ -42,8 +42,15 @@ public final class ServiceExceptionCodes {
             new ServiceException.Code(offset(42), "mapper type unsupported");
     public static final ServiceException.Code MAPPER_EXECUTION_FAILED =
             new ServiceException.Code(offset(43), "mapper execution failed");
-    public static final ServiceException.Code METHOD_NOT_SUPPORTED =
-            new ServiceException.Code(offset(50), "method not supported");
+    public static final ServiceException.Code FUNCTION_NOT_SUPPORTED =
+            new ServiceException.Code(offset(50), "function not supported");
+    public static final ServiceException.Code LATEST_NOT_SUPPORTED =
+            new ServiceException.Code(offset(51), "latest not supported");
+    public static final ServiceException.Code LOOKUP_NOT_SUPPORTED =
+            new ServiceException.Code(offset(52), "lookup not supported");
+    public static final ServiceException.Code QUERY_NOT_SUPPORTED =
+            new ServiceException.Code(offset(53), "query not supported");
+
 
     private static int offset(int i) {
         return EXCEPTION_CODE_OFFSET + i;
@@ -83,7 +90,10 @@ public final class ServiceExceptionCodes {
         MAPPER_MAKE_FAILED.setCode(offset(41));
         MAPPER_TYPE_UNSUPPORTED.setCode(offset(42));
         MAPPER_EXECUTION_FAILED.setCode(offset(43));
-        METHOD_NOT_SUPPORTED.setCode(offset(50));
+        FUNCTION_NOT_SUPPORTED.setCode(offset(50));
+        LATEST_NOT_SUPPORTED.setCode(offset(51));
+        LOOKUP_NOT_SUPPORTED.setCode(offset(52));
+        QUERY_NOT_SUPPORTED.setCode(offset(53));
     }
 
     private ServiceExceptionCodes() {

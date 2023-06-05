@@ -1,14 +1,15 @@
 package com.dwarfeng.fdr.impl.handler.bridge.mock;
 
-import com.dwarfeng.fdr.impl.handler.bridge.AbstractPersister;
+import com.dwarfeng.fdr.impl.handler.bridge.FullPersister;
 import com.dwarfeng.fdr.sdk.util.WatchUtil;
-import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
-import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
+import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
+import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
 import com.dwarfeng.fdr.stack.handler.PersistHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.slf4j.Logger;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,15 +20,15 @@ import java.util.List;
  * @author DwArFeng
  * @since 2.0.0
  */
-public abstract class MockBridgePersister<D extends Data> extends AbstractPersister<D> {
+public abstract class MockBridgePersister<D extends Data> extends FullPersister<D> {
 
     public static final String DEFAULT = "default";
 
-    private static final List<PersistHandler.QueryGuide> QUERY_MANUALS;
+    private static final List<PersistHandler.LookupGuide> QUERY_MANUALS;
 
     static {
         QUERY_MANUALS = new ArrayList<>();
-        QUERY_MANUALS.add(new PersistHandler.QueryGuide(
+        QUERY_MANUALS.add(new PersistHandler.LookupGuide(
                 DEFAULT, new String[0], "默认的查询方法"
         ));
     }
@@ -36,7 +37,7 @@ public abstract class MockBridgePersister<D extends Data> extends AbstractPersis
     protected final MockBridgeDataValueGenerator dataValueGenerator;
 
     public MockBridgePersister(MockBridgeConfig config, MockBridgeDataValueGenerator dataValueGenerator) {
-        super(false, QUERY_MANUALS);
+        super(QUERY_MANUALS);
         this.config = config;
         this.dataValueGenerator = dataValueGenerator;
     }
@@ -102,28 +103,42 @@ public abstract class MockBridgePersister<D extends Data> extends AbstractPersis
     }
 
     @Override
-    protected QueryResult<D> doQuery(QueryInfo queryInfo) throws Exception {
+    protected LookupResult<D> doQuery(LookupInfo lookupInfo) throws Exception {
+        return doSingleQuery(lookupInfo);
+    }
+
+    @Override
+    protected List<LookupResult<D>> doQuery(List<LookupInfo> lookupInfos) throws Exception {
+        List<LookupResult<D>> result = new ArrayList<>();
+        for (LookupInfo lookupInfo : lookupInfos) {
+            result.add(doSingleQuery(lookupInfo));
+        }
+        return result;
+    }
+
+    @Nonnull
+    private LookupResult<D> doSingleQuery(LookupInfo lookupInfo) throws Exception {
         // 展开查询信息。
-        long queryStartTimestamp = WatchUtil.validStartDate(queryInfo.getStartDate()).getTime();
-        long queryEndTimestamp = WatchUtil.validEndDate(queryInfo.getEndDate()).getTime();
-        int page = WatchUtil.validPage(queryInfo.getPage());
-        int rows = WatchUtil.validRows(queryInfo.getRows());
+        long queryStartTimestamp = WatchUtil.validStartDate(lookupInfo.getStartDate()).getTime();
+        long queryEndTimestamp = WatchUtil.validEndDate(lookupInfo.getEndDate()).getTime();
+        int page = WatchUtil.validPage(lookupInfo.getPage());
+        int rows = WatchUtil.validRows(lookupInfo.getRows());
 
         // 检查预设是否合法。
-        String preset = queryInfo.getPreset();
+        String preset = lookupInfo.getPreset();
         if (!DEFAULT.equals(preset)) {
             throw new IllegalArgumentException("预设不合法");
         }
 
         return mockQuery(
-                queryInfo.getPointKey(),
+                lookupInfo.getPointKey(),
                 queryStartTimestamp, queryEndTimestamp,
-                queryInfo.isIncludeStartDate(), queryInfo.isIncludeEndDate(),
+                lookupInfo.isIncludeStartDate(), lookupInfo.isIncludeEndDate(),
                 page, rows
         );
     }
 
-    private QueryResult<D> mockQuery(
+    private LookupResult<D> mockQuery(
             LongIdKey pointKey, long queryStartTimestamp, long queryEndTimestamp,
             boolean includeStartDate, boolean includeEndDate, int page, int rows
     ) throws Exception {
@@ -167,7 +182,7 @@ public abstract class MockBridgePersister<D extends Data> extends AbstractPersis
                     new Date(dataStartTimestamp + (actualOffset + i) * queryDataInterval)
             ));
         }
-        QueryResult<D> queryResult = new QueryResult<>(pointKey, datas, hasMore);
+        LookupResult<D> lookupResult = new LookupResult<>(pointKey, datas, hasMore);
 
         if (queryOffsetDelay > 0) {
             anchorTimestamp += queryOffsetDelay * actualOffset;
@@ -185,9 +200,9 @@ public abstract class MockBridgePersister<D extends Data> extends AbstractPersis
 
         long endTimestamp = System.currentTimeMillis();
         getLogger().info("模拟查询数据, 耗时 {} 毫秒", endTimestamp - startTimestamp);
-        getLogger().debug("查询结果: {}", queryResult);
+        getLogger().debug("查询结果: {}", lookupResult);
 
-        return queryResult;
+        return lookupResult;
     }
 
     protected abstract Logger getLogger();
@@ -199,8 +214,7 @@ public abstract class MockBridgePersister<D extends Data> extends AbstractPersis
         return "MockBridgePersister{" +
                 "config=" + config +
                 ", dataValueGenerator=" + dataValueGenerator +
-                ", writeOnly=" + writeOnly +
-                ", queryGuides=" + queryGuides +
+                ", lookupGuides=" + lookupGuides +
                 '}';
     }
 }

@@ -48,7 +48,6 @@ public class MockBridgeFilteredDataBridgeKeeper extends MockBridgeKeeper<Filtere
                 "randomGenerator=" + randomGenerator +
                 ", config=" + config +
                 ", dataValueGenerator=" + dataValueGenerator +
-                ", writeOnly=" + writeOnly +
                 '}';
     }
 }

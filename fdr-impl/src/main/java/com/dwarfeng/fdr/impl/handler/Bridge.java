@@ -1,8 +1,10 @@
 package com.dwarfeng.fdr.impl.handler;
 
-import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
-import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
-import com.dwarfeng.fdr.stack.handler.PersistHandler.QueryGuide;
+import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
+import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
+import com.dwarfeng.fdr.stack.handler.KeepHandler;
+import com.dwarfeng.fdr.stack.handler.PersistHandler;
+import com.dwarfeng.fdr.stack.handler.PersistHandler.LookupGuide;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
@@ -68,7 +70,7 @@ public interface Bridge {
      * 保持器。
      *
      * @author DwArFeng
-     * @see com.dwarfeng.fdr.stack.handler.KeepHandler
+     * @see KeepHandler
      * @since 2.0.0
      */
     interface Keeper<D extends Data> {
@@ -77,6 +79,7 @@ public interface Bridge {
          * 获取该处理器是否为只写处理器。
          *
          * @return 该处理器是否为只写处理器。
+         * @see PersistHandler#writeOnly()
          */
         boolean writeOnly();
 
@@ -85,6 +88,7 @@ public interface Bridge {
          *
          * @param data 数据。
          * @throws HandlerException 处理器异常。
+         * @see KeepHandler#update(Data)
          */
         void update(D data) throws HandlerException;
 
@@ -93,6 +97,7 @@ public interface Bridge {
          *
          * @param datas 数据组成的列表。
          * @throws HandlerException 处理器异常。
+         * @see KeepHandler#update(List)
          */
         void update(List<D> datas) throws HandlerException;
 
@@ -105,8 +110,9 @@ public interface Bridge {
          * @param pointKey 数据点主键。
          * @return 查询结果。
          * @throws HandlerException 处理器异常。
+         * @see KeepHandler#latest(LongIdKey)
          */
-        D inspect(LongIdKey pointKey) throws HandlerException;
+        D latest(LongIdKey pointKey) throws HandlerException;
 
         /**
          * 查询数据。
@@ -118,15 +124,16 @@ public interface Bridge {
          * @param pointKeys 数据点主键组成的列表。
          * @return 查询结果。
          * @throws HandlerException 处理器异常。
+         * @see KeepHandler#latest(List)
          */
-        List<D> inspect(List<LongIdKey> pointKeys) throws HandlerException;
+        List<D> latest(List<LongIdKey> pointKeys) throws HandlerException;
     }
 
     /**
      * 持久器。
      *
      * @author DwArFeng
-     * @see com.dwarfeng.fdr.stack.handler.PersistHandler
+     * @see PersistHandler
      * @since 2.0.0
      */
     interface Persister<D extends Data> {
@@ -135,6 +142,7 @@ public interface Bridge {
          * 获取该处理器是否为只写处理器。
          *
          * @return 该处理器是否为只写处理器。
+         * @see PersistHandler#writeOnly()
          */
         boolean writeOnly();
 
@@ -143,6 +151,7 @@ public interface Bridge {
          *
          * @param data 数据。
          * @throws HandlerException 处理器异常。
+         * @see PersistHandler#record(Data)
          */
         void record(D data) throws HandlerException;
 
@@ -151,26 +160,38 @@ public interface Bridge {
          *
          * @param datas 数据组成的列表。
          * @throws HandlerException 处理器异常。
+         * @see PersistHandler#record(List)
          */
         void record(List<D> datas) throws HandlerException;
 
         /**
-         * 获取该持久处理器的查询指导。
+         * 获取该持久处理器的查看指导。
          *
          * <p>
-         * 需要注意的是，返回的列表中，{@link QueryGuide#getPreset()} 方法返回的字符串应该是唯一的。
+         * 需要注意的是，返回的列表中，{@link PersistHandler.LookupGuide#getPreset()} 方法返回的字符串应该是唯一的。
          *
-         * @return 查询指导组成的列表。
+         * @return 查看指导组成的列表。
+         * @see PersistHandler#lookupGuides()
          */
-        List<QueryGuide> queryGuides();
+        List<LookupGuide> lookupGuides();
 
         /**
-         * 查询。
+         * 查看。
          *
-         * @param queryInfo 查询信息。
-         * @return 查询结果。
+         * @param lookupInfo 查看信息。
+         * @return 查看结果。
+         * @throws HandlerException 处理器异常。
+         * @see PersistHandler#lookup(LookupInfo)
+         */
+        LookupResult<D> lookup(LookupInfo lookupInfo) throws HandlerException;
+
+        /**
+         * 查看。
+         *
+         * @param lookupInfos 查看信息组成的列表。
+         * @return 查看结果组成的列表。
          * @throws HandlerException 处理器异常。
          */
-        QueryResult<D> query(QueryInfo queryInfo) throws HandlerException;
+        List<LookupResult<D>> lookup(List<LookupInfo> lookupInfos) throws HandlerException;
     }
 }

@@ -1,11 +1,13 @@
 package com.dwarfeng.fdr.impl.handler;
 
-import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
-import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
+import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
+import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
+import com.dwarfeng.fdr.stack.exception.LookupNotSupportedException;
 import com.dwarfeng.fdr.stack.handler.PersistHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,7 +23,9 @@ public abstract class AbstractPersistHandler<D extends Data> implements PersistH
 
     protected Bridge.Persister<D> persister;
 
-    protected AbstractPersistHandler(List<Bridge> bridges, Class<D> dataClazz) {
+    protected AbstractPersistHandler(
+            List<Bridge> bridges, Class<D> dataClazz
+    ) {
         this.bridges = bridges;
         this.dataClazz = dataClazz;
     }
@@ -65,13 +69,35 @@ public abstract class AbstractPersistHandler<D extends Data> implements PersistH
     }
 
     @Override
-    public List<QueryGuide> queryGuides() {
-        return persister.queryGuides();
+    public List<LookupGuide> lookupGuides() {
+        if (persister.writeOnly()) {
+            return Collections.emptyList();
+        }
+        return persister.lookupGuides();
     }
 
     @Override
-    public QueryResult<D> query(QueryInfo queryInfo) throws HandlerException {
-        return persister.query(queryInfo);
+    public LookupResult<D> lookup(LookupInfo lookupInfo) throws HandlerException {
+        return internalLookup(lookupInfo);
+    }
+
+    private LookupResult<D> internalLookup(LookupInfo lookupInfo) throws HandlerException {
+        if (persister.writeOnly()) {
+            throw new LookupNotSupportedException();
+        }
+        return persister.lookup(lookupInfo);
+    }
+
+    @Override
+    public List<LookupResult<D>> lookup(List<LookupInfo> lookupInfos) throws HandlerException {
+        return internalLookup(lookupInfos);
+    }
+
+    private List<LookupResult<D>> internalLookup(List<LookupInfo> lookupInfos) throws HandlerException {
+        if (persister.writeOnly()) {
+            throw new LookupNotSupportedException();
+        }
+        return persister.lookup(lookupInfos);
     }
 
     @Override

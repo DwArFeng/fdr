@@ -41,7 +41,6 @@ public class MockBridgeNormalDataBridgeKeeper extends MockBridgeKeeper<NormalDat
         return "MockBridgeNormalDataBridgeKeeper{" +
                 "config=" + config +
                 ", dataValueGenerator=" + dataValueGenerator +
-                ", writeOnly=" + writeOnly +
                 '}';
     }
 }

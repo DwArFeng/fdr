@@ -1,13 +1,13 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate;
 
 import com.dwarfeng.dct.handler.ValueCodingHandler;
-import com.dwarfeng.fdr.impl.handler.bridge.AbstractPersister;
+import com.dwarfeng.fdr.impl.handler.bridge.FullPersister;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeNormalData;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.service.HibernateBridgeNormalDataMaintainService;
 import com.dwarfeng.fdr.sdk.util.WatchUtil;
+import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
+import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
 import com.dwarfeng.fdr.stack.bean.dto.NormalData;
-import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
-import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
 import com.dwarfeng.fdr.stack.handler.PersistHandler;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
@@ -26,15 +26,15 @@ import java.util.List;
  * @since 2.0.0
  */
 @Component
-public class HibernateBridgeNormalDataPersister extends AbstractPersister<NormalData> {
+public class HibernateBridgeNormalDataPersister extends FullPersister<NormalData> {
 
     public static final String DEFAULT = "default";
 
-    private static final List<PersistHandler.QueryGuide> QUERY_MANUALS;
+    private static final List<PersistHandler.LookupGuide> QUERY_MANUALS;
 
     static {
         QUERY_MANUALS = new ArrayList<>();
-        QUERY_MANUALS.add(new PersistHandler.QueryGuide(
+        QUERY_MANUALS.add(new PersistHandler.LookupGuide(
                 DEFAULT, new String[0], "默认的查询方法"
         ));
     }
@@ -47,7 +47,7 @@ public class HibernateBridgeNormalDataPersister extends AbstractPersister<Normal
             HibernateBridgeNormalDataMaintainService service,
             @Qualifier("hibernateBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler
     ) {
-        super(false, QUERY_MANUALS);
+        super(QUERY_MANUALS);
         this.service = service;
         this.valueCodingHandler = valueCodingHandler;
     }
@@ -78,20 +78,33 @@ public class HibernateBridgeNormalDataPersister extends AbstractPersister<Normal
         );
     }
 
-    @SuppressWarnings("DuplicatedCode")
     @Override
-    protected QueryResult<NormalData> doQuery(QueryInfo queryInfo) throws Exception {
+    protected LookupResult<NormalData> doQuery(LookupInfo lookupInfo) throws Exception {
+        return doSingleQuery(lookupInfo);
+    }
+
+    @Override
+    protected List<LookupResult<NormalData>> doQuery(List<LookupInfo> lookupInfos) throws Exception {
+        List<LookupResult<NormalData>> resultList = new ArrayList<>();
+        for (LookupInfo lookupInfo : lookupInfos) {
+            resultList.add(doSingleQuery(lookupInfo));
+        }
+        return resultList;
+    }
+
+    @SuppressWarnings("DuplicatedCode")
+    private LookupResult<NormalData> doSingleQuery(LookupInfo lookupInfo) throws Exception {
         // 展开查询信息。
-        LongIdKey pointKey = queryInfo.getPointKey();
-        Date startDate = WatchUtil.validStartDate(queryInfo.getStartDate());
-        Date endDate = WatchUtil.validEndDate(queryInfo.getEndDate());
-        int page = WatchUtil.validPage(queryInfo.getPage());
-        int rows = WatchUtil.validRows(queryInfo.getRows());
-        boolean includeStartDate = queryInfo.isIncludeStartDate();
-        boolean includeEndDate = queryInfo.isIncludeEndDate();
+        LongIdKey pointKey = lookupInfo.getPointKey();
+        Date startDate = WatchUtil.validStartDate(lookupInfo.getStartDate());
+        Date endDate = WatchUtil.validEndDate(lookupInfo.getEndDate());
+        int page = WatchUtil.validPage(lookupInfo.getPage());
+        int rows = WatchUtil.validRows(lookupInfo.getRows());
+        boolean includeStartDate = lookupInfo.isIncludeStartDate();
+        boolean includeEndDate = lookupInfo.isIncludeEndDate();
 
         // 检查预设是否合法。
-        String preset = queryInfo.getPreset();
+        String preset = lookupInfo.getPreset();
         if (!DEFAULT.equals(preset)) {
             throw new IllegalArgumentException("预设不合法");
         }
@@ -121,7 +134,7 @@ public class HibernateBridgeNormalDataPersister extends AbstractPersister<Normal
         boolean hasMore = lookup.getTotalPages() > page + 1;
 
         // 返回结果。
-        return new QueryResult<>(pointKey, datas, hasMore);
+        return new LookupResult<>(pointKey, datas, hasMore);
     }
 
     private NormalData reverseTransform(HibernateBridgeNormalData data) throws Exception {

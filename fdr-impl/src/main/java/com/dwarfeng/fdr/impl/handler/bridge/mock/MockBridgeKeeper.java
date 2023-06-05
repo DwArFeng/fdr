@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.bridge.mock;
 
-import com.dwarfeng.fdr.impl.handler.bridge.AbstractKeeper;
+import com.dwarfeng.fdr.impl.handler.bridge.FulltKeeper;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import java.util.List;
  * @author DwArFeng
  * @since 2.0.0
  */
-public abstract class MockBridgeKeeper<D extends Data> extends AbstractKeeper<D> {
+public abstract class MockBridgeKeeper<D extends Data> extends FulltKeeper<D> {
 
     protected final MockBridgeConfig config;
     protected final MockBridgeDataValueGenerator dataValueGenerator;
@@ -24,7 +24,6 @@ public abstract class MockBridgeKeeper<D extends Data> extends AbstractKeeper<D>
             MockBridgeConfig config,
             MockBridgeDataValueGenerator dataValueGenerator
     ) {
-        super(false);
         this.config = config;
         this.dataValueGenerator = dataValueGenerator;
     }
@@ -91,7 +90,7 @@ public abstract class MockBridgeKeeper<D extends Data> extends AbstractKeeper<D>
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    protected D doInspect(LongIdKey pointKey) throws Exception {
+    protected D doLatest(LongIdKey pointKey) throws Exception {
         long startTimestamp = System.currentTimeMillis();
         long anchorTimestamp = System.currentTimeMillis();
 
@@ -126,7 +125,7 @@ public abstract class MockBridgeKeeper<D extends Data> extends AbstractKeeper<D>
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    protected List<D> doInspect(List<LongIdKey> pointKeys) throws Exception {
+    protected List<D> doLatest(List<LongIdKey> pointKeys) throws Exception {
         long startTimestamp = System.currentTimeMillis();
         long anchorTimestamp = System.currentTimeMillis();
 
@@ -170,7 +169,6 @@ public abstract class MockBridgeKeeper<D extends Data> extends AbstractKeeper<D>
         return "MockBridgeKeeper{" +
                 "config=" + config +
                 ", dataValueGenerator=" + dataValueGenerator +
-                ", writeOnly=" + writeOnly +
                 '}';
     }
 }

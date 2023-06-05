@@ -25,15 +25,15 @@ public final class Constraints {
      */
     public static final int LENGTH_TYPE = 50;
     /**
-     * 查询支持类型的长度约束。
+     * 查看支持类型的长度约束。
      */
     public static final int LENGTH_CATEGORY = 10;
     /**
-     * 查询支持预设的长度约束。
+     * 查看支持预设的长度约束。
      */
     public static final int LENGTH_PRESET = 100;
     /**
-     * 查询支持参数的长度约束。
+     * 查看支持参数的长度约束。
      */
     public static final int LENGTH_PARAM = 250;
 

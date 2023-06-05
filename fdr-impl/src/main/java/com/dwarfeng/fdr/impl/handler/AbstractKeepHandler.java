@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.impl.handler;
 
+import com.dwarfeng.fdr.stack.exception.LatestNotSupportedException;
 import com.dwarfeng.fdr.stack.handler.KeepHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -66,13 +67,19 @@ public abstract class AbstractKeepHandler<D extends Data> implements KeepHandler
     }
 
     @Override
-    public D inspect(LongIdKey pointKey) throws HandlerException {
-        return keeper.inspect(pointKey);
+    public D latest(LongIdKey pointKey) throws HandlerException {
+        if (keeper.writeOnly()) {
+            throw new LatestNotSupportedException();
+        }
+        return keeper.latest(pointKey);
     }
 
     @Override
-    public List<D> inspect(List<LongIdKey> pointKeys) throws HandlerException {
-        return keeper.inspect(pointKeys);
+    public List<D> latest(List<LongIdKey> pointKeys) throws HandlerException {
+        if (keeper.writeOnly()) {
+            throw new LatestNotSupportedException();
+        }
+        return keeper.latest(pointKeys);
     }
 
     @Override

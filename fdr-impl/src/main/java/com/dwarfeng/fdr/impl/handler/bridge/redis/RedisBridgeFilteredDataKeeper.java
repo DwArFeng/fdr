@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.bridge.redis;
 
 import com.dwarfeng.dct.handler.ValueCodingHandler;
-import com.dwarfeng.fdr.impl.handler.bridge.AbstractKeeper;
+import com.dwarfeng.fdr.impl.handler.bridge.FulltKeeper;
 import com.dwarfeng.fdr.impl.handler.bridge.redis.bean.RedisBridgeFilteredData;
 import com.dwarfeng.fdr.impl.handler.bridge.redis.service.RedisBridgeFilteredDataMaintainService;
 import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
@@ -20,7 +20,7 @@ import java.util.Objects;
  * @since 2.0.0
  */
 @Component
-public class RedisBridgeFilteredDataKeeper extends AbstractKeeper<FilteredData> {
+public class RedisBridgeFilteredDataKeeper extends FulltKeeper<FilteredData> {
 
     private final RedisBridgeFilteredDataMaintainService service;
 
@@ -30,7 +30,6 @@ public class RedisBridgeFilteredDataKeeper extends AbstractKeeper<FilteredData> 
             RedisBridgeFilteredDataMaintainService service,
             @Qualifier("redisBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler
     ) {
-        super(false);
         this.service = service;
         this.valueCodingHandler = valueCodingHandler;
     }
@@ -66,13 +65,13 @@ public class RedisBridgeFilteredDataKeeper extends AbstractKeeper<FilteredData> 
     }
 
     @Override
-    protected FilteredData doInspect(LongIdKey pointKey) throws Exception {
+    protected FilteredData doLatest(LongIdKey pointKey) throws Exception {
         RedisBridgeFilteredData filteredData = service.getIfExists(pointKey);
         return reverseTransform(filteredData);
     }
 
     @Override
-    protected List<FilteredData> doInspect(List<LongIdKey> pointKeys) throws Exception {
+    protected List<FilteredData> doLatest(List<LongIdKey> pointKeys) throws Exception {
         List<RedisBridgeFilteredData> filteredDatas = service.batchGetIfExists(pointKeys);
         List<FilteredData> datas = new ArrayList<>(filteredDatas.size());
         for (RedisBridgeFilteredData filteredData : filteredDatas) {
@@ -93,5 +92,13 @@ public class RedisBridgeFilteredDataKeeper extends AbstractKeeper<FilteredData> 
                 data.getMessage(),
                 data.getHappenedDate()
         );
+    }
+
+    @Override
+    public String toString() {
+        return "RedisBridgeFilteredDataKeeper{" +
+                "service=" + service +
+                ", valueCodingHandler=" + valueCodingHandler +
+                '}';
     }
 }

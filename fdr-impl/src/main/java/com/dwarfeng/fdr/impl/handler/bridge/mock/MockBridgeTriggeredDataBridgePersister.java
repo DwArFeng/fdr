@@ -48,8 +48,7 @@ public class MockBridgeTriggeredDataBridgePersister extends MockBridgePersister<
                 "randomGenerator=" + randomGenerator +
                 ", config=" + config +
                 ", dataValueGenerator=" + dataValueGenerator +
-                ", writeOnly=" + writeOnly +
-                ", queryGuides=" + queryGuides +
+                ", lookupGuides=" + lookupGuides +
                 '}';
     }
 }
