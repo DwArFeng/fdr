@@ -33,6 +33,13 @@ public interface Bridge {
     boolean supportType(String type);
 
     /**
+     * 返回桥接器是否支持保持器。
+     *
+     * @return 桥接器是否支持保持器。
+     */
+    boolean supportKeeper();
+
+    /**
      * 获取指定类型的保持器。
      *
      * @param clazz 指定的类型。
@@ -40,6 +47,13 @@ public interface Bridge {
      * @throws HandlerException 处理器异常。
      */
     <D extends Data> Keeper<D> getKeeper(Class<D> clazz) throws HandlerException;
+
+    /**
+     * 返回桥接器是否支持持久器。
+     *
+     * @return 桥接器是否支持持久器。
+     */
+    boolean supportPersister();
 
     /**
      * 获取指定类型的持久器。

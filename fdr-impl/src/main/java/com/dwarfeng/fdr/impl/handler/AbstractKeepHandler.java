@@ -40,6 +40,13 @@ public abstract class AbstractKeepHandler<D extends Data> implements KeepHandler
         // 从保持器列表中找到对应类型的保持器。
         Bridge bridge = bridges.stream().filter(b -> b.supportType(bridgeType)).findAny()
                 .orElseThrow(() -> new HandlerException("未知的 bridge 类型: " + bridgeType));
+
+        // 如果桥接器不支持保持器，则抛出异常。
+        if (!bridge.supportKeeper()) {
+            throw new IllegalStateException("桥接器不支持保持器, 请检查 bridge.properties 配置文件: " + bridgeType);
+        }
+
+        // 如果桥接器支持保持器，则获取保持器。
         keeper = bridge.getKeeper(dataClazz);
     }
 

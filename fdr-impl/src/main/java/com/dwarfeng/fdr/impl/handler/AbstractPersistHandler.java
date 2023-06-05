@@ -39,6 +39,13 @@ public abstract class AbstractPersistHandler<D extends Data> implements PersistH
         // 从持久器列表中找到对应类型的持久器。
         Bridge bridge = bridges.stream().filter(b -> b.supportType(bridgeType)).findAny()
                 .orElseThrow(() -> new HandlerException("未知的 bridge 类型: " + bridgeType));
+
+        // 如果桥接器不支持持久器，则抛出异常。
+        if (!bridge.supportPersister()) {
+            throw new IllegalStateException("桥接器不支持持久器, 请检查 bridge.properties 配置文件: " + bridgeType);
+        }
+
+        // 如果桥接器支持持久器，则获取持久器。
         persister = bridge.getPersister(dataClazz);
     }
 

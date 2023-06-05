@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.bridge.mock;
 
-import com.dwarfeng.fdr.impl.handler.bridge.AbstractBridge;
+import com.dwarfeng.fdr.impl.handler.bridge.FullBridge;
 import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
 import com.dwarfeng.fdr.stack.bean.dto.NormalData;
 import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @since 2.0.0
  */
 @Component
-public class MockBridge extends AbstractBridge {
+public class MockBridge extends FullBridge {
 
     public static final String BRIDGE_TYPE = "mock";
 

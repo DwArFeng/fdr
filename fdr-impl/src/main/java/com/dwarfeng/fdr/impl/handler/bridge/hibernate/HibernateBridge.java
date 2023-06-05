@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate;
 
-import com.dwarfeng.fdr.impl.handler.bridge.AbstractBridge;
+import com.dwarfeng.fdr.impl.handler.bridge.PersisterOnlyBridge;
 import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
 import com.dwarfeng.fdr.stack.bean.dto.NormalData;
 import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @since 2.0.0
  */
 @Component
-public class HibernateBridge extends AbstractBridge {
+public class HibernateBridge extends PersisterOnlyBridge {
 
     public static final String BRIDGE_TYPE = "hibernate";
 
