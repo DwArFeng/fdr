@@ -3,12 +3,9 @@ package com.dwarfeng.fdr.impl.handler.bridge;
 import com.dwarfeng.fdr.impl.handler.Bridge.Persister;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
-import com.dwarfeng.fdr.stack.handler.PersistHandler;
-import com.dwarfeng.fdr.stack.handler.PersistHandler.LookupGuide;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,16 +18,6 @@ import java.util.List;
  * @since 2.0.0
  */
 public abstract class FullPersister<D extends Data> implements Persister<D> {
-
-    protected final List<LookupGuide> lookupGuides;
-
-    protected FullPersister() {
-        this(Collections.emptyList());
-    }
-
-    protected FullPersister(List<LookupGuide> lookupGuides) {
-        this.lookupGuides = lookupGuides;
-    }
 
     @Override
     public boolean writeOnly() {
@@ -62,11 +49,6 @@ public abstract class FullPersister<D extends Data> implements Persister<D> {
     }
 
     protected abstract void doRecord(List<D> datas) throws Exception;
-
-    @Override
-    public List<PersistHandler.LookupGuide> lookupGuides() {
-        return lookupGuides;
-    }
 
     @Override
     public LookupResult<D> lookup(LookupInfo lookupInfo) throws HandlerException {

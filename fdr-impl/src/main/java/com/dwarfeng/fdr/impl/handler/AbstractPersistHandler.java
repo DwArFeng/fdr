@@ -7,7 +7,6 @@ import com.dwarfeng.fdr.stack.handler.PersistHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -66,14 +65,6 @@ public abstract class AbstractPersistHandler<D extends Data> implements PersistH
     @Override
     public void record(List<D> datas) throws HandlerException {
         persister.record(datas);
-    }
-
-    @Override
-    public List<LookupGuide> lookupGuides() {
-        if (persister.writeOnly()) {
-            return Collections.emptyList();
-        }
-        return persister.lookupGuides();
     }
 
     @Override

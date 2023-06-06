@@ -1,9 +1,7 @@
 package com.dwarfeng.fdr.impl.bean;
 
 import com.dwarfeng.fdr.impl.bean.entity.*;
-import com.dwarfeng.fdr.impl.bean.key.HibernateLookupSupportKey;
 import com.dwarfeng.fdr.stack.bean.entity.*;
-import com.dwarfeng.fdr.stack.bean.key.LookupSupportKey;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -30,11 +28,6 @@ public interface HibernateMapper {
 
     @InheritInverseConfiguration
     StringIdKey stringIdKeyFromHibernate(HibernateStringIdKey hibernateStringIdKey);
-
-    HibernateLookupSupportKey lookupSupportKeyToHibernate(LookupSupportKey lookupSupportKey);
-
-    @InheritInverseConfiguration
-    LookupSupportKey lookupSupportKeyFromHibernate(HibernateLookupSupportKey hibernateLookupSupportKey);
 
     @Mapping(target = "pointLongId", ignore = true)
     @Mapping(target = "point", ignore = true)
@@ -77,11 +70,4 @@ public interface HibernateMapper {
 
     @InheritInverseConfiguration
     TriggerSupport triggerSupportFromHibernate(HibernateTriggerSupport hibernateTriggerSupport);
-
-    @Mapping(target = "preset", ignore = true)
-    @Mapping(target = "category", ignore = true)
-    HibernateLookupSupport lookupSupportToHibernate(LookupSupport lookupSupport);
-
-    @InheritInverseConfiguration
-    LookupSupport lookupSupportFromHibernate(HibernateLookupSupport hibernateLookupSupport);
 }

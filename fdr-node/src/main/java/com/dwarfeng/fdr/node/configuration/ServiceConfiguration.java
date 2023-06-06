@@ -4,9 +4,7 @@ import com.dwarfeng.fdr.impl.service.operation.FilterInfoCrudOperation;
 import com.dwarfeng.fdr.impl.service.operation.PointCrudOperation;
 import com.dwarfeng.fdr.impl.service.operation.TriggerInfoCrudOperation;
 import com.dwarfeng.fdr.stack.bean.entity.*;
-import com.dwarfeng.fdr.stack.bean.key.LookupSupportKey;
 import com.dwarfeng.fdr.stack.cache.FilterSupportCache;
-import com.dwarfeng.fdr.stack.cache.LookupSupportCache;
 import com.dwarfeng.fdr.stack.cache.MapperSupportCache;
 import com.dwarfeng.fdr.stack.cache.TriggerSupportCache;
 import com.dwarfeng.fdr.stack.dao.*;
@@ -41,8 +39,6 @@ public class ServiceConfiguration {
     private final TriggerSupportDao triggerSupportDao;
     private final MapperSupportCache mapperSupportCache;
     private final MapperSupportDao mapperSupportDao;
-    private final LookupSupportCache lookupSupportCache;
-    private final LookupSupportDao lookupSupportDao;
 
     @Value("${cache.timeout.entity.filter_support}")
     private long filterSupportTimeout;
@@ -50,8 +46,6 @@ public class ServiceConfiguration {
     private long triggerSupportTimeout;
     @Value("${cache.timeout.entity.mapper_support}")
     private long mapperSupportTimeout;
-    @Value("${cache.timeout.entity.lookup_support}")
-    private long lookupSupportTimeout;
 
     public ServiceConfiguration(
             ServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration,
@@ -60,8 +54,7 @@ public class ServiceConfiguration {
             TriggerInfoCrudOperation triggerInfoCrudOperation, TriggerInfoDao triggerInfoDao,
             FilterSupportCache filterSupportCache, FilterSupportDao filterSupportDao,
             TriggerSupportCache triggerSupportCache, TriggerSupportDao triggerSupportDao,
-            MapperSupportCache mapperSupportCache, MapperSupportDao mapperSupportDao,
-            LookupSupportCache lookupSupportCache, LookupSupportDao lookupSupportDao
+            MapperSupportCache mapperSupportCache, MapperSupportDao mapperSupportDao
     ) {
         this.serviceExceptionMapperConfiguration = serviceExceptionMapperConfiguration;
         this.filterInfoCrudOperation = filterInfoCrudOperation;
@@ -76,8 +69,6 @@ public class ServiceConfiguration {
         this.triggerSupportDao = triggerSupportDao;
         this.mapperSupportCache = mapperSupportCache;
         this.mapperSupportDao = mapperSupportDao;
-        this.lookupSupportCache = lookupSupportCache;
-        this.lookupSupportDao = lookupSupportDao;
     }
 
     @Bean
@@ -254,36 +245,6 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<MapperSupport> mapperSupportDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 mapperSupportDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN
-        );
-    }
-
-    @Bean
-    public GeneralBatchCrudService<LookupSupportKey, LookupSupport> lookupSupportGeneralBatchCrudService() {
-        return new GeneralBatchCrudService<>(
-                lookupSupportDao,
-                lookupSupportCache,
-                new ExceptionKeyFetcher<>(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN,
-                lookupSupportTimeout
-        );
-    }
-
-    @Bean
-    public DaoOnlyEntireLookupService<LookupSupport> lookupSupportDaoOnlyEntireLookupService() {
-        return new DaoOnlyEntireLookupService<>(
-                lookupSupportDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN
-        );
-    }
-
-    @Bean
-    public DaoOnlyPresetLookupService<LookupSupport> lookupSupportDaoOnlyPresetLookupService() {
-        return new DaoOnlyPresetLookupService<>(
-                lookupSupportDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );

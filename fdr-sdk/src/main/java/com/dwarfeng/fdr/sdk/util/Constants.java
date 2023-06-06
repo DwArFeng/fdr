@@ -16,21 +16,6 @@ public final class Constants {
     public static final long SCHEDULER_CHECK_INTERVAL = 5000L;
 
     /**
-     * 查看支持的类别：一般。
-     */
-    public static final String LOOKUP_SUPPORT_CATEGORY_NORMAL = "normal";
-
-    /**
-     * 查看支持的类别：被过滤。
-     */
-    public static final String LOOKUP_SUPPORT_CATEGORY_FILTERED = "filtered";
-
-    /**
-     * 查看支持的类别：被触发。
-     */
-    public static final String LOOKUP_SUPPORT_CATEGORY_TRIGGERED = "triggered";
-
-    /**
      * 观察操作：缺省起始日期。
      */
     public static final Date WATCH_DEFAULT_START_DATE = new Date(0);

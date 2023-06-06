@@ -4,7 +4,6 @@ import com.dwarfeng.fdr.impl.handler.bridge.FullPersister;
 import com.dwarfeng.fdr.sdk.util.WatchUtil;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
-import com.dwarfeng.fdr.stack.handler.PersistHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.slf4j.Logger;
@@ -24,20 +23,10 @@ public abstract class MockBridgePersister<D extends Data> extends FullPersister<
 
     public static final String DEFAULT = "default";
 
-    private static final List<PersistHandler.LookupGuide> QUERY_MANUALS;
-
-    static {
-        QUERY_MANUALS = new ArrayList<>();
-        QUERY_MANUALS.add(new PersistHandler.LookupGuide(
-                DEFAULT, new String[0], "默认的查询方法"
-        ));
-    }
-
     protected final MockBridgeConfig config;
     protected final MockBridgeDataValueGenerator dataValueGenerator;
 
     public MockBridgePersister(MockBridgeConfig config, MockBridgeDataValueGenerator dataValueGenerator) {
-        super(QUERY_MANUALS);
         this.config = config;
         this.dataValueGenerator = dataValueGenerator;
     }
@@ -214,7 +203,6 @@ public abstract class MockBridgePersister<D extends Data> extends FullPersister<
         return "MockBridgePersister{" +
                 "config=" + config +
                 ", dataValueGenerator=" + dataValueGenerator +
-                ", lookupGuides=" + lookupGuides +
                 '}';
     }
 }

@@ -13,8 +13,6 @@ public class LauncherSettingHandler implements Handler {
     private boolean resetTriggerSupport;
     @Value("${launcher.reset_mapper_support}")
     private boolean resetMapperSupport;
-    @Value("${launcher.reset_lookup_support}")
-    private boolean resetLookupSupport;
     @Value("${launcher.start_record_delay}")
     private long startRecordDelay;
     @Value("${launcher.start_reset_delay}")
@@ -32,10 +30,6 @@ public class LauncherSettingHandler implements Handler {
         return resetMapperSupport;
     }
 
-    public boolean isResetLookupSupport() {
-        return resetLookupSupport;
-    }
-
     public long getStartRecordDelay() {
         return startRecordDelay;
     }
@@ -50,7 +44,6 @@ public class LauncherSettingHandler implements Handler {
                 "resetFilterSupport=" + resetFilterSupport +
                 ", resetTriggerSupport=" + resetTriggerSupport +
                 ", resetMapperSupport=" + resetMapperSupport +
-                ", resetLookupSupport=" + resetLookupSupport +
                 ", startRecordDelay=" + startRecordDelay +
                 ", startResetDelay=" + startResetDelay +
                 '}';

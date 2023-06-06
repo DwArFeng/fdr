@@ -4,7 +4,6 @@ import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
 import com.dwarfeng.fdr.stack.handler.KeepHandler;
 import com.dwarfeng.fdr.stack.handler.PersistHandler;
-import com.dwarfeng.fdr.stack.handler.PersistHandler.LookupGuide;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
@@ -163,17 +162,6 @@ public interface Bridge {
          * @see PersistHandler#record(List)
          */
         void record(List<D> datas) throws HandlerException;
-
-        /**
-         * 获取该持久处理器的查看指导。
-         *
-         * <p>
-         * 需要注意的是，返回的列表中，{@link PersistHandler.LookupGuide#getPreset()} 方法返回的字符串应该是唯一的。
-         *
-         * @return 查看指导组成的列表。
-         * @see PersistHandler#lookupGuides()
-         */
-        List<LookupGuide> lookupGuides();
 
         /**
          * 查看。

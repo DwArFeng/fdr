@@ -4,11 +4,9 @@ import com.dwarfeng.fdr.impl.handler.Bridge.Persister;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
 import com.dwarfeng.fdr.stack.exception.LookupNotSupportedException;
-import com.dwarfeng.fdr.stack.handler.PersistHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -49,11 +47,6 @@ public abstract class WriteOnlyPersister<D extends Data> implements Persister<D>
     }
 
     protected abstract void doRecord(List<D> datas) throws Exception;
-
-    @Override
-    public List<PersistHandler.LookupGuide> lookupGuides() {
-        return Collections.emptyList();
-    }
 
     @Override
     public LookupResult<D> lookup(LookupInfo lookupInfo) throws HandlerException {

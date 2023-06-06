@@ -61,11 +61,6 @@
             group="${dubbo.provider.group}"
     />
     <dubbo:service
-            interface="com.dwarfeng.fdr.stack.service.LookupSupportMaintainService"
-            ref="lookupSupportMaintainServiceImpl"
-            group="${dubbo.provider.group}"
-    />
-    <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.NormalViewService"
             ref="normalViewServiceImpl"
             group="${dubbo.provider.group}"

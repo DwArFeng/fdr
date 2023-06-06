@@ -8,7 +8,6 @@ import com.dwarfeng.fdr.sdk.util.WatchUtil;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
 import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
-import com.dwarfeng.fdr.stack.handler.PersistHandler;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -30,15 +29,6 @@ public class HibernateBridgeTriggeredDataPersister extends FullPersister<Trigger
 
     public static final String DEFAULT = "default";
 
-    private static final List<PersistHandler.LookupGuide> QUERY_MANUALS;
-
-    static {
-        QUERY_MANUALS = new ArrayList<>();
-        QUERY_MANUALS.add(new PersistHandler.LookupGuide(
-                DEFAULT, new String[0], "默认的查询方法"
-        ));
-    }
-
     private final HibernateBridgeTriggeredDataMaintainService service;
 
     private final ValueCodingHandler valueCodingHandler;
@@ -47,7 +37,6 @@ public class HibernateBridgeTriggeredDataPersister extends FullPersister<Trigger
             HibernateBridgeTriggeredDataMaintainService service,
             @Qualifier("hibernateBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler
     ) {
-        super(QUERY_MANUALS);
         this.service = service;
         this.valueCodingHandler = valueCodingHandler;
     }

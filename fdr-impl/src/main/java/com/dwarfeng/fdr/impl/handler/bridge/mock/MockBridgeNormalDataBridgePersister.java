@@ -41,7 +41,6 @@ public class MockBridgeNormalDataBridgePersister extends MockBridgePersister<Nor
         return "MockBridgeNormalDataBridgePersister{" +
                 "config=" + config +
                 ", dataValueGenerator=" + dataValueGenerator +
-                ", lookupGuides=" + lookupGuides +
                 '}';
     }
 }

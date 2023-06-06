@@ -7,7 +7,6 @@ import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.handler.Handler;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -56,16 +55,6 @@ public interface PersistHandler<D extends Data> extends Handler {
     void record(List<D> datas) throws HandlerException;
 
     /**
-     * 获取该持久处理器的查看指导。
-     *
-     * <p>
-     * 需要注意的是，返回的列表中，{@link LookupGuide#getPreset()} 方法返回的字符串应该是唯一的。
-     *
-     * @return 查看指导组成的列表。
-     */
-    List<LookupGuide> lookupGuides();
-
-    /**
      * 查看。
      *
      * @param lookupInfo 查看信息。
@@ -82,44 +71,4 @@ public interface PersistHandler<D extends Data> extends Handler {
      * @throws HandlerException 处理器异常。
      */
     List<LookupResult<D>> lookup(List<LookupInfo> lookupInfos) throws HandlerException;
-
-    /**
-     * 查看指导。
-     *
-     * @author DwArFeng
-     * @since 2.0.0
-     */
-    final class LookupGuide {
-
-        private final String preset;
-        private final String[] exampleParams;
-        private final String description;
-
-        public LookupGuide(String preset, String[] exampleParams, String description) {
-            this.preset = preset;
-            this.exampleParams = exampleParams;
-            this.description = description;
-        }
-
-        public String getPreset() {
-            return preset;
-        }
-
-        public String[] getExampleParams() {
-            return exampleParams;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        @Override
-        public String toString() {
-            return "LookupGuide{" +
-                    "preset='" + preset + '\'' +
-                    ", exampleParams=" + Arrays.toString(exampleParams) +
-                    ", description='" + description + '\'' +
-                    '}';
-        }
-    }
 }
