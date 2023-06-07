@@ -4,7 +4,7 @@ import com.dwarfeng.dct.handler.ValueCodingHandler;
 import com.dwarfeng.fdr.impl.handler.bridge.FullPersister;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeFilteredData;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.service.HibernateBridgeFilteredDataMaintainService;
-import com.dwarfeng.fdr.sdk.util.WatchUtil;
+import com.dwarfeng.fdr.sdk.util.ViewUtil;
 import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
@@ -87,10 +87,10 @@ public class HibernateBridgeFilteredDataPersister extends FullPersister<Filtered
     private LookupResult<FilteredData> doSingleQuery(LookupInfo lookupInfo) throws Exception {
         // 展开查询信息。
         LongIdKey pointKey = lookupInfo.getPointKey();
-        Date startDate = WatchUtil.validStartDate(lookupInfo.getStartDate());
-        Date endDate = WatchUtil.validEndDate(lookupInfo.getEndDate());
-        int page = WatchUtil.validPage(lookupInfo.getPage());
-        int rows = WatchUtil.validRows(lookupInfo.getRows());
+        Date startDate = ViewUtil.validStartDate(lookupInfo.getStartDate());
+        Date endDate = ViewUtil.validEndDate(lookupInfo.getEndDate());
+        int page = ViewUtil.validPage(lookupInfo.getPage());
+        int rows = ViewUtil.validRows(lookupInfo.getRows());
         boolean includeStartDate = lookupInfo.isIncludeStartDate();
         boolean includeEndDate = lookupInfo.isIncludeEndDate();
 

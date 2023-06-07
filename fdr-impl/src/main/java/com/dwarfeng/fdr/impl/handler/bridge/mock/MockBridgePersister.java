@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.bridge.mock;
 
 import com.dwarfeng.fdr.impl.handler.bridge.FullPersister;
-import com.dwarfeng.fdr.sdk.util.WatchUtil;
+import com.dwarfeng.fdr.sdk.util.ViewUtil;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
 import com.dwarfeng.fdr.stack.struct.Data;
@@ -108,10 +108,10 @@ public abstract class MockBridgePersister<D extends Data> extends FullPersister<
     @Nonnull
     private LookupResult<D> doSingleQuery(LookupInfo lookupInfo) throws Exception {
         // 展开查询信息。
-        long queryStartTimestamp = WatchUtil.validStartDate(lookupInfo.getStartDate()).getTime();
-        long queryEndTimestamp = WatchUtil.validEndDate(lookupInfo.getEndDate()).getTime();
-        int page = WatchUtil.validPage(lookupInfo.getPage());
-        int rows = WatchUtil.validRows(lookupInfo.getRows());
+        long queryStartTimestamp = ViewUtil.validStartDate(lookupInfo.getStartDate()).getTime();
+        long queryEndTimestamp = ViewUtil.validEndDate(lookupInfo.getEndDate()).getTime();
+        int page = ViewUtil.validPage(lookupInfo.getPage());
+        int rows = ViewUtil.validRows(lookupInfo.getRows());
 
         // 检查预设是否合法。
         String preset = lookupInfo.getPreset();

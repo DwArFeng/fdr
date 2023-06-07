@@ -5,7 +5,7 @@ import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.HibernateBridgeQue
 import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.HibernateBridgeQueryResult;
 import com.dwarfeng.fdr.impl.handler.bridge.influxdb.handler.InfluxdbBridgeDataHandler;
 import com.dwarfeng.fdr.impl.handler.bridge.influxdb.util.DateUtil;
-import com.dwarfeng.fdr.sdk.util.WatchUtil;
+import com.dwarfeng.fdr.sdk.util.ViewUtil;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
 import com.dwarfeng.fdr.stack.struct.Data;
@@ -68,12 +68,12 @@ public abstract class InfluxdbBridgeDataPersister<D extends Data> extends FullPe
         String preset = lookupInfo.getPreset();
         String[] params = lookupInfo.getParams();
         LongIdKey pointKey = lookupInfo.getPointKey();
-        Date startDate = WatchUtil.validStartDate(lookupInfo.getStartDate());
-        Date endDate = WatchUtil.validEndDate(lookupInfo.getEndDate());
+        Date startDate = ViewUtil.validStartDate(lookupInfo.getStartDate());
+        Date endDate = ViewUtil.validEndDate(lookupInfo.getEndDate());
         boolean includeStartDate = lookupInfo.isIncludeStartDate();
         boolean includeEndDate = lookupInfo.isIncludeEndDate();
-        int page = WatchUtil.validPage(lookupInfo.getPage());
-        int rows = WatchUtil.validRows(lookupInfo.getRows());
+        int page = ViewUtil.validPage(lookupInfo.getPage());
+        int rows = ViewUtil.validRows(lookupInfo.getRows());
 
         // 构造查询信息。
         String measurement = Long.toString(pointKey.getLongId());

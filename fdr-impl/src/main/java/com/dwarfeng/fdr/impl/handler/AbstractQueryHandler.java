@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.handler;
 
-import com.dwarfeng.fdr.sdk.util.WatchUtil;
+import com.dwarfeng.fdr.sdk.util.ViewUtil;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
 import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
@@ -102,8 +102,8 @@ public abstract class AbstractQueryHandler implements QueryHandler {
         String preset = queryLookupInfo.getPreset();
         String[] params = queryLookupInfo.getParams();
         LongIdKey pointKey = queryLookupInfo.getPointKey();
-        Date startDate = WatchUtil.validStartDate(queryLookupInfo.getStartDate());
-        Date endDate = WatchUtil.validEndDate(queryLookupInfo.getEndDate());
+        Date startDate = ViewUtil.validStartDate(queryLookupInfo.getStartDate());
+        Date endDate = ViewUtil.validEndDate(queryLookupInfo.getEndDate());
         boolean includeStartDate = queryLookupInfo.isIncludeStartDate();
         boolean includeEndDate = queryLookupInfo.isIncludeEndDate();
 

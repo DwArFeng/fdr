@@ -9,7 +9,7 @@ import java.util.Optional;
  * @author DwArFeng
  * @since 2.0.0
  */
-public final class WatchUtil {
+public final class ViewUtil {
 
     /**
      * 根据指定的日期，返回一个有效的起始日期。
@@ -51,7 +51,7 @@ public final class WatchUtil {
         return Optional.ofNullable(rows).orElse(Constants.WATCH_DEFAULT_ROWS);
     }
 
-    private WatchUtil() {
-        throw new IllegalStateException("禁止实例化");
+    private ViewUtil() {
+        throw new IllegalStateException("禁止外部实例化");
     }
 }
