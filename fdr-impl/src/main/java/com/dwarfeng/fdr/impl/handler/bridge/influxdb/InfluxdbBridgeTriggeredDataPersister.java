@@ -8,6 +8,7 @@ import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -22,12 +23,14 @@ import java.util.Objects;
  * @since 2.0.0
  */
 @Component
-public class InfluxdbBridgeTriggeredDataPersister extends InfluxdbBridgeDataPersister<TriggeredData> {
+public class InfluxdbBridgeTriggeredDataPersister extends InfluxdbBridgePersister<TriggeredData> {
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public InfluxdbBridgeTriggeredDataPersister(
-            InfluxdbBridgeTriggeredDataHandler handler
+            InfluxdbBridgeTriggeredDataHandler handler,
+            ThreadPoolTaskExecutor executor
     ) {
-        super(handler);
+        super(handler, executor);
     }
 
     @SuppressWarnings("DuplicatedCode")
@@ -75,6 +78,7 @@ public class InfluxdbBridgeTriggeredDataPersister extends InfluxdbBridgeDataPers
     public String toString() {
         return "InfluxdbBridgeTriggeredDataPersister{" +
                 "handler=" + handler +
+                ", executor=" + executor +
                 '}';
     }
 }

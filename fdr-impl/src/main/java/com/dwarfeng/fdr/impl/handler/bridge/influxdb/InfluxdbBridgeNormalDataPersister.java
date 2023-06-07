@@ -8,6 +8,7 @@ import com.dwarfeng.fdr.stack.bean.dto.NormalData;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -22,12 +23,14 @@ import java.util.Objects;
  * @since 2.0.0
  */
 @Component
-public class InfluxdbBridgeNormalDataPersister extends InfluxdbBridgeDataPersister<NormalData> {
+public class InfluxdbBridgeNormalDataPersister extends InfluxdbBridgePersister<NormalData> {
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public InfluxdbBridgeNormalDataPersister(
-            InfluxdbBridgeNormalDataHandler handler
+            InfluxdbBridgeNormalDataHandler handler,
+            ThreadPoolTaskExecutor executor
     ) {
-        super(handler);
+        super(handler, executor);
     }
 
     @Override
@@ -59,6 +62,7 @@ public class InfluxdbBridgeNormalDataPersister extends InfluxdbBridgeDataPersist
     public String toString() {
         return "InfluxdbBridgeNormalDataPersister{" +
                 "handler=" + handler +
+                ", executor=" + executor +
                 '}';
     }
 }

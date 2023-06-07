@@ -12,10 +12,13 @@ import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.influxdb.client.write.Point;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
 
 /**
@@ -24,14 +27,20 @@ import java.util.stream.Collectors;
  * @author DwArFeng
  * @since 2.0.0
  */
-public abstract class InfluxdbBridgeDataPersister<D extends Data> extends FullPersister<D> {
+public abstract class InfluxdbBridgePersister<D extends Data> extends FullPersister<D> {
 
     public static final String DEFAULT = "default";
 
     protected final InfluxdbBridgeDataHandler handler;
 
-    protected InfluxdbBridgeDataPersister(InfluxdbBridgeDataHandler handler) {
+    protected final ThreadPoolTaskExecutor executor;
+
+    protected InfluxdbBridgePersister(
+            InfluxdbBridgeDataHandler handler,
+            ThreadPoolTaskExecutor executor
+    ) {
         this.handler = handler;
+        this.executor = executor;
     }
 
     @Override
@@ -50,20 +59,51 @@ public abstract class InfluxdbBridgeDataPersister<D extends Data> extends FullPe
 
     @Override
     protected LookupResult<D> doLookup(LookupInfo lookupInfo) throws Exception {
-        return doSingleQuery(lookupInfo);
+        return lookupSingle(lookupInfo);
     }
 
     @Override
     protected List<LookupResult<D>> doLookup(List<LookupInfo> lookupInfos) throws Exception {
-        List<LookupResult<D>> resultList = new ArrayList<>();
-        for (LookupInfo lookupInfo : lookupInfos) {
-            resultList.add(doSingleQuery(lookupInfo));
+        // 构造查看结果，并初始化。
+        List<LookupResult<D>> lookupResults = new ArrayList<>(lookupInfos.size());
+        for (int i = 0; i < lookupInfos.size(); i++) {
+            lookupResults.add(null);
         }
-        return resultList;
+
+        // 遍历 lookupInfos，异步查看。
+        List<CompletableFuture<?>> futures = new ArrayList<>(lookupInfos.size());
+        for (int i = 0; i < lookupInfos.size(); i++) {
+            final int index = i;
+            final LookupInfo lookupInfo = lookupInfos.get(index);
+            CompletableFuture<Void> future = CompletableFuture.runAsync(
+                    () -> {
+                        LookupResult<D> lookupResult = wrappedLookupSingle(lookupInfo);
+                        lookupResults.set(index, lookupResult);
+                    },
+                    executor
+            );
+            futures.add(future);
+        }
+        try {
+            CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        } catch (CompletionException e) {
+            throw (Exception) e.getCause();
+        }
+
+        // 返回查看结果。
+        return lookupResults;
+    }
+
+    private LookupResult<D> wrappedLookupSingle(LookupInfo lookupInfo) throws CompletionException {
+        try {
+            return lookupSingle(lookupInfo);
+        } catch (Exception e) {
+            throw new CompletionException(e);
+        }
     }
 
     @SuppressWarnings("DuplicatedCode")
-    private LookupResult<D> doSingleQuery(LookupInfo lookupInfo) throws HandlerException {
+    private LookupResult<D> lookupSingle(LookupInfo lookupInfo) throws HandlerException {
         // 展开参数。
         String preset = lookupInfo.getPreset();
         String[] params = lookupInfo.getParams();
@@ -75,7 +115,7 @@ public abstract class InfluxdbBridgeDataPersister<D extends Data> extends FullPe
         int page = ViewUtil.validPage(lookupInfo.getPage());
         int rows = ViewUtil.validRows(lookupInfo.getRows());
 
-        // 构造查询信息。
+        // 构造查看信息。
         String measurement = Long.toString(pointKey.getLongId());
         long startOffset = includeStartDate ? 0 : 1;
         long stopOffset = includeEndDate ? 1 : 0;
@@ -98,7 +138,7 @@ public abstract class InfluxdbBridgeDataPersister<D extends Data> extends FullPe
         // 展开参数。
         List<HibernateBridgeQueryResult.Item> items = queryResult.getItems();
 
-        // 构造查询结果，并返回。
+        // 构造查看结果，并返回。
         boolean hasMore = items.size() > rows;
         List<D> datas = new ArrayList<>();
         for (int i = 0; i < rows && i < items.size(); i++) {
@@ -111,8 +151,9 @@ public abstract class InfluxdbBridgeDataPersister<D extends Data> extends FullPe
 
     @Override
     public String toString() {
-        return "InfluxdbBridgeDataPersister{" +
+        return "InfluxdbBridgePersister{" +
                 "handler=" + handler +
+                ", executor=" + executor +
                 '}';
     }
 }
