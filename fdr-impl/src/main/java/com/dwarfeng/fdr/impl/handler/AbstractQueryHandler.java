@@ -10,7 +10,6 @@ import com.dwarfeng.fdr.stack.exception.QueryNotSupportedException;
 import com.dwarfeng.fdr.stack.exception.UnsupportedMapperTypeException;
 import com.dwarfeng.fdr.stack.handler.MapLocalCacheHandler;
 import com.dwarfeng.fdr.stack.handler.Mapper;
-import com.dwarfeng.fdr.stack.handler.PersistHandler;
 import com.dwarfeng.fdr.stack.handler.QueryHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -28,21 +27,56 @@ import java.util.List;
  */
 public abstract class AbstractQueryHandler implements QueryHandler {
 
-    protected final PersistHandler<? extends Data> persistHandler;
     protected final MapLocalCacheHandler mapLocalCacheHandler;
 
+    protected final List<Bridge> bridges;
+
+    protected Bridge.Persister<? extends Data> persister;
+
     public AbstractQueryHandler(
-            PersistHandler<? extends Data> persistHandler,
-            MapLocalCacheHandler mapLocalCacheHandler
+            MapLocalCacheHandler mapLocalCacheHandler,
+            List<Bridge> bridges
     ) {
-        this.persistHandler = persistHandler;
         this.mapLocalCacheHandler = mapLocalCacheHandler;
+        this.bridges = bridges;
     }
+
+    /**
+     * 初始化持久器。
+     *
+     * <p>
+     * 该方法会从持久器列表中找到对应类型的桥接。
+     *
+     * <p>
+     * 需要在子类构造完毕后调用该方法。
+     */
+    protected void init(String bridgeType) throws Exception {
+        // 从持久器列表中找到对应类型的持久器。
+        Bridge bridge = bridges.stream().filter(b -> b.supportType(bridgeType)).findAny()
+                .orElseThrow(() -> new HandlerException("未知的 bridge 类型: " + bridgeType));
+
+        // 如果桥接器不支持持久器，则抛出异常。
+        if (!bridge.supportPersister()) {
+            throw new IllegalStateException("桥接器不支持持久器, 请检查 bridge.properties 配置文件: " + bridgeType);
+        }
+
+        // 如果桥接器支持持久器，则获取持久器。
+        persister = getPersisterFromBridge(bridge);
+    }
+
+    /**
+     * 在指定的桥接器中获取持久器。
+     *
+     * @param bridge 指定的桥接器。
+     * @return 指定的桥接器中的持久器。
+     * @throws Exception 任何可能的异常。
+     */
+    protected abstract Bridge.Persister<? extends Data> getPersisterFromBridge(Bridge bridge) throws Exception;
 
     @Override
     public QueryResult query(QueryInfo queryInfo) throws HandlerException {
         try {
-            if (persistHandler.writeOnly()) {
+            if (persister.writeOnly()) {
                 throw new QueryNotSupportedException();
             }
             return querySingle(queryInfo);
@@ -56,7 +90,7 @@ public abstract class AbstractQueryHandler implements QueryHandler {
     @Override
     public List<QueryResult> query(List<QueryInfo> queryInfos) throws HandlerException {
         try {
-            if (persistHandler.writeOnly()) {
+            if (persister.writeOnly()) {
                 throw new QueryNotSupportedException();
             }
             List<QueryResult> resultList = new ArrayList<>();
@@ -125,7 +159,7 @@ public abstract class AbstractQueryHandler implements QueryHandler {
                         preset, params, pointKey, anchorStartDate, anchorEndDate, anchorIncludeStartDate,
                         anchorIncludeEndDate, anchorPage, maxPageSize
                 );
-                anchorLookupResult = persistHandler.lookup(lookupInfo);
+                anchorLookupResult = persister.lookup(lookupInfo);
 
                 // 将查询结果转换为 Mapper.Item，添加到返回值中。
                 for (Data data : anchorLookupResult.getDatas()) {
@@ -191,8 +225,9 @@ public abstract class AbstractQueryHandler implements QueryHandler {
     @Override
     public String toString() {
         return "AbstractQueryHandler{" +
-                "persistHandler=" + persistHandler +
-                ", mapLocalCacheHandler=" + mapLocalCacheHandler +
+                "mapLocalCacheHandler=" + mapLocalCacheHandler +
+                ", bridges=" + bridges +
+                ", persister=" + persister +
                 '}';
     }
 

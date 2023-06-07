@@ -1,13 +1,19 @@
 package com.dwarfeng.fdr.impl.handler;
 
-import com.dwarfeng.fdr.stack.handler.FilteredPersistHandler;
+import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
 import com.dwarfeng.fdr.stack.handler.FilteredQueryHandler;
 import com.dwarfeng.fdr.stack.handler.MapLocalCacheHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.util.List;
+
 @Component
 public class FilteredQueryHandlerImpl extends AbstractQueryHandler implements FilteredQueryHandler {
+
+    @Value("${persist.filtered_data.type}")
+    private String type;
 
     @Value("${query.filtered.max_period_span}")
     private long maxPeriodSpan;
@@ -15,10 +21,20 @@ public class FilteredQueryHandlerImpl extends AbstractQueryHandler implements Fi
     private int maxPageSize;
 
     public FilteredQueryHandlerImpl(
-            FilteredPersistHandler filteredPersistHandler,
-            MapLocalCacheHandler mapLocalCacheHandler
+            MapLocalCacheHandler mapLocalCacheHandler,
+            List<Bridge> bridges
     ) {
-        super(filteredPersistHandler, mapLocalCacheHandler);
+        super(mapLocalCacheHandler, bridges);
+    }
+
+    @PostConstruct
+    public void init() throws Exception {
+        super.init(type);
+    }
+
+    @Override
+    protected Bridge.Persister<FilteredData> getPersisterFromBridge(Bridge bridge) throws Exception {
+        return bridge.getFilteredDataPersister();
     }
 
     @Override
@@ -29,10 +45,12 @@ public class FilteredQueryHandlerImpl extends AbstractQueryHandler implements Fi
     @Override
     public String toString() {
         return "FilteredQueryHandlerImpl{" +
-                "maxPeriodSpan=" + maxPeriodSpan +
+                "type='" + type + '\'' +
+                ", maxPeriodSpan=" + maxPeriodSpan +
                 ", maxPageSize=" + maxPageSize +
-                ", persistHandler=" + persistHandler +
                 ", mapLocalCacheHandler=" + mapLocalCacheHandler +
+                ", bridges=" + bridges +
+                ", persister=" + persister +
                 '}';
     }
 }
