@@ -12,11 +12,14 @@ import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 /**
  * Hibernate 桥接被触发数据持久化器。
@@ -33,12 +36,17 @@ public class HibernateBridgeTriggeredDataPersister extends FullPersister<Trigger
 
     private final ValueCodingHandler valueCodingHandler;
 
+    private final ThreadPoolTaskExecutor executor;
+
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     protected HibernateBridgeTriggeredDataPersister(
             HibernateBridgeTriggeredDataMaintainService service,
-            @Qualifier("hibernateBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler
+            @Qualifier("hibernateBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler,
+            ThreadPoolTaskExecutor executor
     ) {
         this.service = service;
         this.valueCodingHandler = valueCodingHandler;
+        this.executor = executor;
     }
 
     @Override
@@ -71,20 +79,51 @@ public class HibernateBridgeTriggeredDataPersister extends FullPersister<Trigger
 
     @Override
     protected LookupResult<TriggeredData> doLookup(LookupInfo lookupInfo) throws Exception {
-        return doSingleQuery(lookupInfo);
+        return lookupSingle(lookupInfo);
     }
 
     @Override
     protected List<LookupResult<TriggeredData>> doLookup(List<LookupInfo> lookupInfos) throws Exception {
-        List<LookupResult<TriggeredData>> lookupResults = new ArrayList<>();
-        for (LookupInfo lookupInfo : lookupInfos) {
-            lookupResults.add(doSingleQuery(lookupInfo));
+        // 构造查看结果，并初始化。
+        List<LookupResult<TriggeredData>> lookupResults = new ArrayList<>(lookupInfos.size());
+        for (int i = 0; i < lookupInfos.size(); i++) {
+            lookupResults.add(null);
         }
+
+        // 遍历 lookupInfos，异步查看。
+        List<CompletableFuture<?>> futures = new ArrayList<>(lookupInfos.size());
+        for (int i = 0; i < lookupInfos.size(); i++) {
+            final int index = i;
+            final LookupInfo lookupInfo = lookupInfos.get(index);
+            CompletableFuture<Void> future = CompletableFuture.runAsync(
+                    () -> {
+                        LookupResult<TriggeredData> lookupResult = wrappedLookupSingle(lookupInfo);
+                        lookupResults.set(index, lookupResult);
+                    },
+                    executor
+            );
+            futures.add(future);
+        }
+        try {
+            CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        } catch (CompletionException e) {
+            throw (Exception) e.getCause();
+        }
+
+        // 返回查看结果。
         return lookupResults;
     }
 
+    private LookupResult<TriggeredData> wrappedLookupSingle(LookupInfo lookupInfo) throws CompletionException {
+        try {
+            return lookupSingle(lookupInfo);
+        } catch (Exception e) {
+            throw new CompletionException(e);
+        }
+    }
+
     @SuppressWarnings("DuplicatedCode")
-    private LookupResult<TriggeredData> doSingleQuery(LookupInfo lookupInfo) throws Exception {
+    private LookupResult<TriggeredData> lookupSingle(LookupInfo lookupInfo) throws Exception {
         // 展开查询信息。
         LongIdKey pointKey = lookupInfo.getPointKey();
         Date startDate = ViewUtil.validStartDate(lookupInfo.getStartDate());
