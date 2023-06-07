@@ -15,7 +15,7 @@ public class FilteredKeepHandlerImpl extends AbstractKeepHandler<FilteredData> i
     private String type;
 
     public FilteredKeepHandlerImpl(List<Bridge> bridges) {
-        super(bridges, FilteredData.class);
+        super(bridges);
     }
 
     @PostConstruct
@@ -24,11 +24,15 @@ public class FilteredKeepHandlerImpl extends AbstractKeepHandler<FilteredData> i
     }
 
     @Override
+    protected Bridge.Keeper<FilteredData> getKeeperFromBridge(Bridge bridge) throws Exception {
+        return bridge.getFilteredDataKeeper();
+    }
+
+    @Override
     public String toString() {
         return "FilteredKeepHandlerImpl{" +
                 "type='" + type + '\'' +
                 ", bridges=" + bridges +
-                ", dataClazz=" + dataClazz +
                 ", keeper=" + keeper +
                 '}';
     }

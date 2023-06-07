@@ -1,7 +1,6 @@
 package com.dwarfeng.fdr.impl.handler;
 
-import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
-import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
+import com.dwarfeng.fdr.stack.bean.dto.*;
 import com.dwarfeng.fdr.stack.handler.KeepHandler;
 import com.dwarfeng.fdr.stack.handler.PersistHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
@@ -17,8 +16,8 @@ import java.util.List;
  * 用于提供保持器和持久器。
  *
  * <p>
- * 需要注意的是，不是所有的桥接器都支持所有的数据类型，因此如果 {@link #getKeeper(Class)} 和 {@link #getPersister(Class)}
- * 被调用时，如果桥接器不支持指定的数据类型，则可以抛出 {@link HandlerException} 异常。
+ * 需要注意的是，不是所有的桥接器都支持所有的数据类型，因此如果<code>getXXXDataKeeper</code> 或
+ * <code>getXXXDataPersist</code> 被调用时，如果桥接器不支持持久器/保持器，则可以抛出 {@link HandlerException} 异常。
  *
  * @author DwArFeng
  * @since 2.0.0
@@ -41,13 +40,25 @@ public interface Bridge {
     boolean supportKeeper();
 
     /**
-     * 获取指定类型的保持器。
+     * 获取桥接器的一般数据保持器。
      *
-     * @param clazz 指定的类型。
-     * @return 指定类型的保持器。
-     * @throws HandlerException 处理器异常。
+     * @return 桥接器的一般数据保持器。
      */
-    <D extends Data> Keeper<D> getKeeper(Class<D> clazz) throws HandlerException;
+    Keeper<NormalData> getNormalDataKeeper() throws HandlerException;
+
+    /**
+     * 获取桥接器的被过滤器数据保持器。
+     *
+     * @return 桥接器的被过滤器数据保持器。
+     */
+    Keeper<FilteredData> getFilteredDataKeeper() throws HandlerException;
+
+    /**
+     * 获取桥接器的被触发器数据保持器。
+     *
+     * @return 桥接器的被触发器数据保持器。
+     */
+    Keeper<TriggeredData> getTriggeredDataKeeper() throws HandlerException;
 
     /**
      * 返回桥接器是否支持持久器。
@@ -57,13 +68,25 @@ public interface Bridge {
     boolean supportPersister();
 
     /**
-     * 获取指定类型的持久器。
+     * 获取桥接器的一般数据持久器。
      *
-     * @param clazz 指定的类型。
-     * @return 指定类型的持久器。
-     * @throws HandlerException 处理器异常。
+     * @return 桥接器的一般数据持久器。
      */
-    <D extends Data> Persister<D> getPersister(Class<D> clazz) throws HandlerException;
+    Persister<NormalData> getNormalDataPersister() throws HandlerException;
+
+    /**
+     * 获取桥接器的被过滤器数据持久器。
+     *
+     * @return 桥接器的被过滤器数据持久器。
+     */
+    Persister<FilteredData> getFilteredDataPersister() throws HandlerException;
+
+    /**
+     * 获取桥接器的被触发器数据持久器。
+     *
+     * @return 桥接器的被触发器数据持久器。
+     */
+    Persister<TriggeredData> getTriggeredDataPersister() throws HandlerException;
 
     /**
      * 保持器。

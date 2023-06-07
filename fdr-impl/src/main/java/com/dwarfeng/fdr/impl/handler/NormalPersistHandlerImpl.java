@@ -16,7 +16,7 @@ public class NormalPersistHandlerImpl extends AbstractPersistHandler<NormalData>
     private String type;
 
     public NormalPersistHandlerImpl(List<Bridge> bridges) {
-        super(bridges, NormalData.class);
+        super(bridges);
     }
 
     @PostConstruct
@@ -25,11 +25,15 @@ public class NormalPersistHandlerImpl extends AbstractPersistHandler<NormalData>
     }
 
     @Override
+    protected Bridge.Persister<NormalData> getPersisterFromBridge(Bridge bridge) throws Exception {
+        return bridge.getNormalDataPersister();
+    }
+
+    @Override
     public String toString() {
         return "NormalPersistHandlerImpl{" +
                 "type='" + type + '\'' +
                 ", bridges=" + bridges +
-                ", dataClazz=" + dataClazz +
                 ", persister=" + persister +
                 '}';
     }

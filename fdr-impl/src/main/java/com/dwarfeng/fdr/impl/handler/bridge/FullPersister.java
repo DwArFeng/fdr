@@ -75,4 +75,9 @@ public abstract class FullPersister<D extends Data> implements Persister<D> {
     }
 
     protected abstract List<LookupResult<D>> doQuery(List<LookupInfo> lookupInfos) throws Exception;
+
+    @Override
+    public String toString() {
+        return "FullPersister{}";
+    }
 }

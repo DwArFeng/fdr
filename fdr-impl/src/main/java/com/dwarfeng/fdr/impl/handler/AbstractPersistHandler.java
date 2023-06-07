@@ -18,15 +18,13 @@ import java.util.List;
 public abstract class AbstractPersistHandler<D extends Data> implements PersistHandler<D> {
 
     protected final List<Bridge> bridges;
-    protected final Class<D> dataClazz;
 
     protected Bridge.Persister<D> persister;
 
     protected AbstractPersistHandler(
-            List<Bridge> bridges, Class<D> dataClazz
+            List<Bridge> bridges
     ) {
         this.bridges = bridges;
-        this.dataClazz = dataClazz;
     }
 
     /**
@@ -49,8 +47,17 @@ public abstract class AbstractPersistHandler<D extends Data> implements PersistH
         }
 
         // 如果桥接器支持持久器，则获取持久器。
-        persister = bridge.getPersister(dataClazz);
+        persister = getPersisterFromBridge(bridge);
     }
+
+    /**
+     * 在指定的桥接器中获取持久器。
+     *
+     * @param bridge 指定的桥接器。
+     * @return 指定的桥接器中的持久器。
+     * @throws Exception 任何可能的异常。
+     */
+    protected abstract Bridge.Persister<D> getPersisterFromBridge(Bridge bridge) throws Exception;
 
     @Override
     public boolean writeOnly() {
@@ -95,7 +102,6 @@ public abstract class AbstractPersistHandler<D extends Data> implements PersistH
     public String toString() {
         return "AbstractPersistHandler{" +
                 "bridges=" + bridges +
-                ", dataClazz=" + dataClazz +
                 ", persister=" + persister +
                 '}';
     }

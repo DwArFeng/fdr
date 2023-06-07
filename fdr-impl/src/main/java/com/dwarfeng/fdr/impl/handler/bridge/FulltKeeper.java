@@ -74,4 +74,9 @@ public abstract class FulltKeeper<D extends Data> implements Keeper<D> {
     }
 
     protected abstract List<D> doLatest(List<LongIdKey> pointKeys) throws Exception;
+
+    @Override
+    public String toString() {
+        return "FulltKeeper{}";
+    }
 }

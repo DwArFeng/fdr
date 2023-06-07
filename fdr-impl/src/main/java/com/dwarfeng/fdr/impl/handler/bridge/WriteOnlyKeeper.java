@@ -56,4 +56,9 @@ public abstract class WriteOnlyKeeper<D extends Data> implements Keeper<D> {
     public List<D> latest(List<LongIdKey> pointKeys) throws HandlerException {
         throw new LatestNotSupportedException();
     }
+
+    @Override
+    public String toString() {
+        return "WriteOnlyKeeper{}";
+    }
 }

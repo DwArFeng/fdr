@@ -42,32 +42,32 @@ public class MockBridge extends FullBridge {
     }
 
     @Override
-    protected Keeper<NormalData> getNormalDataKeeper() {
+    public Keeper<NormalData> getNormalDataKeeper() {
         return normalDataBridgeKeeper;
     }
 
     @Override
-    protected Keeper<FilteredData> getFilteredDataKeeper() {
+    public Keeper<FilteredData> getFilteredDataKeeper() {
         return filteredDataBridgeKeeper;
     }
 
     @Override
-    protected Keeper<TriggeredData> getTriggeredDataKeeper() {
+    public Keeper<TriggeredData> getTriggeredDataKeeper() {
         return triggeredDataBridgeKeeper;
     }
 
     @Override
-    protected Persister<NormalData> getNormalDataPersister() {
+    public Persister<NormalData> getNormalDataPersister() {
         return normalDataBridgePersister;
     }
 
     @Override
-    protected Persister<FilteredData> getFilteredDataPersister() {
+    public Persister<FilteredData> getFilteredDataPersister() {
         return filteredDataBridgePersister;
     }
 
     @Override
-    protected Persister<TriggeredData> getTriggeredDataPersister() {
+    public Persister<TriggeredData> getTriggeredDataPersister() {
         return triggeredDataBridgePersister;
     }
 

@@ -33,17 +33,17 @@ public class RedisBridge extends KeeperOnlyBridge {
     }
 
     @Override
-    protected Keeper<NormalData> getNormalDataKeeper() {
+    public Keeper<NormalData> getNormalDataKeeper() {
         return normalDataKeeper;
     }
 
     @Override
-    protected Keeper<FilteredData> getFilteredDataKeeper() {
+    public Keeper<FilteredData> getFilteredDataKeeper() {
         return filteredDataKeeper;
     }
 
     @Override
-    protected Keeper<TriggeredData> getTriggeredDataKeeper() {
+    public Keeper<TriggeredData> getTriggeredDataKeeper() {
         return triggeredDataKeeper;
     }
 

@@ -57,4 +57,9 @@ public abstract class WriteOnlyPersister<D extends Data> implements Persister<D>
     public List<LookupResult<D>> lookup(List<LookupInfo> lookupInfos) throws HandlerException {
         throw new LookupNotSupportedException();
     }
+
+    @Override
+    public String toString() {
+        return "WriteOnlyPersister{}";
+    }
 }

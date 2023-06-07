@@ -15,7 +15,7 @@ public class TriggeredKeepHandlerImpl extends AbstractKeepHandler<TriggeredData>
     private String type;
 
     public TriggeredKeepHandlerImpl(List<Bridge> bridges) {
-        super(bridges, TriggeredData.class);
+        super(bridges);
     }
 
     @PostConstruct
@@ -24,11 +24,16 @@ public class TriggeredKeepHandlerImpl extends AbstractKeepHandler<TriggeredData>
     }
 
     @Override
-    public String toString() {
+    protected Bridge.Keeper<TriggeredData> getKeeperFromBridge(Bridge bridge) throws Exception {
+        return bridge.getTriggeredDataKeeper();
+    }
+
+    @Override
+    public String
+    toString() {
         return "TriggeredKeepHandlerImpl{" +
                 "type='" + type + '\'' +
                 ", bridges=" + bridges +
-                ", dataClazz=" + dataClazz +
                 ", keeper=" + keeper +
                 '}';
     }

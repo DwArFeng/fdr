@@ -16,7 +16,7 @@ public class TriggeredPersistHandlerImpl extends AbstractPersistHandler<Triggere
     private String type;
 
     public TriggeredPersistHandlerImpl(List<Bridge> bridges) {
-        super(bridges, TriggeredData.class);
+        super(bridges);
     }
 
     @PostConstruct
@@ -25,11 +25,15 @@ public class TriggeredPersistHandlerImpl extends AbstractPersistHandler<Triggere
     }
 
     @Override
+    protected Bridge.Persister<TriggeredData> getPersisterFromBridge(Bridge bridge) throws Exception {
+        return bridge.getTriggeredDataPersister();
+    }
+
+    @Override
     public String toString() {
         return "TriggeredPersistHandlerImpl{" +
                 "type='" + type + '\'' +
                 ", bridges=" + bridges +
-                ", dataClazz=" + dataClazz +
                 ", persister=" + persister +
                 '}';
     }

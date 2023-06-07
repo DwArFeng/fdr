@@ -15,7 +15,7 @@ public class NormalKeepHandlerImpl extends AbstractKeepHandler<NormalData> imple
     private String type;
 
     public NormalKeepHandlerImpl(List<Bridge> bridges) {
-        super(bridges, NormalData.class);
+        super(bridges);
     }
 
     @PostConstruct
@@ -24,11 +24,15 @@ public class NormalKeepHandlerImpl extends AbstractKeepHandler<NormalData> imple
     }
 
     @Override
+    protected Bridge.Keeper<NormalData> getKeeperFromBridge(Bridge bridge) throws Exception {
+        return bridge.getNormalDataKeeper();
+    }
+
+    @Override
     public String toString() {
         return "NormalKeepHandlerImpl{" +
                 "type='" + type + '\'' +
                 ", bridges=" + bridges +
-                ", dataClazz=" + dataClazz +
                 ", keeper=" + keeper +
                 '}';
     }

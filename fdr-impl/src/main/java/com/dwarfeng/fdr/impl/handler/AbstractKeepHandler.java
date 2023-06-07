@@ -19,13 +19,11 @@ import java.util.Optional;
 public abstract class AbstractKeepHandler<D extends Data> implements KeepHandler<D> {
 
     protected final List<Bridge> bridges;
-    protected final Class<D> dataClazz;
 
     protected Bridge.Keeper<D> keeper;
 
-    protected AbstractKeepHandler(List<Bridge> bridges, Class<D> dataClazz) {
+    protected AbstractKeepHandler(List<Bridge> bridges) {
         this.bridges = Optional.ofNullable(bridges).orElse(Collections.emptyList());
-        this.dataClazz = dataClazz;
     }
 
     /**
@@ -48,8 +46,17 @@ public abstract class AbstractKeepHandler<D extends Data> implements KeepHandler
         }
 
         // 如果桥接器支持保持器，则获取保持器。
-        keeper = bridge.getKeeper(dataClazz);
+        keeper = getKeeperFromBridge(bridge);
     }
+
+    /**
+     * 在指定的桥接器中获取保持器。
+     *
+     * @param bridge 指定的桥接器。
+     * @return 指定的桥接器中的保持器。
+     * @throws Exception 任何可能的异常。
+     */
+    protected abstract Bridge.Keeper<D> getKeeperFromBridge(Bridge bridge) throws Exception;
 
     @Override
     public boolean writeOnly() {
@@ -86,7 +93,6 @@ public abstract class AbstractKeepHandler<D extends Data> implements KeepHandler
     public String toString() {
         return "AbstractKeepHandler{" +
                 "bridges=" + bridges +
-                ", dataClazz=" + dataClazz +
                 ", keeper=" + keeper +
                 '}';
     }

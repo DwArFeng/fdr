@@ -16,7 +16,7 @@ public class FilteredPersistHandlerImpl extends AbstractPersistHandler<FilteredD
     private String type;
 
     public FilteredPersistHandlerImpl(List<Bridge> bridges) {
-        super(bridges, FilteredData.class);
+        super(bridges);
     }
 
     @PostConstruct
@@ -25,11 +25,15 @@ public class FilteredPersistHandlerImpl extends AbstractPersistHandler<FilteredD
     }
 
     @Override
+    protected Bridge.Persister<FilteredData> getPersisterFromBridge(Bridge bridge) throws Exception {
+        return bridge.getFilteredDataPersister();
+    }
+
+    @Override
     public String toString() {
         return "FilteredPersistHandlerImpl{" +
                 "type='" + type + '\'' +
                 ", bridges=" + bridges +
-                ", dataClazz=" + dataClazz +
                 ", persister=" + persister +
                 '}';
     }

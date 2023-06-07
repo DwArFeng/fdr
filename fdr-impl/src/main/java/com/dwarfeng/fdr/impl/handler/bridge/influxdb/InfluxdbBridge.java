@@ -33,17 +33,17 @@ public class InfluxdbBridge extends PersisterOnlyBridge {
     }
 
     @Override
-    protected Persister<NormalData> getNormalDataPersister() {
+    public Persister<NormalData> getNormalDataPersister() {
         return normalDataPersister;
     }
 
     @Override
-    protected Persister<FilteredData> getFilteredDataPersister() {
+    public Persister<FilteredData> getFilteredDataPersister() {
         return filteredDataPersister;
     }
 
     @Override
-    protected Persister<TriggeredData> getTriggeredDataPersister() {
+    public Persister<TriggeredData> getTriggeredDataPersister() {
         return triggeredDataPersister;
     }
 
