@@ -73,7 +73,7 @@ public abstract class AbstractQueryHandler implements QueryHandler {
 
     private QueryResult querySingle(QueryInfo queryInfo) throws Exception {
         // 获取查询配置。
-        LookupConfig config = getOrganizeConfig();
+        LookupConfig config = getLookupConfig();
 
         // 遍历查询信息，进行查询，构造 List<Mapper.Sequence>。
         List<Mapper.Sequence> sequences = new ArrayList<>();
@@ -186,7 +186,7 @@ public abstract class AbstractQueryHandler implements QueryHandler {
         return new QueryResult(resultSequences);
     }
 
-    protected abstract LookupConfig getOrganizeConfig();
+    protected abstract LookupConfig getLookupConfig();
 
     @Override
     public String toString() {

@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class NormalQueryHandlerImpl extends AbstractQueryHandler implements NormalQueryHandler {
 
-    @Value("${organize.normal.max_period_span}")
+    @Value("${query.normal.max_period_span}")
     private long maxPeriodSpan;
-    @Value("${organize.normal.max_page_size}")
+    @Value("${query.normal.max_page_size}")
     private int maxPageSize;
 
     public NormalQueryHandlerImpl(
@@ -22,7 +22,7 @@ public class NormalQueryHandlerImpl extends AbstractQueryHandler implements Norm
     }
 
     @Override
-    protected LookupConfig getOrganizeConfig() {
+    protected LookupConfig getLookupConfig() {
         return new LookupConfig(maxPeriodSpan, maxPageSize);
     }
 

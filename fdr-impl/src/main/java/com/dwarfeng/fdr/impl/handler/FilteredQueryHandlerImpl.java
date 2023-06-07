@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class FilteredQueryHandlerImpl extends AbstractQueryHandler implements FilteredQueryHandler {
 
-    @Value("${organize.filtered.max_period_span}")
+    @Value("${query.filtered.max_period_span}")
     private long maxPeriodSpan;
-    @Value("${organize.filtered.max_page_size}")
+    @Value("${query.filtered.max_page_size}")
     private int maxPageSize;
 
     public FilteredQueryHandlerImpl(
@@ -22,7 +22,7 @@ public class FilteredQueryHandlerImpl extends AbstractQueryHandler implements Fi
     }
 
     @Override
-    protected LookupConfig getOrganizeConfig() {
+    protected LookupConfig getLookupConfig() {
         return new LookupConfig(maxPeriodSpan, maxPageSize);
     }
 

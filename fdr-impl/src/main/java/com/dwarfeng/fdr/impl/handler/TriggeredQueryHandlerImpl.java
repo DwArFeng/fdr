@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class TriggeredQueryHandlerImpl extends AbstractQueryHandler implements TriggeredQueryHandler {
 
-    @Value("${organize.triggered.max_period_span}")
+    @Value("${query.triggered.max_period_span}")
     private long maxPeriodSpan;
-    @Value("${organize.triggered.max_page_size}")
+    @Value("${query.triggered.max_page_size}")
     private int maxPageSize;
 
     public TriggeredQueryHandlerImpl(
@@ -22,7 +22,7 @@ public class TriggeredQueryHandlerImpl extends AbstractQueryHandler implements T
     }
 
     @Override
-    protected LookupConfig getOrganizeConfig() {
+    protected LookupConfig getLookupConfig() {
         return new LookupConfig(maxPeriodSpan, maxPageSize);
     }
 
