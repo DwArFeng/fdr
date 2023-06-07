@@ -68,12 +68,12 @@ public class HibernateBridgeNormalDataPersister extends FullPersister<NormalData
     }
 
     @Override
-    protected LookupResult<NormalData> doQuery(LookupInfo lookupInfo) throws Exception {
+    protected LookupResult<NormalData> doLookup(LookupInfo lookupInfo) throws Exception {
         return doSingleQuery(lookupInfo);
     }
 
     @Override
-    protected List<LookupResult<NormalData>> doQuery(List<LookupInfo> lookupInfos) throws Exception {
+    protected List<LookupResult<NormalData>> doLookup(List<LookupInfo> lookupInfos) throws Exception {
         List<LookupResult<NormalData>> resultList = new ArrayList<>();
         for (LookupInfo lookupInfo : lookupInfos) {
             resultList.add(doSingleQuery(lookupInfo));

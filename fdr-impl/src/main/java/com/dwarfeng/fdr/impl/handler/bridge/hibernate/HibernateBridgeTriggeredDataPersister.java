@@ -70,12 +70,12 @@ public class HibernateBridgeTriggeredDataPersister extends FullPersister<Trigger
     }
 
     @Override
-    protected LookupResult<TriggeredData> doQuery(LookupInfo lookupInfo) throws Exception {
+    protected LookupResult<TriggeredData> doLookup(LookupInfo lookupInfo) throws Exception {
         return doSingleQuery(lookupInfo);
     }
 
     @Override
-    protected List<LookupResult<TriggeredData>> doQuery(List<LookupInfo> lookupInfos) throws Exception {
+    protected List<LookupResult<TriggeredData>> doLookup(List<LookupInfo> lookupInfos) throws Exception {
         List<LookupResult<TriggeredData>> lookupResults = new ArrayList<>();
         for (LookupInfo lookupInfo : lookupInfos) {
             lookupResults.add(doSingleQuery(lookupInfo));

@@ -94,25 +94,25 @@ public abstract class MockBridgeKeeper<D extends Data> extends FulltKeeper<D> {
         long startTimestamp = System.currentTimeMillis();
         long anchorTimestamp = System.currentTimeMillis();
 
-        long inspectBeforeDelay = config.getInspectBeforeDelay();
-        long inspectDelay = config.getInspectDelay();
-        long inspectAfterDelay = config.getInspectAfterDelay();
+        long latestBeforeDelay = config.getLatestBeforeDelay();
+        long latestDelay = config.getLatestDelay();
+        long latestAfterDelay = config.getLatestAfterDelay();
 
-        if (inspectBeforeDelay > 0) {
-            anchorTimestamp += inspectBeforeDelay;
+        if (latestBeforeDelay > 0) {
+            anchorTimestamp += latestBeforeDelay;
             ThreadUtil.sleepUntil(anchorTimestamp);
         }
 
         Object value = dataValueGenerator.nextValue(pointKey);
         D result = generateData(pointKey, value, new Date());
 
-        if (inspectDelay > 0) {
-            anchorTimestamp += inspectDelay;
+        if (latestDelay > 0) {
+            anchorTimestamp += latestDelay;
             ThreadUtil.sleepUntil(anchorTimestamp);
         }
 
-        if (inspectAfterDelay > 0) {
-            anchorTimestamp += inspectAfterDelay;
+        if (latestAfterDelay > 0) {
+            anchorTimestamp += latestAfterDelay;
             ThreadUtil.sleepUntil(anchorTimestamp);
         }
 
@@ -129,12 +129,12 @@ public abstract class MockBridgeKeeper<D extends Data> extends FulltKeeper<D> {
         long startTimestamp = System.currentTimeMillis();
         long anchorTimestamp = System.currentTimeMillis();
 
-        long inspectBeforeDelay = config.getInspectBeforeDelay();
-        long inspectDelay = config.getInspectDelay();
-        long inspectAfterDelay = config.getInspectAfterDelay();
+        long latestBeforeDelay = config.getLatestBeforeDelay();
+        long latestDelay = config.getLatestDelay();
+        long latestAfterDelay = config.getLatestAfterDelay();
 
-        if (inspectBeforeDelay > 0) {
-            anchorTimestamp += inspectBeforeDelay;
+        if (latestBeforeDelay > 0) {
+            anchorTimestamp += latestBeforeDelay;
             ThreadUtil.sleepUntil(anchorTimestamp);
         }
 
@@ -143,13 +143,13 @@ public abstract class MockBridgeKeeper<D extends Data> extends FulltKeeper<D> {
             Object value = dataValueGenerator.nextValue(pointKey);
             result.add(generateData(pointKey, value, new Date()));
         }
-        if (inspectDelay > 0) {
-            anchorTimestamp += inspectDelay * pointKeys.size();
+        if (latestDelay > 0) {
+            anchorTimestamp += latestDelay * pointKeys.size();
             ThreadUtil.sleepUntil(anchorTimestamp);
         }
 
-        if (inspectAfterDelay > 0) {
-            anchorTimestamp += inspectAfterDelay;
+        if (latestAfterDelay > 0) {
+            anchorTimestamp += latestAfterDelay;
             ThreadUtil.sleepUntil(anchorTimestamp);
         }
 

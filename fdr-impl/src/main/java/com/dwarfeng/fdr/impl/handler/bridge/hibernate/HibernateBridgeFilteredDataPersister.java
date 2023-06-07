@@ -70,12 +70,12 @@ public class HibernateBridgeFilteredDataPersister extends FullPersister<Filtered
     }
 
     @Override
-    protected LookupResult<FilteredData> doQuery(LookupInfo lookupInfo) throws Exception {
+    protected LookupResult<FilteredData> doLookup(LookupInfo lookupInfo) throws Exception {
         return doSingleQuery(lookupInfo);
     }
 
     @Override
-    protected List<LookupResult<FilteredData>> doQuery(List<LookupInfo> lookupInfos) throws Exception {
+    protected List<LookupResult<FilteredData>> doLookup(List<LookupInfo> lookupInfos) throws Exception {
         List<LookupResult<FilteredData>> resultList = new ArrayList<>();
         for (LookupInfo lookupInfo : lookupInfos) {
             resultList.add(doSingleQuery(lookupInfo));

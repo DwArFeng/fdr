@@ -92,24 +92,24 @@ public abstract class MockBridgePersister<D extends Data> extends FullPersister<
     }
 
     @Override
-    protected LookupResult<D> doQuery(LookupInfo lookupInfo) throws Exception {
-        return doSingleQuery(lookupInfo);
+    protected LookupResult<D> doLookup(LookupInfo lookupInfo) throws Exception {
+        return doSingleLookup(lookupInfo);
     }
 
     @Override
-    protected List<LookupResult<D>> doQuery(List<LookupInfo> lookupInfos) throws Exception {
+    protected List<LookupResult<D>> doLookup(List<LookupInfo> lookupInfos) throws Exception {
         List<LookupResult<D>> result = new ArrayList<>();
         for (LookupInfo lookupInfo : lookupInfos) {
-            result.add(doSingleQuery(lookupInfo));
+            result.add(doSingleLookup(lookupInfo));
         }
         return result;
     }
 
     @Nonnull
-    private LookupResult<D> doSingleQuery(LookupInfo lookupInfo) throws Exception {
+    private LookupResult<D> doSingleLookup(LookupInfo lookupInfo) throws Exception {
         // 展开查询信息。
-        long queryStartTimestamp = ViewUtil.validStartDate(lookupInfo.getStartDate()).getTime();
-        long queryEndTimestamp = ViewUtil.validEndDate(lookupInfo.getEndDate()).getTime();
+        long lookupStartTimestamp = ViewUtil.validStartDate(lookupInfo.getStartDate()).getTime();
+        long lookupEndTimestamp = ViewUtil.validEndDate(lookupInfo.getEndDate()).getTime();
         int page = ViewUtil.validPage(lookupInfo.getPage());
         int rows = ViewUtil.validRows(lookupInfo.getRows());
 
@@ -119,40 +119,40 @@ public abstract class MockBridgePersister<D extends Data> extends FullPersister<
             throw new IllegalArgumentException("预设不合法");
         }
 
-        return mockQuery(
+        return mockLookup(
                 lookupInfo.getPointKey(),
-                queryStartTimestamp, queryEndTimestamp,
+                lookupStartTimestamp, lookupEndTimestamp,
                 lookupInfo.isIncludeStartDate(), lookupInfo.isIncludeEndDate(),
                 page, rows
         );
     }
 
-    private LookupResult<D> mockQuery(
-            LongIdKey pointKey, long queryStartTimestamp, long queryEndTimestamp,
+    private LookupResult<D> mockLookup(
+            LongIdKey pointKey, long lookupStartTimestamp, long lookupEndTimestamp,
             boolean includeStartDate, boolean includeEndDate, int page, int rows
     ) throws Exception {
         long startTimestamp = System.currentTimeMillis();
         long anchorTimestamp = System.currentTimeMillis();
 
-        long queryBeforeDelay = config.getQueryBeforeDelay();
-        long queryOffsetDelay = config.getQueryOffsetDelay();
-        long queryDelay = config.getQueryDelay();
-        long queryAfterDelay = config.getQueryAfterDelay();
+        long lookupBeforeDelay = config.getLookupBeforeDelay();
+        long lookupOffsetDelay = config.getLookupOffsetDelay();
+        long lookupDelay = config.getLookupDelay();
+        long lookupAfterDelay = config.getLookupAfterDelay();
 
-        if (queryBeforeDelay > 0) {
-            anchorTimestamp += queryBeforeDelay;
+        if (lookupBeforeDelay > 0) {
+            anchorTimestamp += lookupBeforeDelay;
             ThreadUtil.sleepUntil(anchorTimestamp);
         }
 
-        long queryDataInterval = config.getQueryDataInterval();
-        // 计算数据的起始时间，对齐到 queryDataInterval 的整数倍。
-        long dataStartTimestamp = queryStartTimestamp - queryStartTimestamp % queryDataInterval;
-        if (dataStartTimestamp == queryStartTimestamp && !includeStartDate) {
-            dataStartTimestamp += queryDataInterval;
+        long lookupDataInterval = config.getLookupDataInterval();
+        // 计算数据的起始时间，对齐到 lookupDataInterval 的整数倍。
+        long dataStartTimestamp = lookupStartTimestamp - lookupStartTimestamp % lookupDataInterval;
+        if (dataStartTimestamp == lookupStartTimestamp && !includeStartDate) {
+            dataStartTimestamp += lookupDataInterval;
         }
         // 计算数据的数量。
-        int dataCount = (int) ((queryEndTimestamp - dataStartTimestamp) / queryDataInterval);
-        if (dataStartTimestamp + dataCount * queryDataInterval == queryEndTimestamp && !includeEndDate) {
+        int dataCount = (int) ((lookupEndTimestamp - dataStartTimestamp) / lookupDataInterval);
+        if (dataStartTimestamp + dataCount * lookupDataInterval == lookupEndTimestamp && !includeEndDate) {
             dataCount--;
         }
         // 计算实际偏移量。
@@ -168,22 +168,22 @@ public abstract class MockBridgePersister<D extends Data> extends FullPersister<
             datas.add(generateData(
                     pointKey,
                     value,
-                    new Date(dataStartTimestamp + (actualOffset + i) * queryDataInterval)
+                    new Date(dataStartTimestamp + (actualOffset + i) * lookupDataInterval)
             ));
         }
         LookupResult<D> lookupResult = new LookupResult<>(pointKey, datas, hasMore);
 
-        if (queryOffsetDelay > 0) {
-            anchorTimestamp += queryOffsetDelay * actualOffset;
+        if (lookupOffsetDelay > 0) {
+            anchorTimestamp += lookupOffsetDelay * actualOffset;
             ThreadUtil.sleepUntil(anchorTimestamp);
         }
-        if (queryDelay > 0) {
-            anchorTimestamp += queryDelay * actualLimit;
+        if (lookupDelay > 0) {
+            anchorTimestamp += lookupDelay * actualLimit;
             ThreadUtil.sleepUntil(anchorTimestamp);
         }
 
-        if (queryAfterDelay > 0) {
-            anchorTimestamp += queryAfterDelay;
+        if (lookupAfterDelay > 0) {
+            anchorTimestamp += lookupAfterDelay;
             ThreadUtil.sleepUntil(anchorTimestamp);
         }
 

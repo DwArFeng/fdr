@@ -19,12 +19,12 @@ public class MockBridgeConfig {
     @Value("${bridge.mock.update.after_delay}")
     private long updateAfterDelay;
 
-    @Value("${bridge.mock.inspect.delay}")
-    private long inspectDelay;
-    @Value("${bridge.mock.inspect.before_delay}")
-    private long inspectBeforeDelay;
-    @Value("${bridge.mock.inspect.after_delay}")
-    private long inspectAfterDelay;
+    @Value("${bridge.mock.latest.delay}")
+    private long latestDelay;
+    @Value("${bridge.mock.latest.before_delay}")
+    private long latestBeforeDelay;
+    @Value("${bridge.mock.latest.after_delay}")
+    private long latestAfterDelay;
 
     @Value("${bridge.mock.record.delay}")
     private long recordDelay;
@@ -33,16 +33,16 @@ public class MockBridgeConfig {
     @Value("${bridge.mock.record.after_delay}")
     private long recordAfterDelay;
 
-    @Value("${bridge.mock.query.data_interval}")
-    private long queryDataInterval;
-    @Value("${bridge.mock.query.delay}")
-    private long queryDelay;
-    @Value("${bridge.mock.query.offset_delay}")
-    private long queryOffsetDelay;
-    @Value("${bridge.mock.query.before_delay}")
-    private long queryBeforeDelay;
-    @Value("${bridge.mock.query.after_delay}")
-    private long queryAfterDelay;
+    @Value("${bridge.mock.lookup.data_interval}")
+    private long lookupDataInterval;
+    @Value("${bridge.mock.lookup.delay}")
+    private long lookupDelay;
+    @Value("${bridge.mock.lookup.offset_delay}")
+    private long lookupOffsetDelay;
+    @Value("${bridge.mock.lookup.before_delay}")
+    private long lookupBeforeDelay;
+    @Value("${bridge.mock.lookup.after_delay}")
+    private long lookupAfterDelay;
 
     public long getUpdateDelay() {
         return updateDelay;
@@ -68,28 +68,28 @@ public class MockBridgeConfig {
         this.updateAfterDelay = updateAfterDelay;
     }
 
-    public long getInspectDelay() {
-        return inspectDelay;
+    public long getLatestDelay() {
+        return latestDelay;
     }
 
-    public void setInspectDelay(long inspectDelay) {
-        this.inspectDelay = inspectDelay;
+    public void setLatestDelay(long latestDelay) {
+        this.latestDelay = latestDelay;
     }
 
-    public long getInspectBeforeDelay() {
-        return inspectBeforeDelay;
+    public long getLatestBeforeDelay() {
+        return latestBeforeDelay;
     }
 
-    public void setInspectBeforeDelay(long inspectBeforeDelay) {
-        this.inspectBeforeDelay = inspectBeforeDelay;
+    public void setLatestBeforeDelay(long latestBeforeDelay) {
+        this.latestBeforeDelay = latestBeforeDelay;
     }
 
-    public long getInspectAfterDelay() {
-        return inspectAfterDelay;
+    public long getLatestAfterDelay() {
+        return latestAfterDelay;
     }
 
-    public void setInspectAfterDelay(long inspectAfterDelay) {
-        this.inspectAfterDelay = inspectAfterDelay;
+    public void setLatestAfterDelay(long latestAfterDelay) {
+        this.latestAfterDelay = latestAfterDelay;
     }
 
     public long getRecordDelay() {
@@ -116,44 +116,44 @@ public class MockBridgeConfig {
         this.recordAfterDelay = recordAfterDelay;
     }
 
-    public long getQueryDataInterval() {
-        return queryDataInterval;
+    public long getLookupDataInterval() {
+        return lookupDataInterval;
     }
 
-    public void setQueryDataInterval(long queryDataInterval) {
-        this.queryDataInterval = queryDataInterval;
+    public void setLookupDataInterval(long lookupDataInterval) {
+        this.lookupDataInterval = lookupDataInterval;
     }
 
-    public long getQueryDelay() {
-        return queryDelay;
+    public long getLookupDelay() {
+        return lookupDelay;
     }
 
-    public void setQueryDelay(long queryDelay) {
-        this.queryDelay = queryDelay;
+    public void setLookupDelay(long lookupDelay) {
+        this.lookupDelay = lookupDelay;
     }
 
-    public long getQueryOffsetDelay() {
-        return queryOffsetDelay;
+    public long getLookupOffsetDelay() {
+        return lookupOffsetDelay;
     }
 
-    public void setQueryOffsetDelay(long queryOffsetDelay) {
-        this.queryOffsetDelay = queryOffsetDelay;
+    public void setLookupOffsetDelay(long lookupOffsetDelay) {
+        this.lookupOffsetDelay = lookupOffsetDelay;
     }
 
-    public long getQueryBeforeDelay() {
-        return queryBeforeDelay;
+    public long getLookupBeforeDelay() {
+        return lookupBeforeDelay;
     }
 
-    public void setQueryBeforeDelay(long queryBeforeDelay) {
-        this.queryBeforeDelay = queryBeforeDelay;
+    public void setLookupBeforeDelay(long lookupBeforeDelay) {
+        this.lookupBeforeDelay = lookupBeforeDelay;
     }
 
-    public long getQueryAfterDelay() {
-        return queryAfterDelay;
+    public long getLookupAfterDelay() {
+        return lookupAfterDelay;
     }
 
-    public void setQueryAfterDelay(long queryAfterDelay) {
-        this.queryAfterDelay = queryAfterDelay;
+    public void setLookupAfterDelay(long lookupAfterDelay) {
+        this.lookupAfterDelay = lookupAfterDelay;
     }
 
     @Override
@@ -162,17 +162,17 @@ public class MockBridgeConfig {
                 "updateDelay=" + updateDelay +
                 ", updateBeforeDelay=" + updateBeforeDelay +
                 ", updateAfterDelay=" + updateAfterDelay +
-                ", inspectDelay=" + inspectDelay +
-                ", inspectBeforeDelay=" + inspectBeforeDelay +
-                ", inspectAfterDelay=" + inspectAfterDelay +
+                ", latestDelay=" + latestDelay +
+                ", latestBeforeDelay=" + latestBeforeDelay +
+                ", latestAfterDelay=" + latestAfterDelay +
                 ", recordDelay=" + recordDelay +
                 ", recordBeforeDelay=" + recordBeforeDelay +
                 ", recordAfterDelay=" + recordAfterDelay +
-                ", queryDataInterval=" + queryDataInterval +
-                ", queryDelay=" + queryDelay +
-                ", queryOffsetDelay=" + queryOffsetDelay +
-                ", queryBeforeDelay=" + queryBeforeDelay +
-                ", queryAfterDelay=" + queryAfterDelay +
+                ", lookupDataInterval=" + lookupDataInterval +
+                ", lookupDelay=" + lookupDelay +
+                ", lookupOffsetDelay=" + lookupOffsetDelay +
+                ", lookupBeforeDelay=" + lookupBeforeDelay +
+                ", lookupAfterDelay=" + lookupAfterDelay +
                 '}';
     }
 }

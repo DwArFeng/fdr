@@ -53,7 +53,7 @@ public abstract class FullPersister<D extends Data> implements Persister<D> {
     @Override
     public LookupResult<D> lookup(LookupInfo lookupInfo) throws HandlerException {
         try {
-            return doQuery(lookupInfo);
+            return doLookup(lookupInfo);
         } catch (HandlerException e) {
             throw e;
         } catch (Exception e) {
@@ -61,12 +61,12 @@ public abstract class FullPersister<D extends Data> implements Persister<D> {
         }
     }
 
-    protected abstract LookupResult<D> doQuery(LookupInfo lookupInfo) throws Exception;
+    protected abstract LookupResult<D> doLookup(LookupInfo lookupInfo) throws Exception;
 
     @Override
     public List<LookupResult<D>> lookup(List<LookupInfo> lookupInfos) throws HandlerException {
         try {
-            return doQuery(lookupInfos);
+            return doLookup(lookupInfos);
         } catch (HandlerException e) {
             throw e;
         } catch (Exception e) {
@@ -74,7 +74,7 @@ public abstract class FullPersister<D extends Data> implements Persister<D> {
         }
     }
 
-    protected abstract List<LookupResult<D>> doQuery(List<LookupInfo> lookupInfos) throws Exception;
+    protected abstract List<LookupResult<D>> doLookup(List<LookupInfo> lookupInfos) throws Exception;
 
     @Override
     public String toString() {

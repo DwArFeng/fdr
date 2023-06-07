@@ -49,12 +49,12 @@ public abstract class InfluxdbBridgeDataPersister<D extends Data> extends FullPe
     protected abstract Point dataToPoint(D data);
 
     @Override
-    protected LookupResult<D> doQuery(LookupInfo lookupInfo) throws Exception {
+    protected LookupResult<D> doLookup(LookupInfo lookupInfo) throws Exception {
         return doSingleQuery(lookupInfo);
     }
 
     @Override
-    protected List<LookupResult<D>> doQuery(List<LookupInfo> lookupInfos) throws Exception {
+    protected List<LookupResult<D>> doLookup(List<LookupInfo> lookupInfos) throws Exception {
         List<LookupResult<D>> resultList = new ArrayList<>();
         for (LookupInfo lookupInfo : lookupInfos) {
             resultList.add(doSingleQuery(lookupInfo));
