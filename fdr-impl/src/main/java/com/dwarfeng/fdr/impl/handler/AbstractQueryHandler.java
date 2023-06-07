@@ -4,7 +4,6 @@ import com.dwarfeng.fdr.sdk.util.ViewUtil;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
 import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
-import com.dwarfeng.fdr.stack.bean.dto.QueryInfo.QueryLookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
 import com.dwarfeng.fdr.stack.exception.QueryNotSupportedException;
 import com.dwarfeng.fdr.stack.exception.UnsupportedMapperTypeException;
@@ -109,37 +108,60 @@ public abstract class AbstractQueryHandler implements QueryHandler {
         // 获取查询配置。
         LookupConfig config = getLookupConfig();
 
-        // 遍历查询信息，进行查询，构造 List<Mapper.Sequence>。
-        List<Mapper.Sequence> sequences = new ArrayList<>();
-        for (QueryLookupInfo queryLookupInfo : queryInfo.getQueryInfos()) {
-            sequences.add(querySequence(queryLookupInfo, config));
-        }
+        // 展开查询配置。
+        long maxPeriodSpan = config.getMaxPeriodSpan();
+        int maxPageSize = config.getMaxPageSize();
+        // 展开查询信息。
+        String preset = queryInfo.getPreset();
+        String[] params = queryInfo.getParams();
+        List<LongIdKey> pointKeys = queryInfo.getPointKeys();
+        Date startDate = ViewUtil.validStartDate(queryInfo.getStartDate());
+        Date endDate = ViewUtil.validEndDate(queryInfo.getEndDate());
+        boolean includeStartDate = queryInfo.isIncludeStartDate();
+        boolean includeEndDate = queryInfo.isIncludeEndDate();
+        List<QueryInfo.MapInfo> mapInfos = queryInfo.getMapInfos();
 
-        // 遍历映射信息，进行映射。
-        for (QueryInfo.QueryMapInfo queryMapInfo : queryInfo.getMapInfos()) {
-            sequences = mapSequence(queryMapInfo, sequences);
+        // 进行查询，构造 List<Mapper.Sequence>。
+        List<Mapper.Sequence> sequences = lookupSequences(
+                maxPeriodSpan, maxPageSize, preset, params, pointKeys, startDate, endDate, includeStartDate,
+                includeEndDate
+        );
+
+        // 进行映射。
+        sequences = mapSequences(mapInfos, sequences);
+        for (QueryInfo.MapInfo mapInfo : queryInfo.getMapInfos()) {
+            sequences = mapSingleSequence(mapInfo, sequences);
         }
 
         // 根据 List<Mapper.Sequence> 构造 QueryResult。
         return buildLookupResult(sequences);
     }
 
-    @SuppressWarnings("DuplicatedCode")
-    private Mapper.Sequence querySequence(QueryLookupInfo queryLookupInfo, LookupConfig config) throws Exception {
-        // 定义返回值。
-        List<Mapper.Item> items = new ArrayList<>();
+    private List<Mapper.Sequence> lookupSequences(
+            long maxPeriodSpan, int maxPageSize, String preset, String[] params, List<LongIdKey> pointKeys,
+            Date startDate, Date endDate, boolean includeStartDate, boolean includeEndDate
+    ) throws Exception {
+        // 构造查询结果。
+        List<Mapper.Sequence> sequences = new ArrayList<>(pointKeys.size());
 
-        // 展开查询配置。
-        long maxPeriodSpan = config.getMaxPeriodSpan();
-        int maxPageSize = config.getMaxPageSize();
-        // 展开查询信息。
-        String preset = queryLookupInfo.getPreset();
-        String[] params = queryLookupInfo.getParams();
-        LongIdKey pointKey = queryLookupInfo.getPointKey();
-        Date startDate = ViewUtil.validStartDate(queryLookupInfo.getStartDate());
-        Date endDate = ViewUtil.validEndDate(queryLookupInfo.getEndDate());
-        boolean includeStartDate = queryLookupInfo.isIncludeStartDate();
-        boolean includeEndDate = queryLookupInfo.isIncludeEndDate();
+        // 遍历 pointKeys，进行查询。
+        for (LongIdKey pointKey : pointKeys) {
+            sequences.add(lookupSingleSequence(
+                    maxPeriodSpan, maxPageSize, preset, params, pointKey, startDate, endDate, includeStartDate,
+                    includeEndDate
+            ));
+        }
+
+        // 返回结果。
+        return sequences;
+    }
+
+    private Mapper.Sequence lookupSingleSequence(
+            long maxPeriodSpan, int maxPageSize, String preset, String[] params, LongIdKey pointKey,
+            Date startDate, Date endDate, boolean includeStartDate, boolean includeEndDate
+    ) throws Exception {
+        // 定义中间变量。
+        List<Mapper.Item> items = new ArrayList<>();
 
         // 循环查询数据，每次查询的时间跨度最大为 maxPeriodSpan。
         Date anchorStartDate = startDate;
@@ -185,17 +207,28 @@ public abstract class AbstractQueryHandler implements QueryHandler {
             }
         } while (notLastPeriodFlag);
 
-        // 返回结果。
+        // 将查询结果添加到返回值中。
         return new Mapper.Sequence(pointKey, items, startDate, endDate);
     }
 
-    private List<Mapper.Sequence> mapSequence(QueryInfo.QueryMapInfo queryMapInfo, List<Mapper.Sequence> sequences)
+    private List<Mapper.Sequence> mapSequences(List<QueryInfo.MapInfo> mapInfos, List<Mapper.Sequence> sequences)
+            throws Exception {
+        // 遍历 mapInfos，进行映射。
+        for (QueryInfo.MapInfo mapInfo : mapInfos) {
+            sequences = mapSingleSequence(mapInfo, sequences);
+        }
+
+        // 返回结果。
+        return sequences;
+    }
+
+    private List<Mapper.Sequence> mapSingleSequence(QueryInfo.MapInfo mapInfo, List<Mapper.Sequence> sequences)
             throws Exception {
         // 展开映射信息。
-        String type = queryMapInfo.getType();
-        String param = queryMapInfo.getParam();
+        String type = mapInfo.getType();
+        String param = mapInfo.getParam();
 
-        // 根据 queryMapInfo 找到对应的 Mapper。
+        // 根据 mapInfo 找到对应的 Mapper。
         Mapper mapper = mapLocalCacheHandler.get(type);
         // 如果找不到对应的 Mapper，则抛出异常。
         if (mapper == null) {

@@ -7,7 +7,6 @@ import com.dwarfeng.subgrade.sdk.bean.key.WebInputLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -24,190 +23,138 @@ import java.util.stream.Collectors;
  */
 public class WebInputQueryInfo implements Dto {
 
-    private static final long serialVersionUID = 6709223628381791018L;
+    private static final long serialVersionUID = 6271896807009156128L;
 
+    @SuppressWarnings("DuplicatedCode")
     public static QueryInfo toStackBean(WebInputQueryInfo webInput) {
         if (Objects.isNull(webInput)) {
             return null;
         } else {
             return new QueryInfo(
-                    webInput.getLookupInfos().stream().map(WebInputQueryLookupInfo::toStackBean)
-                            .collect(Collectors.toList()),
-                    webInput.getMapInfos().stream().map(WebInputQueryMapInfo::toStackBean)
-                            .collect(Collectors.toList())
+                    webInput.getPreset(),
+                    webInput.getParams(),
+                    webInput.getPointKeys().stream().map(WebInputLongIdKey::toStackBean).collect(Collectors.toList()),
+                    webInput.getStartDate(),
+                    webInput.getEndDate(),
+                    webInput.isIncludeStartDate(),
+                    webInput.isIncludeEndDate(),
+                    webInput.getMapInfos().stream().map(WebInputMapInfo::toStackBean).collect(Collectors.toList())
             );
         }
     }
 
-    @JSONField(name = "lookup_infos")
+    @JSONField(name = "preset")
+    @NotNull
+    @NotEmpty
+    private String preset;
+
+    @JSONField(name = "params")
+    @NotNull
+    private String[] params;
+
+    @JSONField(name = "point_keys")
     @NotNull
     @Valid
-    private ValidateList<WebInputQueryLookupInfo> lookupInfos;
+    private ValidateList<WebInputLongIdKey> pointKeys;
+
+    @JSONField(name = "start_date")
+    @NotNull
+    private Date startDate;
+
+    @JSONField(name = "end_date")
+    @NotNull
+    private Date endDate;
+
+    @JSONField(name = "include_start_date")
+    private boolean includeStartDate;
+
+    @JSONField(name = "include_end_date")
+    private boolean includeEndDate;
 
     @JSONField(name = "map_infos")
     @NotNull
     @Valid
-    private ValidateList<WebInputQueryMapInfo> mapInfos;
+    private ValidateList<WebInputMapInfo> mapInfos;
 
     public WebInputQueryInfo() {
     }
 
-    @Nonnull
-    public ValidateList<WebInputQueryLookupInfo> getLookupInfos() {
-        return lookupInfos;
+    public String getPreset() {
+        return preset;
     }
 
-    public void setLookupInfos(ValidateList<WebInputQueryLookupInfo> lookupInfos) {
-        this.lookupInfos = lookupInfos;
+    public void setPreset(String preset) {
+        this.preset = preset;
     }
 
-    @Nonnull
-    public ValidateList<WebInputQueryMapInfo> getMapInfos() {
+    public String[] getParams() {
+        return params;
+    }
+
+    public void setParams(String[] params) {
+        this.params = params;
+    }
+
+    public ValidateList<WebInputLongIdKey> getPointKeys() {
+        return pointKeys;
+    }
+
+    public void setPointKeys(ValidateList<WebInputLongIdKey> pointKeys) {
+        this.pointKeys = pointKeys;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public boolean isIncludeStartDate() {
+        return includeStartDate;
+    }
+
+    public void setIncludeStartDate(boolean includeStartDate) {
+        this.includeStartDate = includeStartDate;
+    }
+
+    public boolean isIncludeEndDate() {
+        return includeEndDate;
+    }
+
+    public void setIncludeEndDate(boolean includeEndDate) {
+        this.includeEndDate = includeEndDate;
+    }
+
+    public ValidateList<WebInputMapInfo> getMapInfos() {
         return mapInfos;
     }
 
-    public void setMapInfos(ValidateList<WebInputQueryMapInfo> mapInfos) {
+    public void setMapInfos(ValidateList<WebInputMapInfo> mapInfos) {
         this.mapInfos = mapInfos;
     }
 
     @Override
     public String toString() {
         return "WebInputQueryInfo{" +
-                "lookupInfos=" + lookupInfos +
+                "preset='" + preset + '\'' +
+                ", params=" + Arrays.toString(params) +
+                ", pointKeys=" + pointKeys +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", includeStartDate=" + includeStartDate +
+                ", includeEndDate=" + includeEndDate +
                 ", mapInfos=" + mapInfos +
                 '}';
-    }
-
-    /**
-     * WebInput 查询查看信息。
-     *
-     * @author DwArFeng
-     * @since 2.0.0
-     */
-    public static class WebInputQueryLookupInfo implements Dto {
-
-        private static final long serialVersionUID = 7013251424453558444L;
-
-        public static QueryInfo.QueryLookupInfo toStackBean(WebInputQueryLookupInfo webInputQueryLookupInfo) {
-            if (Objects.isNull(webInputQueryLookupInfo)) {
-                return null;
-            } else {
-                return new QueryInfo.QueryLookupInfo(
-                        webInputQueryLookupInfo.getPreset(),
-                        webInputQueryLookupInfo.getParams(),
-                        WebInputLongIdKey.toStackBean(webInputQueryLookupInfo.getPointKey()),
-                        webInputQueryLookupInfo.getStartDate(),
-                        webInputQueryLookupInfo.getEndDate(),
-                        webInputQueryLookupInfo.isIncludeStartDate(),
-                        webInputQueryLookupInfo.isIncludeEndDate()
-                );
-            }
-        }
-
-        @JSONField(name = "preset")
-        @NotNull
-        @NotEmpty
-        private String preset;
-
-        @JSONField(name = "params")
-        @NotNull
-        private String[] params;
-
-        @JSONField(name = "point_key")
-        @NotNull
-        @Valid
-        private WebInputLongIdKey pointKey;
-
-        @JSONField(name = "start_date")
-        @NotNull
-        private Date startDate;
-
-        @JSONField(name = "end_date")
-        @NotNull
-        private Date endDate;
-
-        @JSONField(name = "include_start_date")
-        private boolean includeStartDate;
-
-        @JSONField(name = "include_end_date")
-        private boolean includeEndDate;
-
-        public WebInputQueryLookupInfo() {
-        }
-
-        @Nonnull
-        public String getPreset() {
-            return preset;
-        }
-
-        public void setPreset(String preset) {
-            this.preset = preset;
-        }
-
-        @Nonnull
-        public String[] getParams() {
-            return params;
-        }
-
-        public void setParams(String[] params) {
-            this.params = params;
-        }
-
-        @Nonnull
-        public WebInputLongIdKey getPointKey() {
-            return pointKey;
-        }
-
-        public void setPointKey(WebInputLongIdKey pointKey) {
-            this.pointKey = pointKey;
-        }
-
-        @Nullable
-        public Date getStartDate() {
-            return startDate;
-        }
-
-        public void setStartDate(Date startDate) {
-            this.startDate = startDate;
-        }
-
-        @Nullable
-        public Date getEndDate() {
-            return endDate;
-        }
-
-        public void setEndDate(Date endDate) {
-            this.endDate = endDate;
-        }
-
-        public boolean isIncludeStartDate() {
-            return includeStartDate;
-        }
-
-        public void setIncludeStartDate(boolean includeStartDate) {
-            this.includeStartDate = includeStartDate;
-        }
-
-        public boolean isIncludeEndDate() {
-            return includeEndDate;
-        }
-
-        public void setIncludeEndDate(boolean includeEndDate) {
-            this.includeEndDate = includeEndDate;
-        }
-
-        @Override
-        public String toString() {
-            return "WebInputQueryLookupInfo{" +
-                    "preset='" + preset + '\'' +
-                    ", params=" + Arrays.toString(params) +
-                    ", pointKey=" + pointKey +
-                    ", startDate=" + startDate +
-                    ", endDate=" + endDate +
-                    ", includeStartDate=" + includeStartDate +
-                    ", includeEndDate=" + includeEndDate +
-                    '}';
-        }
     }
 
     /**
@@ -216,17 +163,17 @@ public class WebInputQueryInfo implements Dto {
      * @author DwArFeng
      * @since 2.0.0
      */
-    public static class WebInputQueryMapInfo implements Dto {
+    public static class WebInputMapInfo implements Dto {
 
-        private static final long serialVersionUID = 7807478667872775082L;
+        private static final long serialVersionUID = 6871773652673371294L;
 
-        public static QueryInfo.QueryMapInfo toStackBean(WebInputQueryMapInfo webInputQueryMapInfo) {
-            if (Objects.isNull(webInputQueryMapInfo)) {
+        public static QueryInfo.MapInfo toStackBean(WebInputMapInfo webInputMapInfo) {
+            if (Objects.isNull(webInputMapInfo)) {
                 return null;
             } else {
-                return new QueryInfo.QueryMapInfo(
-                        webInputQueryMapInfo.getType(),
-                        webInputQueryMapInfo.getParam()
+                return new QueryInfo.MapInfo(
+                        webInputMapInfo.getType(),
+                        webInputMapInfo.getParam()
                 );
             }
         }
@@ -239,7 +186,7 @@ public class WebInputQueryInfo implements Dto {
         @JSONField(name = "param")
         private String param;
 
-        public WebInputQueryMapInfo() {
+        public WebInputMapInfo() {
         }
 
         @Nonnull
@@ -262,7 +209,7 @@ public class WebInputQueryInfo implements Dto {
 
         @Override
         public String toString() {
-            return "WebInputQueryMapInfo{" +
+            return "WebInputMapInfo{" +
                     "type='" + type + '\'' +
                     ", param='" + param + '\'' +
                     '}';

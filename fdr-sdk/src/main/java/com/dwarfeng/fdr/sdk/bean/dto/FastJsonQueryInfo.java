@@ -2,12 +2,11 @@ package com.dwarfeng.fdr.sdk.bean.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
-import com.dwarfeng.fdr.stack.bean.dto.QueryInfo.QueryMapInfo;
+import com.dwarfeng.fdr.stack.bean.dto.QueryInfo.MapInfo;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -22,223 +21,160 @@ import java.util.stream.Collectors;
  */
 public class FastJsonQueryInfo implements Dto {
 
-    private static final long serialVersionUID = 4908673177081928706L;
+    private static final long serialVersionUID = 6365426163907554999L;
 
     public static FastJsonQueryInfo of(QueryInfo queryInfo) {
         if (Objects.isNull(queryInfo)) {
             return null;
         } else {
             return new FastJsonQueryInfo(
-                    queryInfo.getQueryInfos().stream().map(FastJsonQueryLookupInfo::of).collect(Collectors.toList()),
-                    queryInfo.getMapInfos().stream().map(FastJsonQueryMapInfo::of).collect(Collectors.toList())
+                    queryInfo.getPreset(),
+                    queryInfo.getParams(),
+                    queryInfo.getPointKeys().stream().map(FastJsonLongIdKey::of).collect(Collectors.toList()),
+                    queryInfo.getStartDate(),
+                    queryInfo.getEndDate(),
+                    queryInfo.isIncludeStartDate(),
+                    queryInfo.isIncludeEndDate(),
+                    queryInfo.getMapInfos().stream().map(FastJsonMapInfo::of).collect(Collectors.toList())
             );
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public static QueryInfo toStackBean(FastJsonQueryInfo fastJson) {
         if (Objects.isNull(fastJson)) {
             return null;
         } else {
             return new QueryInfo(
-                    fastJson.getLookupInfos().stream().map(FastJsonQueryLookupInfo::toStackBean)
-                            .collect(Collectors.toList()),
-                    fastJson.getMapInfos().stream().map(FastJsonQueryMapInfo::toStackBean).collect(Collectors.toList())
+                    fastJson.getPreset(),
+                    fastJson.getParams(),
+                    fastJson.getPointKeys().stream().map(FastJsonLongIdKey::toStackBean).collect(Collectors.toList()),
+                    fastJson.getStartDate(),
+                    fastJson.getEndDate(),
+                    fastJson.isIncludeStartDate(),
+                    fastJson.isIncludeEndDate(),
+                    fastJson.getMapInfos().stream().map(FastJsonMapInfo::toStackBean).collect(Collectors.toList())
             );
         }
     }
 
-    @JSONField(name = "lookup_infos", ordinal = 1)
-    private List<FastJsonQueryLookupInfo> lookupInfos;
+    @JSONField(name = "preset", ordinal = 1)
+    private String preset;
 
-    @JSONField(name = "map_infos", ordinal = 2)
-    private List<FastJsonQueryMapInfo> mapInfos;
+    @JSONField(name = "params", ordinal = 2)
+    private String[] params;
+
+    @JSONField(name = "point_keys", ordinal = 3)
+    private List<FastJsonLongIdKey> pointKeys;
+
+    @JSONField(name = "start_date", ordinal = 4)
+    private Date startDate;
+
+    @JSONField(name = "end_date", ordinal = 5)
+    private Date endDate;
+
+    @JSONField(name = "include_start_date", ordinal = 6)
+    private boolean includeStartDate;
+
+    @JSONField(name = "include_end_date", ordinal = 7)
+    private boolean includeEndDate;
+
+    @JSONField(name = "map_infos", ordinal = 8)
+    private List<FastJsonMapInfo> mapInfos;
 
     public FastJsonQueryInfo() {
     }
 
-    public FastJsonQueryInfo(List<FastJsonQueryLookupInfo> lookupInfos, List<FastJsonQueryMapInfo> mapInfos) {
-        this.lookupInfos = lookupInfos;
+    public FastJsonQueryInfo(
+            String preset, String[] params, List<FastJsonLongIdKey> pointKeys, Date startDate, Date endDate,
+            boolean includeStartDate, boolean includeEndDate, List<FastJsonMapInfo> mapInfos
+    ) {
+        this.preset = preset;
+        this.params = params;
+        this.pointKeys = pointKeys;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.includeStartDate = includeStartDate;
+        this.includeEndDate = includeEndDate;
         this.mapInfos = mapInfos;
     }
 
-    @Nonnull
-    public List<FastJsonQueryLookupInfo> getLookupInfos() {
-        return lookupInfos;
+    public String getPreset() {
+        return preset;
     }
 
-    public void setLookupInfos(List<FastJsonQueryLookupInfo> lookupInfos) {
-        this.lookupInfos = lookupInfos;
+    public void setPreset(String preset) {
+        this.preset = preset;
     }
 
-    @Nonnull
-    public List<FastJsonQueryMapInfo> getMapInfos() {
+    public String[] getParams() {
+        return params;
+    }
+
+    public void setParams(String[] params) {
+        this.params = params;
+    }
+
+    public List<FastJsonLongIdKey> getPointKeys() {
+        return pointKeys;
+    }
+
+    public void setPointKeys(List<FastJsonLongIdKey> pointKeys) {
+        this.pointKeys = pointKeys;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public boolean isIncludeStartDate() {
+        return includeStartDate;
+    }
+
+    public void setIncludeStartDate(boolean includeStartDate) {
+        this.includeStartDate = includeStartDate;
+    }
+
+    public boolean isIncludeEndDate() {
+        return includeEndDate;
+    }
+
+    public void setIncludeEndDate(boolean includeEndDate) {
+        this.includeEndDate = includeEndDate;
+    }
+
+    public List<FastJsonMapInfo> getMapInfos() {
         return mapInfos;
     }
 
-    public void setMapInfos(List<FastJsonQueryMapInfo> mapInfos) {
+    public void setMapInfos(List<FastJsonMapInfo> mapInfos) {
         this.mapInfos = mapInfos;
     }
 
     @Override
     public String toString() {
         return "FastJsonQueryInfo{" +
-                "lookupInfos=" + lookupInfos +
+                "preset='" + preset + '\'' +
+                ", params=" + Arrays.toString(params) +
+                ", pointKeys=" + pointKeys +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", includeStartDate=" + includeStartDate +
+                ", includeEndDate=" + includeEndDate +
                 ", mapInfos=" + mapInfos +
                 '}';
-    }
-
-    /**
-     * FastJson 查询查看信息。
-     *
-     * @author DwArFeng
-     * @since 2.0.0
-     */
-    public static class FastJsonQueryLookupInfo implements Dto {
-
-        private static final long serialVersionUID = 3358997246242889769L;
-
-        public static FastJsonQueryLookupInfo of(QueryInfo.QueryLookupInfo queryLookupInfo) {
-            if (Objects.isNull(queryLookupInfo)) {
-                return null;
-            } else {
-                return new FastJsonQueryLookupInfo(
-                        queryLookupInfo.getPreset(),
-                        queryLookupInfo.getParams(),
-                        FastJsonLongIdKey.of(queryLookupInfo.getPointKey()),
-                        queryLookupInfo.getStartDate(),
-                        queryLookupInfo.getEndDate(),
-                        queryLookupInfo.isIncludeStartDate(),
-                        queryLookupInfo.isIncludeEndDate()
-                );
-            }
-        }
-
-        public static QueryInfo.QueryLookupInfo toStackBean(FastJsonQueryLookupInfo fastJsonQueryLookupInfo) {
-            if (Objects.isNull(fastJsonQueryLookupInfo)) {
-                return null;
-            } else {
-                return new QueryInfo.QueryLookupInfo(
-                        fastJsonQueryLookupInfo.getPreset(),
-                        fastJsonQueryLookupInfo.getParams(),
-                        FastJsonLongIdKey.toStackBean(fastJsonQueryLookupInfo.getPointKey()),
-                        fastJsonQueryLookupInfo.getStartDate(),
-                        fastJsonQueryLookupInfo.getEndDate(),
-                        fastJsonQueryLookupInfo.isIncludeStartDate(),
-                        fastJsonQueryLookupInfo.isIncludeEndDate()
-                );
-            }
-        }
-
-        @JSONField(name = "preset", ordinal = 1)
-        private String preset;
-
-        @JSONField(name = "params", ordinal = 2)
-        private String[] params;
-
-        @JSONField(name = "point_key", ordinal = 3)
-        private FastJsonLongIdKey pointKey;
-
-        @JSONField(name = "start_date", ordinal = 4)
-        private Date startDate;
-
-        @JSONField(name = "end_date", ordinal = 5)
-        private Date endDate;
-
-        @JSONField(name = "include_start_date", ordinal = 6)
-        private boolean includeStartDate;
-
-        @JSONField(name = "include_end_date", ordinal = 7)
-        private boolean includeEndDate;
-
-        public FastJsonQueryLookupInfo() {
-        }
-
-        public FastJsonQueryLookupInfo(
-                String preset, String[] params, FastJsonLongIdKey pointKey, Date startDate, Date endDate,
-                boolean includeStartDate, boolean includeEndDate
-        ) {
-            this.preset = preset;
-            this.params = params;
-            this.pointKey = pointKey;
-            this.startDate = startDate;
-            this.endDate = endDate;
-            this.includeStartDate = includeStartDate;
-            this.includeEndDate = includeEndDate;
-        }
-
-        @Nonnull
-        public String getPreset() {
-            return preset;
-        }
-
-        public void setPreset(String preset) {
-            this.preset = preset;
-        }
-
-        @Nonnull
-        public String[] getParams() {
-            return params;
-        }
-
-        public void setParams(String[] params) {
-            this.params = params;
-        }
-
-        @Nonnull
-        public FastJsonLongIdKey getPointKey() {
-            return pointKey;
-        }
-
-        public void setPointKey(FastJsonLongIdKey pointKey) {
-            this.pointKey = pointKey;
-        }
-
-        @Nullable
-        public Date getStartDate() {
-            return startDate;
-        }
-
-        public void setStartDate(Date startDate) {
-            this.startDate = startDate;
-        }
-
-        @Nullable
-        public Date getEndDate() {
-            return endDate;
-        }
-
-        public void setEndDate(Date endDate) {
-            this.endDate = endDate;
-        }
-
-        public boolean isIncludeStartDate() {
-            return includeStartDate;
-        }
-
-        public void setIncludeStartDate(boolean includeStartDate) {
-            this.includeStartDate = includeStartDate;
-        }
-
-        public boolean isIncludeEndDate() {
-            return includeEndDate;
-        }
-
-        public void setIncludeEndDate(boolean includeEndDate) {
-            this.includeEndDate = includeEndDate;
-        }
-
-        @Override
-        public String toString() {
-            return "FastJsonQueryLookupInfo{" +
-                    "preset='" + preset + '\'' +
-                    ", params=" + Arrays.toString(params) +
-                    ", pointKey=" + pointKey +
-                    ", startDate=" + startDate +
-                    ", endDate=" + endDate +
-                    ", includeStartDate=" + includeStartDate +
-                    ", includeEndDate=" + includeEndDate +
-                    '}';
-        }
     }
 
     /**
@@ -247,28 +183,28 @@ public class FastJsonQueryInfo implements Dto {
      * @author DwArFeng
      * @since 2.0.0
      */
-    public static class FastJsonQueryMapInfo implements Dto {
+    public static class FastJsonMapInfo implements Dto {
 
-        private static final long serialVersionUID = 3306095557282041507L;
+        private static final long serialVersionUID = 711135728575826971L;
 
-        public static FastJsonQueryMapInfo of(QueryMapInfo queryMapInfo) {
-            if (Objects.isNull(queryMapInfo)) {
+        public static FastJsonMapInfo of(MapInfo mapInfo) {
+            if (Objects.isNull(mapInfo)) {
                 return null;
             } else {
-                return new FastJsonQueryMapInfo(
-                        queryMapInfo.getType(),
-                        queryMapInfo.getParam()
+                return new FastJsonMapInfo(
+                        mapInfo.getType(),
+                        mapInfo.getParam()
                 );
             }
         }
 
-        public static QueryMapInfo toStackBean(FastJsonQueryMapInfo fastJsonQueryMapInfo) {
-            if (Objects.isNull(fastJsonQueryMapInfo)) {
+        public static MapInfo toStackBean(FastJsonMapInfo fastJsonMapInfo) {
+            if (Objects.isNull(fastJsonMapInfo)) {
                 return null;
             } else {
-                return new QueryMapInfo(
-                        fastJsonQueryMapInfo.getType(),
-                        fastJsonQueryMapInfo.getParam()
+                return new MapInfo(
+                        fastJsonMapInfo.getType(),
+                        fastJsonMapInfo.getParam()
                 );
             }
         }
@@ -279,10 +215,10 @@ public class FastJsonQueryInfo implements Dto {
         @JSONField(name = "param", ordinal = 2)
         private String param;
 
-        public FastJsonQueryMapInfo() {
+        public FastJsonMapInfo() {
         }
 
-        public FastJsonQueryMapInfo(String type, String param) {
+        public FastJsonMapInfo(String type, String param) {
             this.type = type;
             this.param = param;
         }
@@ -307,7 +243,7 @@ public class FastJsonQueryInfo implements Dto {
 
         @Override
         public String toString() {
-            return "FastJsonQueryMapInfo{" +
+            return "FastJsonMapInfo{" +
                     "type='" + type + '\'' +
                     ", param='" + param + '\'' +
                     '}';

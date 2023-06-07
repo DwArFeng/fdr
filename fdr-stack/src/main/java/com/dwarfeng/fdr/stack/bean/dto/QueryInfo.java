@@ -4,7 +4,6 @@ import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -23,161 +22,110 @@ import java.util.List;
  */
 public class QueryInfo implements Dto {
 
-    private static final long serialVersionUID = 3748483438711703570L;
+    private static final long serialVersionUID = 9114720423426887457L;
 
-    private List<QueryLookupInfo> lookupInfos;
-    private List<QueryMapInfo> mapInfos;
+    private String preset;
+    private String[] params;
+    private List<LongIdKey> pointKeys;
+    private Date startDate;
+    private Date endDate;
+    private boolean includeStartDate;
+    private boolean includeEndDate;
+    private List<MapInfo> mapInfos;
 
     public QueryInfo() {
     }
 
-    public QueryInfo(List<QueryLookupInfo> lookupInfos, List<QueryMapInfo> mapInfos) {
-        this.lookupInfos = lookupInfos;
+    public QueryInfo(
+            String preset, String[] params, List<LongIdKey> pointKeys, Date startDate, Date endDate,
+            boolean includeStartDate, boolean includeEndDate, List<MapInfo> mapInfos
+    ) {
+        this.preset = preset;
+        this.params = params;
+        this.pointKeys = pointKeys;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.includeStartDate = includeStartDate;
+        this.includeEndDate = includeEndDate;
         this.mapInfos = mapInfos;
     }
 
-    @Nonnull
-    public List<QueryLookupInfo> getQueryInfos() {
-        return lookupInfos;
+    public String getPreset() {
+        return preset;
     }
 
-    public void setQueryInfos(List<QueryLookupInfo> queryLookupInfos) {
-        this.lookupInfos = queryLookupInfos;
+    public void setPreset(String preset) {
+        this.preset = preset;
     }
 
-    @Nonnull
-    public List<QueryMapInfo> getMapInfos() {
+    public String[] getParams() {
+        return params;
+    }
+
+    public void setParams(String[] params) {
+        this.params = params;
+    }
+
+    public List<LongIdKey> getPointKeys() {
+        return pointKeys;
+    }
+
+    public void setPointKeys(List<LongIdKey> pointKeys) {
+        this.pointKeys = pointKeys;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public boolean isIncludeStartDate() {
+        return includeStartDate;
+    }
+
+    public void setIncludeStartDate(boolean includeStartDate) {
+        this.includeStartDate = includeStartDate;
+    }
+
+    public boolean isIncludeEndDate() {
+        return includeEndDate;
+    }
+
+    public void setIncludeEndDate(boolean includeEndDate) {
+        this.includeEndDate = includeEndDate;
+    }
+
+    public List<MapInfo> getMapInfos() {
         return mapInfos;
     }
 
-    public void setMapInfos(List<QueryMapInfo> queryMapInfos) {
-        this.mapInfos = queryMapInfos;
+    public void setMapInfos(List<MapInfo> mapInfos) {
+        this.mapInfos = mapInfos;
     }
 
     @Override
     public String toString() {
         return "QueryInfo{" +
-                "lookupInfos=" + lookupInfos +
+                "preset='" + preset + '\'' +
+                ", params=" + Arrays.toString(params) +
+                ", pointKeys=" + pointKeys +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", includeStartDate=" + includeStartDate +
+                ", includeEndDate=" + includeEndDate +
                 ", mapInfos=" + mapInfos +
                 '}';
-    }
-
-    /**
-     * 查询查看信息。
-     *
-     * <p>
-     * 该实体表示查看信息，包含了查看的预设、参数、开始时间、结束时间、是否包含开始时间、是否包含结束时间、发生时间的排序。
-     *
-     * <p>
-     * 该实体包含了查看过程中的第一步，也就是查询，所需要的信息。
-     *
-     * <p>
-     * 有关查看的详细信息，请参阅术语。
-     *
-     * @author DwArFeng
-     * @since 2.0.0
-     */
-    public static class QueryLookupInfo implements Dto {
-
-        private static final long serialVersionUID = 8158742198142751018L;
-
-        private String preset;
-        private String[] params;
-        private LongIdKey pointKey;
-        private Date startDate;
-        private Date endDate;
-        private boolean includeStartDate;
-        private boolean includeEndDate;
-
-        public QueryLookupInfo() {
-        }
-
-        public QueryLookupInfo(
-                String preset, String[] params, LongIdKey pointKey, Date startDate, Date endDate,
-                boolean includeStartDate, boolean includeEndDate
-        ) {
-            this.preset = preset;
-            this.params = params;
-            this.pointKey = pointKey;
-            this.startDate = startDate;
-            this.endDate = endDate;
-            this.includeStartDate = includeStartDate;
-            this.includeEndDate = includeEndDate;
-        }
-
-        @Nonnull
-        public String getPreset() {
-            return preset;
-        }
-
-        public void setPreset(String preset) {
-            this.preset = preset;
-        }
-
-        @Nonnull
-        public String[] getParams() {
-            return params;
-        }
-
-        public void setParams(String[] params) {
-            this.params = params;
-        }
-
-        @Nonnull
-        public LongIdKey getPointKey() {
-            return pointKey;
-        }
-
-        public void setPointKey(LongIdKey pointKey) {
-            this.pointKey = pointKey;
-        }
-
-        @Nullable
-        public Date getStartDate() {
-            return startDate;
-        }
-
-        public void setStartDate(Date startDate) {
-            this.startDate = startDate;
-        }
-
-        @Nullable
-        public Date getEndDate() {
-            return endDate;
-        }
-
-        public void setEndDate(Date endDate) {
-            this.endDate = endDate;
-        }
-
-        public boolean isIncludeStartDate() {
-            return includeStartDate;
-        }
-
-        public void setIncludeStartDate(boolean includeStartDate) {
-            this.includeStartDate = includeStartDate;
-        }
-
-        public boolean isIncludeEndDate() {
-            return includeEndDate;
-        }
-
-        public void setIncludeEndDate(boolean includeEndDate) {
-            this.includeEndDate = includeEndDate;
-        }
-
-        @Override
-        public String toString() {
-            return "QueryLookupInfo{" +
-                    "preset='" + preset + '\'' +
-                    ", params=" + Arrays.toString(params) +
-                    ", pointKey=" + pointKey +
-                    ", startDate=" + startDate +
-                    ", endDate=" + endDate +
-                    ", includeStartDate=" + includeStartDate +
-                    ", includeEndDate=" + includeEndDate +
-                    '}';
-        }
     }
 
     /**
@@ -195,17 +143,17 @@ public class QueryInfo implements Dto {
      * @author DwArFeng
      * @since 2.0.0
      */
-    public static class QueryMapInfo implements Dto {
+    public static class MapInfo implements Dto {
 
-        private static final long serialVersionUID = -850889065992336466L;
+        private static final long serialVersionUID = 6044370873036586245L;
 
         private String type;
         private String param;
 
-        public QueryMapInfo() {
+        public MapInfo() {
         }
 
-        public QueryMapInfo(String type, String param) {
+        public MapInfo(String type, String param) {
             this.type = type;
             this.param = param;
         }
@@ -230,7 +178,7 @@ public class QueryInfo implements Dto {
 
         @Override
         public String toString() {
-            return "QueryMapInfo{" +
+            return "MapInfo{" +
                     "type='" + type + '\'' +
                     ", param='" + param + '\'' +
                     '}';
