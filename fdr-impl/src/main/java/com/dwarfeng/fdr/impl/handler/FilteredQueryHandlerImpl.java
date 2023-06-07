@@ -4,6 +4,7 @@ import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
 import com.dwarfeng.fdr.stack.handler.FilteredQueryHandler;
 import com.dwarfeng.fdr.stack.handler.MapLocalCacheHandler;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -22,9 +23,10 @@ public class FilteredQueryHandlerImpl extends AbstractQueryHandler implements Fi
 
     public FilteredQueryHandlerImpl(
             MapLocalCacheHandler mapLocalCacheHandler,
+            ThreadPoolTaskExecutor executor,
             List<Bridge> bridges
     ) {
-        super(mapLocalCacheHandler, bridges);
+        super(mapLocalCacheHandler, executor, bridges);
     }
 
     @PostConstruct

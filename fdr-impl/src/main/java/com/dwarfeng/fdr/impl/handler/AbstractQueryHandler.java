@@ -13,10 +13,13 @@ import com.dwarfeng.fdr.stack.handler.QueryHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 /**
  * 组织处理器的抽象实现。
@@ -28,15 +31,19 @@ public abstract class AbstractQueryHandler implements QueryHandler {
 
     protected final MapLocalCacheHandler mapLocalCacheHandler;
 
+    protected final ThreadPoolTaskExecutor executor;
+
     protected final List<Bridge> bridges;
 
     protected Bridge.Persister<? extends Data> persister;
 
     public AbstractQueryHandler(
             MapLocalCacheHandler mapLocalCacheHandler,
+            ThreadPoolTaskExecutor executor,
             List<Bridge> bridges
     ) {
         this.mapLocalCacheHandler = mapLocalCacheHandler;
+        this.executor = executor;
         this.bridges = bridges;
     }
 
@@ -92,15 +99,47 @@ public abstract class AbstractQueryHandler implements QueryHandler {
             if (persister.writeOnly()) {
                 throw new QueryNotSupportedException();
             }
-            List<QueryResult> resultList = new ArrayList<>();
-            for (QueryInfo queryInfo : queryInfos) {
-                resultList.add(querySingle(queryInfo));
+
+            // 构造查询结果，并初始化。
+            List<QueryResult> queryResults = new ArrayList<>(queryInfos.size());
+            for (int i = 0; i < queryInfos.size(); i++) {
+                queryResults.add(null);
             }
-            return resultList;
+
+            // 遍历 queryInfos，异步查询。
+            List<CompletableFuture<?>> futures = new ArrayList<>(queryInfos.size());
+            for (int i = 0; i < queryInfos.size(); i++) {
+                final int index = i;
+                final QueryInfo queryInfo = queryInfos.get(index);
+                CompletableFuture<Void> future = CompletableFuture.runAsync(
+                        () -> {
+                            QueryResult queryResult = wrappedQuerySingle(queryInfo);
+                            queryResults.set(index, queryResult);
+                        },
+                        executor
+                );
+                futures.add(future);
+            }
+            try {
+                CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+            } catch (CompletionException e) {
+                throw (Exception) e.getCause();
+            }
+
+            // 返回结果。
+            return queryResults;
         } catch (HandlerException e) {
             throw e;
         } catch (Exception e) {
             throw new HandlerException(e);
+        }
+    }
+
+    private QueryResult wrappedQuerySingle(QueryInfo queryInfo) throws CompletionException {
+        try {
+            return querySingle(queryInfo);
+        } catch (Exception e) {
+            throw new CompletionException(e);
         }
     }
 
@@ -141,19 +180,51 @@ public abstract class AbstractQueryHandler implements QueryHandler {
             long maxPeriodSpan, int maxPageSize, String preset, String[] params, List<LongIdKey> pointKeys,
             Date startDate, Date endDate, boolean includeStartDate, boolean includeEndDate
     ) throws Exception {
-        // 构造查询结果。
+        // 构造查询结果，并初始化。
         List<Mapper.Sequence> sequences = new ArrayList<>(pointKeys.size());
+        for (int i = 0; i < pointKeys.size(); i++) {
+            sequences.add(null);
+        }
 
-        // 遍历 pointKeys，进行查询。
-        for (LongIdKey pointKey : pointKeys) {
-            sequences.add(lookupSingleSequence(
-                    maxPeriodSpan, maxPageSize, preset, params, pointKey, startDate, endDate, includeStartDate,
-                    includeEndDate
-            ));
+        // 遍历 pointKeys，异步查询。
+        List<CompletableFuture<?>> futures = new ArrayList<>(pointKeys.size());
+        for (int i = 0; i < pointKeys.size(); i++) {
+            final int index = i;
+            final LongIdKey pointKey = pointKeys.get(index);
+            CompletableFuture<Void> future = CompletableFuture.runAsync(
+                    () -> {
+                        Mapper.Sequence sequence = wrappedLookupSingleSequence(
+                                maxPeriodSpan, maxPageSize, preset, params, pointKey, startDate, endDate,
+                                includeStartDate, includeEndDate
+                        );
+                        sequences.set(index, sequence);
+                    },
+                    executor
+            );
+            futures.add(future);
+        }
+        try {
+            CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        } catch (CompletionException e) {
+            throw (Exception) e.getCause();
         }
 
         // 返回结果。
         return sequences;
+    }
+
+    private Mapper.Sequence wrappedLookupSingleSequence(
+            long maxPeriodSpan, int maxPageSize, String preset, String[] params, LongIdKey pointKey,
+            Date startDate, Date endDate, boolean includeStartDate, boolean includeEndDate
+    ) throws CompletionException {
+        try {
+            return lookupSingleSequence(
+                    maxPeriodSpan, maxPageSize, preset, params, pointKey, startDate, endDate, includeStartDate,
+                    includeEndDate
+            );
+        } catch (Exception e) {
+            throw new CompletionException(e);
+        }
     }
 
     private Mapper.Sequence lookupSingleSequence(

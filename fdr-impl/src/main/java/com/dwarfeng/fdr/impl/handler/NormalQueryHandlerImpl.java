@@ -4,6 +4,7 @@ import com.dwarfeng.fdr.stack.handler.MapLocalCacheHandler;
 import com.dwarfeng.fdr.stack.handler.NormalQueryHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -22,9 +23,10 @@ public class NormalQueryHandlerImpl extends AbstractQueryHandler implements Norm
 
     public NormalQueryHandlerImpl(
             MapLocalCacheHandler mapLocalCacheHandler,
+            ThreadPoolTaskExecutor executor,
             List<Bridge> bridges
     ) {
-        super(mapLocalCacheHandler, bridges);
+        super(mapLocalCacheHandler, executor, bridges);
     }
 
     @PostConstruct

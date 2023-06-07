@@ -3,6 +3,7 @@ package com.dwarfeng.fdr.impl.service.telqos;
 import com.alibaba.fastjson.JSON;
 import com.dwarfeng.dutil.basic.io.IOUtil;
 import com.dwarfeng.dutil.basic.io.StringOutputStream;
+import com.dwarfeng.dutil.basic.mea.TimeMeasurer;
 import com.dwarfeng.fdr.sdk.bean.dto.FastJsonLookupInfo;
 import com.dwarfeng.fdr.sdk.bean.dto.FastJsonQueryInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
@@ -147,8 +148,16 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
             throw new UnsupportedOperationException("not supported yet");
         }
 
-        // 查询数据。
+        // 查询数据，并计时。
+        TimeMeasurer tm = new TimeMeasurer();
+        tm.start();
         List<D> datas = viewQosService.inspect(pointKeys);
+        tm.stop();
+
+        // 输出执行时间。
+        context.sendMessage("");
+        context.sendMessage("执行时间：" + tm.getTimeMs() + "ms");
+        context.sendMessage("");
 
         // 输出数据。
         while (true) {
@@ -185,9 +194,17 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
             throw new UnsupportedOperationException("not supported yet");
         }
 
-        // 查询数据。
+        // 查询数据，并计时。
+        TimeMeasurer tm = new TimeMeasurer();
+        tm.start();
         LookupResult<D> lookupResult = viewQosService.query(lookupInfo);
+        tm.stop();
         List<D> datas = lookupResult.getDatas();
+
+        // 输出执行时间。
+        context.sendMessage("");
+        context.sendMessage("执行时间：" + tm.getTimeMs() + "ms");
+        context.sendMessage("");
 
         // 输出数据。
         while (true) {
@@ -225,9 +242,17 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
             throw new UnsupportedOperationException("not supported yet");
         }
 
-        // 查询数据。
+        // 查询数据，并计时。
+        TimeMeasurer tm = new TimeMeasurer();
+        tm.start();
         QueryResult queryResult = viewQosService.lookup(queryInfo);
+        tm.stop();
         List<QueryResult.Sequence> sequences = queryResult.getSequences();
+
+        // 输出执行时间。
+        context.sendMessage("");
+        context.sendMessage("执行时间：" + tm.getTimeMs() + "ms");
+        context.sendMessage("");
 
         // 输出数据。
         int sequenceIndex;
