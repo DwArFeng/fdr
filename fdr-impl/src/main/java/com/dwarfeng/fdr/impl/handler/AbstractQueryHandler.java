@@ -90,6 +90,7 @@ public abstract class AbstractQueryHandler implements QueryHandler {
         return buildLookupResult(sequences);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private Mapper.Sequence querySequence(QueryLookupInfo queryLookupInfo, LookupConfig config) throws Exception {
         // 定义返回值。
         List<Mapper.Item> items = new ArrayList<>();

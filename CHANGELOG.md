@@ -10,6 +10,7 @@
   - com.dwarfeng.fdr.impl.handler.bridge.mock.MockBridge。
   - com.dwarfeng.fdr.impl.handler.bridge.hibernate.HibernateBridge。
   - com.dwarfeng.fdr.impl.handler.bridge.redis.RedisBridge。
+  - com.dwarfeng.fdr.impl.handler.bridge.influxdb.InfluxdbBridge。
 
 #### Bug修复
 
