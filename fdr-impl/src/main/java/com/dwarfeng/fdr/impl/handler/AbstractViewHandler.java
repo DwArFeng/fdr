@@ -1,11 +1,9 @@
 package com.dwarfeng.fdr.impl.handler;
 
-import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
-import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
-import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
-import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
+import com.dwarfeng.fdr.stack.bean.dto.*;
 import com.dwarfeng.fdr.stack.exception.LatestNotSupportedException;
 import com.dwarfeng.fdr.stack.exception.LookupNotSupportedException;
+import com.dwarfeng.fdr.stack.exception.NativeQueryNotSupportedException;
 import com.dwarfeng.fdr.stack.exception.QueryNotSupportedException;
 import com.dwarfeng.fdr.stack.handler.KeepHandler;
 import com.dwarfeng.fdr.stack.handler.PersistHandler;
@@ -14,12 +12,11 @@ import com.dwarfeng.fdr.stack.handler.ViewHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 /**
  * 观察处理器的抽象实现。
@@ -28,8 +25,6 @@ import java.util.concurrent.CompletableFuture;
  * @since 2.0.0
  */
 public abstract class AbstractViewHandler<D extends Data> implements ViewHandler<D> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractViewHandler.class);
 
     protected final KeepHandler<D> keepHandler;
     protected final PersistHandler<D> persistHandler;
@@ -82,6 +77,22 @@ public abstract class AbstractViewHandler<D extends Data> implements ViewHandler
     }
 
     @Override
+    public QueryResult nativeQuery(NativeQueryInfo queryInfo) throws HandlerException {
+        if (persistHandler.writeOnly()) {
+            throw new NativeQueryNotSupportedException();
+        }
+        return persistHandler.nativeQuery(queryInfo);
+    }
+
+    @Override
+    public List<QueryResult> nativeQuery(List<NativeQueryInfo> queryInfos) throws HandlerException {
+        if (persistHandler.writeOnly()) {
+            throw new NativeQueryNotSupportedException();
+        }
+        return persistHandler.nativeQuery(queryInfos);
+    }
+
+    @Override
     public QueryResult query(QueryInfo queryInfo) throws HandlerException {
         if (persistHandler.writeOnly()) {
             throw new QueryNotSupportedException();
@@ -97,118 +108,133 @@ public abstract class AbstractViewHandler<D extends Data> implements ViewHandler
         return queryHandler.query(queryInfos);
     }
 
-    @SuppressWarnings("DuplicatedCode")
     @Override
     public CompletableFuture<D> latestAsync(LongIdKey pointKey) throws HandlerException {
         if (keepHandler.writeOnly()) {
             throw new LatestNotSupportedException();
         }
-        return CompletableFuture.supplyAsync(
-                () -> {
-                    try {
-                        return latest(pointKey);
-                    } catch (HandlerException e) {
-                        LOGGER.warn("发生异常, 异常信息如下", e);
-                        return null;
-                    }
-                },
-                executor
-        );
+        return CompletableFuture.supplyAsync(() -> wrappedLatest(pointKey), executor);
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    private D wrappedLatest(LongIdKey pointKey) throws CompletionException {
+        try {
+            return keepHandler.latest(pointKey);
+        } catch (HandlerException e) {
+            throw new CompletionException(e);
+        }
+    }
+
     @Override
     public CompletableFuture<List<D>> latestAsync(List<LongIdKey> pointKeys) throws HandlerException {
         if (keepHandler.writeOnly()) {
             throw new LatestNotSupportedException();
         }
-        return CompletableFuture.supplyAsync(
-                () -> {
-                    try {
-                        return latest(pointKeys);
-                    } catch (HandlerException e) {
-                        LOGGER.warn("发生异常, 异常信息如下", e);
-                        return null;
-                    }
-                },
-                executor
-        );
+        return CompletableFuture.supplyAsync(() -> wrappedLatest(pointKeys), executor);
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    private List<D> wrappedLatest(List<LongIdKey> pointKeys) throws CompletionException {
+        try {
+            return keepHandler.latest(pointKeys);
+        } catch (HandlerException e) {
+            throw new CompletionException(e);
+        }
+    }
+
     @Override
     public CompletableFuture<LookupResult<D>> lookupAsync(LookupInfo lookupInfo) throws HandlerException {
         if (persistHandler.writeOnly()) {
             throw new LookupNotSupportedException();
         }
-        return CompletableFuture.supplyAsync(
-                () -> {
-                    try {
-                        return lookup(lookupInfo);
-                    } catch (HandlerException e) {
-                        LOGGER.warn("发生异常, 异常信息如下", e);
-                        return null;
-                    }
-                },
-                executor
-        );
+        return CompletableFuture.supplyAsync(() -> wrappedLookup(lookupInfo), executor);
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    private LookupResult<D> wrappedLookup(LookupInfo lookupInfo) throws CompletionException {
+        try {
+            return persistHandler.lookup(lookupInfo);
+        } catch (HandlerException e) {
+            throw new CompletionException(e);
+        }
+    }
+
     @Override
     public CompletableFuture<List<LookupResult<D>>> lookupAsync(List<LookupInfo> lookupInfos) throws HandlerException {
         if (persistHandler.writeOnly()) {
             throw new LookupNotSupportedException();
         }
-        return CompletableFuture.supplyAsync(
-                () -> {
-                    try {
-                        return lookup(lookupInfos);
-                    } catch (HandlerException e) {
-                        LOGGER.warn("发生异常, 异常信息如下", e);
-                        return null;
-                    }
-                },
-                executor
-        );
+        return CompletableFuture.supplyAsync(() -> wrappedLookup(lookupInfos), executor);
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    private List<LookupResult<D>> wrappedLookup(List<LookupInfo> lookupInfos) throws CompletionException {
+        try {
+            return persistHandler.lookup(lookupInfos);
+        } catch (HandlerException e) {
+            throw new CompletionException(e);
+        }
+    }
+
+    @Override
+    public CompletableFuture<QueryResult> nativeQueryAsync(NativeQueryInfo queryInfo) throws HandlerException {
+        if (persistHandler.writeOnly()) {
+            throw new NativeQueryNotSupportedException();
+        }
+        return CompletableFuture.supplyAsync(() -> wrappedNativeQuery(queryInfo), executor);
+    }
+
+    private QueryResult wrappedNativeQuery(NativeQueryInfo queryInfo) throws CompletionException {
+        try {
+            return persistHandler.nativeQuery(queryInfo);
+        } catch (HandlerException e) {
+            throw new CompletionException(e);
+        }
+    }
+
+    @Override
+    public CompletableFuture<List<QueryResult>> nativeQueryAsync(List<NativeQueryInfo> queryInfos)
+            throws HandlerException {
+        if (persistHandler.writeOnly()) {
+            throw new NativeQueryNotSupportedException();
+        }
+        return CompletableFuture.supplyAsync(() -> wrappedNativeQuery(queryInfos), executor);
+    }
+
+    private List<QueryResult> wrappedNativeQuery(List<NativeQueryInfo> queryInfos) throws CompletionException {
+        try {
+            return persistHandler.nativeQuery(queryInfos);
+        } catch (HandlerException e) {
+            throw new CompletionException(e);
+        }
+    }
+
     @Override
     public CompletableFuture<QueryResult> queryAsync(QueryInfo queryInfo) throws HandlerException {
         if (persistHandler.writeOnly()) {
             throw new QueryNotSupportedException();
         }
-        return CompletableFuture.supplyAsync(
-                () -> {
-                    try {
-                        return query(queryInfo);
-                    } catch (HandlerException e) {
-                        LOGGER.warn("发生异常, 异常信息如下", e);
-                        return null;
-                    }
-                },
-                executor
-        );
+        return CompletableFuture.supplyAsync(() -> wrappedQuery(queryInfo), executor);
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    private QueryResult wrappedQuery(QueryInfo queryInfo) throws CompletionException {
+        try {
+            return queryHandler.query(queryInfo);
+        } catch (HandlerException e) {
+            throw new CompletionException(e);
+        }
+    }
+
     @Override
     public CompletableFuture<List<QueryResult>> queryAsync(List<QueryInfo> queryInfos) throws HandlerException {
         if (persistHandler.writeOnly()) {
             throw new QueryNotSupportedException();
         }
-        return CompletableFuture.supplyAsync(
-                () -> {
-                    try {
-                        return query(queryInfos);
-                    } catch (HandlerException e) {
-                        LOGGER.warn("发生异常, 异常信息如下", e);
-                        return null;
-                    }
-                },
-                executor
-        );
+        return CompletableFuture.supplyAsync(() -> wrappedQuery(queryInfos), executor);
+    }
+
+    private List<QueryResult> wrappedQuery(List<QueryInfo> queryInfos) throws CompletionException {
+        try {
+            return queryHandler.query(queryInfos);
+        } catch (HandlerException e) {
+            throw new CompletionException(e);
+        }
     }
 
     @Override

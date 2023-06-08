@@ -27,4 +27,5 @@ public final class Constants {
      * InfluxDB 字段名：消息。
      */
     public static final String FILED_NAME_MESSAGE = "message";
+
 }

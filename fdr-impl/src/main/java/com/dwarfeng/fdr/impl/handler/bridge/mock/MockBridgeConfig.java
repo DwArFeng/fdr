@@ -44,6 +44,13 @@ public class MockBridgeConfig {
     @Value("${bridge.mock.lookup.after_delay}")
     private long lookupAfterDelay;
 
+    @Value("${bridge.mock.native_query.delay_per_second}")
+    private long nativeQueryDelayPerSecond;
+    @Value("${bridge.mock.native_query.before_delay}")
+    private long nativeQueryBeforeDelay;
+    @Value("${bridge.mock.native_query.after_delay}")
+    private long nativeQueryAfterDelay;
+
     public long getUpdateDelay() {
         return updateDelay;
     }
@@ -156,6 +163,30 @@ public class MockBridgeConfig {
         this.lookupAfterDelay = lookupAfterDelay;
     }
 
+    public long getNativeQueryDelayPerSecond() {
+        return nativeQueryDelayPerSecond;
+    }
+
+    public void setNativeQueryDelayPerSecond(long nativeQueryDelayPerSecond) {
+        this.nativeQueryDelayPerSecond = nativeQueryDelayPerSecond;
+    }
+
+    public long getNativeQueryBeforeDelay() {
+        return nativeQueryBeforeDelay;
+    }
+
+    public void setNativeQueryBeforeDelay(long nativeQueryBeforeDelay) {
+        this.nativeQueryBeforeDelay = nativeQueryBeforeDelay;
+    }
+
+    public long getNativeQueryAfterDelay() {
+        return nativeQueryAfterDelay;
+    }
+
+    public void setNativeQueryAfterDelay(long nativeQueryAfterDelay) {
+        this.nativeQueryAfterDelay = nativeQueryAfterDelay;
+    }
+
     @Override
     public String toString() {
         return "MockBridgeConfig{" +
@@ -173,6 +204,9 @@ public class MockBridgeConfig {
                 ", lookupOffsetDelay=" + lookupOffsetDelay +
                 ", lookupBeforeDelay=" + lookupBeforeDelay +
                 ", lookupAfterDelay=" + lookupAfterDelay +
+                ", nativeQueryDelayPerSecond=" + nativeQueryDelayPerSecond +
+                ", nativeQueryBeforeDelay=" + nativeQueryBeforeDelay +
+                ", nativeQueryAfterDelay=" + nativeQueryAfterDelay +
                 '}';
     }
 }

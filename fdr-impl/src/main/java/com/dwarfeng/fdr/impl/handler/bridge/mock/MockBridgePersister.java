@@ -4,11 +4,12 @@ import com.dwarfeng.fdr.impl.handler.bridge.FullPersister;
 import com.dwarfeng.fdr.sdk.util.ViewUtil;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
+import com.dwarfeng.fdr.stack.bean.dto.NativeQueryInfo;
+import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.slf4j.Logger;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +22,8 @@ import java.util.List;
  */
 public abstract class MockBridgePersister<D extends Data> extends FullPersister<D> {
 
-    public static final String DEFAULT = "default";
+    public static final String LOOKUP_PRESET_DEFAULT = "default";
+    public static final String NATIVE_QUERY_PRESET_DEFAULT = "default";
 
     protected final MockBridgeConfig config;
     protected final MockBridgeDataValueGenerator dataValueGenerator;
@@ -105,7 +107,6 @@ public abstract class MockBridgePersister<D extends Data> extends FullPersister<
         return result;
     }
 
-    @Nonnull
     private LookupResult<D> doSingleLookup(LookupInfo lookupInfo) throws Exception {
         // 展开查询信息。
         long lookupStartTimestamp = ViewUtil.validStartDate(lookupInfo.getStartDate()).getTime();
@@ -115,7 +116,7 @@ public abstract class MockBridgePersister<D extends Data> extends FullPersister<
 
         // 检查预设是否合法。
         String preset = lookupInfo.getPreset();
-        if (!DEFAULT.equals(preset)) {
+        if (!LOOKUP_PRESET_DEFAULT.equals(preset)) {
             throw new IllegalArgumentException("预设不合法");
         }
 
@@ -192,6 +193,109 @@ public abstract class MockBridgePersister<D extends Data> extends FullPersister<
         getLogger().debug("查询结果: {}", lookupResult);
 
         return lookupResult;
+    }
+
+    @Override
+    protected QueryResult doNativeQuery(NativeQueryInfo queryInfo) throws Exception {
+        return doSingleNativeQuery(queryInfo);
+    }
+
+    @Override
+    protected List<QueryResult> doNativeQuery(List<NativeQueryInfo> queryInfos) throws Exception {
+        List<QueryResult> result = new ArrayList<>();
+        for (NativeQueryInfo queryInfo : queryInfos) {
+            result.add(doSingleNativeQuery(queryInfo));
+        }
+        return result;
+    }
+
+    private QueryResult doSingleNativeQuery(NativeQueryInfo queryInfo) throws Exception {
+        // 展开查询信息。
+        long queryStartTimestamp = ViewUtil.validStartDate(queryInfo.getStartDate()).getTime();
+        long queryEndTimestamp = ViewUtil.validEndDate(queryInfo.getEndDate()).getTime();
+
+        // 检查预设是否合法。
+        String preset = queryInfo.getPreset();
+        if (!NATIVE_QUERY_PRESET_DEFAULT.equals(preset)) {
+            throw new IllegalArgumentException("预设不合法: " + preset);
+        }
+
+        // 展开参数。
+        String[] params = queryInfo.getParams();
+        long period = Long.parseLong(params[0]);
+        long offset = Long.parseLong(params[1]);
+
+        return mockNativeQuery(
+                queryInfo.getPointKeys(),
+                queryStartTimestamp, queryEndTimestamp,
+                queryInfo.isIncludeStartDate(), queryInfo.isIncludeEndDate(),
+                period, offset
+        );
+    }
+
+    private QueryResult mockNativeQuery(
+            List<LongIdKey> pointKeys, long queryStartTimestamp, long queryEndTimestamp, boolean includeStartDate,
+            boolean includeEndDate, long period, long offset
+    ) throws Exception {
+        // 获取当前时间戳，用于模拟延迟。
+        long anchorTimestamp = System.currentTimeMillis();
+
+        // 获取配置。
+        long nativeQueryBeforeDelay = config.getNativeQueryBeforeDelay();
+        long nativeQueryDelayPerSecond = config.getNativeQueryDelayPerSecond();
+        long nativeQueryAfterDelay = config.getNativeQueryAfterDelay();
+
+        // 根据查询区间的开闭情况调整查询区间。
+        long actualQueryStartTimestamp = includeStartDate ? queryStartTimestamp : queryStartTimestamp + 1;
+        long actualQueryEndTimestamp = includeEndDate ? queryEndTimestamp : queryEndTimestamp - 1;
+
+        if (nativeQueryBeforeDelay > 0) {
+            anchorTimestamp += nativeQueryBeforeDelay;
+            ThreadUtil.sleepUntil(anchorTimestamp);
+        }
+
+        // 计算第一个点的数据起始时间。
+        // 数据的第一个起始时间应该大于等于 actualQueryStartTimestamp，且减去 offset 后应该是 period 的整数倍。
+        long cursor = actualQueryStartTimestamp + (actualQueryStartTimestamp - offset) % period;
+        // 在 cursor 小于等于 actualQueryEndTimestamp 之前，生成数据，随后 cursor 自增 period。
+        List<List<QueryResult.Item>> itemsList = new ArrayList<>(pointKeys.size());
+        for (int i = 0; i < pointKeys.size(); i++) {
+            itemsList.add(new ArrayList<>());
+        }
+        while (cursor <= actualQueryEndTimestamp) {
+            for (int i = 0; i < pointKeys.size(); i++) {
+                LongIdKey pointKey = pointKeys.get(i);
+                Object value = dataValueGenerator.nextValue(pointKey);
+                itemsList.get(i).add(new QueryResult.Item(pointKey, value, new Date(cursor)));
+            }
+            cursor += period;
+        }
+        List<QueryResult.Sequence> sequences = new ArrayList<>(pointKeys.size());
+        for (int i = 0; i < pointKeys.size(); i++) {
+            LongIdKey pointKey = pointKeys.get(i);
+            List<QueryResult.Item> items = itemsList.get(i);
+            Date startDate = new Date(queryStartTimestamp);
+            Date endDate = new Date(queryEndTimestamp);
+            sequences.add(new QueryResult.Sequence(pointKey, items, startDate, endDate));
+        }
+
+
+        // 模拟延迟，延迟时间为(查询的时间范围 / 1000 + 1) * nativeQueryDelayPerSecond。
+        // 如果时间区间小于等于0，则不延迟。
+        if (nativeQueryDelayPerSecond > 0) {
+            long timeRange = actualQueryEndTimestamp - actualQueryStartTimestamp;
+            long delay = timeRange <= 0 ? 0 : (timeRange / 1000 + 1) * nativeQueryDelayPerSecond;
+            anchorTimestamp += delay;
+            ThreadUtil.sleepUntil(anchorTimestamp);
+        }
+
+        if (nativeQueryAfterDelay > 0) {
+            anchorTimestamp += nativeQueryAfterDelay;
+            ThreadUtil.sleepUntil(anchorTimestamp);
+        }
+
+        // 返回结果。
+        return new QueryResult(sequences);
     }
 
     protected abstract Logger getLogger();

@@ -1,11 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate.service;
 
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeFilteredData;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.service.BatchCrudService;
-import com.dwarfeng.subgrade.stack.service.BatchWriteService;
-import com.dwarfeng.subgrade.stack.service.EntireLookupService;
-import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 
 /**
  * Hibernate 桥接器被过滤数据维护服务。
@@ -14,8 +9,7 @@ import com.dwarfeng.subgrade.stack.service.PresetLookupService;
  * @since 2.0.0
  */
 public interface HibernateBridgeFilteredDataMaintainService extends
-        BatchCrudService<LongIdKey, HibernateBridgeFilteredData>, EntireLookupService<HibernateBridgeFilteredData>,
-        PresetLookupService<HibernateBridgeFilteredData>, BatchWriteService<HibernateBridgeFilteredData> {
+        HibernateBridgeMaintainService<HibernateBridgeFilteredData> {
 
     /**
      * 数据点位为指定值，且发生时间在起始时间和结束时间之间，起始时间闭合，结束时间闭合。

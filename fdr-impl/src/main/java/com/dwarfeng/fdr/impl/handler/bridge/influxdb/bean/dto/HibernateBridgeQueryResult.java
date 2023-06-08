@@ -4,65 +4,119 @@ import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 /**
- * Hibernate 桥接器查询结果。
+ * Hibernate 桥接器查询信息。
  *
  * @author DwArFeng
  * @since 2.0.0
  */
 public class HibernateBridgeQueryResult implements Dto {
 
-    private static final long serialVersionUID = 5664644897134278294L;
+    private static final long serialVersionUID = 3131397231002182171L;
 
-    private String measurement;
-    private List<Item> items;
+    private List<HibernateBridgeSequence> sequences;
 
     public HibernateBridgeQueryResult() {
     }
 
-    public HibernateBridgeQueryResult(String measurement, List<Item> items) {
-        this.measurement = measurement;
-        this.items = items;
+    public HibernateBridgeQueryResult(List<HibernateBridgeSequence> sequences) {
+        this.sequences = sequences;
     }
 
-    public String getMeasurement() {
-        return measurement;
+    public List<HibernateBridgeSequence> getSequences() {
+        return sequences;
     }
 
-    public void setMeasurement(String measurement) {
-        this.measurement = measurement;
-    }
-
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
+    public void setSequences(List<HibernateBridgeSequence> sequences) {
+        this.sequences = sequences;
     }
 
     @Override
     public String toString() {
         return "HibernateBridgeQueryResult{" +
-                "measurement='" + measurement + '\'' +
-                ", items=" + items +
+                "sequences=" + sequences +
                 '}';
     }
 
-    public static class Item {
+    public static class HibernateBridgeSequence implements Dto {
+
+        private static final long serialVersionUID = 6825156575804538927L;
 
         private String measurement;
-        private Map<String, Object> valueMap;
-        private Instant happenedInstant;
+        private List<HibernateBridgeItem> items;
+        private Instant startInstant;
+        private Instant endInstant;
 
-        public Item() {
+        public HibernateBridgeSequence() {
         }
 
-        public Item(String measurement, Map<String, Object> valueMap, Instant happenedInstant) {
+        public HibernateBridgeSequence(
+                String measurement, List<HibernateBridgeItem> items, Instant startInstant, Instant endInstant
+        ) {
             this.measurement = measurement;
-            this.valueMap = valueMap;
+            this.items = items;
+            this.startInstant = startInstant;
+            this.endInstant = endInstant;
+        }
+
+        public String getMeasurement() {
+            return measurement;
+        }
+
+        public void setMeasurement(String measurement) {
+            this.measurement = measurement;
+        }
+
+        public List<HibernateBridgeItem> getItems() {
+            return items;
+        }
+
+        public void setItems(List<HibernateBridgeItem> items) {
+            this.items = items;
+        }
+
+        public Instant getStartInstant() {
+            return startInstant;
+        }
+
+        public void setStartInstant(Instant startInstant) {
+            this.startInstant = startInstant;
+        }
+
+        public Instant getEndInstant() {
+            return endInstant;
+        }
+
+        public void setEndInstant(Instant endInstant) {
+            this.endInstant = endInstant;
+        }
+
+        @Override
+        public String toString() {
+            return "HibernateBridgeSequence{" +
+                    "measurement='" + measurement + '\'' +
+                    ", items=" + items +
+                    ", startInstant=" + startInstant +
+                    ", endInstant=" + endInstant +
+                    '}';
+        }
+    }
+
+    public static class HibernateBridgeItem implements Dto {
+
+        private static final long serialVersionUID = -4693545503211723887L;
+
+        private String measurement;
+        private Object value;
+        private Instant happenedInstant;
+
+        public HibernateBridgeItem() {
+        }
+
+        public HibernateBridgeItem(String measurement, Object value, Instant happenedInstant) {
+            this.measurement = measurement;
+            this.value = value;
             this.happenedInstant = happenedInstant;
         }
 
@@ -74,12 +128,12 @@ public class HibernateBridgeQueryResult implements Dto {
             this.measurement = measurement;
         }
 
-        public Map<String, Object> getValueMap() {
-            return valueMap;
+        public Object getValue() {
+            return value;
         }
 
-        public void setValueMap(Map<String, Object> valueMap) {
-            this.valueMap = valueMap;
+        public void setValue(Object value) {
+            this.value = value;
         }
 
         public Instant getHappenedInstant() {
@@ -92,9 +146,9 @@ public class HibernateBridgeQueryResult implements Dto {
 
         @Override
         public String toString() {
-            return "Item{" +
+            return "HibernateBridgeItem{" +
                     "measurement='" + measurement + '\'' +
-                    ", valueMap=" + valueMap +
+                    ", value=" + value +
                     ", happenedInstant=" + happenedInstant +
                     '}';
         }

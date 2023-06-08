@@ -5,11 +5,9 @@ import com.dwarfeng.dutil.basic.io.IOUtil;
 import com.dwarfeng.dutil.basic.io.StringOutputStream;
 import com.dwarfeng.dutil.basic.mea.TimeMeasurer;
 import com.dwarfeng.fdr.sdk.bean.dto.FastJsonLookupInfo;
+import com.dwarfeng.fdr.sdk.bean.dto.FastJsonNativeQueryInfo;
 import com.dwarfeng.fdr.sdk.bean.dto.FastJsonQueryInfo;
-import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
-import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
-import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
-import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
+import com.dwarfeng.fdr.stack.bean.dto.*;
 import com.dwarfeng.fdr.stack.service.ViewQosService;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.springtelqos.sdk.command.CliCommand;
@@ -36,36 +34,45 @@ import java.util.stream.Collectors;
 public abstract class ViewCommand<D extends Data> extends CliCommand {
 
     private static final String COMMAND_OPTION_LATEST = "latest";
-    private static final String COMMAND_OPTION_QUERY = "query";
     private static final String COMMAND_OPTION_LOOKUP = "lookup";
+    private static final String COMMAND_OPTION_NATIVE_QUERY = "nquery";
+    private static final String COMMAND_OPTION_NATIVE_QUERY_LONG_OPT = "native-query";
+    private static final String COMMAND_OPTION_QUERY = "query";
 
     private static final String[] COMMAND_OPTION_ARRAY = new String[]{
             COMMAND_OPTION_LATEST,
+            COMMAND_OPTION_LOOKUP,
+            COMMAND_OPTION_NATIVE_QUERY,
             COMMAND_OPTION_QUERY,
-            COMMAND_OPTION_LOOKUP
     };
 
     private static final String COMMAND_OPTION_JSON = "json";
-    private static final String COMMAND_OPTION_JSON_FILE = "json-file";
+    private static final String COMMAND_OPTION_JSON_FILE = "jf";
+    private static final String COMMAND_OPTION_JSON_FILE_LONG_OPT = "json-file";
 
     private static String cmdLineSyntax(String identity) {
         final String cmdLineSyntaxInspect = identity + " " +
                 CommandUtil.concatOptionPrefix(COMMAND_OPTION_LATEST) + " [" +
                 CommandUtil.concatOptionPrefix(COMMAND_OPTION_JSON) + " json-string] [" +
                 CommandUtil.concatOptionPrefix(COMMAND_OPTION_JSON_FILE) + " json-file]";
-        final String cmdLineSyntaxQuery = identity + " " +
-                CommandUtil.concatOptionPrefix(COMMAND_OPTION_QUERY) + " [" +
-                CommandUtil.concatOptionPrefix(COMMAND_OPTION_JSON) + " json-string] [" +
-                CommandUtil.concatOptionPrefix(COMMAND_OPTION_JSON_FILE) + " json-file]";
         final String cmdLineSyntaxLookup = identity + " " +
                 CommandUtil.concatOptionPrefix(COMMAND_OPTION_LOOKUP) + " [" +
+                CommandUtil.concatOptionPrefix(COMMAND_OPTION_JSON) + " json-string] [" +
+                CommandUtil.concatOptionPrefix(COMMAND_OPTION_JSON_FILE) + " json-file]";
+        final String cmdLineSyntaxNativeQuery = identity + " " +
+                CommandUtil.concatOptionPrefix(COMMAND_OPTION_NATIVE_QUERY) + " [" +
+                CommandUtil.concatOptionPrefix(COMMAND_OPTION_JSON) + " json-string] [" +
+                CommandUtil.concatOptionPrefix(COMMAND_OPTION_JSON_FILE) + " json-file]";
+        final String cmdLineSyntaxQuery = identity + " " +
+                CommandUtil.concatOptionPrefix(COMMAND_OPTION_QUERY) + " [" +
                 CommandUtil.concatOptionPrefix(COMMAND_OPTION_JSON) + " json-string] [" +
                 CommandUtil.concatOptionPrefix(COMMAND_OPTION_JSON_FILE) + " json-file]";
 
         final String[] cmdLineArray = new String[]{
                 cmdLineSyntaxInspect,
-                cmdLineSyntaxQuery,
-                cmdLineSyntaxLookup
+                cmdLineSyntaxLookup,
+                cmdLineSyntaxNativeQuery,
+                cmdLineSyntaxQuery
         };
 
         return CommandUtil.syntax(cmdLineArray);
@@ -84,14 +91,18 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
     protected List<Option> buildOptions() {
         List<Option> list = new ArrayList<>();
         list.add(Option.builder(COMMAND_OPTION_LATEST).desc("最新数据指令").build());
-        list.add(Option.builder(COMMAND_OPTION_QUERY).desc("查询指令").build());
         list.add(Option.builder(COMMAND_OPTION_LOOKUP).desc("查看指令").build());
+        list.add(
+                Option.builder(COMMAND_OPTION_NATIVE_QUERY).longOpt(COMMAND_OPTION_NATIVE_QUERY_LONG_OPT)
+                        .desc("原生查询指令").build()
+        );
+        list.add(Option.builder(COMMAND_OPTION_QUERY).desc("查询指令").build());
         list.add(
                 Option.builder(COMMAND_OPTION_JSON).desc("JSON字符串").hasArg().type(String.class).build()
         );
         list.add(
-                Option.builder("jf").longOpt(COMMAND_OPTION_JSON_FILE).desc("JSON文件").hasArg().type(File.class)
-                        .build()
+                Option.builder(COMMAND_OPTION_JSON_FILE).longOpt(COMMAND_OPTION_JSON_FILE_LONG_OPT).desc("JSON文件")
+                        .hasArg().type(File.class).build()
         );
         return list;
     }
@@ -111,6 +122,9 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
                     break;
                 case COMMAND_OPTION_LOOKUP:
                     handleLookup(context, cmd);
+                    break;
+                case COMMAND_OPTION_NATIVE_QUERY:
+                    handleNativeQuery(context, cmd);
                     break;
                 case COMMAND_OPTION_QUERY:
                     handleQuery(context, cmd);
@@ -254,6 +268,49 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
         context.sendMessage("执行时间：" + tm.getTimeMs() + "ms");
         context.sendMessage("");
 
+        processQueryResultSequence(context, sequences);
+    }
+
+    private void handleNativeQuery(Context context, CommandLine cmd) throws Exception {
+        NativeQueryInfo nativeQueryInfo;
+
+        // 如果有 -json 选项，则从选项中获取 JSON，转化为 queryInfo。
+        if (cmd.hasOption(COMMAND_OPTION_JSON)) {
+            String json = (String) cmd.getParsedOptionValue(COMMAND_OPTION_JSON);
+            nativeQueryInfo = FastJsonNativeQueryInfo.toStackBean(
+                    JSON.parseObject(json, FastJsonNativeQueryInfo.class)
+            );
+        }
+        // 如果有 --json-file 选项，则从选项中获取 JSON 文件，转化为 queryInfo。
+        else if (cmd.hasOption(COMMAND_OPTION_JSON_FILE)) {
+            File jsonFile = (File) cmd.getParsedOptionValue(COMMAND_OPTION_JSON_FILE);
+            try (FileInputStream in = new FileInputStream(jsonFile)) {
+                nativeQueryInfo = FastJsonNativeQueryInfo.toStackBean(
+                        JSON.parseObject(in, FastJsonNativeQueryInfo.class)
+                );
+            }
+        } else {
+            // 暂时未实现。
+            throw new UnsupportedOperationException("not supported yet");
+        }
+
+        // 查询数据，并计时。
+        TimeMeasurer tm = new TimeMeasurer();
+        tm.start();
+        QueryResult queryResult = viewQosService.nativeQuery(nativeQueryInfo);
+        tm.stop();
+        List<QueryResult.Sequence> sequences = queryResult.getSequences();
+
+        // 输出执行时间。
+        context.sendMessage("");
+        context.sendMessage("执行时间：" + tm.getTimeMs() + "ms");
+        context.sendMessage("");
+
+        // 输出数据。
+        processQueryResultSequence(context, sequences);
+    }
+
+    private void processQueryResultSequence(Context context, List<QueryResult.Sequence> sequences) throws Exception {
         // 输出数据。
         int sequenceIndex;
         while (true) {

@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.bridge.influxdb;
 
-import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.HibernateBridgeQueryResult;
+import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.HibernateBridgeLookupResult;
 import com.dwarfeng.fdr.impl.handler.bridge.influxdb.handler.InfluxdbBridgeFilteredDataHandler;
 import com.dwarfeng.fdr.impl.handler.bridge.influxdb.util.Constants;
 import com.dwarfeng.fdr.impl.handler.bridge.influxdb.util.DateUtil;
@@ -54,7 +54,7 @@ public class InfluxdbBridgeFilteredDataPersister extends InfluxdbBridgePersister
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    protected FilteredData itemToData(HibernateBridgeQueryResult.Item item) {
+    protected FilteredData itemToData(HibernateBridgeLookupResult.Item item) {
         LongIdKey pointKey = new LongIdKey(Long.parseLong(item.getMeasurement()));
         LongIdKey filterKey = null;
         Object value = null;

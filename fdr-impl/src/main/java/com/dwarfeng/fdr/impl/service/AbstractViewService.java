@@ -1,9 +1,6 @@
 package com.dwarfeng.fdr.impl.service;
 
-import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
-import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
-import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
-import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
+import com.dwarfeng.fdr.stack.bean.dto.*;
 import com.dwarfeng.fdr.stack.handler.ViewHandler;
 import com.dwarfeng.fdr.stack.service.ViewService;
 import com.dwarfeng.fdr.stack.struct.Data;
@@ -88,9 +85,27 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
     }
 
     @Override
+    public QueryResult nativeQuery(NativeQueryInfo queryInfo) throws ServiceException {
+        try {
+            return viewHandler.nativeQuery(queryInfo);
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logAndThrow("原生查询时发生异常", LogLevel.WARN, sem, e);
+        }
+    }
+
+    @Override
+    public List<QueryResult> nativeQuery(List<NativeQueryInfo> queryInfos) throws ServiceException {
+        try {
+            return viewHandler.nativeQuery(queryInfos);
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logAndThrow("原生查询时发生异常", LogLevel.WARN, sem, e);
+        }
+    }
+
+    @Override
     public CompletableFuture<D> latestAsync(LongIdKey pointKey) throws ServiceException {
         try {
-            return CompletableFuture.completedFuture(viewHandler.latest(pointKey));
+            return viewHandler.latestAsync(pointKey);
         } catch (Exception e) {
             throw ServiceExceptionHelper.logAndThrow("查询数据点的最新数据时发生异常", LogLevel.WARN, sem, e);
         }
@@ -99,7 +114,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
     @Override
     public CompletableFuture<List<D>> latestAsync(List<LongIdKey> pointKeys) throws ServiceException {
         try {
-            return CompletableFuture.completedFuture(viewHandler.latest(pointKeys));
+            return viewHandler.latestAsync(pointKeys);
         } catch (Exception e) {
             throw ServiceExceptionHelper.logAndThrow("查询数据点的最新数据时发生异常", LogLevel.WARN, sem, e);
         }
@@ -108,7 +123,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
     @Override
     public CompletableFuture<LookupResult<D>> lookupAsync(LookupInfo lookupInfo) throws ServiceException {
         try {
-            return CompletableFuture.completedFuture(viewHandler.lookup(lookupInfo));
+            return viewHandler.lookupAsync(lookupInfo);
         } catch (Exception e) {
             throw ServiceExceptionHelper.logAndThrow("查看时发生异常", LogLevel.WARN, sem, e);
         }
@@ -117,16 +132,35 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
     @Override
     public CompletableFuture<List<LookupResult<D>>> lookupAsync(List<LookupInfo> lookupInfos) throws ServiceException {
         try {
-            return CompletableFuture.completedFuture(viewHandler.lookup(lookupInfos));
+            return viewHandler.lookupAsync(lookupInfos);
         } catch (Exception e) {
             throw ServiceExceptionHelper.logAndThrow("查看时发生异常", LogLevel.WARN, sem, e);
         }
     }
 
     @Override
+    public CompletableFuture<QueryResult> nativeQueryAsync(NativeQueryInfo queryInfo) throws ServiceException {
+        try {
+            return viewHandler.nativeQueryAsync(queryInfo);
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logAndThrow("原生查询时发生异常", LogLevel.WARN, sem, e);
+        }
+    }
+
+    @Override
+    public CompletableFuture<List<QueryResult>> nativeQueryAsync(List<NativeQueryInfo> queryInfos)
+            throws ServiceException {
+        try {
+            return viewHandler.nativeQueryAsync(queryInfos);
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logAndThrow("原生查询时发生异常", LogLevel.WARN, sem, e);
+        }
+    }
+
+    @Override
     public CompletableFuture<QueryResult> queryAsync(QueryInfo queryInfo) throws ServiceException {
         try {
-            return CompletableFuture.completedFuture(viewHandler.query(queryInfo));
+            return viewHandler.queryAsync(queryInfo);
         } catch (Exception e) {
             throw ServiceExceptionHelper.logAndThrow("查询时发生异常", LogLevel.WARN, sem, e);
         }
@@ -135,7 +169,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
     @Override
     public CompletableFuture<List<QueryResult>> queryAsync(List<QueryInfo> queryInfos) throws ServiceException {
         try {
-            return CompletableFuture.completedFuture(viewHandler.query(queryInfos));
+            return viewHandler.queryAsync(queryInfos);
         } catch (Exception e) {
             throw ServiceExceptionHelper.logAndThrow("查询时发生异常", LogLevel.WARN, sem, e);
         }

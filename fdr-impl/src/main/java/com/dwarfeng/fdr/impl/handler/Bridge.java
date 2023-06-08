@@ -65,6 +65,7 @@ public interface Bridge {
      *
      * @return 桥接器是否支持持久器。
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     boolean supportPersister();
 
     /**
@@ -202,7 +203,28 @@ public interface Bridge {
          * @param lookupInfos 查看信息组成的列表。
          * @return 查看结果组成的列表。
          * @throws HandlerException 处理器异常。
+         * @see PersistHandler#lookup(List)
          */
         List<LookupResult<D>> lookup(List<LookupInfo> lookupInfos) throws HandlerException;
+
+        /**
+         * 原生查询。
+         *
+         * @param queryInfo 原生查询信息。
+         * @return 查询结果。
+         * @throws HandlerException 处理器异常。
+         * @see PersistHandler#nativeQuery(NativeQueryInfo)
+         */
+        QueryResult nativeQuery(NativeQueryInfo queryInfo) throws HandlerException;
+
+        /**
+         * 原生查询。
+         *
+         * @param queryInfos 原生查询信息组成的列表。
+         * @return 查询结果组成的列表。
+         * @throws HandlerException 处理器异常。
+         * @see PersistHandler#nativeQuery(List)
+         */
+        List<QueryResult> nativeQuery(List<NativeQueryInfo> queryInfos) throws HandlerException;
     }
 }

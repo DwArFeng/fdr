@@ -1,9 +1,6 @@
 package com.dwarfeng.fdr.stack.service;
 
-import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
-import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
-import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
-import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
+import com.dwarfeng.fdr.stack.bean.dto.*;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
@@ -33,15 +30,6 @@ public interface ViewQosService<D extends Data> extends Service {
     List<D> inspect(List<LongIdKey> pointKeys) throws ServiceException;
 
     /**
-     * 查询。
-     *
-     * @param lookupInfo 查询信息。
-     * @return 查询结果。
-     * @throws ServiceException 服务异常。
-     */
-    LookupResult<D> query(LookupInfo lookupInfo) throws ServiceException;
-
-    /**
      * 查看。
      *
      * @param queryInfo 查看信息。
@@ -49,4 +37,22 @@ public interface ViewQosService<D extends Data> extends Service {
      * @throws ServiceException 服务异常。
      */
     QueryResult lookup(QueryInfo queryInfo) throws ServiceException;
+
+    /**
+     * 原生查询。
+     *
+     * @param queryInfo 原生查询信息。
+     * @return 查询结果。
+     * @throws ServiceException 服务异常。
+     */
+    QueryResult nativeQuery(NativeQueryInfo queryInfo) throws ServiceException;
+
+    /**
+     * 查询。
+     *
+     * @param lookupInfo 查询信息。
+     * @return 查询结果。
+     * @throws ServiceException 服务异常。
+     */
+    LookupResult<D> query(LookupInfo lookupInfo) throws ServiceException;
 }

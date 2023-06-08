@@ -7,6 +7,8 @@ import com.dwarfeng.springtelqos.stack.command.Context;
 import com.dwarfeng.springtelqos.stack.exception.TelqosException;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public class NormalViewCommand extends ViewCommand<NormalData> {
 
@@ -49,7 +51,6 @@ public class NormalViewCommand extends ViewCommand<NormalData> {
         context.sendMessage("");
     }
 
-    @SuppressWarnings("DuplicatedCode")
     @Override
     protected void printLookupData(int i, int endIndex, QueryResult.Item item, Context context) throws Exception {
         context.sendMessage(String.format(
@@ -62,7 +63,7 @@ public class NormalViewCommand extends ViewCommand<NormalData> {
         ));
         context.sendMessage(String.format(
                 "  valueClass: %s",
-                item.getValue().getClass().getCanonicalName()
+                Objects.isNull(item.getValue()) ? "null" : item.getValue().getClass().getCanonicalName()
         ));
         context.sendMessage(String.format(
                 "  value: %s",

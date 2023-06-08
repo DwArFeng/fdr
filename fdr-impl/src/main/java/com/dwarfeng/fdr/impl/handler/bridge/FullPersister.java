@@ -3,6 +3,8 @@ package com.dwarfeng.fdr.impl.handler.bridge;
 import com.dwarfeng.fdr.impl.handler.Bridge.Persister;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
+import com.dwarfeng.fdr.stack.bean.dto.NativeQueryInfo;
+import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 
@@ -75,6 +77,32 @@ public abstract class FullPersister<D extends Data> implements Persister<D> {
     }
 
     protected abstract List<LookupResult<D>> doLookup(List<LookupInfo> lookupInfos) throws Exception;
+
+    @Override
+    public QueryResult nativeQuery(NativeQueryInfo queryInfo) throws HandlerException {
+        try {
+            return doNativeQuery(queryInfo);
+        } catch (HandlerException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new HandlerException(e);
+        }
+    }
+
+    protected abstract QueryResult doNativeQuery(NativeQueryInfo queryInfo) throws Exception;
+
+    @Override
+    public List<QueryResult> nativeQuery(List<NativeQueryInfo> queryInfos) throws HandlerException {
+        try {
+            return doNativeQuery(queryInfos);
+        } catch (HandlerException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new HandlerException(e);
+        }
+    }
+
+    protected abstract List<QueryResult> doNativeQuery(List<NativeQueryInfo> queryInfos) throws Exception;
 
     @Override
     public String toString() {

@@ -1,9 +1,6 @@
 package com.dwarfeng.fdr.stack.handler;
 
-import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
-import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
-import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
-import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
+import com.dwarfeng.fdr.stack.bean.dto.*;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
@@ -67,6 +64,24 @@ public interface ViewHandler<D extends Data> extends Handler {
     List<LookupResult<D>> lookup(List<LookupInfo> lookupInfos) throws HandlerException;
 
     /**
+     * 原生查询。
+     *
+     * @param queryInfo 原生查询信息。
+     * @return 查询结果。
+     * @throws HandlerException 处理器异常。
+     */
+    QueryResult nativeQuery(NativeQueryInfo queryInfo) throws HandlerException;
+
+    /**
+     * 原生查询。
+     *
+     * @param queryInfos 原生查询信息组成的列表。
+     * @return 查询结果组成的列表。
+     * @throws HandlerException 处理器异常。
+     */
+    List<QueryResult> nativeQuery(List<NativeQueryInfo> queryInfos) throws HandlerException;
+
+    /**
      * 查询。
      *
      * @param queryInfo 查询信息。
@@ -119,6 +134,24 @@ public interface ViewHandler<D extends Data> extends Handler {
      * @throws HandlerException 处理器异常。
      */
     CompletableFuture<List<LookupResult<D>>> lookupAsync(List<LookupInfo> lookupInfos) throws HandlerException;
+
+    /**
+     * 异步原生查询。
+     *
+     * @param queryInfo 原生查询信息。
+     * @return 查询结果。
+     * @throws HandlerException 处理器异常。
+     */
+    CompletableFuture<QueryResult> nativeQueryAsync(NativeQueryInfo queryInfo) throws HandlerException;
+
+    /**
+     * 异步原生查询。
+     *
+     * @param queryInfos 原生查询信息组成的列表。
+     * @return 查询结果组成的列表。
+     * @throws HandlerException 处理器异常。
+     */
+    CompletableFuture<List<QueryResult>> nativeQueryAsync(List<NativeQueryInfo> queryInfos) throws HandlerException;
 
     /**
      * 异步查询。

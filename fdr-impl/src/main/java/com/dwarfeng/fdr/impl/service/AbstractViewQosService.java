@@ -1,9 +1,6 @@
 package com.dwarfeng.fdr.impl.service;
 
-import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
-import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
-import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
-import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
+import com.dwarfeng.fdr.stack.bean.dto.*;
 import com.dwarfeng.fdr.stack.handler.ViewHandler;
 import com.dwarfeng.fdr.stack.service.ViewQosService;
 import com.dwarfeng.fdr.stack.struct.Data;
@@ -46,20 +43,29 @@ public abstract class AbstractViewQosService<D extends Data> implements ViewQosS
     }
 
     @Override
-    public LookupResult<D> query(LookupInfo lookupInfo) throws ServiceException {
-        try {
-            return viewHandler.lookup(lookupInfo);
-        } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询数据时发生异常", LogLevel.WARN, sem, e);
-        }
-    }
-
-    @Override
     public QueryResult lookup(QueryInfo queryInfo) throws ServiceException {
         try {
             return viewHandler.query(queryInfo);
         } catch (Exception e) {
             throw ServiceExceptionHelper.logAndThrow("查看数据时发生异常", LogLevel.WARN, sem, e);
+        }
+    }
+
+    @Override
+    public QueryResult nativeQuery(NativeQueryInfo queryInfo) throws ServiceException {
+        try {
+            return viewHandler.nativeQuery(queryInfo);
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logAndThrow("原生查询数据时发生异常", LogLevel.WARN, sem, e);
+        }
+    }
+
+    @Override
+    public LookupResult<D> query(LookupInfo lookupInfo) throws ServiceException {
+        try {
+            return viewHandler.lookup(lookupInfo);
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logAndThrow("查询数据时发生异常", LogLevel.WARN, sem, e);
         }
     }
 

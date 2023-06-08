@@ -11,9 +11,9 @@ import java.util.Date;
  * @author DwArFeng
  * @since 2.0.0
  */
-public class HibernateBridgeQueryInfo implements Dto {
+public class HibernateBridgeLookupInfo implements Dto {
 
-    private static final long serialVersionUID = -4208641109631541366L;
+    private static final long serialVersionUID = -3737686608207760125L;
 
     private String measurement;
     private Date rangeStart;
@@ -22,10 +22,10 @@ public class HibernateBridgeQueryInfo implements Dto {
     private int limitOffset;
     private String[] params;
 
-    public HibernateBridgeQueryInfo() {
+    public HibernateBridgeLookupInfo() {
     }
 
-    public HibernateBridgeQueryInfo(
+    public HibernateBridgeLookupInfo(
             String measurement, Date rangeStart, Date rangeStop, int limitNumber, int limitOffset,
             String[] params
     ) {
@@ -87,7 +87,7 @@ public class HibernateBridgeQueryInfo implements Dto {
 
     @Override
     public String toString() {
-        return "HibernateBridgeQueryInfo{" +
+        return "HibernateBridgeLookupInfo{" +
                 "measurement='" + measurement + '\'' +
                 ", rangeStart=" + rangeStart +
                 ", rangeStop=" + rangeStop +
