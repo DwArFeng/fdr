@@ -49,6 +49,7 @@ public interface HibernateMapper {
     @InheritInverseConfiguration
     MapperSupport mapperSupportFromHibernate(HibernateMapperSupport hibernateMapperSupport);
 
+    @Mapping(target = "washerInfos", ignore = true)
     @Mapping(target = "triggerInfos", ignore = true)
     @Mapping(target = "longId", ignore = true)
     @Mapping(target = "filterInfos", ignore = true)
@@ -70,4 +71,18 @@ public interface HibernateMapper {
 
     @InheritInverseConfiguration
     TriggerSupport triggerSupportFromHibernate(HibernateTriggerSupport hibernateTriggerSupport);
+
+    @Mapping(target = "pointLongId", ignore = true)
+    @Mapping(target = "point", ignore = true)
+    @Mapping(target = "longId", ignore = true)
+    HibernateWasherInfo washerInfoToHibernate(WasherInfo washerInfo);
+
+    @InheritInverseConfiguration
+    WasherInfo washerInfoFromHibernate(HibernateWasherInfo hibernateWasherInfo);
+
+    @Mapping(target = "stringId", ignore = true)
+    HibernateWasherSupport washerSupportToHibernate(WasherSupport washerSupport);
+
+    @InheritInverseConfiguration
+    WasherSupport washerSupportFromHibernate(HibernateWasherSupport hibernateWasherSupport);
 }

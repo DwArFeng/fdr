@@ -57,4 +57,14 @@ public interface FastJsonMapper {
 
     @InheritInverseConfiguration
     TriggerSupport triggerSupportFromFastJson(FastJsonTriggerSupport fastJsonTriggerSupport);
+
+    FastJsonWasherInfo washerInfoToFastJson(WasherInfo washerInfo);
+
+    @InheritInverseConfiguration
+    WasherInfo washerInfoFromFastJson(FastJsonWasherInfo fastJsonWasherInfo);
+
+    FastJsonWasherSupport washerSupportToFastJson(WasherSupport washerSupport);
+
+    @InheritInverseConfiguration
+    WasherSupport washerSupportFromFastJson(FastJsonWasherSupport fastJsonWasherSupport);
 }

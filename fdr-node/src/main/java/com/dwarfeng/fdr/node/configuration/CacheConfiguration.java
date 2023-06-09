@@ -37,6 +37,12 @@ public class CacheConfiguration {
     private String enabledTriggerInfoPrefix;
     @Value("${cache.prefix.entity.mapper_support}")
     private String mapperSupportPrefix;
+    @Value("${cache.prefix.entity.washer_info}")
+    private String washerInfoPrefix;
+    @Value("${cache.prefix.entity.washer_support}")
+    private String washerSupportPrefix;
+    @Value("${cache.prefix.list.enabled_washer_info}")
+    private String enabledWasherInfoPrefix;
 
     public CacheConfiguration(
             @Qualifier("redisTemplate") RedisTemplate<String, ?> template
@@ -122,6 +128,36 @@ public class CacheConfiguration {
                 (RedisTemplate<String, FastJsonMapperSupport>) template,
                 new StringIdStringKeyFormatter(mapperSupportPrefix),
                 new MapStructBeanTransformer<>(MapperSupport.class, FastJsonMapperSupport.class, FastJsonMapper.class)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<LongIdKey, WasherInfo, FastJsonWasherInfo> washerInfoRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonWasherInfo>) template,
+                new LongIdStringKeyFormatter(washerInfoPrefix),
+                new MapStructBeanTransformer<>(WasherInfo.class, FastJsonWasherInfo.class, FastJsonMapper.class)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<StringIdKey, WasherSupport, FastJsonWasherSupport> washerSupportRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonWasherSupport>) template,
+                new StringIdStringKeyFormatter(washerSupportPrefix),
+                new MapStructBeanTransformer<>(WasherSupport.class, FastJsonWasherSupport.class, FastJsonMapper.class)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisKeyListCache<LongIdKey, WasherInfo, FastJsonWasherInfo> washerInfoEnabledRedisKeyListCache() {
+        return new RedisKeyListCache<>(
+                (RedisTemplate<String, FastJsonWasherInfo>) template,
+                new LongIdStringKeyFormatter(enabledWasherInfoPrefix),
+                new MapStructBeanTransformer<>(WasherInfo.class, FastJsonWasherInfo.class, FastJsonMapper.class)
         );
     }
 }

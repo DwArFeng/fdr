@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 新增数据清洗机制，并提供预设清洗器。
+  - com.dwarfeng.fdr.impl.handler.washer.GroovyWasherRegistry。
+
 - 优化项目的服务异常映射机制。
 
 - 重构数据记录处理与数据持久化模块。

@@ -30,6 +30,8 @@ public class DaoConfiguration {
     private final FilterSupportPresetCriteriaMaker filterSupportPresetCriteriaMaker;
     private final TriggerSupportPresetCriteriaMaker triggerSupportPresetCriteriaMaker;
     private final MapperSupportPresetCriteriaMaker mapperSupportPresetCriteriaMaker;
+    private final WasherInfoPresetCriteriaMaker washerInfoPresetCriteriaMaker;
+    private final WasherSupportPresetCriteriaMaker washerSupportPresetCriteriaMaker;
 
     @Value("${hibernate.jdbc.batch_size}")
     private int batchSize;
@@ -41,7 +43,9 @@ public class DaoConfiguration {
             TriggerInfoPresetCriteriaMaker triggerInfoPresetCriteriaMaker,
             FilterSupportPresetCriteriaMaker filterSupportPresetCriteriaMaker,
             TriggerSupportPresetCriteriaMaker triggerSupportPresetCriteriaMaker,
-            MapperSupportPresetCriteriaMaker mapperSupportPresetCriteriaMaker
+            MapperSupportPresetCriteriaMaker mapperSupportPresetCriteriaMaker,
+            WasherInfoPresetCriteriaMaker washerInfoPresetCriteriaMaker,
+            WasherSupportPresetCriteriaMaker washerSupportPresetCriteriaMaker
     ) {
         this.template = template;
         this.filterInfoPresetCriteriaMaker = filterInfoPresetCriteriaMaker;
@@ -50,6 +54,8 @@ public class DaoConfiguration {
         this.filterSupportPresetCriteriaMaker = filterSupportPresetCriteriaMaker;
         this.triggerSupportPresetCriteriaMaker = triggerSupportPresetCriteriaMaker;
         this.mapperSupportPresetCriteriaMaker = mapperSupportPresetCriteriaMaker;
+        this.washerInfoPresetCriteriaMaker = washerInfoPresetCriteriaMaker;
+        this.washerSupportPresetCriteriaMaker = washerSupportPresetCriteriaMaker;
     }
 
     @Bean
@@ -252,6 +258,74 @@ public class DaoConfiguration {
                 ),
                 HibernateMapperSupport.class,
                 mapperSupportPresetCriteriaMaker
+        );
+    }
+
+    @Bean
+    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, WasherInfo, HibernateWasherInfo>
+    washerInfoHibernateBatchBaseDao() {
+        return new HibernateBatchBaseDao<>(
+                template,
+                new MapStructBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, HibernateMapper.class),
+                new MapStructBeanTransformer<>(WasherInfo.class, HibernateWasherInfo.class, HibernateMapper.class),
+                HibernateWasherInfo.class,
+                new DefaultDeletionMod<>(),
+                batchSize
+        );
+    }
+
+    @Bean
+    public HibernatePresetLookupDao<WasherInfo, HibernateWasherInfo> washerInfoHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
+                template,
+                new MapStructBeanTransformer<>(WasherInfo.class, HibernateWasherInfo.class, HibernateMapper.class),
+                HibernateWasherInfo.class,
+                washerInfoPresetCriteriaMaker
+        );
+    }
+
+    @Bean
+    public HibernateEntireLookupDao<WasherInfo, HibernateWasherInfo> washerInfoHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                template,
+                new MapStructBeanTransformer<>(WasherInfo.class, HibernateWasherInfo.class, HibernateMapper.class),
+                HibernateWasherInfo.class
+        );
+    }
+
+    @Bean
+    public HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, WasherSupport, HibernateWasherSupport>
+    washerSupportHibernateBatchBaseDao() {
+        return new HibernateBatchBaseDao<>(
+                template,
+                new MapStructBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, HibernateMapper.class),
+                new MapStructBeanTransformer<>(
+                        WasherSupport.class, HibernateWasherSupport.class, HibernateMapper.class
+                ),
+                HibernateWasherSupport.class
+        );
+    }
+
+    @Bean
+    public HibernateEntireLookupDao<WasherSupport, HibernateWasherSupport> washerSupportHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                template,
+                new MapStructBeanTransformer<>(
+                        WasherSupport.class, HibernateWasherSupport.class, HibernateMapper.class
+                ),
+                HibernateWasherSupport.class
+        );
+    }
+
+    @Bean
+    public HibernatePresetLookupDao<WasherSupport, HibernateWasherSupport> washerSupportHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
+                template,
+                new MapStructBeanTransformer<>(
+                        WasherSupport.class, HibernateWasherSupport.class, HibernateMapper.class
+                ),
+                HibernateWasherSupport.class,
+                washerSupportPresetCriteriaMaker
         );
     }
 }

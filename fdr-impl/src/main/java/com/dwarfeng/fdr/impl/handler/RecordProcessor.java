@@ -9,10 +9,7 @@ import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.exception.PointNotExistsException;
 import com.dwarfeng.fdr.stack.exception.RecordStoppedException;
-import com.dwarfeng.fdr.stack.handler.ConsumeHandler;
-import com.dwarfeng.fdr.stack.handler.Filter;
-import com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler;
-import com.dwarfeng.fdr.stack.handler.Trigger;
+import com.dwarfeng.fdr.stack.handler.*;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
@@ -319,8 +316,6 @@ class RecordProcessor {
                 // 记录日志，准备工作。
                 LOGGER.debug("记录数据信息: " + recordInfo);
                 LongIdKey pointKey = recordInfo.getPointKey();
-                Object value = recordInfo.getValue();
-                Date happenedDate = recordInfo.getHappenedDate();
 
                 // 获取 RecordContext。
                 RecordLocalCacheHandler.RecordContext recordContext = recordLocalCacheHandler.get(pointKey);
@@ -328,11 +323,28 @@ class RecordProcessor {
                     throw new PointNotExistsException(pointKey);
                 }
                 Point point = recordContext.getPoint();
+                Map<LongIdKey, Washer> preFilterWasherMap = recordContext.getPreFilterWasherMap();
                 Map<LongIdKey, Filter> filterMap = recordContext.getFilterMap();
+                Map<LongIdKey, Washer> postFilterWasherMap = recordContext.getPostFilterWasherMap();
                 Map<LongIdKey, Trigger> triggerMap = recordContext.getTriggerMap();
+
+                // 遍历所有的过滤前清洗器，清洗数据。
+                for (Map.Entry<LongIdKey, Washer> entry : preFilterWasherMap.entrySet()) {
+                    Washer washer = entry.getValue();
+
+                    Object rawValue = recordInfo.getValue();
+                    LOGGER.debug("数据信息经过过滤前清洗, 原始数据点信息: " + rawValue);
+                    Object washedValue = washer.wash(rawValue);
+                    LOGGER.debug("数据信息经过过滤前清洗, 清洗数据点信息: " + washedValue);
+
+                    recordInfo.setValue(washedValue);
+                }
 
                 // 遍历所有的过滤器，任意一个过滤器未通过时，根据数据点配置保持或持久被过滤数据，随后终止。
                 for (Map.Entry<LongIdKey, Filter> entry : filterMap.entrySet()) {
+                    Object value = recordInfo.getValue();
+                    Date happenedDate = recordInfo.getHappenedDate();
+
                     LongIdKey filterKey = entry.getKey();
                     Filter filter = entry.getValue();
 
@@ -341,7 +353,7 @@ class RecordProcessor {
 
                     if (testResult.isFiltered()) {
                         FilteredData filteredRecord = new FilteredData(
-                                pointKey, filterKey, value, testResult.getMessage(), new Date()
+                                pointKey, filterKey, value, testResult.getMessage(), happenedDate
                         );
                         LOGGER.debug("数据信息未通过过滤, 过滤数据点信息: " + filteredRecord);
 
@@ -355,8 +367,23 @@ class RecordProcessor {
                     }
                 }
 
+                // 遍历所有的过滤后清洗器，清洗数据。
+                for (Map.Entry<LongIdKey, Washer> entry : postFilterWasherMap.entrySet()) {
+                    Washer washer = entry.getValue();
+
+                    Object rawValue = recordInfo.getValue();
+                    LOGGER.debug("数据信息经过过滤后清洗, 原始数据点信息: " + rawValue);
+                    Object washedValue = washer.wash(rawValue);
+                    LOGGER.debug("数据信息经过过滤后清洗, 清洗数据点信息: " + washedValue);
+
+                    recordInfo.setValue(washedValue);
+                }
+
                 // 遍历所有的触发器，任意一个触发器触发时，根据数据点配置保持或持久触发数据。
                 for (Map.Entry<LongIdKey, Trigger> entry : triggerMap.entrySet()) {
+                    Object value = recordInfo.getValue();
+                    Date happenedDate = recordInfo.getHappenedDate();
+
                     LongIdKey triggerKey = entry.getKey();
                     Trigger trigger = entry.getValue();
 
@@ -365,7 +392,7 @@ class RecordProcessor {
 
                     if (testResult.isTriggered()) {
                         TriggeredData triggeredRecord = new TriggeredData(
-                                pointKey, triggerKey, value, testResult.getMessage(), new Date()
+                                pointKey, triggerKey, value, testResult.getMessage(), happenedDate
                         );
                         LOGGER.debug("数据信息满足触发条件, 触发数据点信息: " + triggeredRecord);
 
@@ -379,16 +406,19 @@ class RecordProcessor {
                 }
 
                 // 生成一般数据，根据数据点配置保持或持久一般数据。
-                NormalData normalRecord = new NormalData(
-                        pointKey, value, new Date()
-                );
-                LOGGER.debug("记录一般数据: " + normalRecord);
+                {
+                    Object value = recordInfo.getValue();
+                    Date happenedDate = recordInfo.getHappenedDate();
 
-                if (point.isNormalKeepEnabled()) {
-                    normalKeepConsumeHandler.accept(normalRecord);
-                }
-                if (point.isNormalPersistEnabled()) {
-                    normalPersistConsumeHandler.accept(normalRecord);
+                    NormalData normalRecord = new NormalData(pointKey, value, happenedDate);
+                    LOGGER.debug("记录一般数据: " + normalRecord);
+
+                    if (point.isNormalKeepEnabled()) {
+                        normalKeepConsumeHandler.accept(normalRecord);
+                    }
+                    if (point.isNormalPersistEnabled()) {
+                        normalPersistConsumeHandler.accept(normalRecord);
+                    }
                 }
             } catch (HandlerException e) {
                 throw e;

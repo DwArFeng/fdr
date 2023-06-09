@@ -16,10 +16,12 @@ public class FastJsonConfiguration {
         //实体对象。
         ParserConfig.getGlobalInstance().addAccept(FastJsonPoint.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonFilterInfo.class.getCanonicalName());
-        ParserConfig.getGlobalInstance().addAccept(FastJsonTriggerInfo.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonFilterSupport.class.getCanonicalName());
+        ParserConfig.getGlobalInstance().addAccept(FastJsonTriggerInfo.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonTriggerSupport.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonMapperSupport.class.getCanonicalName());
+        ParserConfig.getGlobalInstance().addAccept(FastJsonWasherInfo.class.getCanonicalName());
+        ParserConfig.getGlobalInstance().addAccept(FastJsonWasherSupport.class.getCanonicalName());
         LOGGER.debug("FastJson autotype 白名单配置完毕");
     }
 }

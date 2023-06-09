@@ -55,6 +55,15 @@ public class Launcher {
                     LOGGER.warn("映射器支持重置失败，异常信息如下", e);
                 }
             }
+            if (launcherSettingHandler.isResetWasherSupport()) {
+                LOGGER.info("重置清洗器支持...");
+                WasherSupportMaintainService maintainService = ctx.getBean(WasherSupportMaintainService.class);
+                try {
+                    maintainService.reset();
+                } catch (ServiceException e) {
+                    LOGGER.warn("清洗器支持重置失败，异常信息如下", e);
+                }
+            }
 
             // 拿出程序中的 ThreadPoolTaskScheduler，用于处理计划任务。
             ThreadPoolTaskScheduler scheduler = ctx.getBean(ThreadPoolTaskScheduler.class);

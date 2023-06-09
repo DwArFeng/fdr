@@ -3,9 +3,11 @@ package com.dwarfeng.fdr.impl.handler;
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
+import com.dwarfeng.fdr.stack.bean.entity.WasherInfo;
 import com.dwarfeng.fdr.stack.handler.*;
 import com.dwarfeng.fdr.stack.service.EnabledFilterInfoLookupService;
 import com.dwarfeng.fdr.stack.service.EnabledTriggerInfoLookupService;
+import com.dwarfeng.fdr.stack.service.EnabledWasherInfoLookupService;
 import com.dwarfeng.fdr.stack.service.PointMaintainService;
 import com.dwarfeng.subgrade.impl.handler.Fetcher;
 import com.dwarfeng.subgrade.impl.handler.GeneralLocalCacheHandler;
@@ -56,22 +58,28 @@ public class RecordLocalCacheHandlerImpl implements RecordLocalCacheHandler {
     public static class RecordContextFetcher implements Fetcher<LongIdKey, RecordContext> {
 
         private final PointMaintainService pointMaintainService;
+        private final EnabledWasherInfoLookupService enabledWasherInfoLookupService;
         private final EnabledFilterInfoLookupService enabledFilterInfoLookupService;
         private final EnabledTriggerInfoLookupService enabledTriggerInfoLookupService;
 
+        private final WasherHandler washerHandler;
         private final FilterHandler filterHandler;
         private final TriggerHandler triggerHandler;
 
         public RecordContextFetcher(
                 PointMaintainService pointMaintainService,
+                EnabledWasherInfoLookupService enabledWasherInfoLookupService,
                 EnabledFilterInfoLookupService enabledFilterInfoLookupService,
                 EnabledTriggerInfoLookupService enabledTriggerInfoLookupService,
+                WasherHandler washerHandler,
                 FilterHandler filterHandler,
                 TriggerHandler triggerHandler
         ) {
             this.pointMaintainService = pointMaintainService;
+            this.enabledWasherInfoLookupService = enabledWasherInfoLookupService;
             this.enabledFilterInfoLookupService = enabledFilterInfoLookupService;
             this.enabledTriggerInfoLookupService = enabledTriggerInfoLookupService;
+            this.washerHandler = washerHandler;
             this.filterHandler = filterHandler;
             this.triggerHandler = triggerHandler;
         }
@@ -92,12 +100,28 @@ public class RecordLocalCacheHandlerImpl implements RecordLocalCacheHandler {
         )
         public RecordContext fetch(LongIdKey key) throws Exception {
             Point point = pointMaintainService.get(key);
+            List<WasherInfo> washerInfos = enabledWasherInfoLookupService.getEnabledWasherInfos(key);
             List<FilterInfo> filterInfos = enabledFilterInfoLookupService.getEnabledFilterInfos(key);
             List<TriggerInfo> triggerInfos = enabledTriggerInfoLookupService.getEnabledTriggerInfos(key);
 
+            Map<LongIdKey, Washer> preFilterWasherMap = new LinkedHashMap<>(washerInfos.size());
             Map<LongIdKey, Filter> filterMap = new LinkedHashMap<>(filterInfos.size());
+            Map<LongIdKey, Washer> postFilterWasherMap = new LinkedHashMap<>(washerInfos.size());
             Map<LongIdKey, Trigger> triggerMap = new LinkedHashMap<>(triggerInfos.size());
 
+            for (WasherInfo washerInfo : washerInfos) {
+                if (washerInfo.isPreFilter()) {
+                    preFilterWasherMap.put(
+                            washerInfo.getKey(),
+                            washerHandler.make(washerInfo.getType(), washerInfo.getParam())
+                    );
+                } else {
+                    postFilterWasherMap.put(
+                            washerInfo.getKey(),
+                            washerHandler.make(washerInfo.getType(), washerInfo.getParam())
+                    );
+                }
+            }
             for (FilterInfo filterInfo : filterInfos) {
                 filterMap.put(
                         filterInfo.getKey(),
@@ -111,7 +135,9 @@ public class RecordLocalCacheHandlerImpl implements RecordLocalCacheHandler {
                 );
             }
 
-            return new RecordLocalCacheHandler.RecordContext(point, filterMap, triggerMap);
+            return new RecordLocalCacheHandler.RecordContext(
+                    point, preFilterWasherMap, filterMap, postFilterWasherMap, triggerMap
+            );
         }
     }
 }

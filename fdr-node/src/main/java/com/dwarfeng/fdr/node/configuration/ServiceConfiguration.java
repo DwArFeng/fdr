@@ -3,10 +3,12 @@ package com.dwarfeng.fdr.node.configuration;
 import com.dwarfeng.fdr.impl.service.operation.FilterInfoCrudOperation;
 import com.dwarfeng.fdr.impl.service.operation.PointCrudOperation;
 import com.dwarfeng.fdr.impl.service.operation.TriggerInfoCrudOperation;
+import com.dwarfeng.fdr.impl.service.operation.WasherInfoCrudOperation;
 import com.dwarfeng.fdr.stack.bean.entity.*;
 import com.dwarfeng.fdr.stack.cache.FilterSupportCache;
 import com.dwarfeng.fdr.stack.cache.MapperSupportCache;
 import com.dwarfeng.fdr.stack.cache.TriggerSupportCache;
+import com.dwarfeng.fdr.stack.cache.WasherSupportCache;
 import com.dwarfeng.fdr.stack.dao.*;
 import com.dwarfeng.sfds.api.integration.subgrade.SnowFlakeLongIdKeyFetcher;
 import com.dwarfeng.subgrade.impl.bean.key.ExceptionKeyFetcher;
@@ -40,6 +42,10 @@ public class ServiceConfiguration {
     private final TriggerSupportDao triggerSupportDao;
     private final MapperSupportCache mapperSupportCache;
     private final MapperSupportDao mapperSupportDao;
+    private final WasherInfoCrudOperation washerInfoCrudOperation;
+    private final WasherInfoDao washerInfoDao;
+    private final WasherSupportCache washerSupportCache;
+    private final WasherSupportDao washerSupportDao;
 
     @Value("${cache.timeout.entity.filter_support}")
     private long filterSupportTimeout;
@@ -47,6 +53,8 @@ public class ServiceConfiguration {
     private long triggerSupportTimeout;
     @Value("${cache.timeout.entity.mapper_support}")
     private long mapperSupportTimeout;
+    @Value("${cache.timeout.entity.washer_support}")
+    private long washerSupportTimeout;
 
     public ServiceConfiguration(
             ServiceExceptionMapper sem,
@@ -55,7 +63,9 @@ public class ServiceConfiguration {
             TriggerInfoCrudOperation triggerInfoCrudOperation, TriggerInfoDao triggerInfoDao,
             FilterSupportCache filterSupportCache, FilterSupportDao filterSupportDao,
             TriggerSupportCache triggerSupportCache, TriggerSupportDao triggerSupportDao,
-            MapperSupportCache mapperSupportCache, MapperSupportDao mapperSupportDao
+            MapperSupportCache mapperSupportCache, MapperSupportDao mapperSupportDao,
+            WasherInfoCrudOperation washerInfoCrudOperation, WasherInfoDao washerInfoDao,
+            WasherSupportCache washerSupportCache, WasherSupportDao washerSupportDao
     ) {
         this.sem = sem;
         this.filterInfoCrudOperation = filterInfoCrudOperation;
@@ -70,7 +80,12 @@ public class ServiceConfiguration {
         this.triggerSupportDao = triggerSupportDao;
         this.mapperSupportCache = mapperSupportCache;
         this.mapperSupportDao = mapperSupportDao;
+        this.washerInfoCrudOperation = washerInfoCrudOperation;
+        this.washerInfoDao = washerInfoDao;
+        this.washerSupportCache = washerSupportCache;
+        this.washerSupportDao = washerSupportDao;
     }
+
 
     @Bean
     public KeyFetcher<LongIdKey> longIdKeyKeyFetcher() {
@@ -246,6 +261,64 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<MapperSupport> mapperSupportDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 mapperSupportDao,
+                sem,
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public CustomBatchCrudService<LongIdKey, WasherInfo> washerInfoBatchCustomCrudService() {
+        return new CustomBatchCrudService<>(
+                washerInfoCrudOperation,
+                longIdKeyKeyFetcher(),
+                sem,
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyPresetLookupService<WasherInfo> washerInfoDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
+                washerInfoDao,
+                sem,
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyEntireLookupService<WasherInfo> washerInfoDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                washerInfoDao,
+                sem,
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public GeneralBatchCrudService<StringIdKey, WasherSupport> washerSupportGeneralBatchCrudService() {
+        return new GeneralBatchCrudService<>(
+                washerSupportDao,
+                washerSupportCache,
+                new ExceptionKeyFetcher<>(),
+                sem,
+                LogLevel.WARN,
+                washerSupportTimeout
+        );
+    }
+
+    @Bean
+    public DaoOnlyEntireLookupService<WasherSupport> washerSupportDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                washerSupportDao,
+                sem,
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyPresetLookupService<WasherSupport> washerSupportDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
+                washerSupportDao,
                 sem,
                 LogLevel.WARN
         );

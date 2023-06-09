@@ -32,12 +32,21 @@ public interface RecordLocalCacheHandler extends LocalCacheHandler<LongIdKey, Re
     final class RecordContext {
 
         private final Point point;
+        private final Map<LongIdKey, Washer> preFilterWasherMap;
         private final Map<LongIdKey, Filter> filterMap;
+        private final Map<LongIdKey, Washer> postFilterWasherMap;
         private final Map<LongIdKey, Trigger> triggerMap;
 
-        public RecordContext(Point point, Map<LongIdKey, Filter> filterMap, Map<LongIdKey, Trigger> triggerMap) {
+        public RecordContext(
+                Point point, Map<LongIdKey, Washer> preFilterWasherMap,
+                Map<LongIdKey, Filter> filterMap,
+                Map<LongIdKey, Washer> postFilterWasherMap,
+                Map<LongIdKey, Trigger> triggerMap
+        ) {
             this.point = point;
+            this.preFilterWasherMap = preFilterWasherMap;
             this.filterMap = filterMap;
+            this.postFilterWasherMap = postFilterWasherMap;
             this.triggerMap = triggerMap;
         }
 
@@ -45,8 +54,16 @@ public interface RecordLocalCacheHandler extends LocalCacheHandler<LongIdKey, Re
             return point;
         }
 
+        public Map<LongIdKey, Washer> getPreFilterWasherMap() {
+            return preFilterWasherMap;
+        }
+
         public Map<LongIdKey, Filter> getFilterMap() {
             return filterMap;
+        }
+
+        public Map<LongIdKey, Washer> getPostFilterWasherMap() {
+            return postFilterWasherMap;
         }
 
         public Map<LongIdKey, Trigger> getTriggerMap() {

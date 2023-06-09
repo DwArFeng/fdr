@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "tbl_point")
 public class HibernatePoint implements Bean {
 
-    private static final long serialVersionUID = 2623032625126802930L;
+    private static final long serialVersionUID = 9072149765442387222L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -52,6 +52,9 @@ public class HibernatePoint implements Bean {
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateTriggerInfo.class, mappedBy = "point")
     private Set<HibernateTriggerInfo> triggerInfos = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateWasherInfo.class, mappedBy = "point")
+    private Set<HibernateWasherInfo> washerInfos = new HashSet<>();
 
     public HibernatePoint() {
     }
@@ -152,6 +155,14 @@ public class HibernatePoint implements Bean {
 
     public void setTriggerInfos(Set<HibernateTriggerInfo> triggerInfos) {
         this.triggerInfos = triggerInfos;
+    }
+
+    public Set<HibernateWasherInfo> getWasherInfos() {
+        return washerInfos;
+    }
+
+    public void setWasherInfos(Set<HibernateWasherInfo> washerInfos) {
+        this.washerInfos = washerInfos;
     }
 
     @Override

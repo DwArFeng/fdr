@@ -50,6 +50,14 @@ public final class ServiceExceptionCodes {
             new ServiceException.Code(offset(52), "lookup not supported");
     public static final ServiceException.Code QUERY_NOT_SUPPORTED =
             new ServiceException.Code(offset(53), "query not supported");
+    public static final ServiceException.Code WASHER_FAILED =
+            new ServiceException.Code(offset(60), "washer failed");
+    public static final ServiceException.Code WASHER_MAKE_FAILED =
+            new ServiceException.Code(offset(61), "washer make failed");
+    public static final ServiceException.Code WASHER_TYPE_UNSUPPORTED =
+            new ServiceException.Code(offset(62), "washer type unsupported");
+    public static final ServiceException.Code WASHER_EXECUTION_FAILED =
+            new ServiceException.Code(offset(63), "washer execution failed");
 
 
     private static int offset(int i) {
@@ -94,6 +102,10 @@ public final class ServiceExceptionCodes {
         LATEST_NOT_SUPPORTED.setCode(offset(51));
         LOOKUP_NOT_SUPPORTED.setCode(offset(52));
         QUERY_NOT_SUPPORTED.setCode(offset(53));
+        WASHER_FAILED.setCode(offset(60));
+        WASHER_MAKE_FAILED.setCode(offset(61));
+        WASHER_TYPE_UNSUPPORTED.setCode(offset(62));
+        WASHER_EXECUTION_FAILED.setCode(offset(63));
     }
 
     private ServiceExceptionCodes() {
