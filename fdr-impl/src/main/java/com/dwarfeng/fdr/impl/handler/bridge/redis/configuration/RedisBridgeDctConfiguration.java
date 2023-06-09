@@ -53,7 +53,7 @@ public class RedisBridgeDctConfiguration {
         return bean;
     }
 
-    @Bean(name = "redisBridge.valueCodingHandler", initMethod = "init")
+    @Bean(name = "redisBridge.valueCodingHandler")
     public ValueCodingHandler valueCodingHandler(
             @Qualifier("redisBridge.valueCodecs") List<ValueCodec> valueCodecs
     ) {
@@ -74,7 +74,7 @@ public class RedisBridgeDctConfiguration {
         return new FastJsonFlatDataCodec();
     }
 
-    @Bean(name = "dataCodingHandler", initMethod = "init")
+    @Bean(name = "dataCodingHandler")
     public DataCodingHandler dataCodingHandler(
             @Qualifier("redisBridge.flatDataCodec") FlatDataCodec flatDataCodec,
             @Qualifier("redisBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler

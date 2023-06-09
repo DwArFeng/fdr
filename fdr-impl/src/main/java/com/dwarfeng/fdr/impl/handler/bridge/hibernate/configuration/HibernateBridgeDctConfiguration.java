@@ -53,7 +53,7 @@ public class HibernateBridgeDctConfiguration {
         return bean;
     }
 
-    @Bean(name = "hibernateBridge.valueCodingHandler", initMethod = "init")
+    @Bean(name = "hibernateBridge.valueCodingHandler")
     public ValueCodingHandler valueCodingHandler(
             @Qualifier("hibernateBridge.valueCodecs") List<ValueCodec> valueCodecs
     ) {
@@ -74,7 +74,7 @@ public class HibernateBridgeDctConfiguration {
         return new FastJsonFlatDataCodec();
     }
 
-    @Bean(name = "dataCodingHandler", initMethod = "init")
+    @Bean(name = "dataCodingHandler")
     public DataCodingHandler dataCodingHandler(
             @Qualifier("hibernateBridge.flatDataCodec") FlatDataCodec flatDataCodec,
             @Qualifier("hibernateBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler

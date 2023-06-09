@@ -59,7 +59,7 @@
         <spring-terminator.version>1.0.10.a</spring-terminator.version>
         <spring-telqos.version>1.1.5.a</spring-telqos.version>
         <dcti.version>1.1.5.a</dcti.version>
-        <dwarfeng-dct.version>1.0.0.a-SNAPSHOT</dwarfeng-dct.version>
+        <dwarfeng-dct.version>1.0.0.a</dwarfeng-dct.version>
         <jackson.version>2.14.0</jackson.version>
         <groovy.version>4.0.6</groovy.version>
         <influxdb.version>6.7.0</influxdb.version>
