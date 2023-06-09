@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.sdk.util;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -38,7 +39,30 @@ public final class Constants {
      */
     public static final int WATCH_DEFAULT_ROWS = Integer.MAX_VALUE;
 
+    /**
+     * 不合法值的标记对象。
+     *
+     * <p>
+     * 部分过滤器可以识别该对象，以此为依据拒绝不合法的值。
+     */
+    public static final Object DATA_VALUE_ILLEGAL = IllegalDataValue.INSTANCE;
+
     private Constants() {
         throw new IllegalStateException("禁止实例化");
+    }
+
+    private static final class IllegalDataValue implements Serializable {
+
+        public static final IllegalDataValue INSTANCE = new IllegalDataValue();
+
+        private static final long serialVersionUID = -7111676719196255428L;
+
+        private IllegalDataValue() {
+        }
+
+        @Override
+        public String toString() {
+            return "IllegalDataValue{}";
+        }
     }
 }

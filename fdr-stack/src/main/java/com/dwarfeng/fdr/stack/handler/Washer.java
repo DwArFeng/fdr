@@ -17,6 +17,14 @@ import com.dwarfeng.fdr.stack.exception.WasherException;
  * 通过 {@link WasherInfo#setPreFilter(boolean)} 方法可以设置清洗器的类型。
  *
  * <p>
+ * 需要注意的是，清洗器的作用仅限于数据清洗，不应该用于数据过滤。因此对于不合法的数据，
+ * 不应该抛出异常（因为这样会中断整个数据处理流程，并触发记录失败相关的调度），而是应该返回一个特殊的值，
+ * 例如 <code>null</code>，
+ * 或是该项目的 sdk 模块提供的一个特殊的值 <code>com.dwarfeng.fdr.sdk.util.Constants#DATA_VALUE_ILLEGAL</code>。<br>
+ * 随后配置对应的过滤器，识别特殊值，从而拒绝该数据。<br>
+ * 与此对应的是，如果无法完成数据的清洗流程，利用无法调用外部服务等原因，应该抛出异常。
+ *
+ * <p>
  * 有关清洗的详细信息，请参阅术语。
  *
  * @author DwArFeng

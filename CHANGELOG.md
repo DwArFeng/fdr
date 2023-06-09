@@ -6,6 +6,10 @@
 
 - 新增数据清洗机制，并提供预设清洗器。
   - com.dwarfeng.fdr.impl.handler.washer.GroovyWasherRegistry。
+  - com.dwarfeng.fdr.impl.handler.washer.IdentifyWasherRegistry。
+  - com.dwarfeng.fdr.impl.handler.washer.ToBooleanWasherRegistry。
+  - com.dwarfeng.fdr.impl.handler.washer.ToDoubleWasherRegistry。
+  - com.dwarfeng.fdr.impl.handler.washer.ToLongWasherRegistry。
 
 - 优化项目的服务异常映射机制。
 

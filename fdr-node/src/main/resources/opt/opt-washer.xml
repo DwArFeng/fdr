@@ -18,5 +18,33 @@
                 type="assignable" expression="com.dwarfeng.fdr.impl.handler.washer.GroovyWasherRegistry"
         />
         -->
+
+        <!-- 加载 IdentifyWasher -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.washer.IdentifyWasherRegistry"
+        />
+        -->
+
+        <!-- 加载 ToBooleanWasher -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.washer.ToBooleanWasherRegistry"
+        />
+        -->
+
+        <!-- 加载 ToDoubleWasher -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.washer.ToDoubleWasherRegistry"
+        />
+        -->
+
+        <!-- 加载 ToLongWasher -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.washer.ToLongWasherRegistry"
+        />
+        -->
     </context:component-scan>
 </beans>
