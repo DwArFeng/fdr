@@ -12,7 +12,6 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +30,7 @@ public class EnabledTriggerInfoLookupServiceImpl implements EnabledTriggerInfoLo
     public EnabledTriggerInfoLookupServiceImpl(
             TriggerInfoDao dao,
             EnabledTriggerInfoCache cache,
-            @Qualifier("mapServiceExceptionMapper") ServiceExceptionMapper sem
+            ServiceExceptionMapper sem
     ) {
         this.dao = dao;
         this.cache = cache;

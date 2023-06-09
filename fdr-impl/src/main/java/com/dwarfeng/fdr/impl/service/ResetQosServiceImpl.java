@@ -8,7 +8,6 @@ import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PreDestroy;
@@ -25,7 +24,7 @@ public class ResetQosServiceImpl implements ResetQosService {
     public ResetQosServiceImpl(
             ResetterHandler resetterHandler,
             ResetHandler resetHandler,
-            @Qualifier("mapServiceExceptionMapper") ServiceExceptionMapper sem
+            ServiceExceptionMapper sem
     ) {
         this.resetterHandler = resetterHandler;
         this.resetHandler = resetHandler;

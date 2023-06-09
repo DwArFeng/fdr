@@ -13,6 +13,7 @@ import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.stack.bean.key.KeyFetcher;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,19 +21,20 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class HibernateBridgeServiceConfiguration {
 
-    private final HibernateBridgeServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration;
+    private final ServiceExceptionMapper sem;
 
     private final HibernateBridgeNormalDataDao hibernateBridgeNormalDataDao;
     private final HibernateBridgeFilteredDataDao hibernateBridgeFilteredDataDao;
     private final HibernateBridgeTriggeredDataDao hibernateBridgeTriggeredDataDao;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public HibernateBridgeServiceConfiguration(
-            HibernateBridgeServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration,
+            ServiceExceptionMapper sem,
             HibernateBridgeNormalDataDao hibernateBridgeNormalDataDao,
             HibernateBridgeFilteredDataDao hibernateBridgeFilteredDataDao,
             HibernateBridgeTriggeredDataDao hibernateBridgeTriggeredDataDao
     ) {
-        this.serviceExceptionMapperConfiguration = serviceExceptionMapperConfiguration;
+        this.sem = sem;
         this.hibernateBridgeNormalDataDao = hibernateBridgeNormalDataDao;
         this.hibernateBridgeFilteredDataDao = hibernateBridgeFilteredDataDao;
         this.hibernateBridgeTriggeredDataDao = hibernateBridgeTriggeredDataDao;
@@ -49,7 +51,7 @@ public class HibernateBridgeServiceConfiguration {
         return new DaoOnlyBatchCrudService<>(
                 hibernateBridgeNormalDataDao,
                 longIdKeyKeyFetcher(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -59,7 +61,7 @@ public class HibernateBridgeServiceConfiguration {
     hibernateBridgeNormalDataDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
                 hibernateBridgeNormalDataDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -69,7 +71,7 @@ public class HibernateBridgeServiceConfiguration {
     hibernateBridgeNormalDataDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 hibernateBridgeNormalDataDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -80,7 +82,7 @@ public class HibernateBridgeServiceConfiguration {
         return new DaoOnlyBatchWriteService<>(
                 hibernateBridgeNormalDataDao,
                 longIdKeyKeyFetcher(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -91,7 +93,7 @@ public class HibernateBridgeServiceConfiguration {
         return new DaoOnlyBatchCrudService<>(
                 hibernateBridgeFilteredDataDao,
                 longIdKeyKeyFetcher(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -101,7 +103,7 @@ public class HibernateBridgeServiceConfiguration {
     hibernateBridgeFilteredDataDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
                 hibernateBridgeFilteredDataDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -111,7 +113,7 @@ public class HibernateBridgeServiceConfiguration {
     hibernateBridgeFilteredDataDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 hibernateBridgeFilteredDataDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -122,7 +124,7 @@ public class HibernateBridgeServiceConfiguration {
         return new DaoOnlyBatchWriteService<>(
                 hibernateBridgeFilteredDataDao,
                 longIdKeyKeyFetcher(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -133,7 +135,7 @@ public class HibernateBridgeServiceConfiguration {
         return new DaoOnlyBatchCrudService<>(
                 hibernateBridgeTriggeredDataDao,
                 longIdKeyKeyFetcher(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -143,7 +145,7 @@ public class HibernateBridgeServiceConfiguration {
     hibernateBridgeTriggeredDataDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
                 hibernateBridgeTriggeredDataDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -153,7 +155,7 @@ public class HibernateBridgeServiceConfiguration {
     hibernateBridgeTriggeredDataDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 hibernateBridgeTriggeredDataDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -164,7 +166,7 @@ public class HibernateBridgeServiceConfiguration {
         return new DaoOnlyBatchWriteService<>(
                 hibernateBridgeTriggeredDataDao,
                 longIdKeyKeyFetcher(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }

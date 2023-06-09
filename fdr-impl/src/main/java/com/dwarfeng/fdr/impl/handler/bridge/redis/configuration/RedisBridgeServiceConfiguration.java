@@ -10,6 +10,7 @@ import com.dwarfeng.sfds.api.integration.subgrade.SnowFlakeLongIdKeyFetcher;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyBatchCrudService;
 import com.dwarfeng.subgrade.stack.bean.key.KeyFetcher;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,19 +18,20 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RedisBridgeServiceConfiguration {
 
-    private final RedisBridgeServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration;
+    private final ServiceExceptionMapper sem;
 
     private final RedisBridgeNormalDataDao redisBridgeNormalDataDao;
     private final RedisBridgeFilteredDataDao redisBridgeFilteredDataDao;
     private final RedisBridgeTriggeredDataDao redisBridgeTriggeredDataDao;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public RedisBridgeServiceConfiguration(
-            RedisBridgeServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration,
+            ServiceExceptionMapper sem,
             RedisBridgeNormalDataDao redisBridgeNormalDataDao,
             RedisBridgeFilteredDataDao redisBridgeFilteredDataDao,
             RedisBridgeTriggeredDataDao redisBridgeTriggeredDataDao
     ) {
-        this.serviceExceptionMapperConfiguration = serviceExceptionMapperConfiguration;
+        this.sem = sem;
         this.redisBridgeNormalDataDao = redisBridgeNormalDataDao;
         this.redisBridgeFilteredDataDao = redisBridgeFilteredDataDao;
         this.redisBridgeTriggeredDataDao = redisBridgeTriggeredDataDao;
@@ -46,7 +48,7 @@ public class RedisBridgeServiceConfiguration {
         return new DaoOnlyBatchCrudService<>(
                 redisBridgeNormalDataDao,
                 longIdKeyKeyFetcher(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -57,7 +59,7 @@ public class RedisBridgeServiceConfiguration {
         return new DaoOnlyBatchCrudService<>(
                 redisBridgeFilteredDataDao,
                 longIdKeyKeyFetcher(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -68,7 +70,7 @@ public class RedisBridgeServiceConfiguration {
         return new DaoOnlyBatchCrudService<>(
                 redisBridgeTriggeredDataDao,
                 longIdKeyKeyFetcher(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }

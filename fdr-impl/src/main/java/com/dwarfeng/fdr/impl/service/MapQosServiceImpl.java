@@ -9,7 +9,6 @@ import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.locks.Lock;
@@ -27,7 +26,7 @@ public class MapQosServiceImpl implements MapQosService {
 
     public MapQosServiceImpl(
             MapLocalCacheHandler mapLocalCacheHandler,
-            @Qualifier("mapServiceExceptionMapper") ServiceExceptionMapper sem
+            ServiceExceptionMapper sem
     ) {
         this.mapLocalCacheHandler = mapLocalCacheHandler;
         this.sem = sem;

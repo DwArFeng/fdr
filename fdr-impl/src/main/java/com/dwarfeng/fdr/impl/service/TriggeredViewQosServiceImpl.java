@@ -4,7 +4,6 @@ import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
 import com.dwarfeng.fdr.stack.handler.TriggeredViewHandler;
 import com.dwarfeng.fdr.stack.service.TriggeredViewQosService;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,7 +12,7 @@ public class TriggeredViewQosServiceImpl extends AbstractViewQosService<Triggere
 
     public TriggeredViewQosServiceImpl(
             TriggeredViewHandler triggeredWatchHandler,
-            @Qualifier("mapServiceExceptionMapper") ServiceExceptionMapper sem
+            ServiceExceptionMapper sem
     ) {
         super(triggeredWatchHandler, sem);
     }

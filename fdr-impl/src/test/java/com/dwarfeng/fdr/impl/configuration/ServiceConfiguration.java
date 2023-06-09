@@ -17,6 +17,7 @@ import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
 import com.dwarfeng.subgrade.stack.bean.key.KeyFetcher;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +26,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ServiceConfiguration {
 
-    private final ServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration;
+    private final ServiceExceptionMapper sem;
 
     private final FilterInfoCrudOperation filterInfoCrudOperation;
     private final FilterInfoDao filterInfoDao;
@@ -48,7 +49,7 @@ public class ServiceConfiguration {
     private long mapperSupportTimeout;
 
     public ServiceConfiguration(
-            ServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration,
+            ServiceExceptionMapper sem,
             FilterInfoCrudOperation filterInfoCrudOperation, FilterInfoDao filterInfoDao,
             PointCrudOperation pointCrudOperation, PointDao pointDao,
             TriggerInfoCrudOperation triggerInfoCrudOperation, TriggerInfoDao triggerInfoDao,
@@ -56,7 +57,7 @@ public class ServiceConfiguration {
             TriggerSupportCache triggerSupportCache, TriggerSupportDao triggerSupportDao,
             MapperSupportCache mapperSupportCache, MapperSupportDao mapperSupportDao
     ) {
-        this.serviceExceptionMapperConfiguration = serviceExceptionMapperConfiguration;
+        this.sem = sem;
         this.filterInfoCrudOperation = filterInfoCrudOperation;
         this.filterInfoDao = filterInfoDao;
         this.pointCrudOperation = pointCrudOperation;
@@ -71,7 +72,6 @@ public class ServiceConfiguration {
         this.mapperSupportDao = mapperSupportDao;
     }
 
-
     @Bean
     public KeyFetcher<LongIdKey> longIdKeyKeyFetcher() {
         return new SnowFlakeLongIdKeyFetcher();
@@ -82,7 +82,7 @@ public class ServiceConfiguration {
         return new CustomBatchCrudService<>(
                 filterInfoCrudOperation,
                 longIdKeyKeyFetcher(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -91,7 +91,7 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<FilterInfo> filterInfoDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 filterInfoDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -101,7 +101,7 @@ public class ServiceConfiguration {
         return new CustomBatchCrudService<>(
                 pointCrudOperation,
                 longIdKeyKeyFetcher(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -110,7 +110,7 @@ public class ServiceConfiguration {
     public DaoOnlyEntireLookupService<Point> pointDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
                 pointDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -119,7 +119,7 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<Point> pointDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 pointDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -129,7 +129,7 @@ public class ServiceConfiguration {
         return new CustomBatchCrudService<>(
                 triggerInfoCrudOperation,
                 longIdKeyKeyFetcher(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -138,7 +138,7 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<TriggerInfo> triggerInfoDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 triggerInfoDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -149,7 +149,7 @@ public class ServiceConfiguration {
                 filterSupportDao,
                 filterSupportCache,
                 new ExceptionKeyFetcher<>(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN,
                 filterSupportTimeout
         );
@@ -159,7 +159,7 @@ public class ServiceConfiguration {
     public DaoOnlyEntireLookupService<FilterSupport> filterSupportDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
                 filterSupportDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -168,7 +168,7 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<FilterSupport> filterSupportDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 filterSupportDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -179,7 +179,7 @@ public class ServiceConfiguration {
                 triggerSupportDao,
                 triggerSupportCache,
                 new ExceptionKeyFetcher<>(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN,
                 triggerSupportTimeout
         );
@@ -189,7 +189,7 @@ public class ServiceConfiguration {
     public DaoOnlyEntireLookupService<TriggerSupport> triggerSupportDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
                 triggerSupportDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -198,7 +198,7 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<TriggerSupport> triggerSupportDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 triggerSupportDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -207,7 +207,7 @@ public class ServiceConfiguration {
     public DaoOnlyEntireLookupService<FilterInfo> filterInfoDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
                 filterInfoDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -216,7 +216,7 @@ public class ServiceConfiguration {
     public DaoOnlyEntireLookupService<TriggerInfo> triggerInfoDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
                 triggerInfoDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -227,7 +227,7 @@ public class ServiceConfiguration {
                 mapperSupportDao,
                 mapperSupportCache,
                 new ExceptionKeyFetcher<>(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN,
                 mapperSupportTimeout
         );
@@ -237,7 +237,7 @@ public class ServiceConfiguration {
     public DaoOnlyEntireLookupService<MapperSupport> mapperSupportDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
                 mapperSupportDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }
@@ -246,7 +246,7 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<MapperSupport> mapperSupportDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 mapperSupportDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                sem,
                 LogLevel.WARN
         );
     }

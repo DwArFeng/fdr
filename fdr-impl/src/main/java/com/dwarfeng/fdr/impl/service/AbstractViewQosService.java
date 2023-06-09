@@ -9,7 +9,6 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ public abstract class AbstractViewQosService<D extends Data> implements ViewQosS
 
     protected AbstractViewQosService(
             ViewHandler<D> viewHandler,
-            @Qualifier("mapServiceExceptionMapper") ServiceExceptionMapper sem
+            ServiceExceptionMapper sem
     ) {
         this.viewHandler = viewHandler;
         this.sem = sem;

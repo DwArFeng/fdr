@@ -11,7 +11,6 @@ import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.ServiceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +38,7 @@ public class DubboResetter extends AbstractResetter {
     private ServiceConfig<DubboResetService> dubboService = null;
     private boolean startFlag = false;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public DubboResetter(ApplicationContext ctx, RegistryConfig registry, ProtocolConfig protocol) {
         this.ctx = ctx;
         this.registry = registry;
@@ -134,7 +134,7 @@ public class DubboResetter extends AbstractResetter {
 
         private final ServiceExceptionMapper sem;
 
-        public DubboResetServiceImpl(@Qualifier("mapServiceExceptionMapper") ServiceExceptionMapper sem) {
+        public DubboResetServiceImpl(ServiceExceptionMapper sem) {
             this.sem = sem;
         }
 
