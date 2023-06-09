@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 提供预设过滤器。
+  - com.dwarfeng.fdr.impl.handler.filter.DataValueIllegalFilterRegistry。
+
 - 新增数据清洗机制，并提供预设清洗器。
   - com.dwarfeng.fdr.impl.handler.washer.GroovyWasherRegistry。
   - com.dwarfeng.fdr.impl.handler.washer.IdentifyWasherRegistry。

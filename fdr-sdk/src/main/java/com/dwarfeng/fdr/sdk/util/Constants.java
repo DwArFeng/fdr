@@ -61,6 +61,16 @@ public final class Constants {
         }
 
         @Override
+        public int hashCode() {
+            return 0;
+        }
+
+        @Override
+        public boolean equals(Object that) {
+            return that instanceof IllegalDataValue;
+        }
+
+        @Override
         public String toString() {
             return "IllegalDataValue{}";
         }
