@@ -1,10 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.bridge.influxdb;
 
 import com.dwarfeng.fdr.impl.handler.bridge.FullPersister;
-import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.HibernateBridgeDefaultQueryInfo;
-import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.HibernateBridgeLookupInfo;
-import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.HibernateBridgeLookupResult;
-import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.HibernateBridgeQueryResult;
+import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.*;
 import com.dwarfeng.fdr.impl.handler.bridge.influxdb.handler.InfluxdbBridgeDataHandler;
 import com.dwarfeng.fdr.impl.handler.bridge.influxdb.util.DateUtil;
 import com.dwarfeng.fdr.sdk.util.ViewUtil;
@@ -36,6 +33,7 @@ public abstract class InfluxdbBridgePersister<D extends Data> extends FullPersis
     public static final String LOOKUP_PRESET_DEFAULT = "default";
     public static final String NATIVE_QUERY_PRESET_DEFAULT = "default";
     public static final String NATIVE_QUERY_PRESET_AGGREGATE_WINDOW = "aggregate_window";
+    public static final String NATIVE_QUERY_PRESET_CUSTOM = "custom";
 
     protected final InfluxdbBridgeDataHandler handler;
 
@@ -231,6 +229,11 @@ public abstract class InfluxdbBridgePersister<D extends Data> extends FullPersis
                         resolveDefaultQueryInfo(measurements, rangeStart, rangeStop, params)
                 );
                 break;
+            case NATIVE_QUERY_PRESET_CUSTOM:
+                queryResult = handler.customQuery(
+                        resolveCustomQueryInfo(measurements, rangeStart, rangeStop, params)
+                );
+                break;
             default:
                 throw new IllegalArgumentException("非法的预设: " + preset);
         }
@@ -270,6 +273,16 @@ public abstract class InfluxdbBridgePersister<D extends Data> extends FullPersis
         return new HibernateBridgeDefaultQueryInfo(
                 measurements, rangeStart, rangeStop, aggregateWindowEvery, aggregateWindowOffset, aggregateWindowFn
         );
+    }
+
+    private HibernateBridgeCustomQueryInfo resolveCustomQueryInfo(
+            List<String> measurements, Date rangeStart, Date rangeStop, String[] params
+    ) {
+        // params 的第 0 个元素是 fluxFragment。
+        String fluxFragment = params[0];
+
+        // 返回结果。
+        return new HibernateBridgeCustomQueryInfo(measurements, rangeStart, rangeStop, fluxFragment);
     }
 
     @Override

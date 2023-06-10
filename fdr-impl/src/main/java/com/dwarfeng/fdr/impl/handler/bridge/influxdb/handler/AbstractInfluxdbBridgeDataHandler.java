@@ -1,9 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.bridge.influxdb.handler;
 
-import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.HibernateBridgeDefaultQueryInfo;
-import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.HibernateBridgeLookupInfo;
-import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.HibernateBridgeLookupResult;
-import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.HibernateBridgeQueryResult;
+import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.*;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.influxdb.client.QueryApi;
 import com.influxdb.client.WriteApi;
@@ -120,29 +117,39 @@ public abstract class AbstractInfluxdbBridgeDataHandler implements InfluxdbBridg
             List<FluxTable> fluxTables = queryApi.query(flux, getOrganization());
 
             // 转换数据并返回。
-            List<HibernateBridgeQueryResult.HibernateBridgeSequence> sequences = new ArrayList<>(fluxTables.size());
-            for (FluxTable fluxTable : fluxTables) {
-                List<FluxRecord> records = fluxTable.getRecords();
-                List<HibernateBridgeQueryResult.HibernateBridgeItem> items = new ArrayList<>(records.size());
+            return fluxTable2QueryResult(fluxTables);
+        } catch (Exception e) {
+            throw new HandlerException(e);
+        }
+    }
 
-                // 需要保证 fluxTable 中至少有一条记录，否则跳过。
-                if (records.isEmpty()) {
-                    continue;
-                }
-                FluxRecord firstRecord = records.get(0);
-                String measurement = firstRecord.getMeasurement();
-                Instant start = firstRecord.getStart();
-                Instant stop = firstRecord.getStop();
+    @Override
+    public HibernateBridgeQueryResult customQuery(HibernateBridgeCustomQueryInfo queryInfo) throws HandlerException {
+        try {
+            // 构造查询语句模板。
+            String fluxFormat = "from(bucket: \"%1$s\")\n" +
+                    " |> range(start: %2$s, stop: %3$s)\n" +
+                    " |> filter(fn: (r) => %4$s)\n" +
+                    " |> filter(fn: (r) => r[\"_field\"] == \"value\")\n" +
+                    "%5$s";
 
-                for (FluxRecord record : records) {
-                    Object value = record.getValue();
-                    items.add(new HibernateBridgeQueryResult.HibernateBridgeItem(
-                            record.getMeasurement(), value, record.getTime()
-                    ));
-                }
-                sequences.add(new HibernateBridgeQueryResult.HibernateBridgeSequence(measurement, items, start, stop));
-            }
-            return new HibernateBridgeQueryResult(sequences);
+            // 格式化查询语句。
+            String measurementPattern = generateMeasurementPattern(queryInfo.getMeasurements());
+            @SuppressWarnings("SpellCheckingInspection")
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            String flux = String.format(fluxFormat,
+                    getBucket(),
+                    simpleDateFormat.format(queryInfo.getRangeStart()),
+                    simpleDateFormat.format(queryInfo.getRangeStop()),
+                    measurementPattern,
+                    queryInfo.getFluxFragment()
+            );
+
+            // 查询数据。
+            List<FluxTable> fluxTables = queryApi.query(flux, getOrganization());
+
+            // 转换数据并返回。
+            return fluxTable2QueryResult(fluxTables);
         } catch (Exception e) {
             throw new HandlerException(e);
         }
@@ -160,6 +167,32 @@ public abstract class AbstractInfluxdbBridgeDataHandler implements InfluxdbBridg
             patterns.add(String.format(singlePatternFormat, measurement));
         }
         return String.join(" or ", patterns);
+    }
+
+    private HibernateBridgeQueryResult fluxTable2QueryResult(List<FluxTable> fluxTables) {
+        List<HibernateBridgeQueryResult.HibernateBridgeSequence> sequences = new ArrayList<>(fluxTables.size());
+        for (FluxTable fluxTable : fluxTables) {
+            List<FluxRecord> records = fluxTable.getRecords();
+            List<HibernateBridgeQueryResult.HibernateBridgeItem> items = new ArrayList<>(records.size());
+
+            // 需要保证 fluxTable 中至少有一条记录，否则跳过。
+            if (records.isEmpty()) {
+                continue;
+            }
+            FluxRecord firstRecord = records.get(0);
+            String measurement = firstRecord.getMeasurement();
+            Instant start = firstRecord.getStart();
+            Instant stop = firstRecord.getStop();
+
+            for (FluxRecord record : records) {
+                Object value = record.getValue();
+                items.add(new HibernateBridgeQueryResult.HibernateBridgeItem(
+                        record.getMeasurement(), value, record.getTime()
+                ));
+            }
+            sequences.add(new HibernateBridgeQueryResult.HibernateBridgeSequence(measurement, items, start, stop));
+        }
+        return new HibernateBridgeQueryResult(sequences);
     }
 
     protected abstract String getBucket();

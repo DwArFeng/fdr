@@ -1,9 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.bridge.influxdb.handler;
 
-import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.HibernateBridgeDefaultQueryInfo;
-import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.HibernateBridgeLookupInfo;
-import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.HibernateBridgeLookupResult;
-import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.HibernateBridgeQueryResult;
+import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.*;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.handler.Handler;
 import com.influxdb.client.write.Point;
@@ -54,4 +51,27 @@ public interface InfluxdbBridgeDataHandler extends Handler {
      * @throws HandlerException 处理器异常。
      */
     HibernateBridgeQueryResult defaultQuery(HibernateBridgeDefaultQueryInfo queryInfo) throws HandlerException;
+
+    /**
+     * 自定义查询。
+     *
+     * <p>
+     * 自定义查询使用默认的 Flux 语句过滤 range 和 measurement，然后拼接用户指定的 Flux 语句。<br>
+     * 默认的 Flux 语句为：
+     *
+     * <pre>
+     * from(bucket: "xxx")
+     *   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+     *   |> filter(fn: (r) => r["_measurement"] == "1")
+     *   |> filter(fn: (r) => r["_field"] == "value")
+     * </pre>
+     * <p>
+     * 用户指定的 Flux 语句拼接在默认的 Flux 语句之后，可以为任意合法的 Flux 语句，但是应该保证 Flux 语句应保证返回的
+     * {@link com.influxdb.query.FluxTable} 中的 {@link com.influxdb.query.FluxRecord} 中包含 _time 和 _value 字段。
+     *
+     * @param queryInfo 指定的查询信息。
+     * @return 查询结果。
+     * @throws HandlerException 处理器异常。
+     */
+    HibernateBridgeQueryResult customQuery(HibernateBridgeCustomQueryInfo queryInfo) throws HandlerException;
 }
