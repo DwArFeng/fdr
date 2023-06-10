@@ -74,7 +74,7 @@ public class HibernateBridgeDctConfiguration {
         return new FastJsonFlatDataCodec();
     }
 
-    @Bean(name = "dataCodingHandler")
+    @Bean(name = "hibernateBridge.dataCodingHandler")
     public DataCodingHandler dataCodingHandler(
             @Qualifier("hibernateBridge.flatDataCodec") FlatDataCodec flatDataCodec,
             @Qualifier("hibernateBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler
