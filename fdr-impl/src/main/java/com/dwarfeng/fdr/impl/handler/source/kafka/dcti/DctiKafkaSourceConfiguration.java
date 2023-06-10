@@ -28,8 +28,6 @@ public class DctiKafkaSourceConfiguration {
     private String consumerBootstrapServers;
     @Value("${source.kafka.dcti.session_timeout_ms}")
     private int sessionTimeoutMs;
-    @Value("${source.kafka.dcti.group}")
-    private String group;
     @Value("${source.kafka.dcti.auto_offset_reset}")
     private String autoOffsetReset;
     @Value("${source.kafka.dcti.concurrency}")
@@ -50,7 +48,6 @@ public class DctiKafkaSourceConfiguration {
         // 配置值。
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, consumerBootstrapServers);
         props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, sessionTimeoutMs);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, group);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, autoOffsetReset);
         props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, maxPollRecords);
         props.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, maxPollIntervalMs);
