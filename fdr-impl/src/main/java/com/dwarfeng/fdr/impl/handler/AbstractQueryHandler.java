@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
 import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
 import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
+import com.dwarfeng.fdr.stack.exception.QueryException;
 import com.dwarfeng.fdr.stack.exception.QueryNotSupportedException;
 import com.dwarfeng.fdr.stack.exception.UnsupportedMapperTypeException;
 import com.dwarfeng.fdr.stack.handler.MapLocalCacheHandler;
@@ -16,6 +17,7 @@ import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -81,25 +83,25 @@ public abstract class AbstractQueryHandler implements QueryHandler {
 
     @Override
     public QueryResult query(QueryInfo queryInfo) throws HandlerException {
+        if (persister.writeOnly()) {
+            throw new QueryNotSupportedException();
+        }
         try {
-            if (persister.writeOnly()) {
-                throw new QueryNotSupportedException();
-            }
             return querySingle(queryInfo);
-        } catch (HandlerException e) {
+        } catch (QueryException e) {
             throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw new QueryException(e, Collections.singletonList(queryInfo));
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public List<QueryResult> query(List<QueryInfo> queryInfos) throws HandlerException {
+        if (persister.writeOnly()) {
+            throw new QueryNotSupportedException();
+        }
         try {
-            if (persister.writeOnly()) {
-                throw new QueryNotSupportedException();
-            }
-
             // 构造查询结果，并初始化。
             List<QueryResult> queryResults = new ArrayList<>(queryInfos.size());
             for (int i = 0; i < queryInfos.size(); i++) {
@@ -128,10 +130,10 @@ public abstract class AbstractQueryHandler implements QueryHandler {
 
             // 返回结果。
             return queryResults;
-        } catch (HandlerException e) {
+        } catch (QueryException e) {
             throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw new QueryException(e, queryInfos);
         }
     }
 
@@ -143,6 +145,7 @@ public abstract class AbstractQueryHandler implements QueryHandler {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private QueryResult querySingle(QueryInfo queryInfo) throws Exception {
         // 获取查询配置。
         LookupConfig config = getLookupConfig();

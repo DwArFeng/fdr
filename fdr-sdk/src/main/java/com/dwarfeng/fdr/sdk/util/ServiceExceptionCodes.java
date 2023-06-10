@@ -58,6 +58,22 @@ public final class ServiceExceptionCodes {
             new ServiceException.Code(offset(62), "washer type unsupported");
     public static final ServiceException.Code WASHER_EXECUTION_FAILED =
             new ServiceException.Code(offset(63), "washer execution failed");
+    public static final ServiceException.Code KEEP_FAILED =
+            new ServiceException.Code(offset(70), "keep failed");
+    public static final ServiceException.Code UPDATE_FAILED =
+            new ServiceException.Code(offset(71), "update failed");
+    public static final ServiceException.Code LATEST_FAILED =
+            new ServiceException.Code(offset(72), "latest failed");
+    public static final ServiceException.Code PERSIST_FAILED =
+            new ServiceException.Code(offset(80), "persist failed");
+    public static final ServiceException.Code RECORD_FAILED =
+            new ServiceException.Code(offset(81), "record failed");
+    public static final ServiceException.Code LOOKUP_FAILED =
+            new ServiceException.Code(offset(82), "lookup failed");
+    public static final ServiceException.Code NATIVE_QUERY_FAILED =
+            new ServiceException.Code(offset(83), "native query failed");
+    public static final ServiceException.Code QUERY_FAILED =
+            new ServiceException.Code(offset(90), "query failed");
 
 
     private static int offset(int i) {
@@ -106,6 +122,14 @@ public final class ServiceExceptionCodes {
         WASHER_MAKE_FAILED.setCode(offset(61));
         WASHER_TYPE_UNSUPPORTED.setCode(offset(62));
         WASHER_EXECUTION_FAILED.setCode(offset(63));
+        KEEP_FAILED.setCode(offset(70));
+        UPDATE_FAILED.setCode(offset(71));
+        LATEST_FAILED.setCode(offset(72));
+        PERSIST_FAILED.setCode(offset(80));
+        RECORD_FAILED.setCode(offset(81));
+        LOOKUP_FAILED.setCode(offset(82));
+        NATIVE_QUERY_FAILED.setCode(offset(83));
+        QUERY_FAILED.setCode(offset(90));
     }
 
     private ServiceExceptionCodes() {

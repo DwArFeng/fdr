@@ -1,6 +1,8 @@
 package com.dwarfeng.fdr.impl.handler;
 
+import com.dwarfeng.fdr.stack.exception.LatestException;
 import com.dwarfeng.fdr.stack.exception.LatestNotSupportedException;
+import com.dwarfeng.fdr.stack.exception.UpdateException;
 import com.dwarfeng.fdr.stack.handler.KeepHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -65,12 +67,24 @@ public abstract class AbstractKeepHandler<D extends Data> implements KeepHandler
 
     @Override
     public void update(D data) throws HandlerException {
-        keeper.update(data);
+        try {
+            keeper.update(data);
+        } catch (UpdateException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new UpdateException(e, Collections.singletonList(data));
+        }
     }
 
     @Override
     public void update(List<D> datas) throws HandlerException {
-        keeper.update(datas);
+        try {
+            keeper.update(datas);
+        } catch (UpdateException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new UpdateException(e, datas);
+        }
     }
 
     @Override
@@ -78,7 +92,13 @@ public abstract class AbstractKeepHandler<D extends Data> implements KeepHandler
         if (keeper.writeOnly()) {
             throw new LatestNotSupportedException();
         }
-        return keeper.latest(pointKey);
+        try {
+            return keeper.latest(pointKey);
+        } catch (LatestException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new LatestException(e, Collections.singletonList(pointKey));
+        }
     }
 
     @Override
@@ -86,7 +106,13 @@ public abstract class AbstractKeepHandler<D extends Data> implements KeepHandler
         if (keeper.writeOnly()) {
             throw new LatestNotSupportedException();
         }
-        return keeper.latest(pointKeys);
+        try {
+            return keeper.latest(pointKeys);
+        } catch (LatestException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new LatestException(e, pointKeys);
+        }
     }
 
     @Override

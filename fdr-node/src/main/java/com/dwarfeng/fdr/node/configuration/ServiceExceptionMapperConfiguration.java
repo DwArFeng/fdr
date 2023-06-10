@@ -39,6 +39,14 @@ public class ServiceExceptionMapperConfiguration {
         destination.put(WasherMakeException.class, ServiceExceptionCodes.WASHER_MAKE_FAILED);
         destination.put(UnsupportedWasherTypeException.class, ServiceExceptionCodes.WASHER_TYPE_UNSUPPORTED);
         destination.put(WasherExecutionException.class, ServiceExceptionCodes.WASHER_EXECUTION_FAILED);
+        destination.put(KeepException.class, ServiceExceptionCodes.KEEP_FAILED);
+        destination.put(UpdateException.class, ServiceExceptionCodes.UPDATE_FAILED);
+        destination.put(LatestException.class, ServiceExceptionCodes.LATEST_FAILED);
+        destination.put(PersistException.class, ServiceExceptionCodes.PERSIST_FAILED);
+        destination.put(RecordException.class, ServiceExceptionCodes.RECORD_FAILED);
+        destination.put(LookupException.class, ServiceExceptionCodes.LOOKUP_FAILED);
+        destination.put(NativeQueryException.class, ServiceExceptionCodes.NATIVE_QUERY_FAILED);
+        destination.put(QueryException.class, ServiceExceptionCodes.QUERY_FAILED);
         return new MapServiceExceptionMapper(destination, com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes.UNDEFINE);
     }
 }
