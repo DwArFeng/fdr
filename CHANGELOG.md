@@ -4,6 +4,11 @@
 
 #### 功能构建
 
+- 提供预设数据源。
+  - com.dwarfeng.fdr.impl.handler.source.mock.MockSource。
+  - com.dwarfeng.fdr.impl.handler.source.kafka.dwarfengdct.DwarfengDctKafkaSource。
+  - com.dwarfeng.fdr.impl.handler.source.kafka.dcti.DctiKafkaSource。
+
 - 提供预设过滤器。
   - com.dwarfeng.fdr.impl.handler.filter.DataValueIllegalFilterRegistry。
 
