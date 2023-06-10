@@ -4,12 +4,12 @@
 
 #### 功能构建
 
-- 提供预设数据源。
+- 实现预设数据源。
   - com.dwarfeng.fdr.impl.handler.source.mock.MockSource。
   - com.dwarfeng.fdr.impl.handler.source.kafka.dwarfengdct.DwarfengDctKafkaSource。
   - com.dwarfeng.fdr.impl.handler.source.kafka.dcti.DctiKafkaSource。
 
-- 提供预设过滤器。
+- 实现预设过滤器。
   - com.dwarfeng.fdr.impl.handler.filter.DataValueIllegalFilterRegistry。
 
 - 新增数据清洗机制，并提供预设清洗器。
@@ -23,7 +23,7 @@
 
 - 重构数据记录处理与数据持久化模块。
 
-- 实现桥接器。
+- 实现预设桥接器。
   - com.dwarfeng.fdr.impl.handler.bridge.mock.MockBridge。
   - com.dwarfeng.fdr.impl.handler.bridge.hibernate.HibernateBridge。
   - com.dwarfeng.fdr.impl.handler.bridge.redis.RedisBridge。
