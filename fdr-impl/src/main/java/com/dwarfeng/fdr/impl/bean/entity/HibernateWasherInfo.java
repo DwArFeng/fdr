@@ -12,7 +12,7 @@ import java.util.Optional;
 @Table(name = "tbl_washer_info")
 public class HibernateWasherInfo implements Bean {
 
-    private static final long serialVersionUID = -8377478770026182997L;
+    private static final long serialVersionUID = -4599735679134222629L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -29,6 +29,9 @@ public class HibernateWasherInfo implements Bean {
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
+
+    @Column(name = "pre_filter", nullable = false)
+    private boolean preFilter;
 
     @Column(name = "type", length = Constraints.LENGTH_TYPE)
     private String type;
@@ -99,6 +102,14 @@ public class HibernateWasherInfo implements Bean {
         this.enabled = enabled;
     }
 
+    public boolean isPreFilter() {
+        return preFilter;
+    }
+
+    public void setPreFilter(boolean preFilter) {
+        this.preFilter = preFilter;
+    }
+
     public String getType() {
         return type;
     }
@@ -138,6 +149,7 @@ public class HibernateWasherInfo implements Bean {
                 "pointLongId = " + pointLongId + ", " +
                 "index = " + index + ", " +
                 "enabled = " + enabled + ", " +
+                "preFilter = " + preFilter + ", " +
                 "type = " + type + ", " +
                 "param = " + param + ", " +
                 "remark = " + remark + ", " +
