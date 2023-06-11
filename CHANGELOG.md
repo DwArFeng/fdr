@@ -28,6 +28,7 @@
   - com.dwarfeng.fdr.impl.handler.bridge.hibernate.HibernateBridge。
   - com.dwarfeng.fdr.impl.handler.bridge.redis.RedisBridge。
   - com.dwarfeng.fdr.impl.handler.bridge.influxdb.InfluxdbBridge。
+  - com.dwarfeng.fdr.impl.handler.bridge.drain.DrainBridge。
 
 #### Bug修复
 

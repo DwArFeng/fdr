@@ -10,6 +10,11 @@
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
 
+    <!-- 加载 DrainBridge -->
+    <!--
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.bridge.drain"/>
+    -->
+
     <!-- 加载 MockBridge -->
     <!--
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.bridge.mock"/>
