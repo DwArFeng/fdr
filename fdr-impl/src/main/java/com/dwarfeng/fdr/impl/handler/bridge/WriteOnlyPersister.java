@@ -3,7 +3,10 @@ package com.dwarfeng.fdr.impl.handler.bridge;
 import com.dwarfeng.fdr.impl.handler.Bridge.Persister;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
+import com.dwarfeng.fdr.stack.bean.dto.NativeQueryInfo;
+import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
 import com.dwarfeng.fdr.stack.exception.LookupNotSupportedException;
+import com.dwarfeng.fdr.stack.exception.NativeQueryNotSupportedException;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 
@@ -56,6 +59,16 @@ public abstract class WriteOnlyPersister<D extends Data> implements Persister<D>
     @Override
     public List<LookupResult<D>> lookup(List<LookupInfo> lookupInfos) throws HandlerException {
         throw new LookupNotSupportedException();
+    }
+
+    @Override
+    public QueryResult nativeQuery(NativeQueryInfo queryInfo) throws HandlerException {
+        throw new NativeQueryNotSupportedException();
+    }
+
+    @Override
+    public List<QueryResult> nativeQuery(List<NativeQueryInfo> queryInfos) throws HandlerException {
+        throw new NativeQueryNotSupportedException();
     }
 
     @Override
