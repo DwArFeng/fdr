@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.bridge.redis;
 
 import com.dwarfeng.dct.handler.ValueCodingHandler;
-import com.dwarfeng.fdr.impl.handler.bridge.FulltKeeper;
+import com.dwarfeng.fdr.impl.handler.bridge.FullKeeper;
 import com.dwarfeng.fdr.impl.handler.bridge.redis.bean.RedisBridgeFilteredData;
 import com.dwarfeng.fdr.impl.handler.bridge.redis.service.RedisBridgeFilteredDataMaintainService;
 import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
@@ -20,7 +20,7 @@ import java.util.Objects;
  * @since 2.0.0
  */
 @Component
-public class RedisBridgeFilteredDataKeeper extends FulltKeeper<FilteredData> {
+public class RedisBridgeFilteredDataKeeper extends FullKeeper<FilteredData> {
 
     private final RedisBridgeFilteredDataMaintainService service;
 

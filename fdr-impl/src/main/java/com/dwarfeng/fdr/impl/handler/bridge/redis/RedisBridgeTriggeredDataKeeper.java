@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.bridge.redis;
 
 import com.dwarfeng.dct.handler.ValueCodingHandler;
-import com.dwarfeng.fdr.impl.handler.bridge.FulltKeeper;
+import com.dwarfeng.fdr.impl.handler.bridge.FullKeeper;
 import com.dwarfeng.fdr.impl.handler.bridge.redis.bean.RedisBridgeTriggeredData;
 import com.dwarfeng.fdr.impl.handler.bridge.redis.service.RedisBridgeTriggeredDataMaintainService;
 import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
@@ -20,7 +20,7 @@ import java.util.Objects;
  * @since 2.0.0
  */
 @Component
-public class RedisBridgeTriggeredDataKeeper extends FulltKeeper<TriggeredData> {
+public class RedisBridgeTriggeredDataKeeper extends FullKeeper<TriggeredData> {
 
     private final RedisBridgeTriggeredDataMaintainService service;
 

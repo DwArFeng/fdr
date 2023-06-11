@@ -1,6 +1,5 @@
 package com.dwarfeng.fdr.impl.handler.bridge;
 
-import com.dwarfeng.fdr.impl.handler.Bridge.Keeper;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
@@ -16,7 +15,7 @@ import java.util.List;
  * @author DwArFeng
  * @since 2.0.0
  */
-public abstract class FulltKeeper<D extends Data> implements Keeper<D> {
+public abstract class FullKeeper<D extends Data> extends AbstractKeeper<D> {
 
     @Override
     public boolean writeOnly() {

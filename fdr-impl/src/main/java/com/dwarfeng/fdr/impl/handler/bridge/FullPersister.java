@@ -1,6 +1,5 @@
 package com.dwarfeng.fdr.impl.handler.bridge;
 
-import com.dwarfeng.fdr.impl.handler.Bridge.Persister;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
 import com.dwarfeng.fdr.stack.bean.dto.NativeQueryInfo;
@@ -19,7 +18,7 @@ import java.util.List;
  * @author DwArFeng
  * @since 2.0.0
  */
-public abstract class FullPersister<D extends Data> implements Persister<D> {
+public abstract class FullPersister<D extends Data> extends AbstractPersister<D> {
 
     @Override
     public boolean writeOnly() {
