@@ -17,7 +17,7 @@ public class NormalViewCommand extends ViewCommand<NormalData> {
     }
 
     @Override
-    protected void printInspectData(int i, int endIndex, NormalData data, Context context) throws Exception {
+    protected void printLatestData(int i, int endIndex, NormalData data, Context context) throws Exception {
         printNormalData(i, endIndex, data, context);
     }
 
@@ -32,25 +32,30 @@ public class NormalViewCommand extends ViewCommand<NormalData> {
                 "索引: %d/%d",
                 i, endIndex
         ));
-        context.sendMessage(String.format(
-                "  pointId: %s",
-                data.getPointKey().getLongId()
-        ));
-        context.sendMessage(String.format(
-                "  valueClass: %s",
-                data.getValue().getClass().getCanonicalName()
-        ));
-        context.sendMessage(String.format(
-                "  value: %s",
-                data.getValue()
-        ));
-        context.sendMessage(String.format(
-                "  happenedDate: %1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS.%1$tL",
-                data.getHappenedDate()
-        ));
+        if (Objects.isNull(data)) {
+            context.sendMessage("  null");
+        } else {
+            context.sendMessage(String.format(
+                    "  pointId: %s",
+                    data.getPointKey().getLongId()
+            ));
+            context.sendMessage(String.format(
+                    "  valueClass: %s",
+                    Objects.isNull(data.getValue()) ? "null" : data.getValue().getClass().getCanonicalName()
+            ));
+            context.sendMessage(String.format(
+                    "  value: %s",
+                    data.getValue()
+            ));
+            context.sendMessage(String.format(
+                    "  happenedDate: %1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS.%1$tL",
+                    data.getHappenedDate()
+            ));
+        }
         context.sendMessage("");
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     protected void printLookupData(int i, int endIndex, QueryResult.Item item, Context context) throws Exception {
         context.sendMessage(String.format(

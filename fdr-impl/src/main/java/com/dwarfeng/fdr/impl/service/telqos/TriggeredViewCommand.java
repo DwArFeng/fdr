@@ -7,6 +7,8 @@ import com.dwarfeng.springtelqos.stack.command.Context;
 import com.dwarfeng.springtelqos.stack.exception.TelqosException;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public class TriggeredViewCommand extends ViewCommand<TriggeredData> {
 
@@ -15,7 +17,7 @@ public class TriggeredViewCommand extends ViewCommand<TriggeredData> {
     }
 
     @Override
-    protected void printInspectData(int i, int endIndex, TriggeredData data, Context context) throws Exception {
+    protected void printLatestData(int i, int endIndex, TriggeredData data, Context context) throws Exception {
         printTriggeredData(i, endIndex, data, context);
     }
 
@@ -30,30 +32,34 @@ public class TriggeredViewCommand extends ViewCommand<TriggeredData> {
                 "索引: %d/%d",
                 i, endIndex
         ));
-        context.sendMessage(String.format(
-                "  pointId: %s",
-                data.getPointKey().getLongId()
-        ));
-        context.sendMessage(String.format(
-                "  valueClass: %s",
-                data.getValue().getClass().getCanonicalName()
-        ));
-        context.sendMessage(String.format(
-                "  value: %s",
-                data.getValue()
-        ));
-        context.sendMessage(String.format(
-                "  happenedDate: %1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS.%1$tL",
-                data.getHappenedDate()
-        ));
-        context.sendMessage(String.format(
-                "  triggerId: %s",
-                data.getTriggerKey().getLongId()
-        ));
-        context.sendMessage(String.format(
-                "  message: %s",
-                data.getMessage()
-        ));
+        if (Objects.isNull(data)) {
+            context.sendMessage("  null");
+        } else {
+            context.sendMessage(String.format(
+                    "  pointId: %s",
+                    data.getPointKey().getLongId()
+            ));
+            context.sendMessage(String.format(
+                    "  valueClass: %s",
+                    Objects.isNull(data.getValue()) ? "null" : data.getValue().getClass().getCanonicalName()
+            ));
+            context.sendMessage(String.format(
+                    "  value: %s",
+                    data.getValue()
+            ));
+            context.sendMessage(String.format(
+                    "  happenedDate: %1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS.%1$tL",
+                    data.getHappenedDate()
+            ));
+            context.sendMessage(String.format(
+                    "  triggerId: %s",
+                    data.getTriggerKey().getLongId()
+            ));
+            context.sendMessage(String.format(
+                    "  message: %s",
+                    data.getMessage()
+            ));
+        }
         context.sendMessage("");
     }
 
@@ -70,7 +76,7 @@ public class TriggeredViewCommand extends ViewCommand<TriggeredData> {
         ));
         context.sendMessage(String.format(
                 "  valueClass: %s",
-                item.getValue().getClass().getCanonicalName()
+                Objects.isNull(item.getValue()) ? "null" : item.getValue().getClass().getCanonicalName()
         ));
         context.sendMessage(String.format(
                 "  value: %s",

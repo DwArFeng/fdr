@@ -51,7 +51,7 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
     private static final String COMMAND_OPTION_JSON_FILE_LONG_OPT = "json-file";
 
     private static String cmdLineSyntax(String identity) {
-        final String cmdLineSyntaxInspect = identity + " " +
+        final String cmdLineSyntaxLatest = identity + " " +
                 CommandUtil.concatOptionPrefix(COMMAND_OPTION_LATEST) + " [" +
                 CommandUtil.concatOptionPrefix(COMMAND_OPTION_JSON) + " json-string] [" +
                 CommandUtil.concatOptionPrefix(COMMAND_OPTION_JSON_FILE) + " json-file]";
@@ -69,7 +69,7 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
                 CommandUtil.concatOptionPrefix(COMMAND_OPTION_JSON_FILE) + " json-file]";
 
         final String[] cmdLineArray = new String[]{
-                cmdLineSyntaxInspect,
+                cmdLineSyntaxLatest,
                 cmdLineSyntaxLookup,
                 cmdLineSyntaxNativeQuery,
                 cmdLineSyntaxQuery
@@ -118,7 +118,7 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
             }
             switch (pair.getLeft()) {
                 case COMMAND_OPTION_LATEST:
-                    handleInspect(context, cmd);
+                    handleLatest(context, cmd);
                     break;
                 case COMMAND_OPTION_LOOKUP:
                     handleLookup(context, cmd);
@@ -135,7 +135,7 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
         }
     }
 
-    private void handleInspect(Context context, CommandLine cmd) throws Exception {
+    private void handleLatest(Context context, CommandLine cmd) throws Exception {
         List<LongIdKey> pointKeys;
 
         // 如果有 -json 选项，则从选项中获取 JSON，转化为 pointKeys。
@@ -165,7 +165,7 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
         // 查询数据，并计时。
         TimeMeasurer tm = new TimeMeasurer();
         tm.start();
-        List<D> datas = viewQosService.inspect(pointKeys);
+        List<D> datas = viewQosService.latest(pointKeys);
         tm.stop();
 
         // 输出执行时间。
@@ -182,12 +182,12 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
             context.sendMessage("");
             for (int i = cropResult.beginIndex; i < cropResult.endIndex; i++) {
                 D data = datas.get(i);
-                printInspectData(i, cropResult.endIndex, data, context);
+                printLatestData(i, cropResult.endIndex, data, context);
             }
         }
     }
 
-    protected abstract void printInspectData(int i, int endIndex, D data, Context context) throws Exception;
+    protected abstract void printLatestData(int i, int endIndex, D data, Context context) throws Exception;
 
     private void handleLookup(Context context, CommandLine cmd) throws Exception {
         LookupInfo lookupInfo;

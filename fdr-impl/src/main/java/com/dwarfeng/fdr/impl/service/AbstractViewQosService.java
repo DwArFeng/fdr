@@ -33,7 +33,7 @@ public abstract class AbstractViewQosService<D extends Data> implements ViewQosS
     }
 
     @Override
-    public List<D> inspect(List<LongIdKey> pointKeys) throws ServiceException {
+    public List<D> latest(List<LongIdKey> pointKeys) throws ServiceException {
         try {
             return viewHandler.latest(pointKeys);
         } catch (Exception e) {

@@ -17,17 +17,17 @@ import java.util.List;
 public interface ViewQosService<D extends Data> extends Service {
 
     /**
-     * 查询数据。
+     * 查询数据点的最新数据。
      *
      * <p>
      * 如果数据点主键组成的列表中的某个索引处的数据点主键对应的数据不存在，
      * 则返回的查询结果组成的列表该处索引对应的查询结果为 null。
      *
-     * @param pointKeys 数据点主键组成的列表。
-     * @return 查询结果。
+     * @param pointKeys 指定的数据点对应的主键组成的列表。
+     * @return 指定的数据点的最新数据组成的列表。
      * @throws ServiceException 服务异常。
      */
-    List<D> inspect(List<LongIdKey> pointKeys) throws ServiceException;
+    List<D> latest(List<LongIdKey> pointKeys) throws ServiceException;
 
     /**
      * 查看。
