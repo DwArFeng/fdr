@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Influxdb 桥接器被过滤数据持久化器。
+ * Influxdb 桥接器被过滤数据持久器。
  *
  * @author DwArFeng
  * @since 2.0.0

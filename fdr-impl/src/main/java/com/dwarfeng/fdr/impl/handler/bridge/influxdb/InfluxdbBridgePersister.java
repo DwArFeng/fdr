@@ -23,7 +23,7 @@ import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
 
 /**
- * Influxdb 桥接器一般数据持久化器。
+ * Influxdb 桥接器一般数据持久器。
  *
  * @author DwArFeng
  * @since 2.0.0

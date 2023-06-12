@@ -55,7 +55,7 @@ public abstract class MultiBridgeKeeper<D extends Data> extends AbstractKeeper<D
             }
             delegateBridges.add(bridge);
         }
-        // 基于桥接器获取持久化器。
+        // 基于桥接器获取持久器。
         List<Keeper<D>> delegateKeepers = new ArrayList<>(delegateBridges.size());
         for (int i = 0; i < delegateBridges.size(); i++) {
             Keeper<D> delegateKeeper = getKeeperFromBridge(delegateBridges.get(i));

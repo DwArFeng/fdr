@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 模拟的持久化器。
+ * 模拟的持久器。
  *
  * @author DwArFeng
  * @since 2.0.0

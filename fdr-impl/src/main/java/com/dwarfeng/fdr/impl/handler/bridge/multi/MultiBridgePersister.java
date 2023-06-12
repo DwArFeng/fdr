@@ -59,7 +59,7 @@ public abstract class MultiBridgePersister<D extends Data> extends AbstractPersi
             }
             delegateBridges.add(bridge);
         }
-        // 基于桥接器获取持久化器。
+        // 基于桥接器获取持久器。
         List<Persister<D>> delegatePersisters = new ArrayList<>(delegateBridges.size());
         for (int i = 0; i < delegateBridges.size(); i++) {
             Persister<D> delegatePersister = getPersisterFromBridge(delegateBridges.get(i));

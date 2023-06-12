@@ -10,7 +10,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 /**
- * Hibernate 桥接被触发数据持久化器。
+ * Hibernate 桥接被触发数据持久器。
  *
  * @author DwArFeng
  * @since 2.0.0

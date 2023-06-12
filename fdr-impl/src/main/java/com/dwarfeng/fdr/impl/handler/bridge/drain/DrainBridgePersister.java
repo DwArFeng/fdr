@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * Drain 桥接器持久化器。
+ * Drain 桥接器持久器。
  *
  * @author DwArFeng
  * @since 2.0.0

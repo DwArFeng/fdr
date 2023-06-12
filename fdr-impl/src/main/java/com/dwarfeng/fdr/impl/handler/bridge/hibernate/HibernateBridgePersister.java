@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
 /**
- * Hibernate 桥接器持久化器。
+ * Hibernate 桥接器持久器。
  *
  * @author DwArFeng
  * @since 2.0.0

@@ -12,7 +12,7 @@ import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import java.util.List;
 
 /**
- * 只写持久化器。
+ * 只写持久器。
  *
  * @author DwArFeng
  * @since 2.0.0
