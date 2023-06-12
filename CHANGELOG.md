@@ -29,6 +29,7 @@
   - com.dwarfeng.fdr.impl.handler.bridge.redis.RedisBridge。
   - com.dwarfeng.fdr.impl.handler.bridge.influxdb.InfluxdbBridge。
   - com.dwarfeng.fdr.impl.handler.bridge.drain.DrainBridge。
+  - com.dwarfeng.fdr.impl.handler.bridge.multi.MultiBridge。
 
 #### Bug修复
 
