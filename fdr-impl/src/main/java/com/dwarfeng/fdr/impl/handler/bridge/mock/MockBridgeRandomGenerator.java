@@ -99,4 +99,12 @@ public class MockBridgeRandomGenerator {
         double value = nextGaussian();
         return Double.toString(value);
     }
+
+    @Override
+    public String toString() {
+        return "MockBridgeRandomGenerator{" +
+                "random=" + random +
+                ", randomSeed=" + randomSeed +
+                '}';
+    }
 }
