@@ -68,10 +68,17 @@ public abstract class KeepConsumer<R extends Data> implements Consumer<R> {
         // 分布式锁。
         lock.acquire();
         try {
-            // 获取 localMap 中的键集合，转换为列表，并使用 KeepHandler.latest() 方法查询数据。
-            // 随后，根据 Record.getPointKey() 的值，将查询结果转换为 Map<LongIdKey, R> 类型。
-            Map<LongIdKey, R> keepMap = keepHandler.latest(new ArrayList<>(localMap.keySet())).stream()
-                    .filter(Objects::nonNull).collect(Collectors.toMap(Data::getPointKey, Function.identity()));
+            // 定义 keepMap，用于存放查询到的最新数据。
+            Map<LongIdKey, R> keepMap;
+            if (keepHandler.writeOnly()) {
+                // 对于只写的 KeepHandler，无法查询到最新数据，因此将 keepMap 赋值为一个空的 HashMap。
+                keepMap = new HashMap<>();
+            } else {
+                // 获取 localMap 中的键集合，转换为列表，并使用 KeepHandler.latest() 方法查询数据。
+                // 随后，根据 Record.getPointKey() 的值，将查询结果转换为 Map<LongIdKey, R> 类型。
+                keepMap = keepHandler.latest(new ArrayList<>(localMap.keySet())).stream()
+                        .filter(Objects::nonNull).collect(Collectors.toMap(Data::getPointKey, Function.identity()));
+            }
 
             // 遍历 localMap 中的所有键。
             for (Iterator<LongIdKey> iterator = localMap.keySet().iterator(); iterator.hasNext(); ) {
