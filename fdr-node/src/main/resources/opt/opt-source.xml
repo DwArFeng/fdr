@@ -10,9 +10,9 @@
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
 
-    <!-- 加载 MockSource -->
+    <!-- 加载 RealtimeMockSource -->
     <!--
-    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.source.mock"/>
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.source.mock.realtime"/>
     -->
 
     <!-- 加载 DwarfengDctKafkaSource -->

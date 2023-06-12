@@ -37,7 +37,7 @@ public class MockBridgeDataValueGenerator {
 
     @PostConstruct
     public void init() {
-        // 将 dataConfig 转换为 MockSourceDataConfigItem 的列表。
+        // 将 dataConfig 转换为 RealtimeMockSourceDataConfigItem 的列表。
         List<MockBridgeDataConfigItem> dataConfigItems = JSON.parseArray(dataConfig, MockBridgeDataConfigItem.class);
         dataConfigItemMap = dataConfigItems.stream().collect(
                 Collectors.toMap((item) -> new LongIdKey(item.getPointId()), Function.identity())

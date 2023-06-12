@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.impl.handler.source.mock;
+package com.dwarfeng.fdr.impl.handler.source.mock.realtime;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -7,17 +7,17 @@ import javax.annotation.PostConstruct;
 import java.util.Random;
 
 /**
- * 随机生成器。
+ * 实时模拟数据源随机生成器。
  *
  * @author DwArFeng
  * @since 2.0.0
  */
 @Component
-public class MockSourceRandomGenerator {
+public class RealtimeMockSourceRandomGenerator {
 
     private Random random;
 
-    @Value("${source.mock.random_seed}")
+    @Value("${source.mock.realtime.random_seed}")
     private Long randomSeed;
 
     @PostConstruct
@@ -97,9 +97,9 @@ public class MockSourceRandomGenerator {
 
     @Override
     public String toString() {
-        return "MockBridgeRandomGenerator{" +
+        return "RealtimeMockSourceRandomGenerator{" +
                 "random=" + random +
-                ", seed=" + randomSeed +
+                ", randomSeed=" + randomSeed +
                 '}';
     }
 }

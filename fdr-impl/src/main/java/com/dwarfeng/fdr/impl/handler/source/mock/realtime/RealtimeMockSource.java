@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.impl.handler.source.mock;
+package com.dwarfeng.fdr.impl.handler.source.mock.realtime;
 
 import com.alibaba.fastjson.JSON;
 import com.dwarfeng.fdr.impl.handler.source.AbstractSource;
@@ -15,25 +15,36 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.Future;
 
+/**
+ * 实时模拟数据源。
+ *
+ * <p>
+ * 实时数据源可以根据配置文件中的配置，生成基于当前时间的模拟数据。<br>
+ * 该数据源对每个配置的数据点每秒生成一次数据，每次的生成数量以及类型由配置文件中的配置决定，
+ * 生成的数据点的发生时间平均分布在当前时间与上一次生成时间之间。
+ *
+ * @author DwArFeng
+ * @since 2.0.0
+ */
 @Component
-public class MockSource extends AbstractSource {
+public class RealtimeMockSource extends AbstractSource {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MockSource.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RealtimeMockSource.class);
 
-    private final MockSourceRandomGenerator randomGenerator;
+    private final RealtimeMockSourceRandomGenerator randomGenerator;
     private final ThreadPoolTaskScheduler scheduler;
 
-    @Value("${source.mock.data_size_per_point_per_sec}")
+    @Value("${source.mock.realtime.data_size_per_point_per_sec}")
     private int dataSizePerPointPerSec;
-    @Value("${source.mock.data_config}")
+    @Value("${source.mock.realtime.data_config}")
     private String dataConfig;
 
-    private List<MockSourceDataConfigItem> dataConfigItems = null;
+    private List<RealtimeMockSourceDataConfigItem> dataConfigItems = null;
     private Map<String, Method> methodMap = null;
     private Future<?> taskFuture = null;
 
-    public MockSource(
-            MockSourceRandomGenerator randomGenerator,
+    public RealtimeMockSource(
+            RealtimeMockSourceRandomGenerator randomGenerator,
             ThreadPoolTaskScheduler scheduler
     ) {
         this.randomGenerator = randomGenerator;
@@ -42,12 +53,12 @@ public class MockSource extends AbstractSource {
 
     @PostConstruct
     public void init() {
-        // 将 dataConfig 转换为 MockSourceDataConfigItem 的列表。
-        dataConfigItems = JSON.parseArray(dataConfig, MockSourceDataConfigItem.class);
+        // 将 dataConfig 转换为 RealtimeMockSourceDataConfigItem 的列表。
+        dataConfigItems = JSON.parseArray(dataConfig, RealtimeMockSourceDataConfigItem.class);
         // 构造 methodMap。
         methodMap = new HashMap<>();
         // 扫描 MockBridgeRandomGenerator 的所有带有 RequiredPointType 注解的方法，将其放入 methodMap。
-        for (Method method : MockSourceRandomGenerator.class.getMethods()) {
+        for (Method method : RealtimeMockSourceRandomGenerator.class.getMethods()) {
             if (!method.isAnnotationPresent(RequiredPointType.class)) {
                 continue;
             }
@@ -101,7 +112,7 @@ public class MockSource extends AbstractSource {
                 );
                 happendDateList.add(happenedDate);
             }
-            for (MockSourceDataConfigItem dataConfigItem : dataConfigItems) {
+            for (RealtimeMockSourceDataConfigItem dataConfigItem : dataConfigItems) {
                 String pointType = dataConfigItem.getPointType();
                 if (!methodMap.containsKey(pointType)) {
                     LOGGER.warn("未知的数据点类型: " + pointType);
@@ -122,5 +133,20 @@ public class MockSource extends AbstractSource {
 
             lastTimestamp = currentTimestamp;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "RealtimeMockSource{" +
+                "randomGenerator=" + randomGenerator +
+                ", scheduler=" + scheduler +
+                ", dataSizePerPointPerSec=" + dataSizePerPointPerSec +
+                ", dataConfig='" + dataConfig + '\'' +
+                ", dataConfigItems=" + dataConfigItems +
+                ", methodMap=" + methodMap +
+                ", taskFuture=" + taskFuture +
+                ", context=" + context +
+                ", onlineFlag=" + onlineFlag +
+                '}';
     }
 }

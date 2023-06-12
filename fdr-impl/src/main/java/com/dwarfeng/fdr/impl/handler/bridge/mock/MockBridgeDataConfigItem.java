@@ -45,7 +45,7 @@ public class MockBridgeDataConfigItem implements Bean {
 
     @Override
     public String toString() {
-        return "MockSourceDataConfigItem{" +
+        return "RealtimeMockSourceDataConfigItem{" +
                 "pointId=" + pointId +
                 ", pointType='" + pointType + '\'' +
                 '}';

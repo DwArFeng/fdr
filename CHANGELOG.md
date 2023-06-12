@@ -5,7 +5,7 @@
 #### 功能构建
 
 - 实现预设数据源。
-  - com.dwarfeng.fdr.impl.handler.source.mock.MockSource。
+  - com.dwarfeng.fdr.impl.handler.source.mock.realtime.RealtimeMockSource。
   - com.dwarfeng.fdr.impl.handler.source.kafka.dwarfengdct.DwarfengDctKafkaSource。
   - com.dwarfeng.fdr.impl.handler.source.kafka.dcti.DctiKafkaSource。
 
