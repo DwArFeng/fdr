@@ -11,6 +11,7 @@ import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.ServiceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,9 @@ public class DubboResetter extends AbstractResetter {
 
     private final RegistryConfig registry;
     private final ProtocolConfig protocol;
+
+    @Value("${dubbo.provider.group}")
+    private String group;
 
     private final Lock lock = new ReentrantLock();
 
@@ -63,6 +67,7 @@ public class DubboResetter extends AbstractResetter {
             ServiceConfig<DubboResetService> dubboService = new ServiceConfig<>();
             dubboService.setRegistry(registry);
             dubboService.setProtocol(protocol);
+            dubboService.setGroup(group);
             dubboService.setInterface(DubboResetService.class);
             dubboService.setRef(dubboResetService);
 
