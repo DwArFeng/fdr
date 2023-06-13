@@ -8,6 +8,10 @@
 
 - [Introduction.md](./Introduction.md) - 简介，与 `README.me` 基本相同。
 
+## 快速开始
+
+- [QuickStart.md](./QuickStart.md) - 快速开始，用最快的方式体验本项目。
+
 ## 使用
 
 ### 安装
