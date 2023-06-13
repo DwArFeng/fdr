@@ -23,3 +23,8 @@
 
 - [ConfDirectory.md](./ConfDirectory.md) - 配置目录说明，详细说明如何配置本项目，即 `conf/` 目录下的内容。
 - [OptDirectory.md](./OptDirectory.md) - 可选配置目录说明，详细介绍了本项目的可选配置，即 `opt/` 目录下的内容。
+
+### 脚本
+
+- [ShellScripts.md](./ShellScripts.md) - 脚本说明，详细说明了本项目的 Shell 脚本，即 `bin/` 目录下 `*.sh` 文件的用法。
+- [BatchScripts.md](./BatchScripts.md) - 脚本说明，详细说明了本项目的 Batch 脚本，即 `bin/` 目录下 `*.bat` 文件的用法。
