@@ -95,7 +95,6 @@ public class GroovyWasherRegistry extends AbstractWasherRegistry {
             this.processor = processor;
         }
 
-
         @Override
         protected Object doWash(Object rawValue) throws Exception {
             // 返回 processor 的处理结果。

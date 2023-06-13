@@ -86,7 +86,6 @@ public class ServiceConfiguration {
         this.washerSupportDao = washerSupportDao;
     }
 
-
     @Bean
     public KeyFetcher<LongIdKey> longIdKeyKeyFetcher() {
         return new SnowFlakeLongIdKeyFetcher();

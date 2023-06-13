@@ -75,7 +75,6 @@ public final class ServiceExceptionCodes {
     public static final ServiceException.Code QUERY_FAILED =
             new ServiceException.Code(offset(90), "query failed");
 
-
     private static int offset(int i) {
         return EXCEPTION_CODE_OFFSET + i;
     }

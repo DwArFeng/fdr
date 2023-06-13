@@ -279,7 +279,6 @@ public abstract class MockBridgePersister<D extends Data> extends FullPersister<
             sequences.add(new QueryResult.Sequence(pointKey, items, startDate, endDate));
         }
 
-
         // 模拟延迟，延迟时间为(查询的时间范围 / 1000 + 1) * nativeQueryDelayPerSecond。
         // 如果时间区间小于等于0，则不延迟。
         if (nativeQueryDelayPerSecond > 0) {
