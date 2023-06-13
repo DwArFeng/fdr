@@ -4,6 +4,8 @@
 
 #### 功能构建
 
+- 重写 `README.md`，并增加文档文件夹。
+
 - 实现预设数据源。
   - com.dwarfeng.fdr.impl.handler.source.mock.realtime.RealtimeMockSource。
   - com.dwarfeng.fdr.impl.handler.source.mock.historical.HistoricalMockSource。
