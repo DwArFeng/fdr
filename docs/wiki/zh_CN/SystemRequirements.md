@@ -22,6 +22,7 @@
   - MySQL 8.0.19。
 - Redis 5.0.7。
 - Zookeeper 3.5.5。
+- snowflake-distributed-service 1.4.11。
 
 *说明：以上清单中软件的版本为推荐版本，其它版本见下文详细测试列表。*
 
@@ -105,6 +106,32 @@
 | 版本    | 测试结果 |
 |-------|------|
 | 3.5.5 | 通过   |
+
+### snowflake-distributed-service
+
+测试内容：在其他软件为推荐版本的情况下，测试软件在 snowflake-distributed-service 版本上是否可用。
+
+| 版本                              | 测试结果 |
+|---------------------------------|------|
+| Release_1.2.1_20200225_build_A  | 通过   |
+| Release_1.2.2_20200301_build_A  | 通过   |
+| Release_1.2.3_20200302_build_A  | 通过   |
+| Release_1.2.3_20200326_build_B  | 通过   |
+| Release_1.2.4_20200327_build_A  | 通过   |
+| Release_1.2.5_20200426_build_A  | 通过   |
+| Release_1.3.0_20200426_build_A  | 通过   |
+| Release_1.4.0_20210219_build_A  | 通过   |
+| Release_1.4.1_20220114_build_A  | 通过   |
+| Release_1.4.2_20220115_build_A  | 通过   |
+| Release_1.4.3_20220116_build_A  | 通过   |
+| Release_1.4.4_20220521_build_A  | 通过   |
+| Release_1.4.5_20220523_build_A  | 通过   |
+| Release_1.4.6_20220607_build_A  | 通过   |
+| Release_1.4.7_20220701_build_A  | 通过   |
+| Release_1.4.8_20220905_build_A  | 通过   |
+| Release_1.4.9_20220912_build_A  | 通过   |
+| Release_1.4.10_20221120_build_A | 通过   |
+| Release_1.4.11_20230420_build_A | 通过   |
 
 ### Kafka
 
