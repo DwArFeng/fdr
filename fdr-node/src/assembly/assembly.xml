@@ -66,6 +66,14 @@
             <fileMode>0644</fileMode>
         </fileSet>
         <fileSet>
+            <outputDirectory>conf/curator</outputDirectory>
+            <directory>src/main/resources/curator</directory>
+            <includes>
+                <include>*.properties</include>
+            </includes>
+            <fileMode>0644</fileMode>
+        </fileSet>
+        <fileSet>
             <outputDirectory>opt</outputDirectory>
             <directory>src/main/resources/opt</directory>
             <includes>

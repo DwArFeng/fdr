@@ -61,6 +61,12 @@ VALUES (2, true, true, '测试点位.2', true, true, '测试点位.2', true, tru
 
 下文列出了启动程序需要改动的最少的配置文件，每个配置文件中仅展示需要改动的配置项。
 
+`conf/curator/connection.properties` 文件中配置 Curator 连接信息。
+
+```properties
+curator.connect.connect_string=your-host-here:2181
+```
+
 `conf/database/connection.properties` 文件中配置数据库连接信息。
 
 ```properties

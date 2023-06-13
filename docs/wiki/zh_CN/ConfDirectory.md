@@ -6,6 +6,10 @@
 
 ```text
 conf
+├─curator
+│      connection.properties
+│      latch-path.properties
+│
 ├─database
 │      connection.properties
 │      performance.properties
@@ -35,6 +39,47 @@ conf
 ```
 
 鉴于大部分配置文件的配置项中都有详细地注释，此处将展示默认的配置，并重点说明一些必须要修改的配置项。
+
+## curator 文件夹
+
+| 文件名                   | 说明            |
+|-----------------------|---------------|
+| connection.properties | Curator 连接配置  |
+| latch-path.properties | Curator 互斥锁路径 |
+
+### connection.properties
+
+Curator 连接配置文件，包括 Zookeeper 连接地址，超时时间，重试策略。
+
+```properties
+# 连接字符，即 zookeeper 地址。
+curator.connect.connect_string=ide-jierfl:2181
+# 会话超时时间。
+curator.connect.session_timeout=60000
+# 连接超时时间。
+curator.connect.connection_timeout=15000
+# 第一次重试时的间隔时间，每重试一次，间隔时间都会指数增加，直到最大的间隔时间。
+curator.retry_policy.base_sleep_time=1000
+# 最大重试次数。
+curator.retry_policy.max_retries=10
+# 单次重试最大的间隔时间。
+curator.retry_policy.max_sleep=60000
+```
+
+### latch-path.properties
+
+Curator 互斥锁路径配置文件。
+
+```properties
+# 常规点位保持消费者的分布式锁存的路径。
+curator.inter_process_mutex.keep_consumer.normal=/fdr/keep_consumer/normal/inter_process_mutex
+# 被过滤点位保持消费者的分布式锁存的路径。
+curator.inter_process_mutex.keep_consumer.filtered=/fdr/keep_consumer/filtered/inter_process_mutex
+# 被触发点位保持消费者的分布式锁存的路径。
+curator.inter_process_mutex.keep_consumer.triggered=/fdr/keep_consumer/triggered/inter_process_mutex
+```
+
+如果您在本机上部署了多个项目，每个项目中都使用了 FDR，那么需要为每个项目配置不同的互斥锁路径，以避免项目之间不必要的互斥。
 
 ## database 文件夹
 
