@@ -13,3 +13,5 @@
 ### 安装
 
 [SystemRequirements.md](./SystemRequirements.md) - 系统需求，详细说明本项目推荐的系统要求，以及其它版本的测试报告。
+
+[CompileBySource.md](./CompileBySource.md) - 源码编译，详细说明如何从源码编译本项目。
