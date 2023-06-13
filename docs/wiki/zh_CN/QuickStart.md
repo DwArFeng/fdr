@@ -18,14 +18,43 @@
 
 ## 解压软件包
 
-解压软件包到 `/usr/local/fdr` 目录下。
+软件包的名称格式为 `fdr-node-${version}-release.tar.gz`，其中 `${version}` 为软件包的版本号。
+
+使用工具软件，将软件包上传至服务器 `/usr/local` 目录下，解压软件包。
+
+```shell
+cd /usr/local
+tar -zxvf fdr-node-${version}-release.tar.gz
+mv fdr-node-${version} fdr
+```
 
 ## 数据库初始化
 
 连接到 MySQL 数据库，执行如下 SQL 语句：
 
 ```sql
-CREATE DATABASE fdr;
+create database if not exists fdr;
+
+create table if not exists tbl_point
+(
+    id                        bigint       not null
+        primary key,
+    filtered_keep_enabled     bit          null,
+    filtered_persist_enabled  bit          null,
+    name                      varchar(50)  not null,
+    normal_keep_enabled       bit          null,
+    normal_persist_enabled    bit          null,
+    remark                    varchar(100) null,
+    triggered_keep_enabled    bit          null,
+    triggered_persist_enabled bit          null
+);
+
+INSERT INTO fdr2.tbl_point (id, filtered_keep_enabled, filtered_persist_enabled, name, normal_keep_enabled,
+                            normal_persist_enabled, remark, triggered_keep_enabled, triggered_persist_enabled)
+VALUES (1, false, false, '测试点位.1', false, true, '测试点位.1', false, false);
+INSERT INTO fdr2.tbl_point (id, filtered_keep_enabled, filtered_persist_enabled, name, normal_keep_enabled,
+                            normal_persist_enabled, remark, triggered_keep_enabled, triggered_persist_enabled)
+VALUES (2, true, true, '测试点位.2', true, true, '测试点位.2', true, true);
 ```
 
 ## 最小化配置
