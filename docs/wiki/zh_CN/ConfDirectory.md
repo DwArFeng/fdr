@@ -224,6 +224,7 @@ bridge.mock.data_config=[\
   {"point_id":1,"point_type":"int"},\
   {"point_id":2,"point_type":"int"},\
   ]
+#
 ###################################################
 #                    hibernate                    #
 ###################################################
@@ -256,6 +257,7 @@ bridge.hibernate.data_source.min_idle=0
 #
 # 欢迎大家持续贡献其它种类的数据库支持。
 bridge.hibernate.hibernate.accelerate_enabled=true
+#
 ###################################################
 #                      redis                      #
 ###################################################
@@ -295,6 +297,7 @@ bridge.redis.dbkey.normal_data=dbkey.normal_data
 bridge.redis.dbkey.filtered_data=dbkey.filtered_data
 # 被触发数据的数据库键。
 bridge.redis.dbkey.triggered_data=dbkey.triggered_data
+#
 ###################################################
 #                    influxdb                     #
 ###################################################
