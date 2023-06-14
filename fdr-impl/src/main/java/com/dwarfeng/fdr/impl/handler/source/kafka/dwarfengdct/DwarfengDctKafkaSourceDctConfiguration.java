@@ -34,6 +34,8 @@ public class DwarfengDctKafkaSourceDctConfiguration {
      *     <li>Character</li>
      *     <li>String</li>
      * </ul>
+     *
+     * @return 值编解码器的集合 Bean。
      */
     @SuppressWarnings("DuplicatedCode")
     @Bean(name = "dwarfengDctKafkaSource.valueCodecs")

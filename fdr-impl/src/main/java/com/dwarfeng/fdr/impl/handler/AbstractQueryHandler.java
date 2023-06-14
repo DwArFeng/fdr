@@ -57,6 +57,9 @@ public abstract class AbstractQueryHandler implements QueryHandler {
      *
      * <p>
      * 需要在子类构造完毕后调用该方法。
+     *
+     * @param bridgeType 指定的桥接类型。
+     * @throws Exception 初始化过程中发生的任何异常。
      */
     protected void init(String bridgeType) throws Exception {
         // 从持久器列表中找到对应类型的持久器。

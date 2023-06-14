@@ -91,6 +91,7 @@ public interface Trigger {
         /**
          * 生成一个被触发的测试结果。
          *
+         * @param message 触发的原因。
          * @return 被触发的测试结果。
          */
         public static TestResult triggered(@Nonnull String message) {

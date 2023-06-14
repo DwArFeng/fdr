@@ -59,12 +59,12 @@ public interface InfluxdbBridgeDataHandler extends Handler {
      * 自定义查询使用默认的 Flux 语句过滤 range 和 measurement，然后拼接用户指定的 Flux 语句。<br>
      * 默认的 Flux 语句为：
      *
-     * <pre>
+     * <pre>{@code
      * from(bucket: "xxx")
      *   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
      *   |> filter(fn: (r) => r["_measurement"] == "1")
      *   |> filter(fn: (r) => r["_field"] == "value")
-     * </pre>
+     * }</pre>
      * <p>
      * 用户指定的 Flux 语句拼接在默认的 Flux 语句之后，可以为任意合法的 Flux 语句，但是应该保证 Flux 语句应保证返回的
      * {@link com.influxdb.query.FluxTable} 中的 {@link com.influxdb.query.FluxRecord} 中包含 _time 和 _value 字段。

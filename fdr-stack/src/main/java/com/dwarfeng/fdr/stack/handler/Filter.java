@@ -97,6 +97,7 @@ public interface Filter {
         /**
          * 生成一个被过滤的测试结果。
          *
+         * @param message 过滤的原因。
          * @return 被过滤的测试结果。
          */
         public static TestResult filtered(@Nonnull String message) {

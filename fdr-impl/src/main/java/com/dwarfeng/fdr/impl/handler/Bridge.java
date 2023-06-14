@@ -43,6 +43,7 @@ public interface Bridge {
      * 获取桥接器的一般数据保持器。
      *
      * @return 桥接器的一般数据保持器。
+     * @throws HandlerException 处理器异常。
      */
     Keeper<NormalData> getNormalDataKeeper() throws HandlerException;
 
@@ -50,6 +51,7 @@ public interface Bridge {
      * 获取桥接器的被过滤器数据保持器。
      *
      * @return 桥接器的被过滤器数据保持器。
+     * @throws HandlerException 处理器异常。
      */
     Keeper<FilteredData> getFilteredDataKeeper() throws HandlerException;
 
@@ -57,6 +59,7 @@ public interface Bridge {
      * 获取桥接器的被触发器数据保持器。
      *
      * @return 桥接器的被触发器数据保持器。
+     * @throws HandlerException 处理器异常。
      */
     Keeper<TriggeredData> getTriggeredDataKeeper() throws HandlerException;
 
@@ -72,6 +75,7 @@ public interface Bridge {
      * 获取桥接器的一般数据持久器。
      *
      * @return 桥接器的一般数据持久器。
+     * @throws HandlerException 处理器异常。
      */
     Persister<NormalData> getNormalDataPersister() throws HandlerException;
 
@@ -79,6 +83,7 @@ public interface Bridge {
      * 获取桥接器的被过滤器数据持久器。
      *
      * @return 桥接器的被过滤器数据持久器。
+     * @throws HandlerException 处理器异常。
      */
     Persister<FilteredData> getFilteredDataPersister() throws HandlerException;
 
@@ -86,6 +91,7 @@ public interface Bridge {
      * 获取桥接器的被触发器数据持久器。
      *
      * @return 桥接器的被触发器数据持久器。
+     * @throws HandlerException 处理器异常。
      */
     Persister<TriggeredData> getTriggeredDataPersister() throws HandlerException;
 
