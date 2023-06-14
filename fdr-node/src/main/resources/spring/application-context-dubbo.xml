@@ -36,6 +36,11 @@
             group="${dubbo.provider.group}"
     />
     <dubbo:service
+            interface="com.dwarfeng.fdr.stack.service.WasherInfoMaintainService"
+            ref="washerInfoMaintainServiceImpl"
+            group="${dubbo.provider.group}"
+    />
+    <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.EnabledFilterInfoLookupService"
             ref="enabledFilterInfoLookupServiceImpl"
             group="${dubbo.provider.group}"
@@ -43,6 +48,11 @@
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.EnabledTriggerInfoLookupService"
             ref="enabledTriggerInfoLookupServiceImpl"
+            group="${dubbo.provider.group}"
+    />
+    <dubbo:service
+            interface="com.dwarfeng.fdr.stack.service.EnabledWasherInfoLookupService"
+            ref="enabledWasherInfoLookupServiceImpl"
             group="${dubbo.provider.group}"
     />
     <dubbo:service
@@ -61,6 +71,11 @@
             group="${dubbo.provider.group}"
     />
     <dubbo:service
+            interface="com.dwarfeng.fdr.stack.service.WasherSupportMaintainService"
+            ref="washerSupportMaintainServiceImpl"
+            group="${dubbo.provider.group}"
+    />
+    <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.NormalViewService"
             ref="normalViewServiceImpl"
             group="${dubbo.provider.group}"
@@ -73,6 +88,11 @@
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.TriggeredViewService"
             ref="triggeredViewServiceImpl"
+            group="${dubbo.provider.group}"
+    />
+    <dubbo:service
+            interface="com.dwarfeng.fdr.stack.service.RecordService"
+            ref="recordServiceImpl"
             group="${dubbo.provider.group}"
     />
 
