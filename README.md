@@ -44,6 +44,12 @@ You are reading the Chinese document, you can find documents in other languages 
 - 提供数据映射查询接口，可以直接通过提供的服务对一段时间内的数据进行映射查询，包括开窗查看、占空比查询、高通查询、低通查询等。
 - 提供基于 `telnet` 的运维平台，可以通过 `telnet` 连接到运维平台，设置关键参数，查看系统状态。
 
+## 系统架构
+
+FDR 的系统架构如下图所示：
+
+![系统架构](./docs/wiki/zh_CN/images/SystemArchitecture.png "系统架构")
+
 ## 文档
 
 该项目的文档位于 [docs](./docs) 目录下，包括：
