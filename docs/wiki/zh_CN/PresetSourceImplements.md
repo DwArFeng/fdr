@@ -180,7 +180,7 @@ source.kafka.dwarfeng_dct.max_poll_interval_ms=300000
 
 下图展示了一个利用上述机制比较不同桥接器的查询性能的测试结果：
 
-![查询效率比较](./images/QueryEfficiencyComparison.png)
+![查询性能比较](./images/QueryPerformanceComparison.png)
 
 具体细节可以参阅
 
