@@ -1,4 +1,4 @@
-# FDR Introduction - flight-data-recorder 简介
+# FDR Introduction - FDR 简介
 
 FDR 是一款开箱即用的数据收集的解决方案。
 
