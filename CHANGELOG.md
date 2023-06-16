@@ -4,7 +4,12 @@
 
 #### 功能构建
 
-- (无)
+- 优化了 AbstractResetter 的代码结构，同时对其实现进行了修改。
+  - com.dwarfeng.fdr.impl.handler.resetter.CronResetter。
+  - com.dwarfeng.fdr.impl.handler.resetter.DubboResetter。
+  - com.dwarfeng.fdr.impl.handler.resetter.FixedDelayResetter。
+  - com.dwarfeng.fdr.impl.handler.resetter.FixedRateResetter。
+  - com.dwarfeng.fdr.impl.handler.resetter.NeverResetter。
 
 #### Bug修复
 

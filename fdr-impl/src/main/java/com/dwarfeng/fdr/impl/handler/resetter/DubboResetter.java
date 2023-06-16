@@ -49,7 +49,7 @@ public class DubboResetter extends AbstractResetter {
     }
 
     @Override
-    public void start() throws HandlerException {
+    protected void doStart() throws Exception {
         lock.lock();
         try {
             LOGGER.info("Dubbo resetter 开启...");
@@ -86,7 +86,7 @@ public class DubboResetter extends AbstractResetter {
     }
 
     @Override
-    public void stop() throws HandlerException {
+    protected void doStop() throws Exception {
         lock.lock();
         try {
             LOGGER.info("Dubbo resetter 停止...");
@@ -106,6 +106,16 @@ public class DubboResetter extends AbstractResetter {
         } finally {
             lock.unlock();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "DubboResetter{" +
+                "ctx=" + ctx +
+                ", registry=" + registry +
+                ", protocol=" + protocol +
+                ", group='" + group + '\'' +
+                '}';
     }
 
     public interface DubboResetService extends Service {
@@ -162,6 +172,13 @@ public class DubboResetter extends AbstractResetter {
             } catch (Exception e) {
                 throw ServiceExceptionHelper.logAndThrow("发生异常", LogLevel.WARN, sem, e);
             }
+        }
+
+        @Override
+        public String toString() {
+            return "DubboResetServiceImpl{" +
+                    "sem=" + sem +
+                    '}';
         }
     }
 }
