@@ -10,7 +10,7 @@
     <parent>
         <groupId>com.dwarfeng</groupId>
         <artifactId>fdr</artifactId>
-        <version>1.11.4.a-SNAPSHOT</version>
+        <version>1.11.4.a</version>
     </parent>
 
     <artifactId>fdr-stack</artifactId>
