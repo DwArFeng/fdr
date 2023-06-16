@@ -4,6 +4,15 @@
 
 #### 功能构建
 
+- 依赖升级。
+  - 升级 `spring` 依赖版本为 `5.3.27` 以规避漏洞。
+  - 升级 `dubbo` 依赖版本为 `2.7.22` 以规避漏洞。
+  - 升级 `guava` 依赖版本为 `32.0.1-jre` 以规避漏洞。
+  - 升级 `snowflake` 依赖版本为 `1.4.11.a` 以规避漏洞。
+  - 升级 `subgrade` 依赖版本为 `1.3.3.a` 以规避漏洞。
+  - 升级 `spring-terminator` 依赖版本为 `1.0.11.a` 以规避漏洞。
+  - 升级 `spring-telqos` 依赖版本为 `1.1.6.a` 以规避漏洞。
+
 - 优化了 AbstractResetter 的代码结构，同时对其实现进行了修改。
   - com.dwarfeng.fdr.impl.handler.resetter.CronResetter。
   - com.dwarfeng.fdr.impl.handler.resetter.DubboResetter。
