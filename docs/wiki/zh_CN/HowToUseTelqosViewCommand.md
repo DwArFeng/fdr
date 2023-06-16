@@ -1,4 +1,4 @@
-# How to User Telqos View Command - 如何使用 Telqos 观察命令
+# How to Use Telqos View Command - 如何使用 Telqos 观察命令
 
 ## 说明
 
