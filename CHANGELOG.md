@@ -4,6 +4,14 @@
 
 #### 功能构建
 
+- 依赖升级。
+  - 升级 `guava` 依赖版本为 `32.0.1-jre` 以规避漏洞。
+
+- 部分 FastJson 实体补充 toStackBean 方法。
+  - com.dwarfeng.fdr.sdk.bean.dto.FastJsonNormalData。
+  - com.dwarfeng.fdr.sdk.bean.dto.FastJsonFilteredData。
+  - com.dwarfeng.fdr.sdk.bean.dto.FastJsonTriggeredData。
+
 - 优化了 AbstractResetter 的代码结构，同时对其实现进行了修改。
   - com.dwarfeng.fdr.impl.handler.resetter.CronResetter。
   - com.dwarfeng.fdr.impl.handler.resetter.DubboResetter。
