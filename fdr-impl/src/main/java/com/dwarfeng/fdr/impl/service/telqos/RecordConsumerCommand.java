@@ -73,6 +73,7 @@ public class RecordConsumerCommand extends CliCommand {
         this.scheduler = scheduler;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     protected List<Option> buildOptions() {
         List<Option> list = new ArrayList<>();

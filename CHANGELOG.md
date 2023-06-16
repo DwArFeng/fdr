@@ -4,7 +4,9 @@
 
 #### 功能构建
 
-- (无)
+- 优化部分指令的文案。
+  - com.dwarfeng.fdr.impl.service.telqos.LogicConsumerCommand。
+  - com.dwarfeng.fdr.impl.service.telqos.RecordConsumerCommand。
 
 #### Bug修复
 

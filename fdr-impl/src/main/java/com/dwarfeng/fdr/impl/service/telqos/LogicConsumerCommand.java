@@ -62,16 +62,17 @@ public class LogicConsumerCommand extends CliCommand {
         this.scheduler = scheduler;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     protected List<Option> buildOptions() {
         List<Option> list = new ArrayList<>();
-        list.add(Option.builder(COMMAND_OPTION_L).optionalArg(true).hasArg(false).desc("查看记录者状态").build());
+        list.add(Option.builder(COMMAND_OPTION_L).optionalArg(true).hasArg(false).desc("查看消费者状态").build());
         list.add(Option.builder(COMMAND_OPTION_H).desc("持续输出").build());
-        list.add(Option.builder(COMMAND_OPTION_S).optionalArg(true).hasArg(false).desc("设置记录者参数").build());
+        list.add(Option.builder(COMMAND_OPTION_S).optionalArg(true).hasArg(false).desc("设置消费者参数").build());
         list.add(Option.builder("b").optionalArg(true).hasArg(true).type(Number.class)
                 .argName("buffer-size").desc("缓冲器的大小").build());
         list.add(Option.builder("t").optionalArg(true).hasArg(true).type(Number.class)
-                .argName("thread").desc("记录者的线程数量").build());
+                .argName("thread").desc("消费者的线程数量").build());
         return list;
     }
 
