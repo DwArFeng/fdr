@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 public class FastJsonNormalData implements Dto {
 
-    private static final long serialVersionUID = 982118660866333641L;
+    private static final long serialVersionUID = 4268721908843113764L;
 
     public static FastJsonNormalData of(NormalData normalData) {
         if (Objects.isNull(normalData)) {
@@ -26,6 +26,18 @@ public class FastJsonNormalData implements Dto {
                     FastJsonLongIdKey.of(normalData.getPointKey()),
                     normalData.getValue(),
                     normalData.getHappenedDate()
+            );
+        }
+    }
+
+    public static NormalData toStackBean(FastJsonNormalData fastNormalData) {
+        if (Objects.isNull(fastNormalData)) {
+            return null;
+        } else {
+            return new NormalData(
+                    FastJsonLongIdKey.toStackBean(fastNormalData.getPointKey()),
+                    fastNormalData.getValue(),
+                    fastNormalData.getHappenedDate()
             );
         }
     }

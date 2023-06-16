@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 public class FastJsonTriggeredData implements Dto {
 
-    private static final long serialVersionUID = 7136563316840846416L;
+    private static final long serialVersionUID = -6656308841919266388L;
 
     public static FastJsonTriggeredData of(TriggeredData triggeredData) {
         if (Objects.isNull(triggeredData)) {
@@ -28,6 +28,20 @@ public class FastJsonTriggeredData implements Dto {
                     triggeredData.getValue(),
                     triggeredData.getMessage(),
                     triggeredData.getHappenedDate()
+            );
+        }
+    }
+
+    public static TriggeredData toStackBean(FastJsonTriggeredData fastTriggeredData) {
+        if (Objects.isNull(fastTriggeredData)) {
+            return null;
+        } else {
+            return new TriggeredData(
+                    FastJsonLongIdKey.toStackBean(fastTriggeredData.getPointKey()),
+                    FastJsonLongIdKey.toStackBean(fastTriggeredData.getTriggerKey()),
+                    fastTriggeredData.getValue(),
+                    fastTriggeredData.getMessage(),
+                    fastTriggeredData.getHappenedDate()
             );
         }
     }
