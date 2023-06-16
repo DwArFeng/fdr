@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Objects;
  */
 public class FastJsonFilteredData implements Dto {
 
-    private static final long serialVersionUID = 698750099137226890L;
+    private static final long serialVersionUID = -4327156985482796275L;
 
     public static FastJsonFilteredData of(FilteredData filteredData) {
         if (Objects.isNull(filteredData)) {
@@ -25,7 +26,22 @@ public class FastJsonFilteredData implements Dto {
                     FastJsonLongIdKey.of(filteredData.getPointKey()),
                     FastJsonLongIdKey.of(filteredData.getFilterKey()),
                     filteredData.getValue(),
-                    filteredData.getMessage()
+                    filteredData.getMessage(),
+                    filteredData.getHappenedDate()
+            );
+        }
+    }
+
+    public static FilteredData toStackBean(FastJsonFilteredData fastFilteredData) {
+        if (Objects.isNull(fastFilteredData)) {
+            return null;
+        } else {
+            return new FilteredData(
+                    FastJsonLongIdKey.toStackBean(fastFilteredData.getPointKey()),
+                    FastJsonLongIdKey.toStackBean(fastFilteredData.getFilterKey()),
+                    fastFilteredData.getValue(),
+                    fastFilteredData.getMessage(),
+                    fastFilteredData.getHappenedDate()
             );
         }
     }
@@ -42,14 +58,18 @@ public class FastJsonFilteredData implements Dto {
     @JSONField(name = "message", ordinal = 4)
     private String message;
 
+    @JSONField(name = "happened_date", ordinal = 5)
+    private Date happenedDate;
+
     public FastJsonFilteredData() {
     }
 
-    public FastJsonFilteredData(FastJsonLongIdKey pointKey, FastJsonLongIdKey filterKey, Object value, String message) {
+    public FastJsonFilteredData(FastJsonLongIdKey pointKey, FastJsonLongIdKey filterKey, Object value, String message, Date happenedDate) {
         this.pointKey = pointKey;
         this.filterKey = filterKey;
         this.value = value;
         this.message = message;
+        this.happenedDate = happenedDate;
     }
 
     public FastJsonLongIdKey getPointKey() {
@@ -84,6 +104,14 @@ public class FastJsonFilteredData implements Dto {
         this.message = message;
     }
 
+    public Date getHappenedDate() {
+        return happenedDate;
+    }
+
+    public void setHappenedDate(Date happenedDate) {
+        this.happenedDate = happenedDate;
+    }
+
     @Override
     public String toString() {
         return "FastJsonFilteredData{" +
@@ -91,6 +119,7 @@ public class FastJsonFilteredData implements Dto {
                 ", filterKey=" + filterKey +
                 ", value=" + value +
                 ", message='" + message + '\'' +
+                ", happenedDate=" + happenedDate +
                 '}';
     }
 }
