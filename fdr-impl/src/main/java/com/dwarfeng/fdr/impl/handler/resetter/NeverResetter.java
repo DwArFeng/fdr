@@ -13,12 +13,10 @@ public class NeverResetter extends AbstractResetter {
 
     @Override
     protected void doStart() {
-
     }
 
     @Override
     protected void doStop() {
-
     }
 
     @Override
