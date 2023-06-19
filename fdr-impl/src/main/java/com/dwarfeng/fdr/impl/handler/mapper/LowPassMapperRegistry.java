@@ -16,7 +16,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * 保留高于阈值的数据。
+ * 低通映射器注册
+ *
+ * <p>
+ * 保留低于阈值的数据。
  *
  * @author mooyuan
  * @since 2.0.0

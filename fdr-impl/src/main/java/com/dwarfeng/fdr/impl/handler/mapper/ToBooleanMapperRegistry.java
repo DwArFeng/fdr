@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 转化为布尔值。
+ * 转换为布尔值的映射器注册。
  *
  * @author mooyuan
  * @since 2.0.0
@@ -35,7 +35,7 @@ public class ToBooleanMapperRegistry extends AbstractMapperRegistry {
 
     @Override
     public String provideLabel() {
-        return "数据转换为布尔值的映射器！";
+        return "转换为布尔值的映射器！";
     }
 
     @Override

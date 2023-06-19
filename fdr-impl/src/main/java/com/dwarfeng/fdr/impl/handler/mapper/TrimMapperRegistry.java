@@ -18,6 +18,9 @@ import java.util.List;
 
 
 /**
+ * 裁剪映射器注册。
+ *
+ * <p>
  * 用于裁剪序列的起始时间和结束时间。映射器工作时会寻找序列中发生时间最早和最晚的数据，
  * 然后将这两个数据的发生时间作为序列的起始时间和结束时间。
  *
@@ -48,7 +51,7 @@ public class TrimMapperRegistry extends AbstractMapperRegistry{
 
     @Override
     public String provideLabel() {
-        return "用于裁剪序列的起始时间和结束时间。";
+        return "裁剪映射器。";
     }
 
     @Override

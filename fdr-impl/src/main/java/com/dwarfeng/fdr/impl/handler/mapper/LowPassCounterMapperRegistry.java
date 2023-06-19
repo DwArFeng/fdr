@@ -16,6 +16,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * 低通计数映射器
+ *
+ * <p>
  * 计算低于阈值的数据的个数。
  *
  * @author mooyuan

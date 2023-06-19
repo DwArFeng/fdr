@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * 低通存在映射器注册
+ *
+ * <p>
  * 低通存在映射器，用于判断是否存在低于阈值的数据。
  *
  * @author mooyuan
@@ -35,7 +38,7 @@ public class LowPassExistenceMapperRegistry extends AbstractMapperRegistry{
 
     @Override
     public String provideLabel() {
-        return "高通存在映射器！";
+        return "低通存在映射器！";
     }
 
     @Override

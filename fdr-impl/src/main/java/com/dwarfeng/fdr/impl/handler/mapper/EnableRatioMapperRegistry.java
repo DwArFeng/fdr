@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 使能比例映射器。
+ * 使能比例映射器注册。
  *
  * @author mooyuan
  * @since 2.0.0

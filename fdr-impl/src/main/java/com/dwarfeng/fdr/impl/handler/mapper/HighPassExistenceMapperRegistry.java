@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * 高通存在映射器注册。
+ *
+ * <p>
  * 高通存在映射器，用于判断是否存在高于阈值的数据。
  *
  * @author mooyuan

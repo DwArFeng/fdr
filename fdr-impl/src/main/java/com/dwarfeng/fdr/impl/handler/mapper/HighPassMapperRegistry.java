@@ -16,6 +16,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
+ * 高通映射器注册。
+ *
+ * <p>
  * 保留高于阈值的数据。
  *
  * @author mooyuan

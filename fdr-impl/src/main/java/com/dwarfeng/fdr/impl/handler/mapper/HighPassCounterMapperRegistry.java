@@ -16,6 +16,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * 高通计数映射器
+ *
+ * <p>
  * 计算高于阈值的数据的个数。
  *
  * @author mooyuan
