@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- Wiki 更新。
+  - 在 wiki 的根目录以及所有语言目录下添加 `README.md`。
+
 - 实现预设映射器。
   - com.dwarfeng.fdr.impl.handler.mapper.TrimMapperRegistry。
   - com.dwarfeng.fdr.impl.handler.mapper.ToBooleanMapperRegistry。
