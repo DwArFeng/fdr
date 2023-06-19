@@ -39,6 +39,11 @@
   在多个桥接器生成相同的样本数据。
 - [Preset Source Implements](./PresetSourceImplements.md) - 预设数据源实现，详细说明了本项目内置的所有数据源。
 
+## 机制
+
+- [Source](./Source.md) - 数据源，详细说明了本项目的数据源机制。
+- [PresetSourceImplements.md](./PresetSourceImplements.md) - 预设数据源实现，详细说明了本项目内置的所有数据源。
+
 ## 维护与调试
 
 - [Using Telqos](./UsingTelqos.md) - 使用 Telqos。Telqos 是本项目的 telnet 运维平台，该文档详细说明了如何使用Telqos。
