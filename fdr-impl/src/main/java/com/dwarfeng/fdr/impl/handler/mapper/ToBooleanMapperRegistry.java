@@ -35,7 +35,7 @@ public class ToBooleanMapperRegistry extends AbstractMapperRegistry {
 
     @Override
     public String provideLabel() {
-        return "转换为布尔值的映射器！";
+        return "转换为布尔值的映射器";
     }
 
     @Override

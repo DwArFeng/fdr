@@ -37,7 +37,7 @@ public class EnableRatioMapperRegistry extends AbstractMapperRegistry{
 
     @Override
     public String provideLabel() {
-        return "使能比例映射器！";
+        return "使能比例映射器";
     }
 
     @Override

@@ -37,15 +37,15 @@ public class HighPassCounterMapperRegistry extends AbstractMapperRegistry{
 
     @Override
     public String provideLabel() {
-        return "高通计数映射器！";
+        return "高通计数映射器";
     }
 
     @Override
     public String provideDescription() {
         return "用于计算高于阈值的数据的个数: \n" +
                 "invert`用于控制计算的是低于阈值的数据还是高于阈值的数据: \n" +
-                "--false：过滤的是高于阈值的数据 \n" +
-                "--true：过滤的是低于阈值的数据 \n" +
+                "  false：过滤的是高于阈值的数据 \n" +
+                "  true：过滤的是低于阈值的数据 \n" +
                 "threshold用于过滤的阈值 \n" +
                 "can_equal是否包含等于阈值的数据";
     }

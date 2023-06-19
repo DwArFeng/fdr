@@ -51,7 +51,7 @@ public class TrimMapperRegistry extends AbstractMapperRegistry{
 
     @Override
     public String provideLabel() {
-        return "裁剪映射器。";
+        return "裁剪映射器";
     }
 
     @Override
