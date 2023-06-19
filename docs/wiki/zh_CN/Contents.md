@@ -42,8 +42,7 @@
 ## 机制
 
 - [Source](./Source.md) - 数据源，详细说明了本项目的数据源机制。
-- [PresetSourceImplements.md](./PresetSourceImplements.md) - 预设数据源实现，详细说明了本项目内置的所有数据源。
-
+- [Preset Source Implements](./PresetSourceImplements.md) - 预设数据源实现，详细说明了本项目内置的所有数据源。
 - [Washer](./Washer.md) - 清洗器，详细说明了本项目的清洗器机制。
 
 ## 维护与调试
