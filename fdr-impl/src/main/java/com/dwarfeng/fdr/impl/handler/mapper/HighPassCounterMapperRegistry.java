@@ -24,13 +24,13 @@ import java.util.List;
  * @author mooyuan
  * @since 2.0.0
  */
-public class HighPassCounterMapperRegistry extends AbstractMapperRegistry{
+public class HighPassCounterMapperRegistry extends AbstractMapperRegistry {
 
     public static final String MAPPER_TYPE = "high_pass_counter_mapper";
 
     private final ApplicationContext ctx;
 
-    public HighPassCounterMapperRegistry(ApplicationContext ctx){
+    public HighPassCounterMapperRegistry(ApplicationContext ctx) {
         super(MAPPER_TYPE);
         this.ctx = ctx;
     }
@@ -43,7 +43,7 @@ public class HighPassCounterMapperRegistry extends AbstractMapperRegistry{
     @Override
     public String provideDescription() {
         return "用于计算高于阈值的数据的个数: \n" +
-                "invert`用于控制计算的是低于阈值的数据还是高于阈值的数据: \n" +
+                "invert 用于控制计算的是低于阈值的数据还是高于阈值的数据: \n" +
                 "  false：过滤的是高于阈值的数据 \n" +
                 "  true：过滤的是低于阈值的数据 \n" +
                 "threshold用于过滤的阈值 \n" +

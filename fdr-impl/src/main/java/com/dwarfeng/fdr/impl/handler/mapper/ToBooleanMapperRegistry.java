@@ -42,7 +42,7 @@ public class ToBooleanMapperRegistry extends AbstractMapperRegistry {
     public String provideDescription() {
         return "保留数据表中所有序列的开始时间和结束时间。对每个序列的数据条目做映射处理: \n" +
                 "是否为严格模式： \n" +
-                "  是：只有严格匹配真值或者假值的数据才会被转换为布尔类型的数据，如果序列中存在其它值的则抛出 `IllegalArgumentException` 异常 \n" +
+                "  是：只有严格匹配真值或者假值的数据才会被转换为布尔类型的数据，如果序列中存在其它值的则抛出 IllegalArgumentException 异常 \n" +
                 "    字符串真值：true \n" +
                 "    字符串假值:false \n" +
                 "    数字真值：1.0 \n" +
@@ -100,7 +100,7 @@ public class ToBooleanMapperRegistry extends AbstractMapperRegistry {
             // 是否启用严格模式
             if (config.getStrict()) {
 
-                if(!(item.getValue() instanceof String) && !(item.getValue() instanceof Number) && !(item.getValue() instanceof Boolean)){
+                if (!(item.getValue() instanceof String) && !(item.getValue() instanceof Number) && !(item.getValue() instanceof Boolean)) {
                     throw new IllegalStateException("严格模式：传入值格式不正确，请传入字符串、数值或者布尔");
                 }
 

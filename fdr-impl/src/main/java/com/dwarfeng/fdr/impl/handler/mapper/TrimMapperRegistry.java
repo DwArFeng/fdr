@@ -28,7 +28,7 @@ import java.util.List;
  * @since 2.0.0
  */
 @Component
-public class TrimMapperRegistry extends AbstractMapperRegistry{
+public class TrimMapperRegistry extends AbstractMapperRegistry {
 
     public static final String MAPPER_TYPE = "trim_mapper";
 
@@ -56,7 +56,7 @@ public class TrimMapperRegistry extends AbstractMapperRegistry{
 
     @Override
     public String provideDescription() {
-        return "映射器工作时会寻找序列中发生时间最早和最晚的数据，然后将这两个数据的发生时间作为序列的起始时间和结束时间,若使用 `only_trim_start` 配置项可以只裁剪序列的起始时间。";
+        return "映射器工作时会寻找序列中发生时间最早和最晚的数据，然后将这两个数据的发生时间作为序列的起始时间和结束时间,若使用 only_trim_start 配置项可以只裁剪序列的起始时间。";
     }
 
     @Override
@@ -78,7 +78,7 @@ public class TrimMapperRegistry extends AbstractMapperRegistry{
         }
 
         // 排序并截取序列
-        private Sequence trimSequence(Sequence sequence, boolean only_trim_start){
+        private Sequence trimSequence(Sequence sequence, boolean only_trim_start) {
             // 获取序列的起始时间与结束时间。
             List<Item> items = new ArrayList<>(sequence.getItems());
             items.sort(CompareUtil.DATA_HAPPENED_DATE_ASC_COMPARATOR);
@@ -87,7 +87,7 @@ public class TrimMapperRegistry extends AbstractMapperRegistry{
             Date endDate = items.get(items.size() - 1).getHappenedDate();
 
             // 如果起始时间等于结束时间只取一个值即可
-            if(only_trim_start){
+            if (only_trim_start) {
 
                 endDate = sequence.getEndDate();
             }
@@ -138,10 +138,7 @@ public class TrimMapperRegistry extends AbstractMapperRegistry{
 
         @Override
         public String toString() {
-            return "Config{" +
-                    "onlyTrimStart=" + onlyTrimStart +
-                    ", onlyTrimStartRem='" + onlyTrimStartRem + '\'' +
-                    '}';
+            return "Config{" + "onlyTrimStart=" + onlyTrimStart + ", onlyTrimStartRem='" + onlyTrimStartRem + '\'' + '}';
         }
     }
 }

@@ -25,13 +25,13 @@ import java.util.Objects;
  * @author mooyuan
  * @since 2.0.0
  */
-public class LowPassExistenceMapperRegistry extends AbstractMapperRegistry{
+public class LowPassExistenceMapperRegistry extends AbstractMapperRegistry {
 
     public static final String MAPPER_TYPE = "low_pass_existence_mapper";
 
     private final ApplicationContext ctx;
 
-    public LowPassExistenceMapperRegistry(ApplicationContext ctx){
+    public LowPassExistenceMapperRegistry(ApplicationContext ctx) {
         super(MAPPER_TYPE);
         this.ctx = ctx;
     }
@@ -44,7 +44,7 @@ public class LowPassExistenceMapperRegistry extends AbstractMapperRegistry{
     @Override
     public String provideDescription() {
         return "用于判断是否存在低于阈值的数据: \n" +
-                "invert`用于控制计算的是低于阈值的数据还是高于阈值的数据: \n" +
+                "invert 用于控制计算的是低于阈值的数据还是高于阈值的数据: \n" +
                 "  false：过滤的是低于阈值的数据 \n" +
                 "  true：过滤的是高于阈值的数据 \n" +
                 "threshold用于过滤的阈值 \n" +
@@ -92,22 +92,22 @@ public class LowPassExistenceMapperRegistry extends AbstractMapperRegistry{
 
         // 为了保证代码的可读性，此处代码不做简化。
         @SuppressWarnings("ConstantConditions")
-        private boolean doDetermine(List<Item> items, double threshold, boolean invert, boolean canEqual){
-            for(Item item : items){
-                if(invert && canEqual){
-                    if((Objects.isNull(item.getValue()) ? 0.00 : (double) item.getValue()) >= threshold){
+        private boolean doDetermine(List<Item> items, double threshold, boolean invert, boolean canEqual) {
+            for (Item item : items) {
+                if (invert && canEqual) {
+                    if ((Objects.isNull(item.getValue()) ? 0.00 : (double) item.getValue()) >= threshold) {
                         return true;
                     }
-                }else if(invert && !canEqual){
-                    if((Objects.isNull(item.getValue()) ? 0.00 : (double) item.getValue()) > threshold){
+                } else if (invert && !canEqual) {
+                    if ((Objects.isNull(item.getValue()) ? 0.00 : (double) item.getValue()) > threshold) {
                         return true;
                     }
-                }else if(!invert && canEqual){
-                    if((Objects.isNull(item.getValue()) ? 0.00 : (double) item.getValue()) <= threshold){
+                } else if (!invert && canEqual) {
+                    if ((Objects.isNull(item.getValue()) ? 0.00 : (double) item.getValue()) <= threshold) {
                         return true;
                     }
-                }else{
-                    if((Objects.isNull(item.getValue()) ? 0.00 : (double) item.getValue()) < threshold){
+                } else {
+                    if ((Objects.isNull(item.getValue()) ? 0.00 : (double) item.getValue()) < threshold) {
                         return true;
                     }
                 }

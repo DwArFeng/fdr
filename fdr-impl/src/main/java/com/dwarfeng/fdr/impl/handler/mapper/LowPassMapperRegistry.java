@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * @author mooyuan
  * @since 2.0.0
  */
-public class LowPassMapperRegistry extends AbstractMapperRegistry{
+public class LowPassMapperRegistry extends AbstractMapperRegistry {
     public static final String MAPPER_TYPE = "low_pass_mapper";
 
     private final ApplicationContext ctx;
@@ -42,7 +42,7 @@ public class LowPassMapperRegistry extends AbstractMapperRegistry{
     @Override
     public String provideDescription() {
         return "用于保留高于阈值的数据: \n" +
-                "invert`用于控制计算的是低于阈值的数据还是高于阈值的数据: \n" +
+                "invert 用于控制计算的是低于阈值的数据还是高于阈值的数据: \n" +
                 "  false：过滤的是高于阈值的数据 \n" +
                 "  true：过滤的是低于阈值的数据 \n" +
                 "threshold用于过滤的阈值 \n" +
@@ -81,7 +81,7 @@ public class LowPassMapperRegistry extends AbstractMapperRegistry{
         }
 
         @SuppressWarnings("DuplicatedCode")
-        public static Sequence lowPass(MapParam mapParam, Sequence sequence){
+        public static Sequence lowPass(MapParam mapParam, Sequence sequence) {
             // 获得配置。
             Config config = JSON.parseObject(mapParam.getParam(), Config.class);
 
@@ -96,26 +96,26 @@ public class LowPassMapperRegistry extends AbstractMapperRegistry{
 
             items = doFilter(sequence, threshold, canEqual, invert);
 
-            return new Sequence(sequence.getPointKey(),items,sequence.getStartDate(),sequence.getEndDate());
+            return new Sequence(sequence.getPointKey(), items, sequence.getStartDate(), sequence.getEndDate());
         }
 
         // 为了保证代码的可读性，此处代码不做简化。
         @SuppressWarnings("ConstantConditions")
         private static List<Item> doFilter(Sequence sequence, double threshold, boolean canEqual, boolean invert) {
             List<Item> items;
-            if(invert && canEqual){
+            if (invert && canEqual) {
                 items = sequence.getItems().stream().filter(
                         item -> (Objects.isNull(item.getValue()) ? 0.00 : (double) item.getValue()) >= threshold
                 ).collect(Collectors.toList());
-            }else if(invert && !canEqual){
+            } else if (invert && !canEqual) {
                 items = sequence.getItems().stream().filter(
                         item -> (Objects.isNull(item.getValue()) ? 0.00 : (double) item.getValue()) > threshold
                 ).collect(Collectors.toList());
-            }else if(!invert && canEqual){
+            } else if (!invert && canEqual) {
                 items = sequence.getItems().stream().filter(
                         item -> (Objects.isNull(item.getValue()) ? 0.00 : (double) item.getValue()) <= threshold
                 ).collect(Collectors.toList());
-            }else{
+            } else {
                 items = sequence.getItems().stream().filter(
                         item -> (Objects.isNull(item.getValue()) ? 0.00 : (double) item.getValue()) < threshold
                 ).collect(Collectors.toList());
