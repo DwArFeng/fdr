@@ -1,6 +1,5 @@
 package com.dwarfeng.fdr.impl.handler.mapper;
 
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.fdr.stack.exception.MapperException;
@@ -121,7 +120,6 @@ public class HighPassExistenceMapperRegistry extends AbstractMapperRegistry {
             return "HighPassExistenceMapper{}";
         }
     }
-
 
     public static class Config implements Bean {
 

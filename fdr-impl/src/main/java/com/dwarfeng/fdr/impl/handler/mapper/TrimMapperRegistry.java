@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * 裁剪映射器注册。
  *
@@ -38,7 +37,6 @@ public class TrimMapperRegistry extends AbstractMapperRegistry {
         super(MAPPER_TYPE);
         this.ctx = ctx;
     }
-
 
     @Override
     public Mapper makeMapper() throws MapperException {

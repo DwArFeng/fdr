@@ -76,8 +76,6 @@ public class HighPassMapperRegistry extends AbstractMapperRegistry {
 
         @Override
         protected Sequence doOneToOneMap(MapParam mapParam, Sequence sequence) {
-
-
             return highPass(mapParam, sequence);
         }
 
