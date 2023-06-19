@@ -4,7 +4,16 @@
 
 #### 功能构建
 
-- (无)
+- 实现预设映射器。
+  - com.dwarfeng.fdr.impl.handler.mapper.TrimMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.ToBooleanMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.EnableRatioMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.HighPassMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.HighPassCounterMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.HighPassExistenceMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassCounterMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassExistenceMapperRegistry。
 
 #### Bug修复
 
