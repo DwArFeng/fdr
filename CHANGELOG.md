@@ -6,6 +6,7 @@
 
 - Wiki 编写。
   - docs/wiki/zh_CN/Source.md。
+  - docs/wiki/zh_CN/Washer.md。
 
 - Wiki 更新。
   - 在 wiki 的根目录以及所有语言目录下添加 `README.md`。
