@@ -35,7 +35,9 @@ public interface Source {
 
     /**
      * 数据源上线。
-     * <p>该方法被连续调用时不应该抛出异常。
+     *
+     * <p>
+     * 该方法被连续调用时不应该抛出异常。
      *
      * @throws HandlerException 处理器异常。
      */
@@ -43,7 +45,9 @@ public interface Source {
 
     /**
      * 数据源下线。
-     * <p>该方法被连续调用时不应该抛出异常。
+     *
+     * <p>
+     * 该方法被连续调用时不应该抛出异常。
      *
      * @throws HandlerException 处理器异常。
      */
@@ -59,6 +63,9 @@ public interface Source {
 
         /**
          * 向程序中记录数据。
+         *
+         * <p>
+         * 该方法只有在数据源上线的情况下能够被调用。
          *
          * @param recordInfo 指定的记录信息。
          * @throws Exception 记录数据的过程中出现的任何异常。
