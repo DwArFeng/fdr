@@ -95,5 +95,69 @@
                 type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.MergeMapperRegistry"
         />
         -->
+
+        <!-- 加载 TrimMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.TrimMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 ToBooleanMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.ToBooleanMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 EnableRatioMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.EnableRatioMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 HighPassMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.HighPassMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 LowPassMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.LowPassMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 HighPassCounterMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.HighPassCounterMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 LowPassCounterMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.LowPassCounterMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 HighPassExistenceMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.HighPassExistenceMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 LowPassExistenceMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.LowPassExistenceMapperRegistry"
+        />
+        -->
+
     </context:component-scan>
 </beans>
