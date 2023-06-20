@@ -62,7 +62,7 @@
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.connection.autocommit">false</prop>
                 <!-- 打印生成的SQL语句 -->
-                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.show_sql">true</prop>
                 <!-- 禁用二级缓存 -->
                 <prop key="hibernate.cache.use_second_level_cache">false</prop>
                 <!-- 数据库的批量写入量，设置激进的值以提高数据库的写入效率 -->

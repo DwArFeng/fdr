@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 优化配置文件。
+  - 优化 `impl` 模块测试配置 `application-context-database.xml`，使得项目在运行测试时打印生成的 SQL 语句。
+
 - Wiki 更新。
   - 优化 `Contents.md` 中的内容。
 
