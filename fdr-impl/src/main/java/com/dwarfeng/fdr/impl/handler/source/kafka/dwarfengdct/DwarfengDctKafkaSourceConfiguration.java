@@ -42,7 +42,7 @@ public class DwarfengDctKafkaSourceConfiguration {
     @SuppressWarnings("DuplicatedCode")
     @Bean("dwarfengDctKafkaSource.consumerProperties")
     public Map<String, Object> consumerProperties() {
-        LOGGER.debug("配置Kafka消费者属性...");
+        LOGGER.debug("配置 Kafka 消费者属性...");
         Map<String, Object> props = new HashMap<>();
 
         // 配置值。
@@ -56,19 +56,19 @@ public class DwarfengDctKafkaSourceConfiguration {
         // 本实例使用ack手动提交，因此禁止自动提交的功能。
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
 
-        LOGGER.debug("Kafka消费者属性配置完成...");
+        LOGGER.debug("Kafka 消费者属性配置完成...");
         return props;
     }
 
     @SuppressWarnings("DuplicatedCode")
     @Bean("dwarfengDctKafkaSource.consumerFactory")
     public ConsumerFactory<String, String> consumerFactory() {
-        LOGGER.debug("配置Kafka消费者工厂...");
+        LOGGER.debug("配置 Kafka 消费者工厂...");
         Map<String, Object> properties = consumerProperties();
         DefaultKafkaConsumerFactory<String, String> factory = new DefaultKafkaConsumerFactory<>(properties);
         factory.setKeyDeserializer(new StringDeserializer());
         factory.setValueDeserializer(new StringDeserializer());
-        LOGGER.debug("Kafka消费者工厂配置完成");
+        LOGGER.debug("Kafka 消费者工厂配置完成");
         return factory;
     }
 
@@ -76,7 +76,7 @@ public class DwarfengDctKafkaSourceConfiguration {
     @Bean("dwarfengDctKafkaSource.kafkaListenerContainerFactory")
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>>
     kafkaListenerContainerFactory() {
-        LOGGER.info("配置Kafka侦听容器工厂...");
+        LOGGER.debug("配置 Kafka 侦听容器工厂...");
         ConsumerFactory<String, String> consumerFactory = consumerFactory();
         ConcurrentKafkaListenerContainerFactory<String, String> factory
                 = new ConcurrentKafkaListenerContainerFactory<>();
@@ -89,7 +89,7 @@ public class DwarfengDctKafkaSourceConfiguration {
         factory.setBatchListener(true);
         // 配置ACK模式为手动立即提交。
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
-        LOGGER.info("配置Kafka侦听容器工厂...");
+        LOGGER.info("配置 Kafka 侦听容器工厂...");
         return factory;
     }
 }
