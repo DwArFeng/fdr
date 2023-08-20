@@ -4,6 +4,8 @@
 
 #### 功能构建
 
+- 优化 `push.properties` 配置文件有关 Kafka 部分的注释。
+
 - changelogs 文件夹结构优化。
 
 - 优化 `pom.xml` 文件的格式，修复其中的错误配置。
