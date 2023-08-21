@@ -191,15 +191,6 @@
             <groupId>com.dwarfeng</groupId>
             <artifactId>dwarfeng-dct</artifactId>
         </dependency>
-        <!-- Jackson 组件 -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-yaml</artifactId>
-        </dependency>
         <!-- Spring-terminator组件 -->
         <dependency>
             <groupId>com.dwarfeng</groupId>
@@ -209,6 +200,15 @@
         <dependency>
             <groupId>com.dwarfeng</groupId>
             <artifactId>spring-telqos-core</artifactId>
+        </dependency>
+        <!-- Jackson 组件 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
         </dependency>
         <!-- Groovy 支持 -->
         <dependency>

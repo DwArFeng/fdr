@@ -63,7 +63,7 @@
         <jackson.version>2.14.0</jackson.version>
         <groovy.version>4.0.6</groovy.version>
         <influxdb.version>6.7.0</influxdb.version>
-        <!-- Maven插件版本声明 -->
+        <!-- Maven 插件版本声明 -->
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
@@ -331,30 +331,6 @@
                     <exclusion>
                         <artifactId>kafka-clients</artifactId>
                         <groupId>org.apache.kafka</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <!-- Zookeeper 客户端 -->
-            <dependency>
-                <groupId>com.101tec</groupId>
-                <artifactId>zkclient</artifactId>
-                <version>${zkclient.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>slf4j-log4j12</artifactId>
-                        <groupId>org.slf4j</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>log4j</artifactId>
-                        <groupId>log4j</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>netty</artifactId>
-                        <groupId>io.netty</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>jline</artifactId>
-                        <groupId>jline</groupId>
                     </exclusion>
                 </exclusions>
             </dependency>
