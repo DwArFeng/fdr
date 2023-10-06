@@ -21,7 +21,7 @@ import java.util.List;
  * 持久处理器为每个数据点维护一系列历史数据，这些数据可以被查询。同时，新的历史数据可以被记录。
  *
  * <p>
- * 部分持久处理器可能只支持写入，不支持查询。此时，该持久处理器的 {@link #writeOnly()} 方法返回 true。<br>
+ * 部分持久处理器可能只支持写入，不支持查询。<br>
  * 对于只写的持久处理器，其 {@link #lookup(LookupInfo)} 方法以及 {@link #lookup(List)} 方法应该抛出
  * {@link LookupNotSupportedException} 异常。
  *
@@ -32,13 +32,6 @@ import java.util.List;
  * @since 2.0.0
  */
 public interface PersistHandler<D extends Data> extends Handler {
-
-    /**
-     * 获取该处理器是否为只写处理器。
-     *
-     * @return 该处理器是否为只写处理器。
-     */
-    boolean writeOnly();
 
     /**
      * 记录数据。

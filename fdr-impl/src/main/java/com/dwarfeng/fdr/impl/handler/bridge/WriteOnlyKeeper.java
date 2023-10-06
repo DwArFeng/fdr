@@ -16,11 +16,6 @@ import java.util.List;
 public abstract class WriteOnlyKeeper<D extends Data> extends AbstractKeeper<D> {
 
     @Override
-    public boolean writeOnly() {
-        return true;
-    }
-
-    @Override
     public void update(D data) throws HandlerException {
         try {
             doUpdate(data);

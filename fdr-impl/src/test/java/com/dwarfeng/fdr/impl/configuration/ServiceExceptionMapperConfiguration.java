@@ -47,6 +47,8 @@ public class ServiceExceptionMapperConfiguration {
         destination.put(LookupException.class, ServiceExceptionCodes.LOOKUP_FAILED);
         destination.put(NativeQueryException.class, ServiceExceptionCodes.NATIVE_QUERY_FAILED);
         destination.put(QueryException.class, ServiceExceptionCodes.QUERY_FAILED);
+        destination.put(KeeperNotSupportedException.class, ServiceExceptionCodes.KEEPER_NOT_SUPPORTED);
+        destination.put(PersisterNotSupportedException.class, ServiceExceptionCodes.PERSISTER_NOT_SUPPORTED);
         return new MapServiceExceptionMapper(destination, com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes.UNDEFINE);
     }
 }

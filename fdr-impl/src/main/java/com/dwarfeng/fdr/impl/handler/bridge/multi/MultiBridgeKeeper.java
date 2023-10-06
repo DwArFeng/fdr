@@ -3,7 +3,6 @@ package com.dwarfeng.fdr.impl.handler.bridge.multi;
 import com.dwarfeng.fdr.impl.handler.Bridge;
 import com.dwarfeng.fdr.impl.handler.Bridge.Keeper;
 import com.dwarfeng.fdr.impl.handler.bridge.AbstractKeeper;
-import com.dwarfeng.fdr.stack.exception.LatestNotSupportedException;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
@@ -50,9 +49,6 @@ public abstract class MultiBridgeKeeper<D extends Data> extends AbstractKeeper<D
         for (String bridgeType : bridgeTypes) {
             Bridge bridge = bridges.stream().filter(b -> b.supportType(bridgeType)).findAny()
                     .orElseThrow(() -> new HandlerException("未知的 bridge 类型: " + bridgeType));
-            if (!bridge.supportKeeper()) {
-                throw new IllegalStateException("桥接器不支持持久器, 请检查 bridge.properties 配置文件: " + bridgeType);
-            }
             delegateBridges.add(bridge);
         }
         // 基于桥接器获取持久器。
@@ -65,11 +61,6 @@ public abstract class MultiBridgeKeeper<D extends Data> extends AbstractKeeper<D
             delegateKeepers.add(delegateKeeper);
         }
         this.delegateKeepers = delegateKeepers;
-    }
-
-    @Override
-    public boolean writeOnly() {
-        return primaryKeeper.writeOnly();
     }
 
     @SuppressWarnings("DuplicatedCode")
@@ -147,9 +138,6 @@ public abstract class MultiBridgeKeeper<D extends Data> extends AbstractKeeper<D
 
     @Override
     public D latest(LongIdKey pointKey) throws HandlerException {
-        if (primaryKeeper.writeOnly()) {
-            throw new LatestNotSupportedException();
-        }
         try {
             return primaryKeeper.latest(pointKey);
         } catch (HandlerException e) {
@@ -161,9 +149,6 @@ public abstract class MultiBridgeKeeper<D extends Data> extends AbstractKeeper<D
 
     @Override
     public List<D> latest(List<LongIdKey> pointKeys) throws HandlerException {
-        if (primaryKeeper.writeOnly()) {
-            throw new LatestNotSupportedException();
-        }
         try {
             return primaryKeeper.latest(pointKeys);
         } catch (HandlerException e) {

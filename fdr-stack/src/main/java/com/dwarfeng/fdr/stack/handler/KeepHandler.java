@@ -18,7 +18,7 @@ import java.util.List;
  * 保持处理器为每个数据点维护一个最新数据，该数据可以被查询和更新。
  *
  * <p>
- * 部分保持处理器可能只支持写入，不支持查询。此时，该保持处理器的 {@link #writeOnly()} 方法返回 true。<br>
+ * 部分保持处理器可能只支持写入，不支持查询。<br>
  * 对于只写的保持处理器，其 {@link #latest(LongIdKey)} 和 {@link #latest(List)} 方法应该抛出
  * {@link LatestNotSupportedException} 异常。
  *
@@ -29,13 +29,6 @@ import java.util.List;
  * @since 2.0.0
  */
 public interface KeepHandler<D extends Data> extends Handler {
-
-    /**
-     * 获取该处理器是否为只写处理器。
-     *
-     * @return 该处理器是否为只写处理器。
-     */
-    boolean writeOnly();
 
     /**
      * 更新数据。

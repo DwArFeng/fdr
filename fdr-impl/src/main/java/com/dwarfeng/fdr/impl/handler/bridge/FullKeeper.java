@@ -18,11 +18,6 @@ import java.util.List;
 public abstract class FullKeeper<D extends Data> extends AbstractKeeper<D> {
 
     @Override
-    public boolean writeOnly() {
-        return false;
-    }
-
-    @Override
     public void update(D data) throws HandlerException {
         try {
             doUpdate(data);
@@ -76,6 +71,6 @@ public abstract class FullKeeper<D extends Data> extends AbstractKeeper<D> {
 
     @Override
     public String toString() {
-        return "FulltKeeper{}";
+        return "FullKeeper{}";
     }
 }

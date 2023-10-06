@@ -3,6 +3,7 @@ package com.dwarfeng.fdr.impl.handler.bridge;
 import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
 import com.dwarfeng.fdr.stack.bean.dto.NormalData;
 import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
+import com.dwarfeng.fdr.stack.exception.PersisterNotSupportedException;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 
 /**
@@ -21,40 +22,18 @@ public abstract class KeeperOnlyBridge extends AbstractBridge {
     }
 
     @Override
-    public boolean supportKeeper() {
-        return true;
-    }
-
-    @Override
-    public boolean supportPersister() {
-        return false;
-    }
-
-    @Override
     public Persister<NormalData> getNormalDataPersister() throws HandlerException {
-        try {
-            throw new IllegalStateException("不支持的操作");
-        } catch (Exception e) {
-            throw new HandlerException(e);
-        }
+        throw new PersisterNotSupportedException();
     }
 
     @Override
     public Persister<FilteredData> getFilteredDataPersister() throws HandlerException {
-        try {
-            throw new IllegalStateException("不支持的操作");
-        } catch (Exception e) {
-            throw new HandlerException(e);
-        }
+        throw new PersisterNotSupportedException();
     }
 
     @Override
     public Persister<TriggeredData> getTriggeredDataPersister() throws HandlerException {
-        try {
-            throw new IllegalStateException("不支持的操作");
-        } catch (Exception e) {
-            throw new HandlerException(e);
-        }
+        throw new PersisterNotSupportedException();
     }
 
     @Override

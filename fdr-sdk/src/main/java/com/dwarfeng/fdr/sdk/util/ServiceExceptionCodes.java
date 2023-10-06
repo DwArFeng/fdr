@@ -74,6 +74,10 @@ public final class ServiceExceptionCodes {
             new ServiceException.Code(offset(83), "native query failed");
     public static final ServiceException.Code QUERY_FAILED =
             new ServiceException.Code(offset(90), "query failed");
+    public static final ServiceException.Code KEEPER_NOT_SUPPORTED =
+            new ServiceException.Code(offset(100), "keeper not supported");
+    public static final ServiceException.Code PERSISTER_NOT_SUPPORTED =
+            new ServiceException.Code(offset(110), "persister not supported");
 
     private static int offset(int i) {
         return EXCEPTION_CODE_OFFSET + i;
@@ -129,6 +133,8 @@ public final class ServiceExceptionCodes {
         LOOKUP_FAILED.setCode(offset(82));
         NATIVE_QUERY_FAILED.setCode(offset(83));
         QUERY_FAILED.setCode(offset(90));
+        KEEPER_NOT_SUPPORTED.setCode(offset(100));
+        PERSISTER_NOT_SUPPORTED.setCode(offset(110));
     }
 
     private ServiceExceptionCodes() {

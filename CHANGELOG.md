@@ -12,7 +12,11 @@
 
 #### 功能移除
 
-- (无)
+- 去除不需要的接口方法。
+  - com.dwarfeng.fdr.stack.handler.KeepHandler.writeOnly。
+  - com.dwarfeng.fdr.stack.handler.PersistHandler.writeOnly。
+  - com.dwarfeng.fdr.impl.handler.Bridge.supportKeeper。
+  - com.dwarfeng.fdr.impl.handler.Bridge.supportPersister。
 
 ---
 

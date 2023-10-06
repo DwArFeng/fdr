@@ -1,7 +1,6 @@
 package com.dwarfeng.fdr.impl.handler;
 
 import com.dwarfeng.fdr.stack.exception.LatestException;
-import com.dwarfeng.fdr.stack.exception.LatestNotSupportedException;
 import com.dwarfeng.fdr.stack.exception.UpdateException;
 import com.dwarfeng.fdr.stack.handler.KeepHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
@@ -45,11 +44,6 @@ public abstract class AbstractKeepHandler<D extends Data> implements KeepHandler
         Bridge bridge = bridges.stream().filter(b -> b.supportType(bridgeType)).findAny()
                 .orElseThrow(() -> new HandlerException("未知的 bridge 类型: " + bridgeType));
 
-        // 如果桥接器不支持保持器，则抛出异常。
-        if (!bridge.supportKeeper()) {
-            throw new IllegalStateException("桥接器不支持保持器, 请检查 bridge.properties 配置文件: " + bridgeType);
-        }
-
         // 如果桥接器支持保持器，则获取保持器。
         keeper = getKeeperFromBridge(bridge);
     }
@@ -62,11 +56,6 @@ public abstract class AbstractKeepHandler<D extends Data> implements KeepHandler
      * @throws Exception 任何可能的异常。
      */
     protected abstract Bridge.Keeper<D> getKeeperFromBridge(Bridge bridge) throws Exception;
-
-    @Override
-    public boolean writeOnly() {
-        return keeper.writeOnly();
-    }
 
     @Override
     public void update(D data) throws HandlerException {
@@ -92,9 +81,6 @@ public abstract class AbstractKeepHandler<D extends Data> implements KeepHandler
 
     @Override
     public D latest(LongIdKey pointKey) throws HandlerException {
-        if (keeper.writeOnly()) {
-            throw new LatestNotSupportedException();
-        }
         try {
             return keeper.latest(pointKey);
         } catch (LatestException e) {
@@ -106,9 +92,6 @@ public abstract class AbstractKeepHandler<D extends Data> implements KeepHandler
 
     @Override
     public List<D> latest(List<LongIdKey> pointKeys) throws HandlerException {
-        if (keeper.writeOnly()) {
-            throw new LatestNotSupportedException();
-        }
         try {
             return keeper.latest(pointKeys);
         } catch (LatestException e) {

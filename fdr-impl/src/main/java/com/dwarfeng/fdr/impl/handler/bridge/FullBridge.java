@@ -19,16 +19,6 @@ public abstract class FullBridge extends AbstractBridge {
     }
 
     @Override
-    public boolean supportKeeper() {
-        return true;
-    }
-
-    @Override
-    public boolean supportPersister() {
-        return true;
-    }
-
-    @Override
     public String toString() {
         return "FullBridge{" +
                 "bridgeType='" + bridgeType + '\'' +

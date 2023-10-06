@@ -6,7 +6,6 @@ import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
 import com.dwarfeng.fdr.stack.bean.dto.QueryInfo;
 import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
 import com.dwarfeng.fdr.stack.exception.QueryException;
-import com.dwarfeng.fdr.stack.exception.QueryNotSupportedException;
 import com.dwarfeng.fdr.stack.exception.UnsupportedMapperTypeException;
 import com.dwarfeng.fdr.stack.handler.MapLocalCacheHandler;
 import com.dwarfeng.fdr.stack.handler.Mapper;
@@ -66,11 +65,6 @@ public abstract class AbstractQueryHandler implements QueryHandler {
         Bridge bridge = bridges.stream().filter(b -> b.supportType(bridgeType)).findAny()
                 .orElseThrow(() -> new HandlerException("未知的 bridge 类型: " + bridgeType));
 
-        // 如果桥接器不支持持久器，则抛出异常。
-        if (!bridge.supportPersister()) {
-            throw new IllegalStateException("桥接器不支持持久器, 请检查 bridge.properties 配置文件: " + bridgeType);
-        }
-
         // 如果桥接器支持持久器，则获取持久器。
         persister = getPersisterFromBridge(bridge);
     }
@@ -86,9 +80,6 @@ public abstract class AbstractQueryHandler implements QueryHandler {
 
     @Override
     public QueryResult query(QueryInfo queryInfo) throws HandlerException {
-        if (persister.writeOnly()) {
-            throw new QueryNotSupportedException();
-        }
         try {
             return querySingle(queryInfo);
         } catch (QueryException e) {
@@ -101,9 +92,6 @@ public abstract class AbstractQueryHandler implements QueryHandler {
     @SuppressWarnings("DuplicatedCode")
     @Override
     public List<QueryResult> query(List<QueryInfo> queryInfos) throws HandlerException {
-        if (persister.writeOnly()) {
-            throw new QueryNotSupportedException();
-        }
         try {
             // 构造查询结果，并初始化。
             List<QueryResult> queryResults = new ArrayList<>(queryInfos.size());

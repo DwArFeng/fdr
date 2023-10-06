@@ -2,6 +2,7 @@ package com.dwarfeng.fdr.impl.handler.consumer;
 
 import com.dwarfeng.fdr.impl.handler.Consumer;
 import com.dwarfeng.fdr.sdk.util.CompareUtil;
+import com.dwarfeng.fdr.stack.exception.LatestNotSupportedException;
 import com.dwarfeng.fdr.stack.handler.KeepHandler;
 import com.dwarfeng.fdr.stack.handler.PushHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
@@ -32,6 +33,8 @@ public abstract class KeepConsumer<R extends Data> implements Consumer<R> {
     protected final CuratorFramework curatorFramework;
 
     protected final String latchPath;
+
+    private boolean keepHandlerReadOnly = false;
 
     public KeepConsumer(
             KeepHandler<R> keepHandler, PushHandler pushHandler, CuratorFramework curatorFramework, String latchPath
@@ -70,14 +73,17 @@ public abstract class KeepConsumer<R extends Data> implements Consumer<R> {
         try {
             // 定义 keepMap，用于存放查询到的最新数据。
             Map<LongIdKey, R> keepMap;
-            if (keepHandler.writeOnly()) {
-                // 对于只写的 KeepHandler，无法查询到最新数据，因此将 keepMap 赋值为一个空的 HashMap。
+            if (keepHandlerReadOnly) {
                 keepMap = new HashMap<>();
             } else {
-                // 获取 localMap 中的键集合，转换为列表，并使用 KeepHandler.latest() 方法查询数据。
-                // 随后，根据 Record.getPointKey() 的值，将查询结果转换为 Map<LongIdKey, R> 类型。
-                keepMap = keepHandler.latest(new ArrayList<>(localMap.keySet())).stream()
-                        .filter(Objects::nonNull).collect(Collectors.toMap(Data::getPointKey, Function.identity()));
+                try {
+                    keepMap = keepHandler.latest(new ArrayList<>(localMap.keySet())).stream()
+                            .filter(Objects::nonNull).collect(Collectors.toMap(Data::getPointKey, Function.identity()));
+                } catch (LatestNotSupportedException e) {
+                    LOGGER.debug("keepHandler 不支持 latest 操作, 将 keepHandlerReadOnly 设置为 true, 异常信息如下: ", e);
+                    keepHandlerReadOnly = true;
+                    keepMap = new HashMap<>();
+                }
             }
 
             // 遍历 localMap 中的所有键。

@@ -1,6 +1,8 @@
 package com.dwarfeng.fdr.impl.handler;
 
 import com.dwarfeng.fdr.stack.bean.dto.*;
+import com.dwarfeng.fdr.stack.exception.KeeperNotSupportedException;
+import com.dwarfeng.fdr.stack.exception.PersisterNotSupportedException;
 import com.dwarfeng.fdr.stack.handler.KeepHandler;
 import com.dwarfeng.fdr.stack.handler.PersistHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
@@ -17,7 +19,11 @@ import java.util.List;
  *
  * <p>
  * 需要注意的是，不是所有的桥接器都支持所有的数据类型，因此如果<code>getXXXDataKeeper</code> 或
- * <code>getXXXDataPersist</code> 被调用时，如果桥接器不支持持久器/保持器，则可以抛出 {@link HandlerException} 异常。
+ * <code>getXXXDataPersist</code> 被调用时，如果桥接器不支持持久器/保持器，则可以抛出相应的异常。<br>
+ * <ul>
+ *     <li>如果桥接器不支持保持器，则应抛出 {@link KeeperNotSupportedException}</li>
+ *     <li>如果桥接器不支持持久器，则应抛出 {@link PersisterNotSupportedException}</li>
+ * </ul>
  *
  * @author DwArFeng
  * @since 2.0.0
@@ -31,13 +37,6 @@ public interface Bridge {
      * @return 桥接器是否支持指定的类型。
      */
     boolean supportType(String type);
-
-    /**
-     * 返回桥接器是否支持保持器。
-     *
-     * @return 桥接器是否支持保持器。
-     */
-    boolean supportKeeper();
 
     /**
      * 获取桥接器的一般数据保持器。
@@ -62,14 +61,6 @@ public interface Bridge {
      * @throws HandlerException 处理器异常。
      */
     Keeper<TriggeredData> getTriggeredDataKeeper() throws HandlerException;
-
-    /**
-     * 返回桥接器是否支持持久器。
-     *
-     * @return 桥接器是否支持持久器。
-     */
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    boolean supportPersister();
 
     /**
      * 获取桥接器的一般数据持久器。
@@ -103,14 +94,6 @@ public interface Bridge {
      * @since 2.0.0
      */
     interface Keeper<D extends Data> {
-
-        /**
-         * 获取该处理器是否为只写处理器。
-         *
-         * @return 该处理器是否为只写处理器。
-         * @see PersistHandler#writeOnly()
-         */
-        boolean writeOnly();
 
         /**
          * 更新数据。
@@ -166,14 +149,6 @@ public interface Bridge {
      * @since 2.0.0
      */
     interface Persister<D extends Data> {
-
-        /**
-         * 获取该处理器是否为只写处理器。
-         *
-         * @return 该处理器是否为只写处理器。
-         * @see PersistHandler#writeOnly()
-         */
-        boolean writeOnly();
 
         /**
          * 记录数据。

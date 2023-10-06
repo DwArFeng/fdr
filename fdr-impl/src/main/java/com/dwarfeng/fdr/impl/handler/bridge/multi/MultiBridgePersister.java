@@ -7,8 +7,6 @@ import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
 import com.dwarfeng.fdr.stack.bean.dto.NativeQueryInfo;
 import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
-import com.dwarfeng.fdr.stack.exception.LookupNotSupportedException;
-import com.dwarfeng.fdr.stack.exception.NativeQueryNotSupportedException;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
@@ -54,9 +52,6 @@ public abstract class MultiBridgePersister<D extends Data> extends AbstractPersi
         for (String bridgeType : bridgeTypes) {
             Bridge bridge = bridges.stream().filter(b -> b.supportType(bridgeType)).findAny()
                     .orElseThrow(() -> new HandlerException("未知的 bridge 类型: " + bridgeType));
-            if (!bridge.supportPersister()) {
-                throw new IllegalStateException("桥接器不支持持久器, 请检查 bridge.properties 配置文件: " + bridgeType);
-            }
             delegateBridges.add(bridge);
         }
         // 基于桥接器获取持久器。
@@ -69,11 +64,6 @@ public abstract class MultiBridgePersister<D extends Data> extends AbstractPersi
             delegatePersisters.add(delegatePersister);
         }
         this.delegatePersisters = delegatePersisters;
-    }
-
-    @Override
-    public boolean writeOnly() {
-        return primaryPersister.writeOnly();
     }
 
     @SuppressWarnings("DuplicatedCode")
@@ -151,9 +141,6 @@ public abstract class MultiBridgePersister<D extends Data> extends AbstractPersi
 
     @Override
     public LookupResult<D> lookup(LookupInfo lookupInfo) throws HandlerException {
-        if (primaryPersister.writeOnly()) {
-            throw new LookupNotSupportedException();
-        }
         try {
             return primaryPersister.lookup(lookupInfo);
         } catch (HandlerException e) {
@@ -165,9 +152,6 @@ public abstract class MultiBridgePersister<D extends Data> extends AbstractPersi
 
     @Override
     public List<LookupResult<D>> lookup(List<LookupInfo> lookupInfos) throws HandlerException {
-        if (primaryPersister.writeOnly()) {
-            throw new LookupNotSupportedException();
-        }
         try {
             return primaryPersister.lookup(lookupInfos);
         } catch (HandlerException e) {
@@ -179,9 +163,6 @@ public abstract class MultiBridgePersister<D extends Data> extends AbstractPersi
 
     @Override
     public QueryResult nativeQuery(NativeQueryInfo queryInfo) throws HandlerException {
-        if (primaryPersister.writeOnly()) {
-            throw new NativeQueryNotSupportedException();
-        }
         try {
             return primaryPersister.nativeQuery(queryInfo);
         } catch (HandlerException e) {
@@ -193,9 +174,6 @@ public abstract class MultiBridgePersister<D extends Data> extends AbstractPersi
 
     @Override
     public List<QueryResult> nativeQuery(List<NativeQueryInfo> queryInfos) throws HandlerException {
-        if (primaryPersister.writeOnly()) {
-            throw new NativeQueryNotSupportedException();
-        }
         try {
             return primaryPersister.nativeQuery(queryInfos);
         } catch (HandlerException e) {

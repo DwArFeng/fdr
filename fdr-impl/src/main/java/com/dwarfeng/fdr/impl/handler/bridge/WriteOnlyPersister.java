@@ -20,11 +20,6 @@ import java.util.List;
 public abstract class WriteOnlyPersister<D extends Data> extends AbstractPersister<D> {
 
     @Override
-    public boolean writeOnly() {
-        return true;
-    }
-
-    @Override
     public void record(D data) throws HandlerException {
         try {
             doRecord(data);

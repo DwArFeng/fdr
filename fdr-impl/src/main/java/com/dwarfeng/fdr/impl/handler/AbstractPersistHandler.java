@@ -4,7 +4,9 @@ import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
 import com.dwarfeng.fdr.stack.bean.dto.NativeQueryInfo;
 import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
-import com.dwarfeng.fdr.stack.exception.*;
+import com.dwarfeng.fdr.stack.exception.LookupException;
+import com.dwarfeng.fdr.stack.exception.NativeQueryException;
+import com.dwarfeng.fdr.stack.exception.RecordException;
 import com.dwarfeng.fdr.stack.handler.PersistHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
@@ -47,11 +49,6 @@ public abstract class AbstractPersistHandler<D extends Data> implements PersistH
         Bridge bridge = bridges.stream().filter(b -> b.supportType(bridgeType)).findAny()
                 .orElseThrow(() -> new HandlerException("未知的 bridge 类型: " + bridgeType));
 
-        // 如果桥接器不支持持久器，则抛出异常。
-        if (!bridge.supportPersister()) {
-            throw new IllegalStateException("桥接器不支持持久器, 请检查 bridge.properties 配置文件: " + bridgeType);
-        }
-
         // 如果桥接器支持持久器，则获取持久器。
         persister = getPersisterFromBridge(bridge);
     }
@@ -64,11 +61,6 @@ public abstract class AbstractPersistHandler<D extends Data> implements PersistH
      * @throws Exception 任何可能的异常。
      */
     protected abstract Bridge.Persister<D> getPersisterFromBridge(Bridge bridge) throws Exception;
-
-    @Override
-    public boolean writeOnly() {
-        return persister.writeOnly();
-    }
 
     @Override
     public void record(D data) throws HandlerException {
@@ -94,9 +86,6 @@ public abstract class AbstractPersistHandler<D extends Data> implements PersistH
 
     @Override
     public LookupResult<D> lookup(LookupInfo lookupInfo) throws HandlerException {
-        if (persister.writeOnly()) {
-            throw new LookupNotSupportedException();
-        }
         try {
             return persister.lookup(lookupInfo);
         } catch (LookupException e) {
@@ -108,9 +97,6 @@ public abstract class AbstractPersistHandler<D extends Data> implements PersistH
 
     @Override
     public List<LookupResult<D>> lookup(List<LookupInfo> lookupInfos) throws HandlerException {
-        if (persister.writeOnly()) {
-            throw new LookupNotSupportedException();
-        }
         try {
             return persister.lookup(lookupInfos);
         } catch (LookupException e) {
@@ -122,9 +108,6 @@ public abstract class AbstractPersistHandler<D extends Data> implements PersistH
 
     @Override
     public QueryResult nativeQuery(NativeQueryInfo queryInfo) throws HandlerException {
-        if (persister.writeOnly()) {
-            throw new NativeQueryNotSupportedException();
-        }
         try {
             return persister.nativeQuery(queryInfo);
         } catch (NativeQueryException e) {
@@ -136,9 +119,6 @@ public abstract class AbstractPersistHandler<D extends Data> implements PersistH
 
     @Override
     public List<QueryResult> nativeQuery(List<NativeQueryInfo> queryInfos) throws HandlerException {
-        if (persister.writeOnly()) {
-            throw new NativeQueryNotSupportedException();
-        }
         try {
             return persister.nativeQuery(queryInfos);
         } catch (NativeQueryException e) {

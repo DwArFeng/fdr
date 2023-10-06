@@ -21,11 +21,6 @@ import java.util.List;
 public abstract class FullPersister<D extends Data> extends AbstractPersister<D> {
 
     @Override
-    public boolean writeOnly() {
-        return false;
-    }
-
-    @Override
     public void record(D data) throws HandlerException {
         try {
             doRecord(data);

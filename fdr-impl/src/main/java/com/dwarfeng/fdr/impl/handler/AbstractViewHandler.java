@@ -1,10 +1,6 @@
 package com.dwarfeng.fdr.impl.handler;
 
 import com.dwarfeng.fdr.stack.bean.dto.*;
-import com.dwarfeng.fdr.stack.exception.LatestNotSupportedException;
-import com.dwarfeng.fdr.stack.exception.LookupNotSupportedException;
-import com.dwarfeng.fdr.stack.exception.NativeQueryNotSupportedException;
-import com.dwarfeng.fdr.stack.exception.QueryNotSupportedException;
 import com.dwarfeng.fdr.stack.handler.KeepHandler;
 import com.dwarfeng.fdr.stack.handler.PersistHandler;
 import com.dwarfeng.fdr.stack.handler.QueryHandler;
@@ -46,73 +42,46 @@ public abstract class AbstractViewHandler<D extends Data> implements ViewHandler
 
     @Override
     public D latest(LongIdKey pointKey) throws HandlerException {
-        if (keepHandler.writeOnly()) {
-            throw new LatestNotSupportedException();
-        }
         return keepHandler.latest(pointKey);
     }
 
     @Override
     public List<D> latest(List<LongIdKey> pointKeys) throws HandlerException {
-        if (keepHandler.writeOnly()) {
-            throw new LatestNotSupportedException();
-        }
         return keepHandler.latest(pointKeys);
     }
 
     @Override
     public LookupResult<D> lookup(LookupInfo lookupInfo) throws HandlerException {
-        if (persistHandler.writeOnly()) {
-            throw new LookupNotSupportedException();
-        }
         return persistHandler.lookup(lookupInfo);
     }
 
     @Override
     public List<LookupResult<D>> lookup(List<LookupInfo> lookupInfos) throws HandlerException {
-        if (persistHandler.writeOnly()) {
-            throw new LookupNotSupportedException();
-        }
         return persistHandler.lookup(lookupInfos);
     }
 
     @Override
     public QueryResult nativeQuery(NativeQueryInfo queryInfo) throws HandlerException {
-        if (persistHandler.writeOnly()) {
-            throw new NativeQueryNotSupportedException();
-        }
         return persistHandler.nativeQuery(queryInfo);
     }
 
     @Override
     public List<QueryResult> nativeQuery(List<NativeQueryInfo> queryInfos) throws HandlerException {
-        if (persistHandler.writeOnly()) {
-            throw new NativeQueryNotSupportedException();
-        }
         return persistHandler.nativeQuery(queryInfos);
     }
 
     @Override
     public QueryResult query(QueryInfo queryInfo) throws HandlerException {
-        if (persistHandler.writeOnly()) {
-            throw new QueryNotSupportedException();
-        }
         return queryHandler.query(queryInfo);
     }
 
     @Override
     public List<QueryResult> query(List<QueryInfo> queryInfos) throws HandlerException {
-        if (persistHandler.writeOnly()) {
-            throw new QueryNotSupportedException();
-        }
         return queryHandler.query(queryInfos);
     }
 
     @Override
-    public CompletableFuture<D> latestAsync(LongIdKey pointKey) throws HandlerException {
-        if (keepHandler.writeOnly()) {
-            throw new LatestNotSupportedException();
-        }
+    public CompletableFuture<D> latestAsync(LongIdKey pointKey) {
         return CompletableFuture.supplyAsync(() -> wrappedLatest(pointKey), executor);
     }
 
@@ -125,10 +94,7 @@ public abstract class AbstractViewHandler<D extends Data> implements ViewHandler
     }
 
     @Override
-    public CompletableFuture<List<D>> latestAsync(List<LongIdKey> pointKeys) throws HandlerException {
-        if (keepHandler.writeOnly()) {
-            throw new LatestNotSupportedException();
-        }
+    public CompletableFuture<List<D>> latestAsync(List<LongIdKey> pointKeys) {
         return CompletableFuture.supplyAsync(() -> wrappedLatest(pointKeys), executor);
     }
 
@@ -141,10 +107,7 @@ public abstract class AbstractViewHandler<D extends Data> implements ViewHandler
     }
 
     @Override
-    public CompletableFuture<LookupResult<D>> lookupAsync(LookupInfo lookupInfo) throws HandlerException {
-        if (persistHandler.writeOnly()) {
-            throw new LookupNotSupportedException();
-        }
+    public CompletableFuture<LookupResult<D>> lookupAsync(LookupInfo lookupInfo) {
         return CompletableFuture.supplyAsync(() -> wrappedLookup(lookupInfo), executor);
     }
 
@@ -157,10 +120,7 @@ public abstract class AbstractViewHandler<D extends Data> implements ViewHandler
     }
 
     @Override
-    public CompletableFuture<List<LookupResult<D>>> lookupAsync(List<LookupInfo> lookupInfos) throws HandlerException {
-        if (persistHandler.writeOnly()) {
-            throw new LookupNotSupportedException();
-        }
+    public CompletableFuture<List<LookupResult<D>>> lookupAsync(List<LookupInfo> lookupInfos) {
         return CompletableFuture.supplyAsync(() -> wrappedLookup(lookupInfos), executor);
     }
 
@@ -173,10 +133,7 @@ public abstract class AbstractViewHandler<D extends Data> implements ViewHandler
     }
 
     @Override
-    public CompletableFuture<QueryResult> nativeQueryAsync(NativeQueryInfo queryInfo) throws HandlerException {
-        if (persistHandler.writeOnly()) {
-            throw new NativeQueryNotSupportedException();
-        }
+    public CompletableFuture<QueryResult> nativeQueryAsync(NativeQueryInfo queryInfo) {
         return CompletableFuture.supplyAsync(() -> wrappedNativeQuery(queryInfo), executor);
     }
 
@@ -189,11 +146,7 @@ public abstract class AbstractViewHandler<D extends Data> implements ViewHandler
     }
 
     @Override
-    public CompletableFuture<List<QueryResult>> nativeQueryAsync(List<NativeQueryInfo> queryInfos)
-            throws HandlerException {
-        if (persistHandler.writeOnly()) {
-            throw new NativeQueryNotSupportedException();
-        }
+    public CompletableFuture<List<QueryResult>> nativeQueryAsync(List<NativeQueryInfo> queryInfos) {
         return CompletableFuture.supplyAsync(() -> wrappedNativeQuery(queryInfos), executor);
     }
 
@@ -206,10 +159,7 @@ public abstract class AbstractViewHandler<D extends Data> implements ViewHandler
     }
 
     @Override
-    public CompletableFuture<QueryResult> queryAsync(QueryInfo queryInfo) throws HandlerException {
-        if (persistHandler.writeOnly()) {
-            throw new QueryNotSupportedException();
-        }
+    public CompletableFuture<QueryResult> queryAsync(QueryInfo queryInfo) {
         return CompletableFuture.supplyAsync(() -> wrappedQuery(queryInfo), executor);
     }
 
@@ -222,10 +172,7 @@ public abstract class AbstractViewHandler<D extends Data> implements ViewHandler
     }
 
     @Override
-    public CompletableFuture<List<QueryResult>> queryAsync(List<QueryInfo> queryInfos) throws HandlerException {
-        if (persistHandler.writeOnly()) {
-            throw new QueryNotSupportedException();
-        }
+    public CompletableFuture<List<QueryResult>> queryAsync(List<QueryInfo> queryInfos) {
         return CompletableFuture.supplyAsync(() -> wrappedQuery(queryInfos), executor);
     }
 
