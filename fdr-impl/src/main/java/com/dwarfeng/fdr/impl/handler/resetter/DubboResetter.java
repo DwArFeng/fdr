@@ -130,6 +130,7 @@ public class DubboResetter extends AbstractResetter {
          * @return 恒为 true。
          * @throws ServiceException 服务异常。
          */
+        @SuppressWarnings("SameReturnValue")
         boolean resetRecord() throws ServiceException;
 
         /**
@@ -141,6 +142,7 @@ public class DubboResetter extends AbstractResetter {
          * @return 恒为 true。
          * @throws ServiceException 服务异常。
          */
+        @SuppressWarnings("SameReturnValue")
         boolean resetMap() throws ServiceException;
     }
 
@@ -160,7 +162,7 @@ public class DubboResetter extends AbstractResetter {
                 context.resetRecord();
                 return true;
             } catch (Exception e) {
-                throw ServiceExceptionHelper.logAndThrow("发生异常", LogLevel.WARN, sem, e);
+                throw ServiceExceptionHelper.logParse("发生异常", LogLevel.WARN, e, sem);
             }
         }
 
@@ -171,7 +173,7 @@ public class DubboResetter extends AbstractResetter {
                 context.resetMap();
                 return true;
             } catch (Exception e) {
-                throw ServiceExceptionHelper.logAndThrow("发生异常", LogLevel.WARN, sem, e);
+                throw ServiceExceptionHelper.logParse("发生异常", LogLevel.WARN, e, sem);
             }
         }
 

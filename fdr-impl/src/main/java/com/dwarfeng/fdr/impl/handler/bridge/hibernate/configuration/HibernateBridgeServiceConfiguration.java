@@ -6,14 +6,15 @@ import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeTrigge
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao.HibernateBridgeFilteredDataDao;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao.HibernateBridgeNormalDataDao;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao.HibernateBridgeTriggeredDataDao;
-import com.dwarfeng.sfds.api.integration.subgrade.SnowFlakeLongIdKeyFetcher;
+import com.dwarfeng.sfds.api.integration.subgrade.SnowflakeLongIdKeyGenerator;
+import com.dwarfeng.sfds.stack.service.GenerateService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyBatchCrudService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyBatchWriteService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
-import com.dwarfeng.subgrade.stack.bean.key.KeyFetcher;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
+import com.dwarfeng.subgrade.stack.generation.KeyGenerator;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,28 +22,31 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class HibernateBridgeServiceConfiguration {
 
+    private final GenerateService snowflakeGenerateService;
+
     private final ServiceExceptionMapper sem;
 
     private final HibernateBridgeNormalDataDao hibernateBridgeNormalDataDao;
     private final HibernateBridgeFilteredDataDao hibernateBridgeFilteredDataDao;
     private final HibernateBridgeTriggeredDataDao hibernateBridgeTriggeredDataDao;
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public HibernateBridgeServiceConfiguration(
+            GenerateService snowflakeGenerateService,
             ServiceExceptionMapper sem,
             HibernateBridgeNormalDataDao hibernateBridgeNormalDataDao,
             HibernateBridgeFilteredDataDao hibernateBridgeFilteredDataDao,
             HibernateBridgeTriggeredDataDao hibernateBridgeTriggeredDataDao
     ) {
+        this.snowflakeGenerateService = snowflakeGenerateService;
         this.sem = sem;
         this.hibernateBridgeNormalDataDao = hibernateBridgeNormalDataDao;
         this.hibernateBridgeFilteredDataDao = hibernateBridgeFilteredDataDao;
         this.hibernateBridgeTriggeredDataDao = hibernateBridgeTriggeredDataDao;
     }
 
-    @Bean("hibernateBridge.longIdKeyKeyFetcher")
-    public KeyFetcher<LongIdKey> longIdKeyKeyFetcher() {
-        return new SnowFlakeLongIdKeyFetcher();
+    @Bean("hibernateBridge.snowflakeLongIdKeyGenerator")
+    public KeyGenerator<LongIdKey> snowflakeLongIdKeyGenerator() {
+        return new SnowflakeLongIdKeyGenerator(snowflakeGenerateService);
     }
 
     @Bean
@@ -50,7 +54,7 @@ public class HibernateBridgeServiceConfiguration {
     hibernateBridgeNormalDataDaoOnlyBatchCrudService() {
         return new DaoOnlyBatchCrudService<>(
                 hibernateBridgeNormalDataDao,
-                longIdKeyKeyFetcher(),
+                snowflakeLongIdKeyGenerator(),
                 sem,
                 LogLevel.WARN
         );
@@ -81,7 +85,7 @@ public class HibernateBridgeServiceConfiguration {
     hibernateBridgeNormalDataDaoOnlyBatchWriteService() {
         return new DaoOnlyBatchWriteService<>(
                 hibernateBridgeNormalDataDao,
-                longIdKeyKeyFetcher(),
+                snowflakeLongIdKeyGenerator(),
                 sem,
                 LogLevel.WARN
         );
@@ -92,7 +96,7 @@ public class HibernateBridgeServiceConfiguration {
     hibernateBridgeFilteredDataDaoOnlyBatchCrudService() {
         return new DaoOnlyBatchCrudService<>(
                 hibernateBridgeFilteredDataDao,
-                longIdKeyKeyFetcher(),
+                snowflakeLongIdKeyGenerator(),
                 sem,
                 LogLevel.WARN
         );
@@ -123,7 +127,7 @@ public class HibernateBridgeServiceConfiguration {
     hibernateBridgeFilteredDataDaoOnlyBatchWriteService() {
         return new DaoOnlyBatchWriteService<>(
                 hibernateBridgeFilteredDataDao,
-                longIdKeyKeyFetcher(),
+                snowflakeLongIdKeyGenerator(),
                 sem,
                 LogLevel.WARN
         );
@@ -134,7 +138,7 @@ public class HibernateBridgeServiceConfiguration {
     hibernateBridgeTriggeredDataDaoOnlyBatchCrudService() {
         return new DaoOnlyBatchCrudService<>(
                 hibernateBridgeTriggeredDataDao,
-                longIdKeyKeyFetcher(),
+                snowflakeLongIdKeyGenerator(),
                 sem,
                 LogLevel.WARN
         );
@@ -165,7 +169,7 @@ public class HibernateBridgeServiceConfiguration {
     hibernateBridgeTriggeredDataDaoOnlyBatchWriteService() {
         return new DaoOnlyBatchWriteService<>(
                 hibernateBridgeTriggeredDataDao,
-                longIdKeyKeyFetcher(),
+                snowflakeLongIdKeyGenerator(),
                 sem,
                 LogLevel.WARN
         );

@@ -4,6 +4,7 @@ import com.dwarfeng.fdr.impl.handler.Bridge;
 import com.dwarfeng.fdr.impl.handler.Bridge.Keeper;
 import com.dwarfeng.fdr.impl.handler.bridge.AbstractKeeper;
 import com.dwarfeng.fdr.stack.struct.Data;
+import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
@@ -81,10 +82,8 @@ public abstract class MultiBridgeKeeper<D extends Data> extends AbstractKeeper<D
             } catch (CompletionException e) {
                 throw (Exception) e.getCause();
             }
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 
@@ -117,10 +116,8 @@ public abstract class MultiBridgeKeeper<D extends Data> extends AbstractKeeper<D
             } catch (CompletionException e) {
                 throw (Exception) e.getCause();
             }
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 
@@ -140,10 +137,8 @@ public abstract class MultiBridgeKeeper<D extends Data> extends AbstractKeeper<D
     public D latest(LongIdKey pointKey) throws HandlerException {
         try {
             return primaryKeeper.latest(pointKey);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 
@@ -151,10 +146,8 @@ public abstract class MultiBridgeKeeper<D extends Data> extends AbstractKeeper<D
     public List<D> latest(List<LongIdKey> pointKeys) throws HandlerException {
         try {
             return primaryKeeper.latest(pointKeys);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 

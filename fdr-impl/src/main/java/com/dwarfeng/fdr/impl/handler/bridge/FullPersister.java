@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
 import com.dwarfeng.fdr.stack.bean.dto.NativeQueryInfo;
 import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
 import com.dwarfeng.fdr.stack.struct.Data;
+import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 
 import java.util.List;
@@ -24,10 +25,8 @@ public abstract class FullPersister<D extends Data> extends AbstractPersister<D>
     public void record(D data) throws HandlerException {
         try {
             doRecord(data);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 
@@ -37,10 +36,8 @@ public abstract class FullPersister<D extends Data> extends AbstractPersister<D>
     public void record(List<D> datas) throws HandlerException {
         try {
             doRecord(datas);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 
@@ -50,10 +47,8 @@ public abstract class FullPersister<D extends Data> extends AbstractPersister<D>
     public LookupResult<D> lookup(LookupInfo lookupInfo) throws HandlerException {
         try {
             return doLookup(lookupInfo);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 
@@ -63,10 +58,8 @@ public abstract class FullPersister<D extends Data> extends AbstractPersister<D>
     public List<LookupResult<D>> lookup(List<LookupInfo> lookupInfos) throws HandlerException {
         try {
             return doLookup(lookupInfos);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 
@@ -76,10 +69,8 @@ public abstract class FullPersister<D extends Data> extends AbstractPersister<D>
     public QueryResult nativeQuery(NativeQueryInfo queryInfo) throws HandlerException {
         try {
             return doNativeQuery(queryInfo);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 
@@ -89,10 +80,8 @@ public abstract class FullPersister<D extends Data> extends AbstractPersister<D>
     public List<QueryResult> nativeQuery(List<NativeQueryInfo> queryInfos) throws HandlerException {
         try {
             return doNativeQuery(queryInfos);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 

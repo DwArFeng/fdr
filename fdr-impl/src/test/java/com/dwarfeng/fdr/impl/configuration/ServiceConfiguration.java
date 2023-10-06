@@ -10,13 +10,11 @@ import com.dwarfeng.fdr.stack.cache.MapperSupportCache;
 import com.dwarfeng.fdr.stack.cache.TriggerSupportCache;
 import com.dwarfeng.fdr.stack.cache.WasherSupportCache;
 import com.dwarfeng.fdr.stack.dao.*;
-import com.dwarfeng.sfds.api.integration.subgrade.SnowFlakeLongIdKeyFetcher;
-import com.dwarfeng.subgrade.impl.bean.key.ExceptionKeyFetcher;
+import com.dwarfeng.subgrade.impl.generation.ExceptionKeyGenerator;
 import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
-import com.dwarfeng.subgrade.stack.bean.key.KeyFetcher;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
@@ -28,6 +26,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ServiceConfiguration {
 
+    private final GenerateConfiguration generateConfiguration;
     private final ServiceExceptionMapper sem;
 
     private final FilterInfoCrudOperation filterInfoCrudOperation;
@@ -57,6 +56,7 @@ public class ServiceConfiguration {
     private long washerSupportTimeout;
 
     public ServiceConfiguration(
+            GenerateConfiguration generateConfiguration,
             ServiceExceptionMapper sem,
             FilterInfoCrudOperation filterInfoCrudOperation, FilterInfoDao filterInfoDao,
             PointCrudOperation pointCrudOperation, PointDao pointDao,
@@ -67,6 +67,7 @@ public class ServiceConfiguration {
             WasherInfoCrudOperation washerInfoCrudOperation, WasherInfoDao washerInfoDao,
             WasherSupportCache washerSupportCache, WasherSupportDao washerSupportDao
     ) {
+        this.generateConfiguration = generateConfiguration;
         this.sem = sem;
         this.filterInfoCrudOperation = filterInfoCrudOperation;
         this.filterInfoDao = filterInfoDao;
@@ -87,15 +88,10 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public KeyFetcher<LongIdKey> longIdKeyKeyFetcher() {
-        return new SnowFlakeLongIdKeyFetcher();
-    }
-
-    @Bean
     public CustomBatchCrudService<LongIdKey, FilterInfo> filterInfoBatchCustomCrudService() {
         return new CustomBatchCrudService<>(
                 filterInfoCrudOperation,
-                longIdKeyKeyFetcher(),
+                generateConfiguration.snowflakeLongIdKeyGenerator(),
                 sem,
                 LogLevel.WARN
         );
@@ -114,7 +110,7 @@ public class ServiceConfiguration {
     public CustomBatchCrudService<LongIdKey, Point> pointBatchCustomCrudService() {
         return new CustomBatchCrudService<>(
                 pointCrudOperation,
-                longIdKeyKeyFetcher(),
+                generateConfiguration.snowflakeLongIdKeyGenerator(),
                 sem,
                 LogLevel.WARN
         );
@@ -142,7 +138,7 @@ public class ServiceConfiguration {
     public CustomBatchCrudService<LongIdKey, TriggerInfo> triggerInfoBatchCustomCrudService() {
         return new CustomBatchCrudService<>(
                 triggerInfoCrudOperation,
-                longIdKeyKeyFetcher(),
+                generateConfiguration.snowflakeLongIdKeyGenerator(),
                 sem,
                 LogLevel.WARN
         );
@@ -162,7 +158,7 @@ public class ServiceConfiguration {
         return new GeneralBatchCrudService<>(
                 filterSupportDao,
                 filterSupportCache,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 sem,
                 LogLevel.WARN,
                 filterSupportTimeout
@@ -192,7 +188,7 @@ public class ServiceConfiguration {
         return new GeneralBatchCrudService<>(
                 triggerSupportDao,
                 triggerSupportCache,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 sem,
                 LogLevel.WARN,
                 triggerSupportTimeout
@@ -240,7 +236,7 @@ public class ServiceConfiguration {
         return new GeneralBatchCrudService<>(
                 mapperSupportDao,
                 mapperSupportCache,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 sem,
                 LogLevel.WARN,
                 mapperSupportTimeout
@@ -269,7 +265,7 @@ public class ServiceConfiguration {
     public CustomBatchCrudService<LongIdKey, WasherInfo> washerInfoBatchCustomCrudService() {
         return new CustomBatchCrudService<>(
                 washerInfoCrudOperation,
-                longIdKeyKeyFetcher(),
+                generateConfiguration.snowflakeLongIdKeyGenerator(),
                 sem,
                 LogLevel.WARN
         );
@@ -298,7 +294,7 @@ public class ServiceConfiguration {
         return new GeneralBatchCrudService<>(
                 washerSupportDao,
                 washerSupportCache,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 sem,
                 LogLevel.WARN,
                 washerSupportTimeout

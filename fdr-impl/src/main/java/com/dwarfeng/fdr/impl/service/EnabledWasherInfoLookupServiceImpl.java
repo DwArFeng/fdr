@@ -51,7 +51,7 @@ public class EnabledWasherInfoLookupServiceImpl implements EnabledWasherInfoLook
             cache.set(pointKey, lookup, timeout);
             return lookup;
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询有效的清洗器信息时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查询有效的清洗器信息时发生异常", LogLevel.WARN, e, sem);
         }
     }
 }

@@ -35,7 +35,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         try {
             return viewHandler.latest(pointKey);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询数据点的最新数据时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查询数据点的最新数据时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -44,7 +44,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         try {
             return viewHandler.latest(pointKeys);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询数据点的最新数据时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查询数据点的最新数据时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -53,7 +53,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         try {
             return viewHandler.lookup(lookupInfo);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查看时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查看时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -62,7 +62,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         try {
             return viewHandler.lookup(lookupInfos);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查看时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查看时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -71,7 +71,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         try {
             return viewHandler.query(queryInfo);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查询时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -80,7 +80,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         try {
             return viewHandler.query(queryInfos);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查询时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -89,7 +89,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         try {
             return viewHandler.nativeQuery(queryInfo);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("原生查询时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("原生查询时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -98,7 +98,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         try {
             return viewHandler.nativeQuery(queryInfos);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("原生查询时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("原生查询时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -107,7 +107,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         try {
             return viewHandler.latestAsync(pointKey);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询数据点的最新数据时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查询数据点的最新数据时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -116,7 +116,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         try {
             return viewHandler.latestAsync(pointKeys);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询数据点的最新数据时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查询数据点的最新数据时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -125,7 +125,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         try {
             return viewHandler.lookupAsync(lookupInfo);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查看时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查看时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -134,7 +134,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         try {
             return viewHandler.lookupAsync(lookupInfos);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查看时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查看时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -143,7 +143,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         try {
             return viewHandler.nativeQueryAsync(queryInfo);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("原生查询时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("原生查询时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -153,7 +153,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         try {
             return viewHandler.nativeQueryAsync(queryInfos);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("原生查询时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("原生查询时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -162,7 +162,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         try {
             return viewHandler.queryAsync(queryInfo);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查询时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -171,7 +171,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         try {
             return viewHandler.queryAsync(queryInfos);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查询时发生异常", LogLevel.WARN, e, sem);
         }
     }
 

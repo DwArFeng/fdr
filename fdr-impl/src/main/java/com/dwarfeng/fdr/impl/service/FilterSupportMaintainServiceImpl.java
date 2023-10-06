@@ -284,9 +284,7 @@ public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainSe
             )).collect(Collectors.toList());
             crudService.batchInsert(filterSupports);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow(
-                    "重置过滤器支持时发生异常", LogLevel.WARN, sem, e
-            );
+            throw ServiceExceptionHelper.logParse("重置过滤器支持时发生异常", LogLevel.WARN, e, sem);
         }
     }
 }

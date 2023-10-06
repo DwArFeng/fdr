@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.sdk.util.CompareUtil;
 import com.dwarfeng.fdr.stack.handler.KeepHandler;
 import com.dwarfeng.fdr.stack.handler.PushHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
+import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.apache.curator.framework.CuratorFramework;
@@ -49,10 +50,8 @@ public abstract class KeepConsumer<R extends Data> implements Consumer<R> {
     public void consume(List<R> records) throws HandlerException {
         try {
             internalConsume(records);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 

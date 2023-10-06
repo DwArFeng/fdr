@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.sdk.util.Constants;
 import com.dwarfeng.fdr.stack.exception.ConsumeStoppedException;
 import com.dwarfeng.fdr.stack.handler.ConsumeHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
+import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -188,10 +189,8 @@ public class ConsumeHandlerImpl<D extends Data> implements ConsumeHandler<D> {
                 throw new ConsumeStoppedException();
             }
             consumeBuffer.accept(data);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         } finally {
             lock.unlock();
         }

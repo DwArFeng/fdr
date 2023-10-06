@@ -4,6 +4,10 @@
 
 #### 功能构建
 
+- 依赖升级。
+  - 升级 `snowflake` 依赖版本为 `1.5.0.a` 并解决兼容性问题，以应用其新功能。
+  - 升级 `subgrade` 依赖版本为 `1.4.5.a` 并解决兼容性问题，以应用其新功能。
+
 - 优化数据记录代码结构。
   - 调整 RecordProcessor 结构，增加代理方法，将 RecordWorker 的实现代码移动到 RecordProcessor 中。
 

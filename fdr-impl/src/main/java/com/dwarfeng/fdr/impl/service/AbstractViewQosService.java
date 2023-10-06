@@ -37,7 +37,7 @@ public abstract class AbstractViewQosService<D extends Data> implements ViewQosS
         try {
             return viewHandler.latest(pointKeys);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询数据时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查询数据时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -46,7 +46,7 @@ public abstract class AbstractViewQosService<D extends Data> implements ViewQosS
         try {
             return viewHandler.query(queryInfo);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查看数据时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查看数据时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -55,7 +55,7 @@ public abstract class AbstractViewQosService<D extends Data> implements ViewQosS
         try {
             return viewHandler.nativeQuery(queryInfo);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("原生查询数据时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("原生查询数据时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -64,7 +64,7 @@ public abstract class AbstractViewQosService<D extends Data> implements ViewQosS
         try {
             return viewHandler.lookup(lookupInfo);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询数据时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查询数据时发生异常", LogLevel.WARN, e, sem);
         }
     }
 

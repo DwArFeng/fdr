@@ -1,6 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.bridge;
 
 import com.dwarfeng.fdr.stack.struct.Data;
+import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 
@@ -21,10 +22,8 @@ public abstract class FullKeeper<D extends Data> extends AbstractKeeper<D> {
     public void update(D data) throws HandlerException {
         try {
             doUpdate(data);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 
@@ -34,10 +33,8 @@ public abstract class FullKeeper<D extends Data> extends AbstractKeeper<D> {
     public void update(List<D> datas) throws HandlerException {
         try {
             doUpdate(datas);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 
@@ -47,10 +44,8 @@ public abstract class FullKeeper<D extends Data> extends AbstractKeeper<D> {
     public D latest(LongIdKey pointKey) throws HandlerException {
         try {
             return doLatest(pointKey);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 
@@ -60,10 +55,8 @@ public abstract class FullKeeper<D extends Data> extends AbstractKeeper<D> {
     public List<D> latest(List<LongIdKey> pointKeys) throws HandlerException {
         try {
             return doLatest(pointKeys);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 

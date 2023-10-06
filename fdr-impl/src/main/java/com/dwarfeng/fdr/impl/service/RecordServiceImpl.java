@@ -30,7 +30,7 @@ public class RecordServiceImpl implements RecordService {
         try {
             recordHandler.record(recordInfo);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("记录数据时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("记录数据时发生异常", LogLevel.WARN, e, sem);
         }
     }
 }

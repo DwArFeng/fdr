@@ -7,6 +7,7 @@ import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
 import com.dwarfeng.fdr.stack.exception.LookupNotSupportedException;
 import com.dwarfeng.fdr.stack.exception.NativeQueryNotSupportedException;
 import com.dwarfeng.fdr.stack.struct.Data;
+import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 
 import java.util.List;
@@ -23,10 +24,8 @@ public abstract class WriteOnlyPersister<D extends Data> extends AbstractPersist
     public void record(D data) throws HandlerException {
         try {
             doRecord(data);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 
@@ -36,10 +35,8 @@ public abstract class WriteOnlyPersister<D extends Data> extends AbstractPersist
     public void record(List<D> datas) throws HandlerException {
         try {
             doRecord(datas);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 

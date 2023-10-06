@@ -283,9 +283,7 @@ public class TriggerSupportMaintainServiceImpl implements TriggerSupportMaintain
             )).collect(Collectors.toList());
             crudService.batchInsert(triggerSupports);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow(
-                    "重置触发器支持时发生异常", LogLevel.WARN, sem, e
-            );
+            throw ServiceExceptionHelper.logParse("重置触发器支持时发生异常", LogLevel.WARN, e, sem);
         }
     }
 }

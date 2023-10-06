@@ -10,6 +10,7 @@ import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.exception.PointNotExistsException;
 import com.dwarfeng.fdr.stack.exception.RecordStoppedException;
 import com.dwarfeng.fdr.stack.handler.*;
+import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
@@ -113,10 +114,8 @@ public class RecordProcessor {
         lock.lock();
         try {
             internalRecord(recordInfo);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         } finally {
             lock.unlock();
         }
@@ -490,10 +489,8 @@ public class RecordProcessor {
                         normalPersistConsumeHandler.accept(normalRecord);
                     }
                 }
-            } catch (HandlerException e) {
-                throw e;
             } catch (Exception e) {
-                throw new HandlerException(e);
+                throw HandlerExceptionHelper.parse(e);
             }
         }
     }

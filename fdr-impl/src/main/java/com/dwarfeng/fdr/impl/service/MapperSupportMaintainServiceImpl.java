@@ -283,9 +283,7 @@ public class MapperSupportMaintainServiceImpl implements MapperSupportMaintainSe
             )).collect(Collectors.toList());
             crudService.batchInsert(mapperSupports);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow(
-                    "重置映射器支持时发生异常", LogLevel.WARN, sem, e
-            );
+            throw ServiceExceptionHelper.logParse("重置映射器支持时发生异常", LogLevel.WARN, e, sem);
         }
     }
 }
