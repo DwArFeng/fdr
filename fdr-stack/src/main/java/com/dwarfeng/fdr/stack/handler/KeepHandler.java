@@ -33,6 +33,10 @@ public interface KeepHandler<D extends Data> extends Handler {
     /**
      * 更新数据。
      *
+     * <p>
+     * 调用此方法时，需要保证 {@link Data#getHappenedDate()} 的值大于等于保持器中对应数据的发生时间。<br>
+     * 该规约通常由数据源保证。
+     *
      * @param data 数据。
      * @throws HandlerException 处理器异常。
      */
@@ -40,6 +44,15 @@ public interface KeepHandler<D extends Data> extends Handler {
 
     /**
      * 更新数据。
+     *
+     * <p>
+     * 调用此方法时，需要保证参数列表中所有的数据的 {@link Data#getPointKey()} 相互不同。<br>
+     * 该规约通常由记录处理器保证。
+     *
+     * <p>
+     * 调用此方法时，需要保证参数列表中所有的数据的 {@link Data#getHappenedDate()}
+     * 的值大于等于保持器中对应数据的发生时间。<br>
+     * 该规约通常由数据源保证。
      *
      * @param datas 数据组成的列表。
      * @throws HandlerException 处理器异常。

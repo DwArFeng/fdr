@@ -67,6 +67,10 @@ public interface Source {
          * <p>
          * 该方法只有在数据源上线的情况下能够被调用。
          *
+         * <p>
+         * 调用该方法时，应保证 {@link RecordInfo#getPointKey()} 相同的记录信息的 {@link RecordInfo#getHappenedDate()}
+         * 是递增的，否则将会造成数据实时值的不准确。
+         *
          * @param recordInfo 指定的记录信息。
          * @throws Exception 记录数据的过程中出现的任何异常。
          */

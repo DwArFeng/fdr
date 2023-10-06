@@ -2,7 +2,6 @@ package com.dwarfeng.fdr.impl.handler.consumer;
 
 import com.dwarfeng.fdr.impl.handler.Consumer;
 import com.dwarfeng.fdr.sdk.util.CompareUtil;
-import com.dwarfeng.fdr.stack.exception.LatestNotSupportedException;
 import com.dwarfeng.fdr.stack.handler.KeepHandler;
 import com.dwarfeng.fdr.stack.handler.PushHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
@@ -13,7 +12,10 @@ import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -33,8 +35,6 @@ public abstract class KeepConsumer<R extends Data> implements Consumer<R> {
     protected final CuratorFramework curatorFramework;
 
     protected final String latchPath;
-
-    private boolean keepHandlerReadOnly = false;
 
     public KeepConsumer(
             KeepHandler<R> keepHandler, PushHandler pushHandler, CuratorFramework curatorFramework, String latchPath
@@ -71,37 +71,6 @@ public abstract class KeepConsumer<R extends Data> implements Consumer<R> {
         // 分布式锁。
         lock.acquire();
         try {
-            // 定义 keepMap，用于存放查询到的最新数据。
-            Map<LongIdKey, R> keepMap;
-            if (keepHandlerReadOnly) {
-                keepMap = new HashMap<>();
-            } else {
-                try {
-                    keepMap = keepHandler.latest(new ArrayList<>(localMap.keySet())).stream()
-                            .filter(Objects::nonNull).collect(Collectors.toMap(Data::getPointKey, Function.identity()));
-                } catch (LatestNotSupportedException e) {
-                    LOGGER.debug("keepHandler 不支持 latest 操作, 将 keepHandlerReadOnly 设置为 true, 异常信息如下: ", e);
-                    keepHandlerReadOnly = true;
-                    keepMap = new HashMap<>();
-                }
-            }
-
-            // 遍历 localMap 中的所有键。
-            for (Iterator<LongIdKey> iterator = localMap.keySet().iterator(); iterator.hasNext(); ) {
-                LongIdKey pointKey = iterator.next();
-
-                // 如果 keepMap 中包含该键，则使用比较器 Comparators.RECORD_HAPPENED_DATE_COMPARATOR 进行比较，
-                // 如果 keepMap 中的值比 localMap 中的值更大，则将该键从 localMap 中移除。
-                if (keepMap.containsKey(pointKey)) {
-                    int compareResult = CompareUtil.DATA_HAPPENED_DATE_ASC_COMPARATOR.compare(
-                            keepMap.get(pointKey), localMap.get(pointKey)
-                    );
-                    if (compareResult > 0) {
-                        iterator.remove();
-                    }
-                }
-            }
-
             // 将 localMap 中的所有值转换为列表，并赋值给 records。
             records = new ArrayList<>(localMap.values());
 
