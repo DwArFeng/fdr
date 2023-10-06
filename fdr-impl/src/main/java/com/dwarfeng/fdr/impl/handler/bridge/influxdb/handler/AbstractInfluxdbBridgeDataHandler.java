@@ -57,7 +57,6 @@ public abstract class AbstractInfluxdbBridgeDataHandler implements InfluxdbBridg
                     " |> pivot(rowKey: [\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")";
 
             // 格式化查询语句。
-            @SuppressWarnings("SpellCheckingInspection")
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
             String flux = String.format(fluxFormat,
                     getBucket(),
@@ -101,7 +100,6 @@ public abstract class AbstractInfluxdbBridgeDataHandler implements InfluxdbBridg
 
             // 格式化查询语句。
             String measurementPattern = generateMeasurementPattern(queryInfo.getMeasurements());
-            @SuppressWarnings("SpellCheckingInspection")
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
             String flux = String.format(fluxFormat,
                     getBucket(),
@@ -135,7 +133,6 @@ public abstract class AbstractInfluxdbBridgeDataHandler implements InfluxdbBridg
 
             // 格式化查询语句。
             String measurementPattern = generateMeasurementPattern(queryInfo.getMeasurements());
-            @SuppressWarnings("SpellCheckingInspection")
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
             String flux = String.format(fluxFormat,
                     getBucket(),

@@ -99,7 +99,7 @@ public class HighPassMapperRegistry extends AbstractMapperRegistry {
         }
 
         // 为了保证代码的可读性，此处代码不做简化。
-        @SuppressWarnings("ConstantConditions")
+        @SuppressWarnings("ConstantValue")
         private static List<Item> doFilter(Sequence sequence, double threshold, boolean canEqual, boolean invert) {
             List<Item> items;
             if (invert && canEqual) {

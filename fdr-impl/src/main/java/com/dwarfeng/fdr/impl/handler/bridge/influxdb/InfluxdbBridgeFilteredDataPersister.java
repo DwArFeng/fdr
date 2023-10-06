@@ -25,7 +25,6 @@ import java.util.Objects;
 @Component
 public class InfluxdbBridgeFilteredDataPersister extends InfluxdbBridgePersister<FilteredData> {
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public InfluxdbBridgeFilteredDataPersister(
             InfluxdbBridgeFilteredDataHandler handler,
             ThreadPoolTaskExecutor executor

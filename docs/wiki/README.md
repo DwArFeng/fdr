@@ -8,5 +8,3 @@ Wiki 是国际化的，它用多种语言编写，每种语言放在自身语言
 
 - [简体中文](zh_CN/README.md)
 - [English](en_US/README.md)
-
-

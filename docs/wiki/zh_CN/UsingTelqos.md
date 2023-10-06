@@ -15,13 +15,13 @@ Telqos 的端口号以及连接规则可以在 `conf/telqos/connection.propertie
 默认的配置如下：
 
 ```properties
-#Telnet 端口
+# Telnet 端口。
 telqos.port=23
-#字符集
+# 字符集。
 telqos.charset=UTF-8
-#白名单表达式
+# 白名单表达式。
 telqos.whitelist_regex=
-#黑名单表达式
+# 黑名单表达式。
 telqos.blacklist_regex=
 ```
 

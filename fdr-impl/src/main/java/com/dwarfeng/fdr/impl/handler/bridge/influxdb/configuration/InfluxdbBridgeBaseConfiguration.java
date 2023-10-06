@@ -18,7 +18,6 @@ public class InfluxdbBridgeBaseConfiguration {
     @Value("${bridge.influxdb.token}")
     private String token;
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public InfluxdbBridgeBaseConfiguration(ThreadPoolTaskExecutor executor) {
         this.executor = executor;
     }

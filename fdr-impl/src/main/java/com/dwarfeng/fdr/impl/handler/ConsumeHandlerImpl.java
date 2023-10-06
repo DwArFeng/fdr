@@ -302,7 +302,7 @@ public class ConsumeHandlerImpl<D extends Data> implements ConsumeHandler<D> {
         }
     }
 
-    private static final class ConsumeTask<R extends Data> extends AbstractTask {
+    public static final class ConsumeTask<R extends Data> extends AbstractTask {
 
         private static final Logger LOGGER = LoggerFactory.getLogger(ConsumeTask.class);
 
@@ -338,7 +338,7 @@ public class ConsumeHandlerImpl<D extends Data> implements ConsumeHandler<D> {
         }
     }
 
-    private static class ConsumeBuffer<R extends Data> {
+    public static class ConsumeBuffer<R extends Data> {
 
         private final Lock lock = new ReentrantLock();
         private final Condition provideCondition = lock.newCondition();

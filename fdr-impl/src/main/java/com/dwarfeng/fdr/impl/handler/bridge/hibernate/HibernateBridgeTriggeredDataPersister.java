@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 public class HibernateBridgeTriggeredDataPersister extends
         HibernateBridgePersister<TriggeredData, HibernateBridgeTriggeredData> {
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     protected HibernateBridgeTriggeredDataPersister(
             HibernateBridgeMaintainService<HibernateBridgeTriggeredData> service,
             @Qualifier("hibernateBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler,

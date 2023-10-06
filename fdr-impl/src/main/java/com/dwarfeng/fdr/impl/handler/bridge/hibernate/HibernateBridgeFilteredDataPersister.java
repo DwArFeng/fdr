@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 public class HibernateBridgeFilteredDataPersister extends
         HibernateBridgePersister<FilteredData, HibernateBridgeFilteredData> {
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     protected HibernateBridgeFilteredDataPersister(
             HibernateBridgeMaintainService<HibernateBridgeFilteredData> service,
             @Qualifier("hibernateBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler,

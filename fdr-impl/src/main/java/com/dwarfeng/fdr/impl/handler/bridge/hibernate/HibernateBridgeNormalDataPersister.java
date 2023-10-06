@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 public class HibernateBridgeNormalDataPersister extends
         HibernateBridgePersister<NormalData, HibernateBridgeNormalData> {
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     protected HibernateBridgeNormalDataPersister(
             HibernateBridgeMaintainService<HibernateBridgeNormalData> service,
             @Qualifier("hibernateBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler,

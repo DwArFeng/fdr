@@ -25,7 +25,6 @@ import java.util.Objects;
 @Component
 public class InfluxdbBridgeNormalDataPersister extends InfluxdbBridgePersister<NormalData> {
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public InfluxdbBridgeNormalDataPersister(
             InfluxdbBridgeNormalDataHandler handler,
             ThreadPoolTaskExecutor executor

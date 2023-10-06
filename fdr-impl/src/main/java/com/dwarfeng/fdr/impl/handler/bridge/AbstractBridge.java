@@ -27,6 +27,14 @@ public abstract class AbstractBridge implements Bridge {
         return Objects.equals(bridgeType, type);
     }
 
+    public String getBridgeType() {
+        return bridgeType;
+    }
+
+    public void setBridgeType(String bridgeType) {
+        this.bridgeType = bridgeType;
+    }
+
     @Override
     public String toString() {
         return "AbstractBridge{" +

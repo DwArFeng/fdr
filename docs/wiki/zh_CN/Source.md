@@ -77,8 +77,3 @@ FDR 提供了多种数据源，可以满足大部分的数据采集需求。
 
 - [Opt Directory](./OptDirectory.md) - 可选配置目录说明，详细介绍了本项目的可选配置，即 `opt/` 目录下的内容。
 - [PresetSourceImplements.md](./PresetSourceImplements.md) - 预设数据源实现，详细说明了本项目内置的所有数据源。
-
-
-
-
-

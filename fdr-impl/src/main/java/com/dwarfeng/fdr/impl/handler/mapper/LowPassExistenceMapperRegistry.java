@@ -90,7 +90,7 @@ public class LowPassExistenceMapperRegistry extends AbstractMapperRegistry {
         }
 
         // 为了保证代码的可读性，此处代码不做简化。
-        @SuppressWarnings("ConstantConditions")
+        @SuppressWarnings("ConstantValue")
         private boolean doDetermine(List<Item> items, double threshold, boolean invert, boolean canEqual) {
             for (Item item : items) {
                 if (invert && canEqual) {

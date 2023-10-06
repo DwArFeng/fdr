@@ -37,11 +37,15 @@ public class ValidateList<E> extends AbstractList<E> implements List<E> {
         return delegate.contains(o);
     }
 
+    // 代理方法，忽略所有警告。
+    @SuppressWarnings("NullableProblems")
     @Override
     public Iterator<E> iterator() {
         return delegate.iterator();
     }
 
+    // 代理方法，忽略所有警告。
+    @SuppressWarnings("NullableProblems")
     @Override
     public Object[] toArray() {
         return delegate.toArray();
@@ -144,16 +148,22 @@ public class ValidateList<E> extends AbstractList<E> implements List<E> {
         return delegate.lastIndexOf(o);
     }
 
+    // 代理方法，忽略所有警告。
+    @SuppressWarnings("NullableProblems")
     @Override
     public ListIterator<E> listIterator() {
         return delegate.listIterator();
     }
 
+    // 代理方法，忽略所有警告。
+    @SuppressWarnings("NullableProblems")
     @Override
     public ListIterator<E> listIterator(int index) {
         return delegate.listIterator(index);
     }
 
+    // 代理方法，忽略所有警告。
+    @SuppressWarnings("NullableProblems")
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
         return delegate.subList(fromIndex, toIndex);
