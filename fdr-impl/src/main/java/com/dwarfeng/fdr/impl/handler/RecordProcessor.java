@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
@@ -34,9 +35,17 @@ import java.util.concurrent.locks.ReentrantLock;
  * @since 1.11.0
  */
 @Component
-class RecordProcessor {
+public class RecordProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RecordProcessor.class);
+
+    private final SourceHandler sourceHandler;
+    private final ConsumeHandler<NormalData> normalKeepConsumeHandler;
+    private final ConsumeHandler<NormalData> normalPersistConsumeHandler;
+    private final ConsumeHandler<FilteredData> filteredKeepConsumeHandler;
+    private final ConsumeHandler<FilteredData> filteredPersistConsumeHandler;
+    private final ConsumeHandler<TriggeredData> triggeredKeepConsumeHandler;
+    private final ConsumeHandler<TriggeredData> triggeredPersistConsumeHandler;
 
     private final ThreadPoolTaskExecutor executor;
     private final ThreadPoolTaskScheduler scheduler;
@@ -57,108 +66,36 @@ class RecordProcessor {
     ScheduledFuture<?> capacityCheckFuture = null;
 
     public RecordProcessor(
+            // 使用懒加载，以避免循环依赖。
+            @Lazy SourceHandler sourceHandler,
+            @Qualifier("normalKeepConsumeHandler")
+            ConsumeHandler<NormalData> normalKeepConsumeHandler,
+            @Qualifier("normalPersistConsumeHandler")
+            ConsumeHandler<NormalData> normalPersistConsumeHandler,
+            @Qualifier("filteredKeepConsumeHandler")
+            ConsumeHandler<FilteredData> filteredKeepConsumeHandler,
+            @Qualifier("filteredPersistConsumeHandler")
+            ConsumeHandler<FilteredData> filteredPersistConsumeHandler,
+            @Qualifier("triggeredKeepConsumeHandler")
+            ConsumeHandler<TriggeredData> triggeredKeepConsumeHandler,
+            @Qualifier("triggeredPersistConsumeHandler")
+            ConsumeHandler<TriggeredData> triggeredPersistConsumeHandler,
             ThreadPoolTaskExecutor executor,
             ThreadPoolTaskScheduler scheduler,
             Consumer consumer,
             ConsumeBuffer consumeBuffer
     ) {
+        this.sourceHandler = sourceHandler;
+        this.normalKeepConsumeHandler = normalKeepConsumeHandler;
+        this.normalPersistConsumeHandler = normalPersistConsumeHandler;
+        this.filteredKeepConsumeHandler = filteredKeepConsumeHandler;
+        this.filteredPersistConsumeHandler = filteredPersistConsumeHandler;
+        this.triggeredKeepConsumeHandler = triggeredKeepConsumeHandler;
+        this.triggeredPersistConsumeHandler = triggeredPersistConsumeHandler;
         this.executor = executor;
         this.scheduler = scheduler;
         this.consumer = consumer;
         this.consumeBuffer = consumeBuffer;
-    }
-
-    public void start() {
-        lock.lock();
-        try {
-            if (startFlag) {
-                return;
-            }
-
-            consumeBuffer.block();
-            for (int i = 0; i < thread; i++) {
-                ConsumeTask consumeTask = new ConsumeTask(consumeBuffer, consumer);
-                executor.execute(consumeTask);
-                processingConsumeTasks.add(consumeTask);
-            }
-            capacityCheckFuture = scheduler.scheduleAtFixedRate(() -> {
-                double ratio = (double) consumeBuffer.bufferedSize() / (double) consumeBuffer.getBufferSize();
-                if (ratio >= warnThreshold) {
-                    String message = "逻辑侧的待消费元素占用缓存比例为 {}，超过报警值 {}，请检查";
-                    LOGGER.warn(message, ratio, warnThreshold);
-                }
-            }, Constants.SCHEDULER_CHECK_INTERVAL);
-
-            startFlag = true;
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    @SuppressWarnings("DuplicatedCode")
-    public void stop() {
-        lock.lock();
-        try {
-            if (!startFlag) {
-                return;
-            }
-
-            if (Objects.nonNull(capacityCheckFuture)) {
-                capacityCheckFuture.cancel(true);
-                capacityCheckFuture = null;
-            }
-            processingConsumeTasks.forEach(ConsumeTask::shutdown);
-            endingConsumeTasks.addAll(processingConsumeTasks);
-            processingConsumeTasks.clear();
-            consumeBuffer.unblock();
-            processRemainingElement();
-            endingConsumeTasks.removeIf(AbstractTask::isFinished);
-            if (!endingConsumeTasks.isEmpty()) {
-                LOGGER.info("逻辑侧消费处理器中的线程还未完全结束, 等待线程结束...");
-                endingConsumeTasks.forEach(
-                        task -> {
-                            try {
-                                task.awaitFinish();
-                            } catch (InterruptedException ignored) {
-                            }
-                        }
-                );
-            }
-            processingConsumeTasks.clear();
-            endingConsumeTasks.clear();
-            LOGGER.info("逻辑侧消费处理器已经妥善处理数据, 消费线程结束");
-
-            startFlag = false;
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    private void processRemainingElement() {
-        // 如果没有剩余元素，直接跳过。
-        if (consumeBuffer.bufferedSize() <= 0) {
-            return;
-        }
-
-        LOGGER.info("消费逻辑侧消费处理器中剩余的元素 {} 个...", consumeBuffer.bufferedSize());
-        LOGGER.info("逻辑侧消费处理器中剩余的元素过多时，需要较长时间消费，请耐心等待...");
-        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(
-                () -> {
-                    String message = "消费逻辑侧消费处理器中剩余的元素 {} 个，请耐心等待...";
-                    LOGGER.info(message, consumeBuffer.bufferedSize());
-                },
-                new Date(System.currentTimeMillis() + Constants.SCHEDULER_CHECK_INTERVAL),
-                Constants.SCHEDULER_CHECK_INTERVAL
-        );
-        RecordInfo recordInfo2Consume;
-        while (Objects.nonNull(recordInfo2Consume = consumeBuffer.poll())) {
-            try {
-                consumer.consume(recordInfo2Consume);
-            } catch (Exception e) {
-                LOGGER.warn("逻辑侧消费处理器消费元素时发生异常, 抛弃 RecordInfo: " + recordInfo2Consume, e);
-            }
-        }
-        scheduledFuture.cancel(true);
     }
 
     /**
@@ -271,6 +208,139 @@ class RecordProcessor {
         } finally {
             lock.unlock();
         }
+    }
+
+    public void workerWork() throws Exception {
+        lock.lock();
+        try {
+            if (!startFlag) {
+                return;
+            }
+
+            LOGGER.info("记录侧消费处理器启动...");
+            normalKeepConsumeHandler.start();
+            normalPersistConsumeHandler.start();
+            filteredKeepConsumeHandler.start();
+            filteredPersistConsumeHandler.start();
+            triggeredKeepConsumeHandler.start();
+            triggeredPersistConsumeHandler.start();
+
+            LOGGER.info("逻辑侧消费处理器启动...");
+            consumeBuffer.block();
+            for (int i = 0; i < thread; i++) {
+                ConsumeTask consumeTask = new ConsumeTask(consumeBuffer, consumer);
+                executor.execute(consumeTask);
+                processingConsumeTasks.add(consumeTask);
+            }
+            capacityCheckFuture = scheduler.scheduleAtFixedRate(() -> {
+                double ratio = (double) consumeBuffer.bufferedSize() / (double) consumeBuffer.getBufferSize();
+                if (ratio >= warnThreshold) {
+                    String message = "逻辑侧的待消费元素占用缓存比例为 {}，超过报警值 {}，请检查";
+                    LOGGER.warn(message, ratio, warnThreshold);
+                }
+            }, Constants.SCHEDULER_CHECK_INTERVAL);
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ignored) {
+            }
+
+            LOGGER.info("数据源上线...");
+            List<Source> sources = sourceHandler.all();
+            for (Source source : sources) {
+                source.online();
+            }
+
+            startFlag = false;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    @SuppressWarnings("DuplicatedCode")
+    public void workerRest() throws Exception {
+        lock.lock();
+        try {
+            if (!startFlag) {
+                return;
+            }
+
+            LOGGER.info("数据源下线...");
+            List<Source> sources = sourceHandler.all();
+            for (Source source : sources) {
+                source.offline();
+            }
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ignored) {
+            }
+
+            LOGGER.info("逻辑侧消费处理器关闭...");
+            if (Objects.nonNull(capacityCheckFuture)) {
+                capacityCheckFuture.cancel(true);
+                capacityCheckFuture = null;
+            }
+            processingConsumeTasks.forEach(ConsumeTask::shutdown);
+            endingConsumeTasks.addAll(processingConsumeTasks);
+            processingConsumeTasks.clear();
+            consumeBuffer.unblock();
+            processRemainingElement();
+            endingConsumeTasks.removeIf(AbstractTask::isFinished);
+            if (!endingConsumeTasks.isEmpty()) {
+                LOGGER.info("逻辑侧消费处理器中的线程还未完全结束, 等待线程结束...");
+                endingConsumeTasks.forEach(
+                        task -> {
+                            try {
+                                task.awaitFinish();
+                            } catch (InterruptedException ignored) {
+                            }
+                        }
+                );
+            }
+            processingConsumeTasks.clear();
+            endingConsumeTasks.clear();
+            LOGGER.info("逻辑侧消费处理器已经妥善处理数据, 消费线程结束");
+
+            LOGGER.info("记录侧消费处理器关闭...");
+            normalKeepConsumeHandler.stop();
+            normalPersistConsumeHandler.stop();
+            filteredKeepConsumeHandler.stop();
+            filteredPersistConsumeHandler.stop();
+            triggeredKeepConsumeHandler.stop();
+            triggeredPersistConsumeHandler.stop();
+
+            startFlag = false;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private void processRemainingElement() {
+        // 如果没有剩余元素，直接跳过。
+        if (consumeBuffer.bufferedSize() <= 0) {
+            return;
+        }
+
+        LOGGER.info("消费逻辑侧消费处理器中剩余的元素 {} 个...", consumeBuffer.bufferedSize());
+        LOGGER.info("逻辑侧消费处理器中剩余的元素过多时，需要较长时间消费，请耐心等待...");
+        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(
+                () -> {
+                    String message = "消费逻辑侧消费处理器中剩余的元素 {} 个，请耐心等待...";
+                    LOGGER.info(message, consumeBuffer.bufferedSize());
+                },
+                new Date(System.currentTimeMillis() + Constants.SCHEDULER_CHECK_INTERVAL),
+                Constants.SCHEDULER_CHECK_INTERVAL
+        );
+        RecordInfo recordInfo2Consume;
+        while (Objects.nonNull(recordInfo2Consume = consumeBuffer.poll())) {
+            try {
+                consumer.consume(recordInfo2Consume);
+            } catch (Exception e) {
+                LOGGER.warn("逻辑侧消费处理器消费元素时发生异常, 抛弃 RecordInfo: " + recordInfo2Consume, e);
+            }
+        }
+        scheduledFuture.cancel(true);
     }
 
     @Component

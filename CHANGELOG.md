@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 优化数据记录代码结构。
+  - 调整 RecordProcessor 结构，增加代理方法，将 RecordWorker 的实现代码移动到 RecordProcessor 中。
+
 - 优化数据处理逻辑。
   - 增加 Source.Context.record 方法调用时，入口参数的限制，并完善接口文档。
   - 简化 KeepConsumer 消费数据的逻辑。
