@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.impl.handler.source.kafka.dwarfengdct;
+package com.dwarfeng.fdr.impl.handler.source.kafka.dct;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -20,27 +20,27 @@ import java.util.Map;
 
 @Configuration
 @EnableKafka
-public class DwarfengDctKafkaSourceConfiguration {
+public class DctKafkaSourceConfiguration {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DwarfengDctKafkaSourceConfiguration.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DctKafkaSourceConfiguration.class);
 
-    @Value("${source.kafka.dwarfeng_dct.bootstrap_servers}")
+    @Value("${source.kafka.dct.bootstrap_servers}")
     private String consumerBootstrapServers;
-    @Value("${source.kafka.dwarfeng_dct.session_timeout_ms}")
+    @Value("${source.kafka.dct.session_timeout_ms}")
     private int sessionTimeoutMs;
-    @Value("${source.kafka.dwarfeng_dct.auto_offset_reset}")
+    @Value("${source.kafka.dct.auto_offset_reset}")
     private String autoOffsetReset;
-    @Value("${source.kafka.dwarfeng_dct.concurrency}")
+    @Value("${source.kafka.dct.concurrency}")
     private int concurrency;
-    @Value("${source.kafka.dwarfeng_dct.poll_timeout}")
+    @Value("${source.kafka.dct.poll_timeout}")
     private int pollTimeout;
-    @Value("${source.kafka.dwarfeng_dct.max_poll_records}")
+    @Value("${source.kafka.dct.max_poll_records}")
     private int maxPollRecords;
-    @Value("${source.kafka.dwarfeng_dct.max_poll_interval_ms}")
+    @Value("${source.kafka.dct.max_poll_interval_ms}")
     private int maxPollIntervalMs;
 
     @SuppressWarnings("DuplicatedCode")
-    @Bean("dwarfengDctKafkaSource.consumerProperties")
+    @Bean("dctKafkaSource.consumerProperties")
     public Map<String, Object> consumerProperties() {
         LOGGER.debug("配置 Kafka 消费者属性...");
         Map<String, Object> props = new HashMap<>();
@@ -61,7 +61,7 @@ public class DwarfengDctKafkaSourceConfiguration {
     }
 
     @SuppressWarnings("DuplicatedCode")
-    @Bean("dwarfengDctKafkaSource.consumerFactory")
+    @Bean("dctKafkaSource.consumerFactory")
     public ConsumerFactory<String, String> consumerFactory() {
         LOGGER.debug("配置 Kafka 消费者工厂...");
         Map<String, Object> properties = consumerProperties();
@@ -73,7 +73,7 @@ public class DwarfengDctKafkaSourceConfiguration {
     }
 
     @SuppressWarnings("DuplicatedCode")
-    @Bean("dwarfengDctKafkaSource.kafkaListenerContainerFactory")
+    @Bean("dctKafkaSource.kafkaListenerContainerFactory")
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>>
     kafkaListenerContainerFactory() {
         LOGGER.debug("配置 Kafka 侦听容器工厂...");

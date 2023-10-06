@@ -390,9 +390,9 @@ opt
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.source.mock.historical"/>
     -->
 
-    <!-- 加载 DwarfengDctKafkaSource -->
+    <!-- 加载 DctKafkaSource -->
     <!--
-    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.source.kafka.dwarfengdct"/>
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.source.kafka.dct"/>
     -->
 
     <!-- 加载 DctiKafkaSource -->

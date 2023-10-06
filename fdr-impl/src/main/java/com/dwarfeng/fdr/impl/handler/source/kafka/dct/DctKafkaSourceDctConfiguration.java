@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.impl.handler.source.kafka.dwarfengdct;
+package com.dwarfeng.fdr.impl.handler.source.kafka.dct;
 
 import com.dwarfeng.dct.handler.*;
 import com.dwarfeng.dct.handler.fdc.FastJsonFlatDataCodec;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Configuration
-public class DwarfengDctKafkaSourceDctConfiguration {
+public class DctKafkaSourceDctConfiguration {
 
     /**
      * 生成值编码器的集合。
@@ -38,7 +38,7 @@ public class DwarfengDctKafkaSourceDctConfiguration {
      * @return 值编解码器的集合 Bean。
      */
     @SuppressWarnings("DuplicatedCode")
-    @Bean(name = "dwarfengDctKafkaSource.valueCodecs")
+    @Bean(name = "dctKafkaSource.valueCodecs")
     public List<ValueCodec> valueCodecs() {
         List<ValueCodec> bean = new ArrayList<>();
         bean.add(new BooleanValueCodec());
@@ -55,9 +55,9 @@ public class DwarfengDctKafkaSourceDctConfiguration {
         return bean;
     }
 
-    @Bean(name = "dwarfengDctKafkaSource.valueCodingHandler")
+    @Bean(name = "dctKafkaSource.valueCodingHandler")
     public ValueCodingHandler valueCodingHandler(
-            @Qualifier("dwarfengDctKafkaSource.valueCodecs") List<ValueCodec> valueCodecs
+            @Qualifier("dctKafkaSource.valueCodecs") List<ValueCodec> valueCodecs
     ) {
         ValueCodingConfig config = new ValueCodingConfig.Builder()
                 .addCodecs(valueCodecs)
@@ -71,15 +71,15 @@ public class DwarfengDctKafkaSourceDctConfiguration {
         return new ValueCodingHandlerImpl(config);
     }
 
-    @Bean(name = "dwarfengDctKafkaSource.flatDataCodec")
+    @Bean(name = "dctKafkaSource.flatDataCodec")
     public FlatDataCodec flatDataCodec() {
         return new FastJsonFlatDataCodec();
     }
 
-    @Bean(name = "dwarfengDctKafkaSource.dataCodingHandler")
+    @Bean(name = "dctKafkaSource.dataCodingHandler")
     public DataCodingHandler dataCodingHandler(
-            @Qualifier("dwarfengDctKafkaSource.flatDataCodec") FlatDataCodec flatDataCodec,
-            @Qualifier("dwarfengDctKafkaSource.valueCodingHandler") ValueCodingHandler valueCodingHandler
+            @Qualifier("dctKafkaSource.flatDataCodec") FlatDataCodec flatDataCodec,
+            @Qualifier("dctKafkaSource.valueCodingHandler") ValueCodingHandler valueCodingHandler
     ) {
         DataCodingConfig config = new DataCodingConfig.Builder()
                 .setFlatDataCodec(flatDataCodec)

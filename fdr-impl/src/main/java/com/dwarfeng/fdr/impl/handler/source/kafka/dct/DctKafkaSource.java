@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.impl.handler.source.kafka.dwarfengdct;
+package com.dwarfeng.fdr.impl.handler.source.kafka.dct;
 
 import com.dwarfeng.dct.handler.DataCodingHandler;
 import com.dwarfeng.fdr.impl.handler.source.AbstractSource;
@@ -22,26 +22,26 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 基于 dwarfeng-dct 框架的 kafka 数据源。
+ * 基于 dct 框架的 kafka 数据源。
  *
  * @author DwArFeng
  * @since 2.0.0
  */
 @Component
-public class DwarfengDctKafkaSource extends AbstractSource {
+public class DctKafkaSource extends AbstractSource {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DwarfengDctKafkaSource.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DctKafkaSource.class);
 
     private final DataCodingHandler dataCodingHandler;
 
     private final KafkaListenerEndpointRegistry registry;
 
-    @Value("${source.kafka.dwarfeng_dct.listener_id}")
+    @Value("${source.kafka.dct.listener_id}")
     private String listenerId;
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    public DwarfengDctKafkaSource(
-            @Qualifier("dwarfengDctKafkaSource.dataCodingHandler")
+    public DctKafkaSource(
+            @Qualifier("dctKafkaSource.dataCodingHandler")
             DataCodingHandler dataCodingHandler,
             KafkaListenerEndpointRegistry registry
     ) {
@@ -51,7 +51,7 @@ public class DwarfengDctKafkaSource extends AbstractSource {
 
     @Override
     protected void doOnline() throws Exception {
-        LOGGER.info("dwarfeng-dct kafka source 上线...");
+        LOGGER.info("dct kafka source 上线...");
         MessageListenerContainer listenerContainer = registry.getListenerContainer(listenerId);
         if (Objects.isNull(listenerContainer)) {
             throw new HandlerException("找不到 kafka listener container " + listenerId);
@@ -65,7 +65,7 @@ public class DwarfengDctKafkaSource extends AbstractSource {
 
     @Override
     protected void doOffline() throws Exception {
-        LOGGER.info("dwarfeng-dct kafka source 下线...");
+        LOGGER.info("dct kafka source 下线...");
         MessageListenerContainer listenerContainer = registry.getListenerContainer(listenerId);
         if (Objects.isNull(listenerContainer)) {
             throw new HandlerException("找不到 kafka listener container " + listenerId);
@@ -74,9 +74,9 @@ public class DwarfengDctKafkaSource extends AbstractSource {
     }
 
     @KafkaListener(
-            id = "${source.kafka.dwarfeng_dct.listener_id}",
-            containerFactory = "dwarfengDctKafkaSource.kafkaListenerContainerFactory",
-            topics = "${source.kafka.dwarfeng_dct.listener_topic}"
+            id = "${source.kafka.dct.listener_id}",
+            containerFactory = "dctKafkaSource.kafkaListenerContainerFactory",
+            topics = "${source.kafka.dct.listener_topic}"
     )
     public void handleConsumerRecordsPolled(
             List<ConsumerRecord<String, String>> consumerRecords, Consumer<String, String> consumer, Acknowledgment ack
@@ -108,7 +108,7 @@ public class DwarfengDctKafkaSource extends AbstractSource {
 
     @Override
     public String toString() {
-        return "DwarfengDctKafkaSource{" +
+        return "DctKafkaSource{" +
                 "dataCodingHandler=" + dataCodingHandler +
                 ", registry=" + registry +
                 ", listenerId='" + listenerId + '\'' +

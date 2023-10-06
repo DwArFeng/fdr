@@ -9,12 +9,12 @@
 
 项目中所有的内置数据源如下：
 
-| 名称                     | 说明                            |
-|------------------------|-------------------------------|
-| DctiKafkaSource        | 基于 dcti 协议的 kafka 数据源         |
-| DwarfengDctKafkaSource | 基于 dwarfeng-dct 框架的 kafka 数据源 |
-| HistoricalMockSource   | 历史模拟数据源                       |
-| RealtimeMockSource     | 实时模拟数据源                       |
+| 名称                   | 说明                            |
+|----------------------|-------------------------------|
+| DctiKafkaSource      | 基于 dcti 协议的 kafka 数据源         |
+| DctKafkaSource       | 基于 dwarfeng-dct 框架的 kafka 数据源 |
+| HistoricalMockSource | 历史模拟数据源                       |
+| RealtimeMockSource   | 实时模拟数据源                       |
 
 ## DctiKafkaSource
 
@@ -90,11 +90,11 @@ source.kafka.dcti.max_poll_interval_ms=300000
 - `earliest`：从 topic 的最早位置开始消费。
 - `none`：如果没有维护 offset 记录，则抛出异常。
 
-## DwarfengDctKafkaSource
+## DctKafkaSource
 
 ### 介绍
 
-DwarfengDctKafkaSource 是基于 dwarfeng-dct 框架的 kafka 数据源。它从 kafka 特定的 topic 中读取文本数据，
+DctKafkaSource 是基于 dwarfeng-dct 框架的 kafka 数据源。它从 kafka 特定的 topic 中读取文本数据，
 并使用 dwarfeng-dct 框架解析数据。
 
 dwarfeng-dct 框架提供了数据编码处理器 - `DataCodingHandler`，该处理器可以将数据接口 `Data` 序列化为文本，
@@ -119,30 +119,30 @@ dwarfeng-dct 是一个开源项目，其源码可以在 [Github](https://github.
 
 ```properties
 ###################################################
-#                kafka.dwarfeng_dct               #
+#                kafka.dct               #
 ###################################################
 # 引导服务器集群。
-source.kafka.dwarfeng_dct.bootstrap_servers=your-ip1:9092,your-ip2:9092,your-ip3:9092
+source.kafka.dct.bootstrap_servers=your-ip1:9092,your-ip2:9092,your-ip3:9092
 # 会话的超时限制: 如果consumer在这段时间内没有发送心跳信息，一次 rebalance 将会产生。
 # 该值必须在[group.min.session.timeout.ms, group.max.session.timeout.ms]范围内，默认: 10000。
-source.kafka.dwarfeng_dct.session_timeout_ms=10000
+source.kafka.dct.session_timeout_ms=10000
 # 新的 group 加入 topic 时，从什么位置开始消费。
-source.kafka.dwarfeng_dct.auto_offset_reset=latest
+source.kafka.dct.auto_offset_reset=latest
 # 监听器启用的消费者的线程数。
 # 每一个线程都会启动一个 KafkaConsumer，每个 KafkaConsumer 都会占用一个 partition。
 # 程序分布式部署时，所有节点的线程数之和应该小于等于 topic 的 partition 数。
-source.kafka.dwarfeng_dct.concurrency=2
+source.kafka.dct.concurrency=2
 # 监听器调用 KafkaConsumer.poll(Duration) 方法的超时时间，如果超过这个时间还没有拉取到数据，则返回空列表。
-source.kafka.dwarfeng_dct.poll_timeout=3000
+source.kafka.dct.poll_timeout=3000
 # 监听器的 id，每一个节点的监听器 id 都应与该节点的其它 kafka 监听器的 id 不同。
 # 该设置会覆盖 kafka 的 group.id 设置，因此无需设置 group.id。
-source.kafka.dwarfeng_dct.listener_id=fdr.source.dwarfeng_dct
+source.kafka.dct.listener_id=fdr.source.dct
 # 监听器的目标 topic。
-source.kafka.dwarfeng_dct.listener_topic=dwarfeng_dct.data_info
+source.kafka.dct.listener_topic=dct.data_info
 # 监听器的最大拉取数据量。当拉取到的数据量达到这个值时，会立即返回，不会等待 poll_timeout。
-source.kafka.dwarfeng_dct.max_poll_records=100
+source.kafka.dct.max_poll_records=100
 # 监听器的最大拉取间隔。如果当前时间距离监听器上一次拉取数据的时间超过了这个值，一次 rebalance 将会产生。
-source.kafka.dwarfeng_dct.max_poll_interval_ms=300000
+source.kafka.dct.max_poll_interval_ms=300000
 ```
 
 可以看到，配置项有详细的注释，您可以根据注释进行配置。
