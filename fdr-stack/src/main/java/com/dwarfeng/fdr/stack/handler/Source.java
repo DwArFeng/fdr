@@ -68,8 +68,14 @@ public interface Source {
          * 该方法只有在数据源上线的情况下能够被调用。
          *
          * <p>
-         * 调用该方法时，应保证 {@link RecordInfo#getPointKey()} 相同的记录信息的 {@link RecordInfo#getHappenedDate()}
-         * 是递增的，否则将会造成数据实时值的不准确。
+         * 从数据源的业务逻辑上来说，数据源接收数据的过程应该是时间递增的，即接收到的数据永远是最新的。<br>
+         * 因此调用该方法时，应尽量保证 {@link RecordInfo#getPointKey()} 相同的记录信息的
+         * {@link RecordInfo#getHappenedDate()} 是递增的。<br>
+         * 例如基于 kafka 的数据源，{@link RecordInfo#getPointKey()} 相同的记录信息应该交由同一个 partition 来处理。
+         * 否则可能会出现旧的数据先于新的数据被记录的情况。同理，其它的数据源实现也应该避免类似的情况。<br>
+         * 在特殊情况下，数据源可能会接收到时间不递增的数据，如数据源所在的服务器系统时间回拨。
+         * 在这种情况下，数据源可以接受时间不递增的数据。对于时间不递增的数据，不同的保持器的处理方式不同，
+         * 可能会选择覆盖最新数据，或者旧的数据，或者抛出异常。
          *
          * @param recordInfo 指定的记录信息。
          * @throws Exception 记录数据的过程中出现的任何异常。

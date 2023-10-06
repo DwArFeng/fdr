@@ -1,16 +1,18 @@
 package com.dwarfeng.fdr.impl.handler.bridge.redis;
 
 import com.dwarfeng.dct.handler.ValueCodingHandler;
-import com.dwarfeng.fdr.impl.handler.bridge.FullKeeper;
 import com.dwarfeng.fdr.impl.handler.bridge.redis.bean.RedisBridgeFilteredData;
 import com.dwarfeng.fdr.impl.handler.bridge.redis.service.RedisBridgeFilteredDataMaintainService;
 import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -20,37 +22,30 @@ import java.util.Objects;
  * @since 2.0.0
  */
 @Component
-public class RedisBridgeFilteredDataKeeper extends FullKeeper<FilteredData> {
+public class RedisBridgeFilteredDataKeeper extends RedisBridgeKeeper<FilteredData, RedisBridgeFilteredData> {
 
-    private final RedisBridgeFilteredDataMaintainService service;
-
-    private final ValueCodingHandler valueCodingHandler;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RedisBridgeFilteredDataKeeper.class);
 
     public RedisBridgeFilteredDataKeeper(
             RedisBridgeFilteredDataMaintainService service,
-            @Qualifier("redisBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler
+            @Qualifier("redisBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler,
+            @Value("${bridge.redis.earlier_override.filtered_data}") boolean allowEarlierDataOverride
     ) {
-        this.service = service;
-        this.valueCodingHandler = valueCodingHandler;
+        super(service, valueCodingHandler, allowEarlierDataOverride);
     }
 
     @Override
-    protected void doUpdate(FilteredData data) throws Exception {
-        RedisBridgeFilteredData filteredData = transform(data);
-        service.insertOrUpdate(filteredData);
+    protected Logger getLogger() {
+        return LOGGER;
     }
 
     @Override
-    protected void doUpdate(List<FilteredData> datas) throws Exception {
-        List<RedisBridgeFilteredData> filteredDatas = new ArrayList<>();
-        for (FilteredData data : datas) {
-            RedisBridgeFilteredData filteredData = transform(data);
-            filteredDatas.add(filteredData);
-        }
-        service.batchInsertOrUpdate(filteredDatas);
+    protected Date getHappenedDate(@Nonnull RedisBridgeFilteredData entity) {
+        return entity.getHappenedDate();
     }
 
-    private RedisBridgeFilteredData transform(FilteredData data) throws Exception {
+    @Override
+    protected RedisBridgeFilteredData transformData(@Nullable FilteredData data) throws Exception {
         if (Objects.isNull(data)) {
             return null;
         }
@@ -65,22 +60,7 @@ public class RedisBridgeFilteredDataKeeper extends FullKeeper<FilteredData> {
     }
 
     @Override
-    protected FilteredData doLatest(LongIdKey pointKey) throws Exception {
-        RedisBridgeFilteredData filteredData = service.getIfExists(pointKey);
-        return reverseTransform(filteredData);
-    }
-
-    @Override
-    protected List<FilteredData> doLatest(List<LongIdKey> pointKeys) throws Exception {
-        List<RedisBridgeFilteredData> filteredDatas = service.batchGetIfExists(pointKeys);
-        List<FilteredData> datas = new ArrayList<>(filteredDatas.size());
-        for (RedisBridgeFilteredData filteredData : filteredDatas) {
-            datas.add(reverseTransform(filteredData));
-        }
-        return datas;
-    }
-
-    private FilteredData reverseTransform(RedisBridgeFilteredData data) throws Exception {
+    protected FilteredData reverseTransform(@Nullable RedisBridgeFilteredData data) throws Exception {
         if (Objects.isNull(data)) {
             return null;
         }
@@ -99,6 +79,7 @@ public class RedisBridgeFilteredDataKeeper extends FullKeeper<FilteredData> {
         return "RedisBridgeFilteredDataKeeper{" +
                 "service=" + service +
                 ", valueCodingHandler=" + valueCodingHandler +
+                ", allowEarlierDataOverride=" + allowEarlierDataOverride +
                 '}';
     }
 }

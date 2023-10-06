@@ -1,7 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.consumer;
 
 import com.dwarfeng.fdr.impl.handler.Consumer;
-import com.dwarfeng.fdr.sdk.util.CompareUtil;
 import com.dwarfeng.fdr.stack.handler.KeepHandler;
 import com.dwarfeng.fdr.stack.handler.PushHandler;
 import com.dwarfeng.fdr.stack.struct.Data;
@@ -59,13 +58,11 @@ public abstract class KeepConsumer<R extends Data> implements Consumer<R> {
         // 由于数据的保持操作与数据的处理顺序有关，因此使用分布式锁，保证同一时间内只有一个消费者在处理数据。
         InterProcessMutex lock = new InterProcessMutex(curatorFramework, latchPath);
 
-        // 遍历所有的记录，按照 Record.getPointKey() 的值进行分组，
-        // 每组数据使用比较器 Comparators.RECORD_HAPPENED_DATE_COMPARATOR 进行比较，取最大的值。
-        Map<LongIdKey, R> localMap = records.stream().collect(Collectors.toMap(
-                Data::getPointKey,
-                Function.identity(),
-                (r1, r2) -> CompareUtil.DATA_HAPPENED_DATE_ASC_COMPARATOR.compare(r1, r2) > 0 ? r1 : r2
-        ));
+        // 数据去重。
+        // 遍历所有的记录，按照 Record.getPointKey() 的值进行分组，每组数据只保留最后一条记录。
+        Map<LongIdKey, R> localMap = records.stream().collect(
+                Collectors.toMap(Data::getPointKey, Function.identity(), (a, b) -> b)
+        );
 
         // 分布式锁。
         lock.acquire();

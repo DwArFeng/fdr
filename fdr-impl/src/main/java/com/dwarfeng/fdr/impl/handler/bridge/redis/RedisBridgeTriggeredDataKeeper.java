@@ -1,16 +1,18 @@
 package com.dwarfeng.fdr.impl.handler.bridge.redis;
 
 import com.dwarfeng.dct.handler.ValueCodingHandler;
-import com.dwarfeng.fdr.impl.handler.bridge.FullKeeper;
 import com.dwarfeng.fdr.impl.handler.bridge.redis.bean.RedisBridgeTriggeredData;
 import com.dwarfeng.fdr.impl.handler.bridge.redis.service.RedisBridgeTriggeredDataMaintainService;
 import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -20,37 +22,30 @@ import java.util.Objects;
  * @since 2.0.0
  */
 @Component
-public class RedisBridgeTriggeredDataKeeper extends FullKeeper<TriggeredData> {
+public class RedisBridgeTriggeredDataKeeper extends RedisBridgeKeeper<TriggeredData, RedisBridgeTriggeredData> {
 
-    private final RedisBridgeTriggeredDataMaintainService service;
-
-    private final ValueCodingHandler valueCodingHandler;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RedisBridgeTriggeredDataKeeper.class);
 
     public RedisBridgeTriggeredDataKeeper(
             RedisBridgeTriggeredDataMaintainService service,
-            @Qualifier("redisBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler
+            @Qualifier("redisBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler,
+            @Value("${bridge.redis.earlier_override.triggered_data}") boolean allowEarlierDataOverride
     ) {
-        this.service = service;
-        this.valueCodingHandler = valueCodingHandler;
+        super(service, valueCodingHandler, allowEarlierDataOverride);
     }
 
     @Override
-    protected void doUpdate(TriggeredData data) throws Exception {
-        RedisBridgeTriggeredData triggeredData = transform(data);
-        service.insertOrUpdate(triggeredData);
+    protected Logger getLogger() {
+        return LOGGER;
     }
 
     @Override
-    protected void doUpdate(List<TriggeredData> datas) throws Exception {
-        List<RedisBridgeTriggeredData> triggeredDatas = new ArrayList<>();
-        for (TriggeredData data : datas) {
-            RedisBridgeTriggeredData triggeredData = transform(data);
-            triggeredDatas.add(triggeredData);
-        }
-        service.batchInsertOrUpdate(triggeredDatas);
+    protected Date getHappenedDate(@Nonnull RedisBridgeTriggeredData entity) {
+        return entity.getHappenedDate();
     }
 
-    private RedisBridgeTriggeredData transform(TriggeredData data) throws Exception {
+    @Override
+    protected RedisBridgeTriggeredData transformData(@Nullable TriggeredData data) throws Exception {
         if (Objects.isNull(data)) {
             return null;
         }
@@ -65,22 +60,7 @@ public class RedisBridgeTriggeredDataKeeper extends FullKeeper<TriggeredData> {
     }
 
     @Override
-    protected TriggeredData doLatest(LongIdKey pointKey) throws Exception {
-        RedisBridgeTriggeredData triggeredData = service.getIfExists(pointKey);
-        return reverseTransform(triggeredData);
-    }
-
-    @Override
-    protected List<TriggeredData> doLatest(List<LongIdKey> pointKeys) throws Exception {
-        List<RedisBridgeTriggeredData> triggeredDatas = service.batchGetIfExists(pointKeys);
-        List<TriggeredData> datas = new ArrayList<>(triggeredDatas.size());
-        for (RedisBridgeTriggeredData triggeredData : triggeredDatas) {
-            datas.add(reverseTransform(triggeredData));
-        }
-        return datas;
-    }
-
-    private TriggeredData reverseTransform(RedisBridgeTriggeredData data) throws Exception {
+    protected TriggeredData reverseTransform(@Nullable RedisBridgeTriggeredData data) throws Exception {
         if (Objects.isNull(data)) {
             return null;
         }
@@ -99,6 +79,7 @@ public class RedisBridgeTriggeredDataKeeper extends FullKeeper<TriggeredData> {
         return "RedisBridgeTriggeredDataKeeper{" +
                 "service=" + service +
                 ", valueCodingHandler=" + valueCodingHandler +
+                ", allowEarlierDataOverride=" + allowEarlierDataOverride +
                 '}';
     }
 }

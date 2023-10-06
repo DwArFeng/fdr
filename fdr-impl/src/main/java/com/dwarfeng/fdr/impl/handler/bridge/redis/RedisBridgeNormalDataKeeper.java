@@ -1,16 +1,18 @@
 package com.dwarfeng.fdr.impl.handler.bridge.redis;
 
 import com.dwarfeng.dct.handler.ValueCodingHandler;
-import com.dwarfeng.fdr.impl.handler.bridge.FullKeeper;
 import com.dwarfeng.fdr.impl.handler.bridge.redis.bean.RedisBridgeNormalData;
 import com.dwarfeng.fdr.impl.handler.bridge.redis.service.RedisBridgeNormalDataMaintainService;
 import com.dwarfeng.fdr.stack.bean.dto.NormalData;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -20,37 +22,30 @@ import java.util.Objects;
  * @since 2.0.0
  */
 @Component
-public class RedisBridgeNormalDataKeeper extends FullKeeper<NormalData> {
+public class RedisBridgeNormalDataKeeper extends RedisBridgeKeeper<NormalData, RedisBridgeNormalData> {
 
-    private final RedisBridgeNormalDataMaintainService service;
-
-    private final ValueCodingHandler valueCodingHandler;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RedisBridgeNormalDataKeeper.class);
 
     public RedisBridgeNormalDataKeeper(
             RedisBridgeNormalDataMaintainService service,
-            @Qualifier("redisBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler
+            @Qualifier("redisBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler,
+            @Value("${bridge.redis.earlier_override.normal_data}") boolean allowEarlierDataOverride
     ) {
-        this.service = service;
-        this.valueCodingHandler = valueCodingHandler;
+        super(service, valueCodingHandler, allowEarlierDataOverride);
     }
 
     @Override
-    protected void doUpdate(NormalData data) throws Exception {
-        RedisBridgeNormalData normalData = transformData(data);
-        service.insertOrUpdate(normalData);
+    protected Logger getLogger() {
+        return LOGGER;
     }
 
     @Override
-    protected void doUpdate(List<NormalData> datas) throws Exception {
-        List<RedisBridgeNormalData> normalDatas = new ArrayList<>();
-        for (NormalData data : datas) {
-            RedisBridgeNormalData normalData = transformData(data);
-            normalDatas.add(normalData);
-        }
-        service.batchInsertOrUpdate(normalDatas);
+    protected Date getHappenedDate(@Nonnull RedisBridgeNormalData entity) {
+        return entity.getHappenedDate();
     }
 
-    private RedisBridgeNormalData transformData(NormalData data) throws Exception {
+    @Override
+    protected RedisBridgeNormalData transformData(@Nullable NormalData data) throws Exception {
         if (Objects.isNull(data)) {
             return null;
         }
@@ -63,22 +58,7 @@ public class RedisBridgeNormalDataKeeper extends FullKeeper<NormalData> {
     }
 
     @Override
-    protected NormalData doLatest(LongIdKey pointKey) throws Exception {
-        RedisBridgeNormalData normalData = service.getIfExists(pointKey);
-        return reverseTransform(normalData);
-    }
-
-    @Override
-    protected List<NormalData> doLatest(List<LongIdKey> pointKeys) throws Exception {
-        List<RedisBridgeNormalData> normalDatas = service.batchGetIfExists(pointKeys);
-        List<NormalData> datas = new ArrayList<>(normalDatas.size());
-        for (RedisBridgeNormalData normalData : normalDatas) {
-            datas.add(reverseTransform(normalData));
-        }
-        return datas;
-    }
-
-    private NormalData reverseTransform(RedisBridgeNormalData data) throws Exception {
+    protected NormalData reverseTransform(@Nullable RedisBridgeNormalData data) throws Exception {
         if (Objects.isNull(data)) {
             return null;
         }
@@ -95,6 +75,7 @@ public class RedisBridgeNormalDataKeeper extends FullKeeper<NormalData> {
         return "RedisBridgeNormalDataKeeper{" +
                 "service=" + service +
                 ", valueCodingHandler=" + valueCodingHandler +
+                ", allowEarlierDataOverride=" + allowEarlierDataOverride +
                 '}';
     }
 }

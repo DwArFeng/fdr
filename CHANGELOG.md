@@ -4,6 +4,11 @@
 
 #### 功能构建
 
+- 增加 RedisBridge 的数据处理策略。
+  - 增加一般数据中更早的数据能否覆盖更晚的数据的配置项。
+  - 增加被过滤数据中更早的数据能否覆盖更晚的数据的配置项。
+  - 增加被触发数据中更早的数据能否覆盖更晚的数据的配置项。
+
 - 依赖升级。
   - 升级 `spring-kafka` 依赖版本为 `2.9.11` 以规避漏洞。
   - 升级 `snowflake` 依赖版本为 `1.5.0.a` 并解决兼容性问题，以应用其新功能。
@@ -13,8 +18,9 @@
   - 调整 RecordProcessor 结构，增加代理方法，将 RecordWorker 的实现代码移动到 RecordProcessor 中。
 
 - 优化数据处理逻辑。
-  - 增加 Source.Context.record 方法调用时，入口参数的限制，并完善接口文档。
-  - 简化 KeepConsumer 消费数据的逻辑。
+  - 修改 KeepConsumer 消费数据的逻辑。
+  - 更新 Source.Context.record 方法的文档注释。
+  - 更新 KeepHandler 中更新数据方法的文档注释。
 
 #### Bug修复
 
