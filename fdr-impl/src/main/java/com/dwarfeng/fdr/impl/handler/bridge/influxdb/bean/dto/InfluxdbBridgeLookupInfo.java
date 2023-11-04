@@ -6,14 +6,14 @@ import java.util.Arrays;
 import java.util.Date;
 
 /**
- * Hibernate 桥接器查询信息。
+ * Influxdb 桥接器查询信息。
  *
  * @author DwArFeng
  * @since 2.0.0
  */
-public class HibernateBridgeLookupInfo implements Dto {
+public class InfluxdbBridgeLookupInfo implements Dto {
 
-    private static final long serialVersionUID = -3737686608207760125L;
+    private static final long serialVersionUID = 2909213045259407650L;
 
     private String measurement;
     private Date rangeStart;
@@ -22,10 +22,10 @@ public class HibernateBridgeLookupInfo implements Dto {
     private int limitOffset;
     private String[] params;
 
-    public HibernateBridgeLookupInfo() {
+    public InfluxdbBridgeLookupInfo() {
     }
 
-    public HibernateBridgeLookupInfo(
+    public InfluxdbBridgeLookupInfo(
             String measurement, Date rangeStart, Date rangeStop, int limitNumber, int limitOffset,
             String[] params
     ) {
@@ -87,7 +87,7 @@ public class HibernateBridgeLookupInfo implements Dto {
 
     @Override
     public String toString() {
-        return "HibernateBridgeLookupInfo{" +
+        return "InfluxdbBridgeLookupInfo{" +
                 "measurement='" + measurement + '\'' +
                 ", rangeStart=" + rangeStart +
                 ", rangeStop=" + rangeStop +

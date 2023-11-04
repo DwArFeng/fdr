@@ -7,22 +7,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Hibernate 桥接器查询结果。
+ * Influxdb 桥接器查询结果。
  *
  * @author DwArFeng
  * @since 2.0.0
  */
-public class HibernateBridgeLookupResult implements Dto {
+public class InfluxdbBridgeLookupResult implements Dto {
 
-    private static final long serialVersionUID = 5664644897134278294L;
+    private static final long serialVersionUID = 4378106678477126429L;
 
     private String measurement;
     private List<Item> items;
 
-    public HibernateBridgeLookupResult() {
+    public InfluxdbBridgeLookupResult() {
     }
 
-    public HibernateBridgeLookupResult(String measurement, List<Item> items) {
+    public InfluxdbBridgeLookupResult(String measurement, List<Item> items) {
         this.measurement = measurement;
         this.items = items;
     }
@@ -45,7 +45,7 @@ public class HibernateBridgeLookupResult implements Dto {
 
     @Override
     public String toString() {
-        return "HibernateBridgeLookupResult{" +
+        return "InfluxdbBridgeLookupResult{" +
                 "measurement='" + measurement + '\'' +
                 ", items=" + items +
                 '}';

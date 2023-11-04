@@ -6,53 +6,53 @@ import java.time.Instant;
 import java.util.List;
 
 /**
- * Hibernate 桥接器查询信息。
+ * Influxdb 桥接器查询信息。
  *
  * @author DwArFeng
  * @since 2.0.0
  */
-public class HibernateBridgeQueryResult implements Dto {
+public class InfluxdbBridgeQueryResult implements Dto {
 
-    private static final long serialVersionUID = 3131397231002182171L;
+    private static final long serialVersionUID = 2336292356366533387L;
 
-    private List<HibernateBridgeSequence> sequences;
+    private List<InfluxdbBridgeSequence> sequences;
 
-    public HibernateBridgeQueryResult() {
+    public InfluxdbBridgeQueryResult() {
     }
 
-    public HibernateBridgeQueryResult(List<HibernateBridgeSequence> sequences) {
+    public InfluxdbBridgeQueryResult(List<InfluxdbBridgeSequence> sequences) {
         this.sequences = sequences;
     }
 
-    public List<HibernateBridgeSequence> getSequences() {
+    public List<InfluxdbBridgeSequence> getSequences() {
         return sequences;
     }
 
-    public void setSequences(List<HibernateBridgeSequence> sequences) {
+    public void setSequences(List<InfluxdbBridgeSequence> sequences) {
         this.sequences = sequences;
     }
 
     @Override
     public String toString() {
-        return "HibernateBridgeQueryResult{" +
+        return "InfluxdbBridgeQueryResult{" +
                 "sequences=" + sequences +
                 '}';
     }
 
-    public static class HibernateBridgeSequence implements Dto {
+    public static class InfluxdbBridgeSequence implements Dto {
 
         private static final long serialVersionUID = 6825156575804538927L;
 
         private String measurement;
-        private List<HibernateBridgeItem> items;
+        private List<InfluxdbBridgeItem> items;
         private Instant startInstant;
         private Instant endInstant;
 
-        public HibernateBridgeSequence() {
+        public InfluxdbBridgeSequence() {
         }
 
-        public HibernateBridgeSequence(
-                String measurement, List<HibernateBridgeItem> items, Instant startInstant, Instant endInstant
+        public InfluxdbBridgeSequence(
+                String measurement, List<InfluxdbBridgeItem> items, Instant startInstant, Instant endInstant
         ) {
             this.measurement = measurement;
             this.items = items;
@@ -68,11 +68,11 @@ public class HibernateBridgeQueryResult implements Dto {
             this.measurement = measurement;
         }
 
-        public List<HibernateBridgeItem> getItems() {
+        public List<InfluxdbBridgeItem> getItems() {
             return items;
         }
 
-        public void setItems(List<HibernateBridgeItem> items) {
+        public void setItems(List<InfluxdbBridgeItem> items) {
             this.items = items;
         }
 
@@ -94,7 +94,7 @@ public class HibernateBridgeQueryResult implements Dto {
 
         @Override
         public String toString() {
-            return "HibernateBridgeSequence{" +
+            return "InfluxdbBridgeSequence{" +
                     "measurement='" + measurement + '\'' +
                     ", items=" + items +
                     ", startInstant=" + startInstant +
@@ -103,7 +103,7 @@ public class HibernateBridgeQueryResult implements Dto {
         }
     }
 
-    public static class HibernateBridgeItem implements Dto {
+    public static class InfluxdbBridgeItem implements Dto {
 
         private static final long serialVersionUID = -4693545503211723887L;
 
@@ -111,10 +111,10 @@ public class HibernateBridgeQueryResult implements Dto {
         private Object value;
         private Instant happenedInstant;
 
-        public HibernateBridgeItem() {
+        public InfluxdbBridgeItem() {
         }
 
-        public HibernateBridgeItem(String measurement, Object value, Instant happenedInstant) {
+        public InfluxdbBridgeItem(String measurement, Object value, Instant happenedInstant) {
             this.measurement = measurement;
             this.value = value;
             this.happenedInstant = happenedInstant;
@@ -146,7 +146,7 @@ public class HibernateBridgeQueryResult implements Dto {
 
         @Override
         public String toString() {
-            return "HibernateBridgeItem{" +
+            return "InfluxdbBridgeItem{" +
                     "measurement='" + measurement + '\'' +
                     ", value=" + value +
                     ", happenedInstant=" + happenedInstant +

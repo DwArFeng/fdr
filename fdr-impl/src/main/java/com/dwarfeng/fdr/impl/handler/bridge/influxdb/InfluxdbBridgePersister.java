@@ -127,12 +127,12 @@ public abstract class InfluxdbBridgePersister<D extends Data> extends FullPersis
         Date rangeStop = DateUtil.offsetDate(endDate, stopOffset);
         int limitNumber = rows + 1;
         int limitOffset = page * rows;
-        HibernateBridgeLookupInfo queryInfo = new HibernateBridgeLookupInfo(
+        InfluxdbBridgeLookupInfo queryInfo = new InfluxdbBridgeLookupInfo(
                 measurement, rangeStart, rangeStop, limitNumber, limitOffset, params
         );
 
         // 根据 preset 分类处理。
-        HibernateBridgeLookupResult queryResult;
+        InfluxdbBridgeLookupResult queryResult;
         if (preset.equals(LOOKUP_PRESET_DEFAULT)) {
             queryResult = handler.lookup(queryInfo);
         } else {
@@ -140,7 +140,7 @@ public abstract class InfluxdbBridgePersister<D extends Data> extends FullPersis
         }
 
         // 展开参数。
-        List<HibernateBridgeLookupResult.Item> items = queryResult.getItems();
+        List<InfluxdbBridgeLookupResult.Item> items = queryResult.getItems();
 
         // 构造查看结果，并返回。
         boolean hasMore = items.size() > rows;
@@ -151,7 +151,7 @@ public abstract class InfluxdbBridgePersister<D extends Data> extends FullPersis
         return new LookupResult<>(pointKey, datas, hasMore);
     }
 
-    protected abstract D itemToData(HibernateBridgeLookupResult.Item item);
+    protected abstract D itemToData(InfluxdbBridgeLookupResult.Item item);
 
     @Override
     protected QueryResult doNativeQuery(NativeQueryInfo queryInfo) throws Exception {
@@ -221,7 +221,7 @@ public abstract class InfluxdbBridgePersister<D extends Data> extends FullPersis
         Date rangeStop = DateUtil.offsetDate(endDate, stopOffset);
 
         // 根据 preset 分类处理。
-        HibernateBridgeQueryResult queryResult;
+        InfluxdbBridgeQueryResult queryResult;
         switch (preset) {
             case NATIVE_QUERY_PRESET_DEFAULT:
             case NATIVE_QUERY_PRESET_AGGREGATE_WINDOW:
@@ -239,19 +239,19 @@ public abstract class InfluxdbBridgePersister<D extends Data> extends FullPersis
         }
 
         // 构造查看结果，并返回。
-        List<HibernateBridgeQueryResult.HibernateBridgeSequence> hibernateBridgeSequences = queryResult.getSequences();
-        List<QueryResult.Sequence> sequences = new ArrayList<>(hibernateBridgeSequences.size());
-        for (HibernateBridgeQueryResult.HibernateBridgeSequence hibernateBridgeSequence : hibernateBridgeSequences) {
-            LongIdKey pointKey = new LongIdKey(Long.parseLong(hibernateBridgeSequence.getMeasurement()));
-            startDate = DateUtil.instant2Date(hibernateBridgeSequence.getStartInstant());
-            endDate = DateUtil.instant2Date(hibernateBridgeSequence.getEndInstant());
+        List<InfluxdbBridgeQueryResult.InfluxdbBridgeSequence> influxdbBridgeSequences = queryResult.getSequences();
+        List<QueryResult.Sequence> sequences = new ArrayList<>(influxdbBridgeSequences.size());
+        for (InfluxdbBridgeQueryResult.InfluxdbBridgeSequence influxdbBridgeSequence : influxdbBridgeSequences) {
+            LongIdKey pointKey = new LongIdKey(Long.parseLong(influxdbBridgeSequence.getMeasurement()));
+            startDate = DateUtil.instant2Date(influxdbBridgeSequence.getStartInstant());
+            endDate = DateUtil.instant2Date(influxdbBridgeSequence.getEndInstant());
 
-            List<HibernateBridgeQueryResult.HibernateBridgeItem> hibernateBridgeItems
-                    = hibernateBridgeSequence.getItems();
-            List<QueryResult.Item> items = new ArrayList<>(hibernateBridgeItems.size());
-            for (HibernateBridgeQueryResult.HibernateBridgeItem hibernateBridgeItem : hibernateBridgeItems) {
-                Date happenedDate = DateUtil.instant2Date(hibernateBridgeItem.getHappenedInstant());
-                items.add(new QueryResult.Item(pointKey, hibernateBridgeItem.getValue(), happenedDate));
+            List<InfluxdbBridgeQueryResult.InfluxdbBridgeItem> influxdbBridgeItems
+                    = influxdbBridgeSequence.getItems();
+            List<QueryResult.Item> items = new ArrayList<>(influxdbBridgeItems.size());
+            for (InfluxdbBridgeQueryResult.InfluxdbBridgeItem influxdbBridgeItem : influxdbBridgeItems) {
+                Date happenedDate = DateUtil.instant2Date(influxdbBridgeItem.getHappenedInstant());
+                items.add(new QueryResult.Item(pointKey, influxdbBridgeItem.getValue(), happenedDate));
             }
 
             sequences.add(new QueryResult.Sequence(pointKey, items, startDate, endDate));
@@ -259,7 +259,7 @@ public abstract class InfluxdbBridgePersister<D extends Data> extends FullPersis
         return new QueryResult(sequences);
     }
 
-    private HibernateBridgeDefaultQueryInfo resolveDefaultQueryInfo(
+    private InfluxdbBridgeDefaultQueryInfo resolveDefaultQueryInfo(
             List<String> measurements, Date rangeStart, Date rangeStop, String[] params
     ) {
         // params 的第 0 个元素是 aggregateWindowEvery。
@@ -270,19 +270,19 @@ public abstract class InfluxdbBridgePersister<D extends Data> extends FullPersis
         String aggregateWindowFn = params[2];
 
         // 返回结果。
-        return new HibernateBridgeDefaultQueryInfo(
+        return new InfluxdbBridgeDefaultQueryInfo(
                 measurements, rangeStart, rangeStop, aggregateWindowEvery, aggregateWindowOffset, aggregateWindowFn
         );
     }
 
-    private HibernateBridgeCustomQueryInfo resolveCustomQueryInfo(
+    private InfluxdbBridgeCustomQueryInfo resolveCustomQueryInfo(
             List<String> measurements, Date rangeStart, Date rangeStop, String[] params
     ) {
         // params 的第 0 个元素是 fluxFragment。
         String fluxFragment = params[0];
 
         // 返回结果。
-        return new HibernateBridgeCustomQueryInfo(measurements, rangeStart, rangeStop, fluxFragment);
+        return new InfluxdbBridgeCustomQueryInfo(measurements, rangeStart, rangeStop, fluxFragment);
     }
 
     @Override

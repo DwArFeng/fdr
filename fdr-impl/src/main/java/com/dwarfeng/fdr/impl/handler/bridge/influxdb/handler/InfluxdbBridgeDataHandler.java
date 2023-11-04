@@ -38,7 +38,7 @@ public interface InfluxdbBridgeDataHandler extends Handler {
      * @return 查看结果。
      * @throws HandlerException 处理器异常。
      */
-    HibernateBridgeLookupResult lookup(HibernateBridgeLookupInfo lookupInfo) throws HandlerException;
+    InfluxdbBridgeLookupResult lookup(InfluxdbBridgeLookupInfo lookupInfo) throws HandlerException;
 
     /**
      * 默认查询。
@@ -50,7 +50,7 @@ public interface InfluxdbBridgeDataHandler extends Handler {
      * @return 查询结果。
      * @throws HandlerException 处理器异常。
      */
-    HibernateBridgeQueryResult defaultQuery(HibernateBridgeDefaultQueryInfo queryInfo) throws HandlerException;
+    InfluxdbBridgeQueryResult defaultQuery(InfluxdbBridgeDefaultQueryInfo queryInfo) throws HandlerException;
 
     /**
      * 自定义查询。
@@ -73,5 +73,5 @@ public interface InfluxdbBridgeDataHandler extends Handler {
      * @return 查询结果。
      * @throws HandlerException 处理器异常。
      */
-    HibernateBridgeQueryResult customQuery(HibernateBridgeCustomQueryInfo queryInfo) throws HandlerException;
+    InfluxdbBridgeQueryResult customQuery(InfluxdbBridgeCustomQueryInfo queryInfo) throws HandlerException;
 }

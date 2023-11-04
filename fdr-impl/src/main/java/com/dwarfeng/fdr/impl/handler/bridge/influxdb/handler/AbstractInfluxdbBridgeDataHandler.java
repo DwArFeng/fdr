@@ -38,6 +38,7 @@ public abstract class AbstractInfluxdbBridgeDataHandler implements InfluxdbBridg
         }
     }
 
+    @Override
     public void write(List<Point> points) throws HandlerException {
         try {
             writeApi.writePoints(getBucket(), getOrganization(), points);
@@ -47,7 +48,7 @@ public abstract class AbstractInfluxdbBridgeDataHandler implements InfluxdbBridg
     }
 
     @Override
-    public HibernateBridgeLookupResult lookup(HibernateBridgeLookupInfo lookupInfo) throws HandlerException {
+    public InfluxdbBridgeLookupResult lookup(InfluxdbBridgeLookupInfo lookupInfo) throws HandlerException {
         try {
             // 构造查询语句模板。
             String fluxFormat = "from(bucket: \"%1$s\")\n" +
@@ -72,24 +73,24 @@ public abstract class AbstractInfluxdbBridgeDataHandler implements InfluxdbBridg
             List<FluxTable> fluxTables = queryApi.query(flux, getOrganization());
 
             // 转换数据并返回。
-            List<HibernateBridgeLookupResult.Item> items = new ArrayList<>();
+            List<InfluxdbBridgeLookupResult.Item> items = new ArrayList<>();
             if (!fluxTables.isEmpty()) {
                 for (FluxRecord record : fluxTables.get(0).getRecords()) {
-                    items.add(new HibernateBridgeLookupResult.Item(
+                    items.add(new InfluxdbBridgeLookupResult.Item(
                             lookupInfo.getMeasurement(),
                             record.getValues(),
                             record.getTime()
                     ));
                 }
             }
-            return new HibernateBridgeLookupResult(lookupInfo.getMeasurement(), items);
+            return new InfluxdbBridgeLookupResult(lookupInfo.getMeasurement(), items);
         } catch (Exception e) {
             throw new HandlerException(e);
         }
     }
 
     @Override
-    public HibernateBridgeQueryResult defaultQuery(HibernateBridgeDefaultQueryInfo queryInfo) throws HandlerException {
+    public InfluxdbBridgeQueryResult defaultQuery(InfluxdbBridgeDefaultQueryInfo queryInfo) throws HandlerException {
         try {
             // 构造查询语句模板。
             String fluxFormat = "from(bucket: \"%1$s\")\n" +
@@ -122,7 +123,7 @@ public abstract class AbstractInfluxdbBridgeDataHandler implements InfluxdbBridg
     }
 
     @Override
-    public HibernateBridgeQueryResult customQuery(HibernateBridgeCustomQueryInfo queryInfo) throws HandlerException {
+    public InfluxdbBridgeQueryResult customQuery(InfluxdbBridgeCustomQueryInfo queryInfo) throws HandlerException {
         try {
             // 构造查询语句模板。
             String fluxFormat = "from(bucket: \"%1$s\")\n" +
@@ -166,11 +167,11 @@ public abstract class AbstractInfluxdbBridgeDataHandler implements InfluxdbBridg
         return String.join(" or ", patterns);
     }
 
-    private HibernateBridgeQueryResult fluxTable2QueryResult(List<FluxTable> fluxTables) {
-        List<HibernateBridgeQueryResult.HibernateBridgeSequence> sequences = new ArrayList<>(fluxTables.size());
+    private InfluxdbBridgeQueryResult fluxTable2QueryResult(List<FluxTable> fluxTables) {
+        List<InfluxdbBridgeQueryResult.InfluxdbBridgeSequence> sequences = new ArrayList<>(fluxTables.size());
         for (FluxTable fluxTable : fluxTables) {
             List<FluxRecord> records = fluxTable.getRecords();
-            List<HibernateBridgeQueryResult.HibernateBridgeItem> items = new ArrayList<>(records.size());
+            List<InfluxdbBridgeQueryResult.InfluxdbBridgeItem> items = new ArrayList<>(records.size());
 
             // 需要保证 fluxTable 中至少有一条记录，否则跳过。
             if (records.isEmpty()) {
@@ -183,13 +184,13 @@ public abstract class AbstractInfluxdbBridgeDataHandler implements InfluxdbBridg
 
             for (FluxRecord record : records) {
                 Object value = record.getValue();
-                items.add(new HibernateBridgeQueryResult.HibernateBridgeItem(
+                items.add(new InfluxdbBridgeQueryResult.InfluxdbBridgeItem(
                         record.getMeasurement(), value, record.getTime()
                 ));
             }
-            sequences.add(new HibernateBridgeQueryResult.HibernateBridgeSequence(measurement, items, start, stop));
+            sequences.add(new InfluxdbBridgeQueryResult.InfluxdbBridgeSequence(measurement, items, start, stop));
         }
-        return new HibernateBridgeQueryResult(sequences);
+        return new InfluxdbBridgeQueryResult(sequences);
     }
 
     protected abstract String getBucket();

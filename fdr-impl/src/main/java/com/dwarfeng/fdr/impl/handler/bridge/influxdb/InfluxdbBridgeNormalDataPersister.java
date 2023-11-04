@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.bridge.influxdb;
 
-import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.HibernateBridgeLookupResult;
+import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.InfluxdbBridgeLookupResult;
 import com.dwarfeng.fdr.impl.handler.bridge.influxdb.handler.InfluxdbBridgeNormalDataHandler;
 import com.dwarfeng.fdr.impl.handler.bridge.influxdb.util.Constants;
 import com.dwarfeng.fdr.impl.handler.bridge.influxdb.util.DateUtil;
@@ -45,7 +45,7 @@ public class InfluxdbBridgeNormalDataPersister extends InfluxdbBridgePersister<N
     }
 
     @Override
-    protected NormalData itemToData(HibernateBridgeLookupResult.Item item) {
+    protected NormalData itemToData(InfluxdbBridgeLookupResult.Item item) {
         LongIdKey pointKey = new LongIdKey(Long.parseLong(item.getMeasurement()));
         Object value = null;
         Map<String, Object> valueMap = item.getValueMap();

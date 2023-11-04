@@ -6,24 +6,24 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Hibernate 桥接器自定义查询信息。
+ * Influxdb 桥接器自定义查询信息。
  *
  * @author DwArFeng
  * @since 2.0.0
  */
-public class HibernateBridgeCustomQueryInfo implements Dto {
+public class InfluxdbBridgeCustomQueryInfo implements Dto {
 
-    private static final long serialVersionUID = 1556293926090308497L;
+    private static final long serialVersionUID = -6505726739311940532L;
 
     private List<String> measurements;
     private Date rangeStart;
     private Date rangeStop;
     private String fluxFragment;
 
-    public HibernateBridgeCustomQueryInfo() {
+    public InfluxdbBridgeCustomQueryInfo() {
     }
 
-    public HibernateBridgeCustomQueryInfo(
+    public InfluxdbBridgeCustomQueryInfo(
             List<String> measurements, Date rangeStart, Date rangeStop, String fluxFragment
     ) {
         this.measurements = measurements;
@@ -66,7 +66,7 @@ public class HibernateBridgeCustomQueryInfo implements Dto {
 
     @Override
     public String toString() {
-        return "HibernateBridgeCustomQueryInfo{" +
+        return "InfluxdbBridgeCustomQueryInfo{" +
                 "measurements=" + measurements +
                 ", rangeStart=" + rangeStart +
                 ", rangeStop=" + rangeStop +
