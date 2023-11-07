@@ -41,7 +41,6 @@ public class DctiKafkaSource extends AbstractSource {
     @Value("${source.kafka.dcti.listener_id}")
     private String listenerId;
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public DctiKafkaSource(
             KafkaListenerEndpointRegistry registry
     ) {

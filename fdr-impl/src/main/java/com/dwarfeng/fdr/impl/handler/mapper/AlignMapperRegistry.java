@@ -68,6 +68,7 @@ public class AlignMapperRegistry extends AbstractMapperRegistry {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class AlignMapper extends OneToOneMapper {
 
+        @SuppressWarnings("ExtractMethodRecommender")
         @Override
         protected Sequence doOneToOneMap(MapParam mapParam, Sequence sequence) {
             // 获取参数，并转换为比率浮点数。

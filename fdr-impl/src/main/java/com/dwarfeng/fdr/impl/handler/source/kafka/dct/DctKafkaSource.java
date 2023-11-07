@@ -39,7 +39,6 @@ public class DctKafkaSource extends AbstractSource {
     @Value("${source.kafka.dct.listener_id}")
     private String listenerId;
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public DctKafkaSource(
             @Qualifier("dctKafkaSource.dataCodingHandler")
             DataCodingHandler dataCodingHandler,

@@ -50,6 +50,7 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
     private static final String COMMAND_OPTION_JSON_FILE = "jf";
     private static final String COMMAND_OPTION_JSON_FILE_LONG_OPT = "json-file";
 
+    @SuppressWarnings("ExtractMethodRecommender")
     private static String cmdLineSyntax(String identity) {
         final String cmdLineSyntaxLatest = identity + " " +
                 CommandUtil.concatOptionPrefix(COMMAND_OPTION_LATEST) + " [" +
