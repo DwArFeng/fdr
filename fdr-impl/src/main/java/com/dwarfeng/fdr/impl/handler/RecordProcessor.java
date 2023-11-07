@@ -212,7 +212,7 @@ public class RecordProcessor {
     public void workerWork() throws Exception {
         lock.lock();
         try {
-            if (!startFlag) {
+            if (startFlag) {
                 return;
             }
 
@@ -250,7 +250,7 @@ public class RecordProcessor {
                 source.online();
             }
 
-            startFlag = false;
+            startFlag = true;
         } finally {
             lock.unlock();
         }
@@ -615,6 +615,7 @@ public class RecordProcessor {
             this.consumer = consumer;
         }
 
+        @Override
         protected void todo() {
             while (runningFlag.get()) {
                 RecordInfo recordInfo = null;
