@@ -8,6 +8,14 @@
 
 #### Bug修复
 
+- 增加部分映射器缺失的 `@Component` 注解。
+  - com.dwarfeng.fdr.impl.handler.mapper.HighPassCounterMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.HighPassExistenceMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.HighPassMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassCounterMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassExistenceMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassMapperRegistry。
+
 - 修复 com.dwarfeng.fdr.impl.handler.AbstractQueryHandler 中的 bug。
   - 修复 querySingle 方法对序列重复处理的 bug。
 

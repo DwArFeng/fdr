@@ -24,6 +24,7 @@ import java.util.Objects;
  * @author mooyuan
  * @since 2.0.0
  */
+@Component
 public class LowPassExistenceMapperRegistry extends AbstractMapperRegistry {
 
     public static final String MAPPER_TYPE = "low_pass_existence_mapper";

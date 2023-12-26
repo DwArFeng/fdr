@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
  * @author mooyuan
  * @since 2.0.0
  */
+@Component
 public class LowPassMapperRegistry extends AbstractMapperRegistry {
     public static final String MAPPER_TYPE = "low_pass_mapper";
 

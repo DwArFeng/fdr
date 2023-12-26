@@ -24,6 +24,7 @@ import java.util.List;
  * @author mooyuan
  * @since 2.0.0
  */
+@Component
 public class HighPassCounterMapperRegistry extends AbstractMapperRegistry {
 
     public static final String MAPPER_TYPE = "high_pass_counter_mapper";
