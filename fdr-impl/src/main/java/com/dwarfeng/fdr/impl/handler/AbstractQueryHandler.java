@@ -161,8 +161,7 @@ public abstract class AbstractQueryHandler implements QueryHandler {
         );
 
         // 进行映射。
-        sequences = mapSequences(mapInfos, sequences);
-        for (QueryInfo.MapInfo mapInfo : queryInfo.getMapInfos()) {
+        for (QueryInfo.MapInfo mapInfo : mapInfos) {
             sequences = mapSingleSequence(mapInfo, sequences);
         }
 
@@ -274,17 +273,6 @@ public abstract class AbstractQueryHandler implements QueryHandler {
 
         // 将查询结果添加到返回值中。
         return new Mapper.Sequence(pointKey, items, startDate, endDate);
-    }
-
-    private List<Mapper.Sequence> mapSequences(List<QueryInfo.MapInfo> mapInfos, List<Mapper.Sequence> sequences)
-            throws Exception {
-        // 遍历 mapInfos，进行映射。
-        for (QueryInfo.MapInfo mapInfo : mapInfos) {
-            sequences = mapSingleSequence(mapInfo, sequences);
-        }
-
-        // 返回结果。
-        return sequences;
     }
 
     private List<Mapper.Sequence> mapSingleSequence(QueryInfo.MapInfo mapInfo, List<Mapper.Sequence> sequences)

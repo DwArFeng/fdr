@@ -8,7 +8,8 @@
 
 #### Bug修复
 
-- (无)
+- 修复 com.dwarfeng.fdr.impl.handler.AbstractQueryHandler 中的 bug。
+  - 修复 querySingle 方法对序列重复处理的 bug。
 
 #### 功能移除
 
