@@ -2,6 +2,7 @@ package com.dwarfeng.fdr.impl.service.telqos;
 
 import com.dwarfeng.fdr.stack.bean.dto.MappingLookupSessionInfo;
 import com.dwarfeng.fdr.stack.handler.PersistenceValueMappingLookupHandler;
+import com.dwarfeng.springtelqos.node.config.TelqosCommand;
 import com.dwarfeng.springtelqos.sdk.command.CliCommand;
 import com.dwarfeng.springtelqos.stack.command.Context;
 import com.dwarfeng.springtelqos.stack.exception.TelqosException;
@@ -12,12 +13,11 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@TelqosCommand
 public class PersistenceValueMappingLookupCommand extends CliCommand {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PersistenceValueMappingLookupCommand.class);
