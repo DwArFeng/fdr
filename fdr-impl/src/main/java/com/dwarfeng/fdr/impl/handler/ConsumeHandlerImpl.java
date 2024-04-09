@@ -4,6 +4,7 @@ import com.dwarfeng.dutil.develop.backgr.AbstractTask;
 import com.dwarfeng.fdr.sdk.util.Constants;
 import com.dwarfeng.fdr.stack.exception.ConsumeStoppedException;
 import com.dwarfeng.fdr.stack.handler.ConsumeHandler;
+import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.stack.bean.entity.Entity;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
@@ -173,10 +174,8 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
                 throw new ConsumeStoppedException();
             }
             consumeBuffer.accept(element);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         } finally {
             lock.unlock();
         }

@@ -1,6 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.source;
 
 import com.dwarfeng.fdr.stack.exception.RecordStoppedException;
+import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -61,10 +62,8 @@ public class DctiKafkaSource extends AbstractSource {
                 return false;
             }
             return !listenerContainer.isContainerPaused();
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         } finally {
             lock.unlock();
         }
@@ -84,10 +83,8 @@ public class DctiKafkaSource extends AbstractSource {
                 listenerContainer.start();
             }
             listenerContainer.resume();
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         } finally {
             lock.unlock();
         }
@@ -103,10 +100,8 @@ public class DctiKafkaSource extends AbstractSource {
                 throw new HandlerException("找不到 kafka listener container " + listenerId);
             }
             listenerContainer.pause();
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         } finally {
             lock.unlock();
         }

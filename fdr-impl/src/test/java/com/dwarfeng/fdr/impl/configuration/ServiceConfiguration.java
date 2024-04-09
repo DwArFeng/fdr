@@ -6,10 +6,8 @@ import com.dwarfeng.fdr.stack.cache.FilterSupportCache;
 import com.dwarfeng.fdr.stack.cache.MapperSupportCache;
 import com.dwarfeng.fdr.stack.cache.TriggerSupportCache;
 import com.dwarfeng.fdr.stack.dao.*;
-import com.dwarfeng.sfds.api.integration.subgrade.SnowFlakeLongIdKeyFetcher;
-import com.dwarfeng.subgrade.impl.bean.key.ExceptionKeyFetcher;
+import com.dwarfeng.subgrade.impl.generation.ExceptionKeyGenerator;
 import com.dwarfeng.subgrade.impl.service.*;
-import com.dwarfeng.subgrade.stack.bean.key.KeyFetcher;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
@@ -22,12 +20,9 @@ import org.springframework.context.annotation.Configuration;
 public class ServiceConfiguration {
 
     @Autowired
+    private GenerateConfiguration generateConfiguration;
+    @Autowired
     private ServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration;
-
-    @Bean
-    public KeyFetcher<LongIdKey> longIdKeyKeyFetcher() {
-        return new SnowFlakeLongIdKeyFetcher();
-    }
 
     @Autowired
     private FilteredValueCrudOperation filteredValueCrudOperation;
@@ -81,7 +76,7 @@ public class ServiceConfiguration {
     public CustomBatchCrudService<LongIdKey, FilteredValue> filteredValueCustomCrudService() {
         return new CustomBatchCrudService<>(
                 filteredValueCrudOperation,
-                longIdKeyKeyFetcher(),
+                generateConfiguration.snowflakeLongIdKeyGenerator(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
@@ -109,7 +104,7 @@ public class ServiceConfiguration {
     public CustomBatchCrudService<LongIdKey, FilterInfo> filterInfoBatchCustomCrudService() {
         return new CustomBatchCrudService<>(
                 filterInfoCrudOperation,
-                longIdKeyKeyFetcher(),
+                generateConfiguration.snowflakeLongIdKeyGenerator(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
@@ -128,7 +123,7 @@ public class ServiceConfiguration {
     public CustomBatchCrudService<LongIdKey, PersistenceValue> persistenceValueCustomCrudService() {
         return new CustomBatchCrudService<>(
                 persistenceValueCrudOperation,
-                longIdKeyKeyFetcher(),
+                generateConfiguration.snowflakeLongIdKeyGenerator(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
@@ -156,7 +151,7 @@ public class ServiceConfiguration {
     public CustomBatchCrudService<LongIdKey, Point> pointBatchCustomCrudService() {
         return new CustomBatchCrudService<>(
                 pointCrudOperation,
-                longIdKeyKeyFetcher(),
+                generateConfiguration.snowflakeLongIdKeyGenerator(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
@@ -184,7 +179,7 @@ public class ServiceConfiguration {
     public CustomBatchCrudService<LongIdKey, RealtimeValue> realtimeValueCustomBatchCrudService() {
         return new CustomBatchCrudService<>(
                 realtimeValueCrudOperation,
-                longIdKeyKeyFetcher(),
+                generateConfiguration.snowflakeLongIdKeyGenerator(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
@@ -203,7 +198,7 @@ public class ServiceConfiguration {
     public CustomBatchCrudService<LongIdKey, TriggeredValue> triggeredValueCustomCrudService() {
         return new CustomBatchCrudService<>(
                 triggeredValueCrudOperation,
-                longIdKeyKeyFetcher(),
+                generateConfiguration.snowflakeLongIdKeyGenerator(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
@@ -231,7 +226,7 @@ public class ServiceConfiguration {
     public CustomBatchCrudService<LongIdKey, TriggerInfo> triggerInfoBatchCustomCrudService() {
         return new CustomBatchCrudService<>(
                 triggerInfoCrudOperation,
-                longIdKeyKeyFetcher(),
+                generateConfiguration.snowflakeLongIdKeyGenerator(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
@@ -251,7 +246,7 @@ public class ServiceConfiguration {
         return new GeneralBatchCrudService<>(
                 filterSupportDao,
                 filterSupportCache,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
                 filterSupportTimeout
@@ -281,7 +276,7 @@ public class ServiceConfiguration {
         return new GeneralBatchCrudService<>(
                 triggerSupportDao,
                 triggerSupportCache,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
                 triggerSupportTimeout
@@ -329,7 +324,7 @@ public class ServiceConfiguration {
         return new GeneralBatchCrudService<>(
                 mapperSupportDao,
                 mapperSupportCache,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
                 mapperSupportTimeout
@@ -358,7 +353,7 @@ public class ServiceConfiguration {
     public DaoOnlyBatchWriteService<LongIdKey, FilteredValue> filteredValueDaoOnlyBatchWriteService() {
         return new DaoOnlyBatchWriteService<>(
                 filteredValueDao,
-                longIdKeyKeyFetcher(),
+                generateConfiguration.snowflakeLongIdKeyGenerator(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
@@ -368,7 +363,7 @@ public class ServiceConfiguration {
     public DaoOnlyBatchWriteService<LongIdKey, TriggeredValue> triggeredValueDaoOnlyBatchWriteService() {
         return new DaoOnlyBatchWriteService<>(
                 triggeredValueDao,
-                longIdKeyKeyFetcher(),
+                generateConfiguration.snowflakeLongIdKeyGenerator(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
@@ -378,7 +373,7 @@ public class ServiceConfiguration {
     public DaoOnlyBatchWriteService<LongIdKey, PersistenceValue> persistenceValueDaoOnlyBatchWriteService() {
         return new DaoOnlyBatchWriteService<>(
                 persistenceValueDao,
-                longIdKeyKeyFetcher(),
+                generateConfiguration.snowflakeLongIdKeyGenerator(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );

@@ -34,6 +34,6 @@ public class ServiceExceptionMapperConfiguration {
         destination.put(MappingLookupSessionCanceledException.class, ServiceExceptionCodes.MAPPING_LOOKUP_SESSION_CANCELED);
         destination.put(MappingLookupSessionNotExistsException.class, ServiceExceptionCodes.MAPPING_LOOKUP_SESSION_NOT_EXISTS);
         destination.put(MappingLookupTimeoutException.class, ServiceExceptionCodes.MAPPING_LOOKUP_TIMEOUT);
-        return new MapServiceExceptionMapper(destination, com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes.UNDEFINE);
+        return new MapServiceExceptionMapper(destination, com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes.UNDEFINED);
     }
 }

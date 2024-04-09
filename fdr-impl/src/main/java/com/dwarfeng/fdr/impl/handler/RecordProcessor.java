@@ -14,9 +14,10 @@ import com.dwarfeng.fdr.stack.handler.ConsumeHandler;
 import com.dwarfeng.fdr.stack.handler.Filter;
 import com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler;
 import com.dwarfeng.fdr.stack.handler.Trigger;
-import com.dwarfeng.subgrade.stack.bean.key.KeyFetcher;
+import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import com.dwarfeng.subgrade.stack.generation.KeyGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,10 +164,8 @@ class RecordProcessor {
         lock.lock();
         try {
             internalRecord(DataInfoUtil.fromMessage(message));
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         } finally {
             lock.unlock();
         }
@@ -185,10 +184,8 @@ class RecordProcessor {
         lock.lock();
         try {
             internalRecord(dataInfo);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         } finally {
             lock.unlock();
         }
@@ -288,7 +285,7 @@ class RecordProcessor {
         private static final Logger LOGGER = LoggerFactory.getLogger(Consumer.class);
 
         @Autowired
-        private KeyFetcher<LongIdKey> keyFetcher;
+        private KeyGenerator<LongIdKey> keyGenerator;
         @Autowired
         private RecordLocalCacheHandler recordLocalCacheHandler;
 
@@ -331,7 +328,7 @@ class RecordProcessor {
                 for (Filter filter : recordContext.getFilters()) {
                     FilteredValue filteredValue = filter.test(dataInfo);
                     if (Objects.nonNull(filteredValue)) {
-                        filteredValue.setKey(keyFetcher.fetchKey());
+                        filteredValue.setKey(keyGenerator.generate());
                         LOGGER.debug("数据信息未通过过滤, 过滤数据点信息: " + filteredValue);
                         filteredEventConsumeHandler.accept(filteredValue);
                         filteredValueConsumeHandler.accept(filteredValue);
@@ -342,7 +339,7 @@ class RecordProcessor {
                 for (Trigger trigger : recordContext.getTriggers()) {
                     TriggeredValue triggeredValue = trigger.test(dataInfo);
                     if (Objects.nonNull(triggeredValue)) {
-                        triggeredValue.setKey(keyFetcher.fetchKey());
+                        triggeredValue.setKey(keyGenerator.generate());
                         LOGGER.debug("数据信息满足触发条件, 触发数据点信息: " + triggeredValue);
                         triggeredEventConsumeHandler.accept(triggeredValue);
                         triggeredValueConsumeHandler.accept(triggeredValue);
@@ -362,7 +359,7 @@ class RecordProcessor {
                 // 5. 如果数据点的持久数据使能，记录持久数据并广播。
                 if (recordContext.getPoint().isPersistenceEnabled()) {
                     PersistenceValue persistenceValue = new PersistenceValue(
-                            keyFetcher.fetchKey(),
+                            keyGenerator.generate(),
                             recordContext.getPoint().getKey(),
                             dataInfo.getHappenedDate(),
                             dataInfo.getValue()
@@ -371,10 +368,8 @@ class RecordProcessor {
                     persistenceEventConsumeHandler.accept(persistenceValue);
                     persistenceValueConsumeHandler.accept(persistenceValue);
                 }
-            } catch (HandlerException e) {
-                throw e;
             } catch (Exception e) {
-                throw new HandlerException(e);
+                throw HandlerExceptionHelper.parse(e);
             }
         }
     }

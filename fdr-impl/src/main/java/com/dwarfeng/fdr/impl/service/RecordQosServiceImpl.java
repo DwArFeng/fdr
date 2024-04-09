@@ -102,7 +102,7 @@ public class RecordQosServiceImpl implements RecordQosService {
         try {
             return recordLocalCacheHandler.get(pointKey);
         } catch (HandlerException e) {
-            throw ServiceExceptionHelper.logAndThrow("从本地缓存中获取记录上下文时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("从本地缓存中获取记录上下文时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -112,7 +112,7 @@ public class RecordQosServiceImpl implements RecordQosService {
         try {
             recordLocalCacheHandler.clear();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("清除本地缓存时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("清除本地缓存时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -130,7 +130,7 @@ public class RecordQosServiceImpl implements RecordQosService {
                     consumeHandler.isIdle()
             );
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("获取消费者状态时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("获取消费者状态时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -150,7 +150,7 @@ public class RecordQosServiceImpl implements RecordQosService {
                     Objects.isNull(thread) ? consumeHandler.getThread() : thread
             );
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("设置消费者参数时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("设置消费者参数时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -165,7 +165,7 @@ public class RecordQosServiceImpl implements RecordQosService {
                     recordHandler.isIdle()
             );
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("获取记录者状态时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("获取记录者状态时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -180,7 +180,7 @@ public class RecordQosServiceImpl implements RecordQosService {
                     Objects.isNull(thread) ? recordHandler.getThread() : thread
             );
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("设置记录者参数时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("设置记录者参数时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -190,7 +190,7 @@ public class RecordQosServiceImpl implements RecordQosService {
         try {
             recordHandler.start();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("开启记录服务时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("开启记录服务时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -200,7 +200,7 @@ public class RecordQosServiceImpl implements RecordQosService {
         try {
             recordHandler.stop();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("关闭记录服务时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("关闭记录服务时发生异常", LogLevel.WARN, e, sem);
         }
     }
 }

@@ -10,12 +10,13 @@ import com.dwarfeng.fdr.stack.handler.FilteredValueMappingLookupHandler;
 import com.dwarfeng.fdr.stack.handler.MapLocalCacheHandler;
 import com.dwarfeng.fdr.stack.handler.Mapper;
 import com.dwarfeng.fdr.stack.service.FilteredValueMaintainService;
+import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
-import com.dwarfeng.subgrade.stack.bean.key.KeyFetcher;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import com.dwarfeng.subgrade.stack.generation.KeyGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,7 +51,7 @@ public class FilteredValueMappingLookupHandlerImpl implements FilteredValueMappi
     private final ThreadPoolTaskExecutor executor;
     private final ThreadPoolTaskScheduler scheduler;
 
-    private final KeyFetcher<LongIdKey> keyFetcher;
+    private final KeyGenerator<LongIdKey> keyGenerator;
 
     @Value("${mapping_lookup.filtered_value.cleanup_task_cron}")
     private String cleanupTaskCron;
@@ -69,14 +70,14 @@ public class FilteredValueMappingLookupHandlerImpl implements FilteredValueMappi
     public FilteredValueMappingLookupHandlerImpl(
             ApplicationContext ctx, FilteredValueMaintainService maintainService,
             MapLocalCacheHandler mapLocalCacheHandler, ThreadPoolTaskExecutor executor,
-            ThreadPoolTaskScheduler scheduler, KeyFetcher<LongIdKey> keyFetcher
+            ThreadPoolTaskScheduler scheduler, KeyGenerator<LongIdKey> keyGenerator
     ) {
         this.ctx = ctx;
         this.maintainService = maintainService;
         this.mapLocalCacheHandler = mapLocalCacheHandler;
         this.executor = executor;
         this.scheduler = scheduler;
-        this.keyFetcher = keyFetcher;
+        this.keyGenerator = keyGenerator;
     }
 
     @PostConstruct
@@ -97,7 +98,7 @@ public class FilteredValueMappingLookupHandlerImpl implements FilteredValueMappi
     @SkipRecord
     public List<TimedValue> mappingLookup(MappingLookupInfo mappingLookupInfo) throws HandlerException {
         try {
-            MappingLookupSession session = MappingLookupSession.of(keyFetcher.fetchKey(), mappingLookupInfo);
+            MappingLookupSession session = MappingLookupSession.of(keyGenerator.generate(), mappingLookupInfo);
 
             FilteredValueMappingLookupHandlerImpl.LookupTask lookupTask = ctx.getBean(LookupTask.class, this, session);
             executor.submit(lookupTask);
@@ -110,10 +111,8 @@ public class FilteredValueMappingLookupHandlerImpl implements FilteredValueMappi
             }
 
             return session.getResult();
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 
@@ -122,7 +121,7 @@ public class FilteredValueMappingLookupHandlerImpl implements FilteredValueMappi
     @BehaviorAnalyse
     public LongIdKey mappingLookupAsync(MappingLookupInfo mappingLookupInfo) throws HandlerException {
         try {
-            MappingLookupSession session = MappingLookupSession.of(keyFetcher.fetchKey(), mappingLookupInfo);
+            MappingLookupSession session = MappingLookupSession.of(keyGenerator.generate(), mappingLookupInfo);
 
             FilteredValueMappingLookupHandlerImpl.LookupTask lookupTask = ctx.getBean(LookupTask.class, this, session);
             executor.submit(lookupTask);
@@ -152,10 +151,8 @@ public class FilteredValueMappingLookupHandlerImpl implements FilteredValueMappi
             } finally {
                 lock.unlock();
             }
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 
@@ -166,10 +163,8 @@ public class FilteredValueMappingLookupHandlerImpl implements FilteredValueMappi
         try {
             makeSureSessionKeyExists(sessionKey);
             return sessionMap.get(sessionKey).getResult();
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 
@@ -180,10 +175,8 @@ public class FilteredValueMappingLookupHandlerImpl implements FilteredValueMappi
         try {
             makeSureSessionKeyExists(sessionKey);
             return sessionMap.get(sessionKey).getResult(timeout);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 
@@ -193,10 +186,8 @@ public class FilteredValueMappingLookupHandlerImpl implements FilteredValueMappi
         try {
             makeSureSessionKeyExists(sessionKey);
             return sessionMap.get(sessionKey).getInfo();
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 

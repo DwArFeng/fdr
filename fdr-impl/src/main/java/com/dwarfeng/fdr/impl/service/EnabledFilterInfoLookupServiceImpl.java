@@ -42,9 +42,7 @@ public class EnabledFilterInfoLookupServiceImpl implements EnabledFilterInfoLook
             cache.set(pointKey, lookup, timeout);
             return lookup;
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询有效的过滤器信息时发生异常",
-                    LogLevel.WARN, sem, e
-            );
+            throw ServiceExceptionHelper.logParse("查询有效的过滤器信息时发生异常", LogLevel.WARN, e, sem);
         }
     }
 }

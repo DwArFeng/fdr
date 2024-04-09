@@ -261,7 +261,7 @@ public class TriggeredValueMaintainServiceImpl implements TriggeredValueMaintain
         try {
             return triggeredValueDao.previous(pointKey, date);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询前刻数据时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查询前刻数据时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -273,7 +273,7 @@ public class TriggeredValueMaintainServiceImpl implements TriggeredValueMaintain
         try {
             return triggeredValueDao.rear(pointKey, date);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询后刻数据时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("查询后刻数据时发生异常", LogLevel.WARN, e, sem);
         }
     }
 }

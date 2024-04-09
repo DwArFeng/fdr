@@ -27,9 +27,7 @@ public class RecordServiceImpl implements RecordService {
         try {
             recordHandler.record(message);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("记录数据信息时发生异常",
-                    LogLevel.WARN, sem, e
-            );
+            throw ServiceExceptionHelper.logParse("记录数据信息时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -39,9 +37,7 @@ public class RecordServiceImpl implements RecordService {
         try {
             recordHandler.record(dataInfo);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("记录数据信息时发生异常",
-                    LogLevel.WARN, sem, e
-            );
+            throw ServiceExceptionHelper.logParse("记录数据信息时发生异常", LogLevel.WARN, e, sem);
         }
     }
 }

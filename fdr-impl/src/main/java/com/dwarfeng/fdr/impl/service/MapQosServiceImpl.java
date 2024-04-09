@@ -33,9 +33,7 @@ public class MapQosServiceImpl implements MapQosService {
         try {
             return mapLocalCacheHandler.get(mapperType);
         } catch (HandlerException e) {
-            throw ServiceExceptionHelper.logAndThrow("从本地缓存中获取映射器时发生异常",
-                    LogLevel.WARN, sem, e
-            );
+            throw ServiceExceptionHelper.logParse("从本地缓存中获取映射器时发生异常", LogLevel.WARN, e, sem);
         } finally {
             lock.unlock();
         }
@@ -48,9 +46,7 @@ public class MapQosServiceImpl implements MapQosService {
         try {
             mapLocalCacheHandler.clear();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("清除本地缓存时发生异常",
-                    LogLevel.WARN, sem, e
-            );
+            throw ServiceExceptionHelper.logParse("清除本地缓存时发生异常", LogLevel.WARN, e, sem);
         } finally {
             lock.unlock();
         }

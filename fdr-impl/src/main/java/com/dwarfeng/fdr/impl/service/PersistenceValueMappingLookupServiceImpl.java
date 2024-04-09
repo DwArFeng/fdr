@@ -35,7 +35,7 @@ public class PersistenceValueMappingLookupServiceImpl implements PersistenceValu
         try {
             return handler.mappingLookup(mappingLookupInfo);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("映射查询时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("映射查询时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -45,7 +45,7 @@ public class PersistenceValueMappingLookupServiceImpl implements PersistenceValu
         try {
             return handler.mappingLookupAsync(mappingLookupInfo);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("异步式执行映射查询时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("异步式执行映射查询时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -55,7 +55,7 @@ public class PersistenceValueMappingLookupServiceImpl implements PersistenceValu
         try {
             handler.cancel(sessionKey);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("取消异步式会话时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("取消异步式会话时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -65,7 +65,7 @@ public class PersistenceValueMappingLookupServiceImpl implements PersistenceValu
         try {
             return handler.getResult(sessionKey);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("异步式获取查询结果时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("异步式获取查询结果时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -75,7 +75,7 @@ public class PersistenceValueMappingLookupServiceImpl implements PersistenceValu
         try {
             return handler.getResult(sessionKey, timeout);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("异步式获取查询结果时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("异步式获取查询结果时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -85,7 +85,7 @@ public class PersistenceValueMappingLookupServiceImpl implements PersistenceValu
         try {
             return handler.getSessionInfo(sessionKey);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("获取指定会话信息时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("获取指定会话信息时发生异常", LogLevel.WARN, e, sem);
         }
     }
 }
