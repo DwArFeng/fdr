@@ -17,15 +17,7 @@
             <telqos:command-impl ref="shutdownCommand"/>
             <telqos:command-impl ref="dubboCommand"/>
             <telqos:command-impl ref="memoryCommand"/>
-            <telqos:command-impl ref="recordConsumerCommand"/>
-            <telqos:command-impl ref="recordLocalCacheCommand"/>
-            <telqos:command-impl ref="recordCommand"/>
-            <telqos:command-impl ref="logicConsumerCommand"/>
-            <telqos:command-impl ref="mapLocalCacheCommand"/>
-            <telqos:command-impl ref="resetCommand"/>
-            <telqos:command-impl ref="normalViewCommand"/>
-            <telqos:command-impl ref="filteredViewCommand"/>
-            <telqos:command-impl ref="triggeredViewCommand"/>
+            <telqos:command-impl package-scan="com.dwarfeng.fdr.impl.service.telqos"/>
         </telqos:command>
     </telqos:config>
 

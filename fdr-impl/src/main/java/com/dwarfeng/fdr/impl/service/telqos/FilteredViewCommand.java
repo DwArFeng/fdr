@@ -3,13 +3,13 @@ package com.dwarfeng.fdr.impl.service.telqos;
 import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
 import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
 import com.dwarfeng.fdr.stack.service.FilteredViewQosService;
+import com.dwarfeng.springtelqos.node.config.TelqosCommand;
 import com.dwarfeng.springtelqos.stack.command.Context;
 import com.dwarfeng.springtelqos.stack.exception.TelqosException;
-import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
-@Component
+@TelqosCommand
 public class FilteredViewCommand extends ViewCommand<FilteredData> {
 
     public FilteredViewCommand(FilteredViewQosService filteredWatchQosService) {
