@@ -139,7 +139,6 @@ public class FilteredValueMappingLookupHandlerImpl implements FilteredValueMappi
         }
     }
 
-    @SuppressWarnings("DuplicatedCode")
     @Override
     @BehaviorAnalyse
     public void cancel(LongIdKey sessionKey) throws HandlerException {

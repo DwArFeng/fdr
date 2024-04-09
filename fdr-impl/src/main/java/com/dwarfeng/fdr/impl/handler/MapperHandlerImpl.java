@@ -19,7 +19,6 @@ public class MapperHandlerImpl implements MapperHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(MapperHandlerImpl.class);
 
     @Autowired(required = false)
-    @SuppressWarnings("FieldMayBeFinal")
     private List<MapperMaker> mapperMakers = Collections.emptyList();
 
     @Override

@@ -139,7 +139,6 @@ public class TriggeredValueMappingLookupHandlerImpl implements TriggeredValueMap
         }
     }
 
-    @SuppressWarnings("DuplicatedCode")
     @Override
     @BehaviorAnalyse
     public void cancel(LongIdKey sessionKey) throws HandlerException {

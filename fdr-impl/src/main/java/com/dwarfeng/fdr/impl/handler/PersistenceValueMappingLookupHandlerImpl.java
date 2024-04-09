@@ -139,7 +139,6 @@ public class PersistenceValueMappingLookupHandlerImpl implements PersistenceValu
         }
     }
 
-    @SuppressWarnings("DuplicatedCode")
     @Override
     @BehaviorAnalyse
     public void cancel(LongIdKey sessionKey) throws HandlerException {

@@ -91,6 +91,7 @@ public class RangedLongTriggerRegistry extends AbstractTriggerRegistry {
         public RangedLongTrigger() {
         }
 
+        @SuppressWarnings("DuplicatedCode")
         @Override
         public TriggeredValue test(DataInfo dataInfo) throws TriggerException {
             try {

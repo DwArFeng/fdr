@@ -40,7 +40,6 @@ public class MappingLookupServiceImpl implements MappingLookupService {
         this.sem = sem;
     }
 
-    @SuppressWarnings("DuplicatedCode")
     @Override
     @BehaviorAnalyse
     @SkipRecord
@@ -59,7 +58,6 @@ public class MappingLookupServiceImpl implements MappingLookupService {
         }
     }
 
-    @SuppressWarnings("DuplicatedCode")
     @Override
     @BehaviorAnalyse
     @SkipRecord
@@ -78,7 +76,6 @@ public class MappingLookupServiceImpl implements MappingLookupService {
         }
     }
 
-    @SuppressWarnings("DuplicatedCode")
     @Override
     @BehaviorAnalyse
     @SkipRecord

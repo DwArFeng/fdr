@@ -134,7 +134,7 @@ public class MockSource extends AbstractSource {
         }
     }
 
-    private static class MockBuffer {
+    public static class MockBuffer {
 
         private final Lock lock = new ReentrantLock();
         private final Condition provideCondition = lock.newCondition();

@@ -44,7 +44,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @since 1.11.0
  */
 @Component
-class RecordProcessor {
+public class RecordProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RecordProcessor.class);
 
@@ -105,6 +105,7 @@ class RecordProcessor {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public void stop() {
         lock.lock();
         try {

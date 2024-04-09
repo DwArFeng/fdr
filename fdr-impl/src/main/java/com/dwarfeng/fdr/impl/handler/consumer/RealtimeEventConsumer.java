@@ -23,6 +23,7 @@ public class RealtimeEventConsumer implements Consumer<RealtimeValue> {
     @Autowired
     private RealtimeValueMaintainService realtimeValueMaintainService;
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void consume(List<RealtimeValue> realtimeValues) {
         TimeMeasurer tm = new TimeMeasurer();
