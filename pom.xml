@@ -9,7 +9,7 @@
 
     <groupId>com.dwarfeng</groupId>
     <artifactId>fdr</artifactId>
-    <version>1.11.5.a-SNAPSHOT</version>
+    <version>1.11.5.a</version>
 
     <packaging>pom</packaging>
 
@@ -523,22 +523,22 @@
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-stack</artifactId>
-                <version>1.11.5.a-SNAPSHOT</version>
+                <version>1.11.5.a</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-sdk</artifactId>
-                <version>1.11.5.a-SNAPSHOT</version>
+                <version>1.11.5.a</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-impl</artifactId>
-                <version>1.11.5.a-SNAPSHOT</version>
+                <version>1.11.5.a</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-node</artifactId>
-                <version>1.11.5.a-SNAPSHOT</version>
+                <version>1.11.5.a</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
