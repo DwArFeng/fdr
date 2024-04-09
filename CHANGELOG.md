@@ -40,6 +40,10 @@
 
 #### Bug修复
 
+- 修复项目中部分依赖的异常代码偏移未能正确设置的 bug。
+  - 修复 `subgrade` 依赖的异常代码偏移未能正确设置的 bug。
+  - 修复 `snowflake` 依赖的异常代码偏移未能正确设置的 bug。
+
 - 修复部分 CrudOperation 中 `allExists` 方法行为异常的 bug。
   - com.dwarfeng.fdr.impl.service.operation.FilterInfoCrudOperation。
   - com.dwarfeng.fdr.impl.service.operation.TriggerInfoCrudOperation。
