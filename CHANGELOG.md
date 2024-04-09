@@ -32,7 +32,9 @@
 
 #### Bug修复
 
-- (无)
+- 修复部分 CrudOperation 中 `allExists` 方法行为异常的 bug。
+  - com.dwarfeng.fdr.impl.service.operation.FilterInfoCrudOperation。
+  - com.dwarfeng.fdr.impl.service.operation.TriggerInfoCrudOperation。
 
 #### 功能移除
 

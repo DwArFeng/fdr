@@ -92,7 +92,7 @@ public class TriggerInfoCrudOperation implements BatchCrudOperation<LongIdKey, T
 
     @Override
     public boolean nonExists(List<LongIdKey> keys) throws Exception {
-        return triggerInfoCache.nonExists(keys) && triggerInfoCache.nonExists(keys);
+        return triggerInfoCache.nonExists(keys) && triggerInfoDao.nonExists(keys);
     }
 
     @Override
