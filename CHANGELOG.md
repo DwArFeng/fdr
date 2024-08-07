@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 启动器优化。
+  - 将入口方法中完整独立的功能封装在子方法中，使入口方法代码结构更加清晰。
+
 - 增加预设的运维指令。
   - com.dwarfeng.springtelqos.api.integration.log4j2.Log4j2Command。
 
