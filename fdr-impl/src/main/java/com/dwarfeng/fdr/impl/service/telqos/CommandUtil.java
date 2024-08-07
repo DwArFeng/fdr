@@ -3,7 +3,7 @@ package com.dwarfeng.fdr.impl.service.telqos;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.lang3.tuple.Pair;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 import java.util.StringJoiner;
 
 /**
@@ -24,14 +24,14 @@ final class CommandUtil {
      * @param commandOption 指定的选项。
      * @return 拼接前缀之后的选项。
      */
-    public static String concatOptionPrefix(@NotNull String commandOption) {
+    public static String concatOptionPrefix(@Nonnull String commandOption) {
         if (commandOption.contains("-")) {
             return "--" + commandOption;
         }
         return "-" + commandOption;
     }
 
-    public static String syntax(String... patterns) {
+    public static String syntax(@Nonnull String... patterns) {
         StringJoiner sj = new StringJoiner(System.lineSeparator());
         for (String pattern : patterns) {
             sj.add(pattern);
@@ -39,7 +39,9 @@ final class CommandUtil {
         return sj.toString();
     }
 
-    public static Pair<String, Integer> analyseCommand(CommandLine commandLine, String... commandOptions) {
+    public static Pair<String, Integer> analyseCommand(
+            @Nonnull CommandLine commandLine, @Nonnull String... commandOptions
+    ) {
         int i = 0;
         String subCmd = null;
         for (String commandOption : commandOptions) {
@@ -51,7 +53,7 @@ final class CommandUtil {
         return Pair.of(subCmd, i);
     }
 
-    public static String optionMismatchMessage(String... patterns) {
+    public static String optionMismatchMessage(@Nonnull String... patterns) {
         StringJoiner sj = new StringJoiner(", ", "下列选项必须且只能含有一个: ", "");
         for (String pattern : patterns) {
             sj.add(concatOptionPrefix(pattern));
