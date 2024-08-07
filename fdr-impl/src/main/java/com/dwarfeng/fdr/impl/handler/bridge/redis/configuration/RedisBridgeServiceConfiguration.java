@@ -50,10 +50,10 @@ public class RedisBridgeServiceConfiguration {
     public DaoOnlyBatchCrudService<LongIdKey, RedisBridgeNormalData>
     redisBridgeNormalDataDaoOnlyBatchCrudService() {
         return new DaoOnlyBatchCrudService<>(
-                redisBridgeNormalDataDao,
-                snowflakeLongIdKeyGenerator(),
                 sem,
-                LogLevel.WARN
+                LogLevel.WARN,
+                redisBridgeNormalDataDao,
+                snowflakeLongIdKeyGenerator()
         );
     }
 
@@ -61,10 +61,10 @@ public class RedisBridgeServiceConfiguration {
     public DaoOnlyBatchCrudService<LongIdKey, RedisBridgeFilteredData>
     redisBridgeFilteredDataDaoOnlyBatchCrudService() {
         return new DaoOnlyBatchCrudService<>(
-                redisBridgeFilteredDataDao,
-                snowflakeLongIdKeyGenerator(),
                 sem,
-                LogLevel.WARN
+                LogLevel.WARN,
+                redisBridgeFilteredDataDao,
+                snowflakeLongIdKeyGenerator()
         );
     }
 
@@ -72,10 +72,10 @@ public class RedisBridgeServiceConfiguration {
     public DaoOnlyBatchCrudService<LongIdKey, RedisBridgeTriggeredData>
     redisBridgeTriggeredDataDaoOnlyBatchCrudService() {
         return new DaoOnlyBatchCrudService<>(
-                redisBridgeTriggeredDataDao,
-                snowflakeLongIdKeyGenerator(),
                 sem,
-                LogLevel.WARN
+                LogLevel.WARN,
+                redisBridgeTriggeredDataDao,
+                snowflakeLongIdKeyGenerator()
         );
     }
 }

@@ -132,6 +132,7 @@ public class RedisBridgeNormalDataMaintainServiceImpl implements RedisBridgeNorm
         return batchCrudService.batchGetIfExists(keys);
     }
 
+    @Deprecated
     @Override
     @BehaviorAnalyse
     @SkipRecord
@@ -139,6 +140,15 @@ public class RedisBridgeNormalDataMaintainServiceImpl implements RedisBridgeNorm
             @SkipRecord List<RedisBridgeNormalData> elements
     ) throws ServiceException {
         return batchCrudService.batchInsertIfExists(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    public List<LongIdKey> batchInsertIfNotExists(
+            @SkipRecord List<RedisBridgeNormalData> elements
+    ) throws ServiceException {
+        return batchCrudService.batchInsertIfNotExists(elements);
     }
 
     @Override

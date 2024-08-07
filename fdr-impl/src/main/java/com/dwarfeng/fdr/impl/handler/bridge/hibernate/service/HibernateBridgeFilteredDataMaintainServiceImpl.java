@@ -222,6 +222,7 @@ public class HibernateBridgeFilteredDataMaintainServiceImpl implements Hibernate
         return batchCrudService.batchGetIfExists(keys);
     }
 
+    @Deprecated
     @Override
     @BehaviorAnalyse
     @SkipRecord
@@ -233,6 +234,19 @@ public class HibernateBridgeFilteredDataMaintainServiceImpl implements Hibernate
             @SkipRecord List<HibernateBridgeFilteredData> elements
     ) throws ServiceException {
         return batchCrudService.batchInsertIfExists(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(
+            transactionManager = "hibernateBridge.hibernateTransactionManager",
+            rollbackFor = Exception.class
+    )
+    public List<LongIdKey> batchInsertIfNotExists(
+            @SkipRecord List<HibernateBridgeFilteredData> elements
+    ) throws ServiceException {
+        return batchCrudService.batchInsertIfNotExists(elements);
     }
 
     @Override

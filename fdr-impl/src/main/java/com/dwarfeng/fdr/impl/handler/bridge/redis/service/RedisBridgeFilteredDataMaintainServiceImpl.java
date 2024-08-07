@@ -132,6 +132,7 @@ public class RedisBridgeFilteredDataMaintainServiceImpl implements RedisBridgeFi
         return batchCrudService.batchGetIfExists(keys);
     }
 
+    @Deprecated
     @Override
     @BehaviorAnalyse
     @SkipRecord
@@ -139,6 +140,15 @@ public class RedisBridgeFilteredDataMaintainServiceImpl implements RedisBridgeFi
             @SkipRecord List<RedisBridgeFilteredData> elements
     ) throws ServiceException {
         return batchCrudService.batchInsertIfExists(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    public List<LongIdKey> batchInsertIfNotExists(
+            @SkipRecord List<RedisBridgeFilteredData> elements
+    ) throws ServiceException {
+        return batchCrudService.batchInsertIfNotExists(elements);
     }
 
     @Override

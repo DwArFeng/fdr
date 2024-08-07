@@ -174,12 +174,21 @@ public class TriggerSupportMaintainServiceImpl implements TriggerSupportMaintain
         return crudService.batchGetIfExists(keys);
     }
 
+    @Deprecated
     @Override
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public List<StringIdKey> batchInsertIfExists(@SkipRecord List<TriggerSupport> elements) throws ServiceException {
         return crudService.batchInsertIfExists(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public List<StringIdKey> batchInsertIfNotExists(@SkipRecord List<TriggerSupport> elements) throws ServiceException {
+        return crudService.batchInsertIfNotExists(elements);
     }
 
     @Override

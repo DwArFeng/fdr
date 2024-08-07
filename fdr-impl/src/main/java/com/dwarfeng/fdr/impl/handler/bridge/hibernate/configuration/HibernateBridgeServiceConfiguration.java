@@ -53,10 +53,10 @@ public class HibernateBridgeServiceConfiguration {
     public DaoOnlyBatchCrudService<LongIdKey, HibernateBridgeNormalData>
     hibernateBridgeNormalDataDaoOnlyBatchCrudService() {
         return new DaoOnlyBatchCrudService<>(
-                hibernateBridgeNormalDataDao,
-                snowflakeLongIdKeyGenerator(),
                 sem,
-                LogLevel.WARN
+                LogLevel.WARN,
+                hibernateBridgeNormalDataDao,
+                snowflakeLongIdKeyGenerator()
         );
     }
 
@@ -64,9 +64,9 @@ public class HibernateBridgeServiceConfiguration {
     public DaoOnlyEntireLookupService<HibernateBridgeNormalData>
     hibernateBridgeNormalDataDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
-                hibernateBridgeNormalDataDao,
                 sem,
-                LogLevel.WARN
+                LogLevel.WARN,
+                hibernateBridgeNormalDataDao
         );
     }
 
@@ -74,9 +74,9 @@ public class HibernateBridgeServiceConfiguration {
     public DaoOnlyPresetLookupService<HibernateBridgeNormalData>
     hibernateBridgeNormalDataDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
-                hibernateBridgeNormalDataDao,
                 sem,
-                LogLevel.WARN
+                LogLevel.WARN,
+                hibernateBridgeNormalDataDao
         );
     }
 
@@ -84,10 +84,10 @@ public class HibernateBridgeServiceConfiguration {
     public DaoOnlyBatchWriteService<LongIdKey, HibernateBridgeNormalData>
     hibernateBridgeNormalDataDaoOnlyBatchWriteService() {
         return new DaoOnlyBatchWriteService<>(
-                hibernateBridgeNormalDataDao,
-                snowflakeLongIdKeyGenerator(),
                 sem,
-                LogLevel.WARN
+                LogLevel.WARN,
+                hibernateBridgeNormalDataDao,
+                snowflakeLongIdKeyGenerator()
         );
     }
 
@@ -95,10 +95,10 @@ public class HibernateBridgeServiceConfiguration {
     public DaoOnlyBatchCrudService<LongIdKey, HibernateBridgeFilteredData>
     hibernateBridgeFilteredDataDaoOnlyBatchCrudService() {
         return new DaoOnlyBatchCrudService<>(
-                hibernateBridgeFilteredDataDao,
-                snowflakeLongIdKeyGenerator(),
                 sem,
-                LogLevel.WARN
+                LogLevel.WARN,
+                hibernateBridgeFilteredDataDao,
+                snowflakeLongIdKeyGenerator()
         );
     }
 
@@ -106,9 +106,9 @@ public class HibernateBridgeServiceConfiguration {
     public DaoOnlyEntireLookupService<HibernateBridgeFilteredData>
     hibernateBridgeFilteredDataDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
-                hibernateBridgeFilteredDataDao,
                 sem,
-                LogLevel.WARN
+                LogLevel.WARN,
+                hibernateBridgeFilteredDataDao
         );
     }
 
@@ -116,9 +116,9 @@ public class HibernateBridgeServiceConfiguration {
     public DaoOnlyPresetLookupService<HibernateBridgeFilteredData>
     hibernateBridgeFilteredDataDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
-                hibernateBridgeFilteredDataDao,
                 sem,
-                LogLevel.WARN
+                LogLevel.WARN,
+                hibernateBridgeFilteredDataDao
         );
     }
 
@@ -126,10 +126,10 @@ public class HibernateBridgeServiceConfiguration {
     public DaoOnlyBatchWriteService<LongIdKey, HibernateBridgeFilteredData>
     hibernateBridgeFilteredDataDaoOnlyBatchWriteService() {
         return new DaoOnlyBatchWriteService<>(
-                hibernateBridgeFilteredDataDao,
-                snowflakeLongIdKeyGenerator(),
                 sem,
-                LogLevel.WARN
+                LogLevel.WARN,
+                hibernateBridgeFilteredDataDao,
+                snowflakeLongIdKeyGenerator()
         );
     }
 
@@ -137,10 +137,10 @@ public class HibernateBridgeServiceConfiguration {
     public DaoOnlyBatchCrudService<LongIdKey, HibernateBridgeTriggeredData>
     hibernateBridgeTriggeredDataDaoOnlyBatchCrudService() {
         return new DaoOnlyBatchCrudService<>(
-                hibernateBridgeTriggeredDataDao,
-                snowflakeLongIdKeyGenerator(),
                 sem,
-                LogLevel.WARN
+                LogLevel.WARN,
+                hibernateBridgeTriggeredDataDao,
+                snowflakeLongIdKeyGenerator()
         );
     }
 
@@ -148,9 +148,9 @@ public class HibernateBridgeServiceConfiguration {
     public DaoOnlyEntireLookupService<HibernateBridgeTriggeredData>
     hibernateBridgeTriggeredDataDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
-                hibernateBridgeTriggeredDataDao,
                 sem,
-                LogLevel.WARN
+                LogLevel.WARN,
+                hibernateBridgeTriggeredDataDao
         );
     }
 
@@ -158,9 +158,9 @@ public class HibernateBridgeServiceConfiguration {
     public DaoOnlyPresetLookupService<HibernateBridgeTriggeredData>
     hibernateBridgeTriggeredDataDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
-                hibernateBridgeTriggeredDataDao,
                 sem,
-                LogLevel.WARN
+                LogLevel.WARN,
+                hibernateBridgeTriggeredDataDao
         );
     }
 
@@ -168,10 +168,10 @@ public class HibernateBridgeServiceConfiguration {
     public DaoOnlyBatchWriteService<LongIdKey, HibernateBridgeTriggeredData>
     hibernateBridgeTriggeredDataDaoOnlyBatchWriteService() {
         return new DaoOnlyBatchWriteService<>(
-                hibernateBridgeTriggeredDataDao,
-                snowflakeLongIdKeyGenerator(),
                 sem,
-                LogLevel.WARN
+                LogLevel.WARN,
+                hibernateBridgeTriggeredDataDao,
+                snowflakeLongIdKeyGenerator()
         );
     }
 }
