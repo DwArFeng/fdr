@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 部分 dubbo 消费者服务注册配置添加 `check="false"` 属性。
+  - snowflakeGenerateService。
+
 - 优化项目启停脚本设置程序的根目录的方式。
 
 - 优化启停脚本的目录结构。
