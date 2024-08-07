@@ -4,6 +4,8 @@
 
 #### 功能构建
 
+- 优化启停脚本的目录结构。
+
 - 为部分工具类中方法的入口参数增加 `@NotNull` 注解。
   - com.dwarfeng.fdr.impl.service.telqos.CommandUtils。
 
