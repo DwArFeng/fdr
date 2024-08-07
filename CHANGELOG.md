@@ -4,6 +4,19 @@
 
 #### 功能构建
 
+- 优化部分维护服务实现中的部分方法的性能。
+  - com.dwarfeng.fdr.impl.service.FilterInfoMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.FilterSupportMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.MapperSupportMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.PointMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.TriggerInfoMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.TriggerSupportMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.WasherInfoMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.WasherSupportMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.handler.bridge.hibernate.service.HibernateBridgeFilteredDataMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.handler.bridge.hibernate.service.HibernateBridgeNormalDataMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.handler.bridge.hibernate.service.HibernateBridgeTriggeredDataMaintainServiceImpl。
+
 - 优化 `node` 模块部分服务启停脚本的注释。
   - binres/fdr-start.bat。
   - binres/fdr-start.sh。

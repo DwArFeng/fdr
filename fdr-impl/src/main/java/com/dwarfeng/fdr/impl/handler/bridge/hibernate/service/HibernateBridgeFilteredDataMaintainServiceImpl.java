@@ -423,4 +423,30 @@ public class HibernateBridgeFilteredDataMaintainServiceImpl implements Hibernate
     public void batchWrite(@SkipRecord List<HibernateBridgeFilteredData> elements) throws ServiceException {
         batchWriteService.batchWrite(elements);
     }
+
+    /**
+     * @since 2.2.0
+     */
+    @Override
+    @BehaviorAnalyse
+    @Transactional(
+            transactionManager = "hibernateBridge.hibernateTransactionManager",
+            rollbackFor = Exception.class
+    )
+    public int lookupCount() throws ServiceException {
+        return entireLookupService.lookupCount();
+    }
+
+    /**
+     * @since 2.2.0
+     */
+    @Override
+    @BehaviorAnalyse
+    @Transactional(
+            transactionManager = "hibernateBridge.hibernateTransactionManager",
+            rollbackFor = Exception.class
+    )
+    public int lookupCount(String preset, Object[] objs) throws ServiceException {
+        return presetLookupService.lookupCount(preset, objs);
+    }
 }
