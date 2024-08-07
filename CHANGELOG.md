@@ -4,6 +4,10 @@
 
 #### 功能构建
 
+- 优化 `node` 模块部分服务启停脚本的注释。
+  - binres/fdr-start.bat。
+  - binres/fdr-start.sh。
+
 - 部分 dubbo 消费者服务注册配置添加 `check="false"` 属性。
   - snowflakeGenerateService。
 
