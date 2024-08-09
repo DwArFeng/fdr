@@ -72,6 +72,20 @@
 
 #### Bug修复
 
+- 修复部分功能性实体集合类型的字段在映射时有可能产生空指针异常的问题。
+  - com.dwarfeng.fdr.sdk.bean.dto.FastJsonFilteredLookupResult。
+  - com.dwarfeng.fdr.sdk.bean.dto.FastJsonNativeQueryInfo。
+  - com.dwarfeng.fdr.sdk.bean.dto.FastJsonNormalLookupResult。
+  - com.dwarfeng.fdr.sdk.bean.dto.FastJsonQueryInfo。
+  - com.dwarfeng.fdr.sdk.bean.dto.FastJsonQueryResult。
+  - com.dwarfeng.fdr.sdk.bean.dto.FastJsonTriggeredLookupResult。
+  - com.dwarfeng.fdr.sdk.bean.dto.JSFixedFastJsonFilteredLookupResult。
+  - com.dwarfeng.fdr.sdk.bean.dto.JSFixedFastJsonNormalLookupResult。
+  - com.dwarfeng.fdr.sdk.bean.dto.JSFixedFastJsonQueryResult。
+  - com.dwarfeng.fdr.sdk.bean.dto.JSFixedFastJsonTriggeredLookupResult。
+  - com.dwarfeng.fdr.sdk.bean.dto.WebInputNativeQueryInfo。
+  - com.dwarfeng.fdr.sdk.bean.dto.WebInputQueryInfo。
+
 - 修复 telqos 工具类中部分注解不正确的 bug。
 
 #### 功能移除

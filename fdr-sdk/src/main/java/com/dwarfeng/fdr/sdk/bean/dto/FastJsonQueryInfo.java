@@ -7,10 +7,7 @@ import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -30,12 +27,16 @@ public class FastJsonQueryInfo implements Dto {
             return new FastJsonQueryInfo(
                     queryInfo.getPreset(),
                     queryInfo.getParams(),
-                    queryInfo.getPointKeys().stream().map(FastJsonLongIdKey::of).collect(Collectors.toList()),
+                    Optional.ofNullable(queryInfo.getPointKeys()).map(
+                            f -> f.stream().map(FastJsonLongIdKey::of).collect(Collectors.toList())
+                    ).orElse(null),
                     queryInfo.getStartDate(),
                     queryInfo.getEndDate(),
                     queryInfo.isIncludeStartDate(),
                     queryInfo.isIncludeEndDate(),
-                    queryInfo.getMapInfos().stream().map(FastJsonMapInfo::of).collect(Collectors.toList())
+                    Optional.ofNullable(queryInfo.getMapInfos()).map(
+                            f -> f.stream().map(FastJsonMapInfo::of).collect(Collectors.toList())
+                    ).orElse(null)
             );
         }
     }
@@ -48,12 +49,16 @@ public class FastJsonQueryInfo implements Dto {
             return new QueryInfo(
                     fastJson.getPreset(),
                     fastJson.getParams(),
-                    fastJson.getPointKeys().stream().map(FastJsonLongIdKey::toStackBean).collect(Collectors.toList()),
+                    Optional.ofNullable(fastJson.getPointKeys()).map(
+                            f -> f.stream().map(FastJsonLongIdKey::toStackBean).collect(Collectors.toList())
+                    ).orElse(null),
                     fastJson.getStartDate(),
                     fastJson.getEndDate(),
                     fastJson.isIncludeStartDate(),
                     fastJson.isIncludeEndDate(),
-                    fastJson.getMapInfos().stream().map(FastJsonMapInfo::toStackBean).collect(Collectors.toList())
+                    Optional.ofNullable(fastJson.getMapInfos()).map(
+                            f -> f.stream().map(FastJsonMapInfo::toStackBean).collect(Collectors.toList())
+                    ).orElse(null)
             );
         }
     }

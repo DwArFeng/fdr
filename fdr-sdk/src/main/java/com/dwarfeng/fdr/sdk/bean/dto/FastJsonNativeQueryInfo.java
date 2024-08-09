@@ -5,10 +5,7 @@ import com.dwarfeng.fdr.stack.bean.dto.NativeQueryInfo;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -28,7 +25,9 @@ public class FastJsonNativeQueryInfo implements Dto {
             return new FastJsonNativeQueryInfo(
                     nativeQueryInfo.getPreset(),
                     nativeQueryInfo.getParams(),
-                    nativeQueryInfo.getPointKeys().stream().map(FastJsonLongIdKey::of).collect(Collectors.toList()),
+                    Optional.ofNullable(nativeQueryInfo.getPointKeys()).map(
+                            f -> f.stream().map(FastJsonLongIdKey::of).collect(Collectors.toList())
+                    ).orElse(null),
                     nativeQueryInfo.getStartDate(),
                     nativeQueryInfo.getEndDate(),
                     nativeQueryInfo.isIncludeStartDate(),
@@ -44,7 +43,9 @@ public class FastJsonNativeQueryInfo implements Dto {
             return new NativeQueryInfo(
                     fastJson.getPreset(),
                     fastJson.getParams(),
-                    fastJson.getPointKeys().stream().map(FastJsonLongIdKey::toStackBean).collect(Collectors.toList()),
+                    Optional.ofNullable(fastJson.getPointKeys()).map(
+                            f -> f.stream().map(FastJsonLongIdKey::toStackBean).collect(Collectors.toList())
+                    ).orElse(null),
                     fastJson.getStartDate(),
                     fastJson.getEndDate(),
                     fastJson.isIncludeStartDate(),

@@ -8,6 +8,7 @@ import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -26,7 +27,9 @@ public class FastJsonFilteredLookupResult implements Dto {
         } else {
             return new FastJsonFilteredLookupResult(
                     FastJsonLongIdKey.of(lookupResult.getPointKey()),
-                    lookupResult.getDatas().stream().map(FastJsonFilteredData::of).collect(Collectors.toList()),
+                    Optional.ofNullable(lookupResult.getDatas()).map(
+                            f -> f.stream().map(FastJsonFilteredData::of).collect(Collectors.toList())
+                    ).orElse(null),
                     lookupResult.isHasMore()
             );
         }

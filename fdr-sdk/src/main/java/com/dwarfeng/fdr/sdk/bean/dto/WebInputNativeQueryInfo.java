@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -31,7 +32,9 @@ public class WebInputNativeQueryInfo implements Dto {
             return new NativeQueryInfo(
                     webInput.getPreset(),
                     webInput.getParams(),
-                    webInput.getPointKeys().stream().map(WebInputLongIdKey::toStackBean).collect(Collectors.toList()),
+                    Optional.ofNullable(webInput.getPointKeys()).map(
+                            f -> f.stream().map(WebInputLongIdKey::toStackBean).collect(Collectors.toList())
+                    ).orElse(null),
                     webInput.getStartDate(),
                     webInput.getEndDate(),
                     webInput.isIncludeStartDate(),

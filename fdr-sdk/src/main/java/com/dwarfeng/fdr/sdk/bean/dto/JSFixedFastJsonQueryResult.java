@@ -9,6 +9,7 @@ import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -26,7 +27,9 @@ public class JSFixedFastJsonQueryResult implements Dto {
             return null;
         } else {
             return new JSFixedFastJsonQueryResult(
-                    queryResult.getSequences().stream().map(JSFixedFastJsonSequence::of).collect(Collectors.toList())
+                    Optional.ofNullable(queryResult.getSequences()).map(
+                            f -> f.stream().map(JSFixedFastJsonSequence::of).collect(Collectors.toList())
+                    ).orElse(null)
             );
         }
     }
@@ -71,7 +74,9 @@ public class JSFixedFastJsonQueryResult implements Dto {
                 return null;
             } else {
                 return new JSFixedFastJsonSequence(
-                        sequence.getItems().stream().map(JSFixedFastJsonItem::of).collect(Collectors.toList()),
+                        Optional.ofNullable(sequence.getItems()).map(
+                                f -> f.stream().map(JSFixedFastJsonItem::of).collect(Collectors.toList())
+                        ).orElse(null),
                         sequence.getStartDate(),
                         sequence.getEndDate()
                 );
