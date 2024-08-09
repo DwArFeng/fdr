@@ -72,6 +72,10 @@
 
 #### Bug修复
 
+- 去除 `pom.xml` 中重复的依赖版本属性。
+  - kafka.version。
+  - spring-kafka.version。
+
 - 修复部分功能性实体集合类型的字段在映射时有可能产生空指针异常的问题。
   - com.dwarfeng.fdr.sdk.bean.dto.FastJsonFilteredLookupResult。
   - com.dwarfeng.fdr.sdk.bean.dto.FastJsonNativeQueryInfo。
