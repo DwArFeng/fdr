@@ -97,7 +97,7 @@ public class WasherInfoCrudOperation implements BatchCrudOperation<LongIdKey, Wa
 
     @Override
     public boolean nonExists(List<LongIdKey> keys) throws Exception {
-        return washerInfoCache.nonExists(keys) && washerInfoCache.nonExists(keys);
+        return washerInfoCache.nonExists(keys) && washerInfoDao.nonExists(keys);
     }
 
     @Override

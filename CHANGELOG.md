@@ -72,6 +72,11 @@
 
 #### Bug修复
 
+- 修复部分 CrudOperation 中部分存在性判断方法行为异常的 bug。
+  - com.dwarfeng.fdr.impl.service.operation.FilterInfoCrudOperation。
+  - com.dwarfeng.fdr.impl.service.operation.TriggerInfoCrudOperation。
+  - com.dwarfeng.fdr.impl.service.operation.WasherInfoCrudOperation。
+
 - 去除 `pom.xml` 中重复的依赖版本属性。
   - kafka.version。
   - spring-kafka.version。

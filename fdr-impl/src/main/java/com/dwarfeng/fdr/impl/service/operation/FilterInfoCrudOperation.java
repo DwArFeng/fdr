@@ -97,7 +97,7 @@ public class FilterInfoCrudOperation implements BatchCrudOperation<LongIdKey, Fi
 
     @Override
     public boolean nonExists(List<LongIdKey> keys) throws Exception {
-        return filterInfoCache.nonExists(keys) && filterInfoCache.nonExists(keys);
+        return filterInfoCache.nonExists(keys) && filterInfoDao.nonExists(keys);
     }
 
     @Override
