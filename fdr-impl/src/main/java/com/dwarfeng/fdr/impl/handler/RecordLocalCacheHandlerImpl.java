@@ -50,7 +50,7 @@ public class RecordLocalCacheHandlerImpl implements RecordLocalCacheHandler {
 
     @BehaviorAnalyse
     @Override
-    public void clear() throws HandlerException {
+    public void clear() {
         handler.clear();
     }
 

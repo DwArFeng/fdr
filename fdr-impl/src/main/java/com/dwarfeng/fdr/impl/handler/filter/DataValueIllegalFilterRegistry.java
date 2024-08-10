@@ -62,7 +62,7 @@ public class DataValueIllegalFilterRegistry extends AbstractFilterRegistry {
     public static class DataValueIllegalFilter extends AbstractFilter {
 
         @Override
-        protected TestResult doTest(TestInfo testInfo) throws Exception {
+        protected TestResult doTest(TestInfo testInfo) {
             if (Constants.DATA_VALUE_ILLEGAL.equals(testInfo.getValue())) {
                 return TestResult.filtered("数据值与 com.dwarfeng.fdr.sdk.util.Constants.DATA_VALUE_ILLEGAL 相等");
             }

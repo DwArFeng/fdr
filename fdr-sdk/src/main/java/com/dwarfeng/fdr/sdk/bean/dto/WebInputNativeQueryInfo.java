@@ -25,6 +25,7 @@ public class WebInputNativeQueryInfo implements Dto {
 
     private static final long serialVersionUID = 515042839311683307L;
 
+    @SuppressWarnings("DuplicatedCode")
     public static NativeQueryInfo toStackBean(WebInputNativeQueryInfo webInput) {
         if (Objects.isNull(webInput)) {
             return null;

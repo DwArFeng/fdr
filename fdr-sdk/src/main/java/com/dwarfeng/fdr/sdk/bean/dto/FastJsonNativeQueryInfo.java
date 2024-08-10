@@ -36,6 +36,7 @@ public class FastJsonNativeQueryInfo implements Dto {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public static NativeQueryInfo toStackBean(FastJsonNativeQueryInfo fastJson) {
         if (Objects.isNull(fastJson)) {
             return null;
