@@ -4,10 +4,14 @@ import com.dwarfeng.fdr.stack.handler.MapLocalCacheHandler;
 import com.dwarfeng.fdr.stack.handler.PushHandler;
 import com.dwarfeng.fdr.stack.handler.RecordHandler;
 import com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler;
+import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 重置处理器。
@@ -27,6 +31,8 @@ public class ResetProcessor {
 
     private final PushHandler pushHandler;
 
+    private final Lock lock = new ReentrantLock();
+
     public ResetProcessor(
             RecordHandler recordHandler,
             RecordLocalCacheHandler recordLocalCacheHandler,
@@ -40,6 +46,17 @@ public class ResetProcessor {
     }
 
     public void resetRecord() throws HandlerException {
+        lock.lock();
+        try {
+            doResetRecord();
+        } catch (Exception e) {
+            throw HandlerExceptionHelper.parse(e);
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private void doResetRecord() throws Exception {
         recordHandler.stop();
         recordLocalCacheHandler.clear();
         recordHandler.start();
@@ -52,6 +69,17 @@ public class ResetProcessor {
     }
 
     public void resetMap() throws HandlerException {
+        lock.lock();
+        try {
+            doResetMap();
+        } catch (Exception e) {
+            throw HandlerExceptionHelper.parse(e);
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private void doResetMap() throws Exception {
         mapLocalCacheHandler.clear();
 
         try {
