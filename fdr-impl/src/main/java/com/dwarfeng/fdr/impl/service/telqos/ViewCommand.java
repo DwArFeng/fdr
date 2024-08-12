@@ -4,16 +4,16 @@ import com.alibaba.fastjson.JSON;
 import com.dwarfeng.dutil.basic.io.IOUtil;
 import com.dwarfeng.dutil.basic.io.StringOutputStream;
 import com.dwarfeng.dutil.basic.mea.TimeMeasurer;
-import com.dwarfeng.fdr.sdk.bean.dto.FastJsonLookupInfo;
-import com.dwarfeng.fdr.sdk.bean.dto.FastJsonNativeQueryInfo;
-import com.dwarfeng.fdr.sdk.bean.dto.FastJsonQueryInfo;
+import com.dwarfeng.fdr.sdk.bean.dto.WebInputLookupInfo;
+import com.dwarfeng.fdr.sdk.bean.dto.WebInputNativeQueryInfo;
+import com.dwarfeng.fdr.sdk.bean.dto.WebInputQueryInfo;
 import com.dwarfeng.fdr.stack.bean.dto.*;
 import com.dwarfeng.fdr.stack.service.ViewQosService;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.springtelqos.sdk.command.CliCommand;
 import com.dwarfeng.springtelqos.stack.command.Context;
 import com.dwarfeng.springtelqos.stack.exception.TelqosException;
-import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
+import com.dwarfeng.subgrade.sdk.bean.key.WebInputLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -35,6 +35,7 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
 
     private static final String COMMAND_OPTION_LATEST = "latest";
     private static final String COMMAND_OPTION_LOOKUP = "lookup";
+    @SuppressWarnings("SpellCheckingInspection")
     private static final String COMMAND_OPTION_NATIVE_QUERY = "nquery";
     private static final String COMMAND_OPTION_NATIVE_QUERY_LONG_OPT = "native-query";
     private static final String COMMAND_OPTION_QUERY = "query";
@@ -142,7 +143,7 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
         // 如果有 -json 选项，则从选项中获取 JSON，转化为 pointKeys。
         if (cmd.hasOption(COMMAND_OPTION_JSON)) {
             String json = (String) cmd.getParsedOptionValue(COMMAND_OPTION_JSON);
-            pointKeys = JSON.parseArray(json, FastJsonLongIdKey.class).stream().map(FastJsonLongIdKey::toStackBean)
+            pointKeys = JSON.parseArray(json, WebInputLongIdKey.class).stream().map(WebInputLongIdKey::toStackBean)
                     .collect(Collectors.toList());
         }
         // 如果有 --json-file 选项，则从选项中获取 JSON 文件，转化为 pointKeys。
@@ -155,7 +156,7 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
                 IOUtil.trans(in, out, 4096);
                 out.flush();
                 String json = out.toString();
-                pointKeys = JSON.parseArray(json, FastJsonLongIdKey.class).stream().map(FastJsonLongIdKey::toStackBean)
+                pointKeys = JSON.parseArray(json, WebInputLongIdKey.class).stream().map(WebInputLongIdKey::toStackBean)
                         .collect(Collectors.toList());
             }
         } else {
@@ -196,13 +197,13 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
         // 如果有 -json 选项，则从选项中获取 JSON，转化为 lookupInfo。
         if (cmd.hasOption(COMMAND_OPTION_JSON)) {
             String json = (String) cmd.getParsedOptionValue(COMMAND_OPTION_JSON);
-            lookupInfo = FastJsonLookupInfo.toStackBean(JSON.parseObject(json, FastJsonLookupInfo.class));
+            lookupInfo = WebInputLookupInfo.toStackBean(JSON.parseObject(json, WebInputLookupInfo.class));
         }
         // 如果有 --json-file 选项，则从选项中获取 JSON 文件，转化为 lookupInfo。
         else if (cmd.hasOption(COMMAND_OPTION_JSON_FILE)) {
             File jsonFile = (File) cmd.getParsedOptionValue(COMMAND_OPTION_JSON_FILE);
             try (FileInputStream in = new FileInputStream(jsonFile)) {
-                lookupInfo = FastJsonLookupInfo.toStackBean(JSON.parseObject(in, FastJsonLookupInfo.class));
+                lookupInfo = WebInputLookupInfo.toStackBean(JSON.parseObject(in, WebInputLookupInfo.class));
             }
         } else {
             // 暂时未实现。
@@ -244,13 +245,13 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
         // 如果有 -json 选项，则从选项中获取 JSON，转化为 queryInfo。
         if (cmd.hasOption(COMMAND_OPTION_JSON)) {
             String json = (String) cmd.getParsedOptionValue(COMMAND_OPTION_JSON);
-            queryInfo = FastJsonQueryInfo.toStackBean(JSON.parseObject(json, FastJsonQueryInfo.class));
+            queryInfo = WebInputQueryInfo.toStackBean(JSON.parseObject(json, WebInputQueryInfo.class));
         }
         // 如果有 --json-file 选项，则从选项中获取 JSON 文件，转化为 queryInfo。
         else if (cmd.hasOption(COMMAND_OPTION_JSON_FILE)) {
             File jsonFile = (File) cmd.getParsedOptionValue(COMMAND_OPTION_JSON_FILE);
             try (FileInputStream in = new FileInputStream(jsonFile)) {
-                queryInfo = FastJsonQueryInfo.toStackBean(JSON.parseObject(in, FastJsonQueryInfo.class));
+                queryInfo = WebInputQueryInfo.toStackBean(JSON.parseObject(in, WebInputQueryInfo.class));
             }
         } else {
             // 暂时未实现。
@@ -278,16 +279,16 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
         // 如果有 -json 选项，则从选项中获取 JSON，转化为 queryInfo。
         if (cmd.hasOption(COMMAND_OPTION_JSON)) {
             String json = (String) cmd.getParsedOptionValue(COMMAND_OPTION_JSON);
-            nativeQueryInfo = FastJsonNativeQueryInfo.toStackBean(
-                    JSON.parseObject(json, FastJsonNativeQueryInfo.class)
+            nativeQueryInfo = WebInputNativeQueryInfo.toStackBean(
+                    JSON.parseObject(json, WebInputNativeQueryInfo.class)
             );
         }
         // 如果有 --json-file 选项，则从选项中获取 JSON 文件，转化为 queryInfo。
         else if (cmd.hasOption(COMMAND_OPTION_JSON_FILE)) {
             File jsonFile = (File) cmd.getParsedOptionValue(COMMAND_OPTION_JSON_FILE);
             try (FileInputStream in = new FileInputStream(jsonFile)) {
-                nativeQueryInfo = FastJsonNativeQueryInfo.toStackBean(
-                        JSON.parseObject(in, FastJsonNativeQueryInfo.class)
+                nativeQueryInfo = WebInputNativeQueryInfo.toStackBean(
+                        JSON.parseObject(in, WebInputNativeQueryInfo.class)
                 );
             }
         } else {
