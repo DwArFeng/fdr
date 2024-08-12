@@ -60,10 +60,10 @@ nv -query [-json json-string] [-jf json-file]
 
 | 指令           | 功能   | 实体类                       |
 |--------------|------|---------------------------|
-| `nv -latest` | 最新数据 | `List<FastJsonLongIdKey>` |
-| `nv -lookup` | 查看   | `FastJsonLookupInfo`      |
-| `nv -nquery` | 原生查询 | `FastJsonNativeQueryInfo` |
-| `nv -query`  | 查询   | `FastJsonQueryInfo`       |
+| `nv -latest` | 最新数据 | `List<WebInputLongIdKey>` |
+| `nv -lookup` | 查看   | `WebInputLookupInfo`      |
+| `nv -nquery` | 原生查询 | `WebInputNativeQueryInfo` |
+| `nv -query`  | 查询   | `WebInputQueryInfo`       |
 
 因此，您需要正确的指定 json 字符串，否则会导致指令解析失败。
 
@@ -81,10 +81,10 @@ nv -query [-json json-string] [-jf json-file]
 
 | 指令           | 功能   | 实体类                       |
 |--------------|------|---------------------------|
-| `nv -latest` | 最新数据 | `List<FastJsonLongIdKey>` |
-| `nv -lookup` | 查看   | `FastJsonLookupInfo`      |
-| `nv -nquery` | 原生查询 | `FastJsonNativeQueryInfo` |
-| `nv -query`  | 查询   | `FastJsonQueryInfo`       |
+| `nv -latest` | 最新数据 | `List<WebInputLongIdKey>` |
+| `nv -lookup` | 查看   | `WebInputLookupInfo`      |
+| `nv -nquery` | 原生查询 | `WebInputNativeQueryInfo` |
+| `nv -query`  | 查询   | `WebInputQueryInfo`       |
 
 因此，您需要正确的指定 json 字符串，否则会导致指令解析失败。
 
@@ -93,6 +93,103 @@ nv -query [-json json-string] [-jf json-file]
 相对路径以当前工作目录为基准，即 FDR 项目的根目录。
 
 `-json json-string` 参数可以与 `-jf json-file` 参数共存，两者存在时，以 `-json json-string` 提供的 json 字符串为准。
+
+### JSON 示例
+
+#### nv -latest
+
+```json
+[
+  {
+    "long_id": 1
+  },
+  {
+    "long_id": 2
+  }
+]
+```
+
+#### nv -lookup
+
+```json
+{
+  "preset": "default",
+  "params": [],
+  "point_key": {
+    "long_id": 1
+  },
+  "start_date": 1723467600000,
+  "end_date": 1723474800000,
+  "include_start_date": true,
+  "include_end_date": false,
+  "page": 0,
+  "rows": 1000
+}
+```
+
+#### nv -nquery
+
+```json
+{
+  "preset": "default",
+  "params": [
+    60000,
+    1723467600000,
+    "last"
+  ],
+  "point_keys": [
+    {
+      "long_id": 1
+    },
+    {
+      "long_id": 2
+    }
+  ],
+  "start_date": 1723467600000,
+  "end_date": 1723474800000,
+  "include_start_date": true,
+  "include_end_date": false
+}
+```
+
+#### nv -query
+
+```json
+{
+  "preset": "default",
+  "params": [],
+  "point_keys": [
+    {
+      "long_id": 1
+    },
+    {
+      "long_id": 2
+    }
+  ],
+  "start_date": 1723467600000,
+  "end_date": 1723474800000,
+  "include_start_date": true,
+  "include_end_date": false,
+  "map_infos": [
+    {
+      "type": "window_mapper",
+      "param": "{\"duration\": 60000, \"anchor_timestamp\": 1723467600000, \"remove_edges\": false, \"extendItem\": true}\n"
+    },
+    {
+      "type": "last_mapper",
+      "param": ""
+    },
+    {
+      "type": "align_mapper",
+      "param": "0"
+    },
+    {
+      "type": "merge_mapper",
+      "param": ""
+    }
+  ]
+}
+```
 
 ### 结果查看
 

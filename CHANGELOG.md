@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- Wiki 更新。
+  - docs/wiki/zh_CN/HowToUseTelqosViewCommand.md。
+
 - 优化重置功能。
   - 为重置处理器的重置方法添加了同步锁。
 
