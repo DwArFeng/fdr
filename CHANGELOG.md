@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 优化文件格式。
+  - 优化 `opt-*.xml` 文件的格式。
+
 - 改进运维指令。
   - com.dwarfeng.fdr.impl.service.telqos.RecordCommand。
 

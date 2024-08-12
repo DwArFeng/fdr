@@ -158,6 +158,5 @@
                 type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.LowPassExistenceMapperRegistry"
         />
         -->
-
     </context:component-scan>
 </beans>
