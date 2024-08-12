@@ -57,9 +57,17 @@ public class ResetProcessor {
     }
 
     private void doResetRecord() throws Exception {
+        // 获取当前的记录处理器的状态。
+        boolean started = recordHandler.isStarted();
+
+        // 记录处理器停止，且清空本地缓存。
         recordHandler.stop();
         recordLocalCacheHandler.clear();
-        recordHandler.start();
+
+        // 如果记录处理器之前是启动的，则重新启动。
+        if (started) {
+            recordHandler.start();
+        }
 
         try {
             pushHandler.recordReset();
