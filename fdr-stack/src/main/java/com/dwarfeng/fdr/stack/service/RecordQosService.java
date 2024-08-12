@@ -71,6 +71,15 @@ public interface RecordQosService extends Service {
     void setRecorderParameters(Integer bufferSize, Integer thread) throws ServiceException;
 
     /**
+     * 获取记录服务是否已经开始。
+     *
+     * @return 记录服务是否已经开始。
+     * @throws ServiceException 服务异常。
+     * @since 2.1.5
+     */
+    boolean isRecordStarted() throws ServiceException;
+
+    /**
      * 开启记录服务。
      *
      * @throws ServiceException 服务异常。

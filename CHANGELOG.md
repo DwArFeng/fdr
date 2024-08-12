@@ -4,7 +4,8 @@
 
 #### 功能构建
 
-- (无)
+- 改进运维指令。
+  - com.dwarfeng.fdr.impl.service.telqos.RecordCommand。
 
 #### Bug修复
 

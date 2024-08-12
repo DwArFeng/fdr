@@ -175,6 +175,16 @@ public class RecordQosServiceImpl implements RecordQosService {
 
     @Override
     @BehaviorAnalyse
+    public boolean isRecordStarted() throws ServiceException {
+        try {
+            return recordHandler.isStarted();
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logParse("获取记录服务是否已经开始时发生异常", LogLevel.WARN, e, sem);
+        }
+    }
+
+    @Override
+    @BehaviorAnalyse
     public void startRecord() throws ServiceException {
         try {
             recordHandler.start();
