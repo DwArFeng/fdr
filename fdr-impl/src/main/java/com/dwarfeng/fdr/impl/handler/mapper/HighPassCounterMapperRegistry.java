@@ -53,7 +53,8 @@ public class HighPassCounterMapperRegistry extends AbstractMapperRegistry {
 
     @Override
     public String provideExampleParam() {
-        return JSON.toJSONString(new Config(0.00, true, false));
+        Config config = new Config(0.00, true, false);
+        return JSON.toJSONString(config, true);
     }
 
     @Override
@@ -78,7 +79,9 @@ public class HighPassCounterMapperRegistry extends AbstractMapperRegistry {
 
         @Override
         protected Object doAggregate(MapParam mapParam, List<Item> items, Date startDate, Date endDate) {
-            Sequence s = HighPassMapperRegistry.HighPassMapper.highPass(mapParam, new Sequence(new LongIdKey(0L), items, startDate, endDate));
+            Sequence s = HighPassMapperRegistry.HighPassMapper.highPass(
+                    mapParam, new Sequence(new LongIdKey(0L), items, startDate, endDate)
+            );
             return s.getItems().size();
         }
 
@@ -90,25 +93,25 @@ public class HighPassCounterMapperRegistry extends AbstractMapperRegistry {
 
     public static class Config implements Bean {
 
-        private static final long serialVersionUID = 4334109826634237727L;
+        private static final long serialVersionUID = -266094269156109561L;
 
-        @JSONField(name = "threshold", ordinal = 1)
-        private double threshold;
-
-        @JSONField(name = "#threshold", ordinal = 2, deserialize = false)
+        @JSONField(name = "#threshold", ordinal = 1, deserialize = false)
         private String thresholdRem = "阈值，对数据进行筛选的标准";
 
-        @JSONField(name = "can_equal", ordinal = 3)
-        private boolean canEqual;
+        @JSONField(name = "threshold", ordinal = 2)
+        private double threshold;
 
-        @JSONField(name = "#can_equal", ordinal = 4, deserialize = false)
+        @JSONField(name = "#can_equal", ordinal = 3, deserialize = false)
         private String canEqualRem = "true：包含阈值，false：不包含阈值";
 
-        @JSONField(name = "invert", ordinal = 5)
-        private boolean invert;
+        @JSONField(name = "can_equal", ordinal = 4)
+        private boolean canEqual;
 
-        @JSONField(name = "#invert", ordinal = 6, deserialize = false)
+        @JSONField(name = "#invert", ordinal = 5, deserialize = false)
         private String invertRem = "true：过滤掉高于阈值的数据，false：过滤掉低于阈值的数据";
+
+        @JSONField(name = "invert", ordinal = 6)
+        private boolean invert;
 
         public Config() {
         }
@@ -119,14 +122,6 @@ public class HighPassCounterMapperRegistry extends AbstractMapperRegistry {
             this.invert = invert;
         }
 
-        public double getThreshold() {
-            return threshold;
-        }
-
-        public void setThreshold(double threshold) {
-            this.threshold = threshold;
-        }
-
         public String getThresholdRem() {
             return thresholdRem;
         }
@@ -135,12 +130,12 @@ public class HighPassCounterMapperRegistry extends AbstractMapperRegistry {
             this.thresholdRem = thresholdRem;
         }
 
-        public boolean getCanEqual() {
-            return canEqual;
+        public double getThreshold() {
+            return threshold;
         }
 
-        public void setCanEqual(boolean canEqual) {
-            this.canEqual = canEqual;
+        public void setThreshold(double threshold) {
+            this.threshold = threshold;
         }
 
         public String getCanEqualRem() {
@@ -151,12 +146,12 @@ public class HighPassCounterMapperRegistry extends AbstractMapperRegistry {
             this.canEqualRem = canEqualRem;
         }
 
-        public boolean getInvert() {
-            return invert;
+        public boolean isCanEqual() {
+            return canEqual;
         }
 
-        public void setInvert(boolean invert) {
-            this.invert = invert;
+        public void setCanEqual(boolean canEqual) {
+            this.canEqual = canEqual;
         }
 
         public String getInvertRem() {
@@ -167,15 +162,23 @@ public class HighPassCounterMapperRegistry extends AbstractMapperRegistry {
             this.invertRem = invertRem;
         }
 
+        public boolean isInvert() {
+            return invert;
+        }
+
+        public void setInvert(boolean invert) {
+            this.invert = invert;
+        }
+
         @Override
         public String toString() {
             return "Config{" +
-                    "threshold=" + threshold +
-                    ", thresholdRem='" + thresholdRem + '\'' +
-                    ", canEqual=" + canEqual +
+                    "thresholdRem='" + thresholdRem + '\'' +
+                    ", threshold=" + threshold +
                     ", canEqualRem='" + canEqualRem + '\'' +
-                    ", invert=" + invert +
+                    ", canEqual=" + canEqual +
                     ", invertRem='" + invertRem + '\'' +
+                    ", invert=" + invert +
                     '}';
         }
     }

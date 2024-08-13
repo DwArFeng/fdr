@@ -10,9 +10,30 @@
   - com.dwarfeng.fdr.impl.handler.filter.LogicNotFilterRegistry。
   - com.dwarfeng.fdr.impl.handler.filter.RegexFilterRegistry。
 
+- 优化部分映射器的示例参数。
+  - com.dwarfeng.fdr.impl.handler.mapper.EnableRatioMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.HighPassCounterMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.HighPassExistenceMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.HighPassMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassCounterMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassExistenceMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.SortMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.ToBooleanMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.ToDoubleMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.TrimMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.WindowMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.GroovyMapperRegistry。
+
 #### Bug修复
 
-- (无)
+- 修复部分映射器配置 Bean 不规范的问题。
+  - com.dwarfeng.fdr.impl.handler.mapper.EnableRatioMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.HighPassMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassExistenceMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.ToBooleanMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.TrimMapperRegistry。
 
 #### 功能移除
 

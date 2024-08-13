@@ -49,7 +49,7 @@ public class WindowMapperRegistry extends AbstractMapperRegistry {
     @Override
     public String provideExampleParam() {
         Config config = new Config(600000L, 0, false, false);
-        return JSON.toJSONString(config);
+        return JSON.toJSONString(config, true);
     }
 
     @Override
@@ -180,22 +180,24 @@ public class WindowMapperRegistry extends AbstractMapperRegistry {
         @JSONField(name = "anchor_timestamp", ordinal = 2)
         private long anchorTimestamp;
 
-        @JSONField(name = "remove_edges", ordinal = 3)
-        private boolean removeEdges;
-
-        @JSONField(name = "#remove_edges", ordinal = 4, deserialize = false)
+        @JSONField(name = "#remove_edges", ordinal = 3, deserialize = false)
         private String removeEdgesRem = "每个序列开窗后是否去除第一个和最后一个窗口。" +
                 "在部分情况下，第一个和最后一个窗口的数据可能不完整，可能会导致后续的聚合操作出现不准确的结果。" +
                 "因此，可以通过设置该参数为 true 来去除第一个和最后一个窗口。";
 
-        private boolean extendItem;
+        @JSONField(name = "remove_edges", ordinal = 4)
+        private boolean removeEdges;
 
+        @JSONField(name = "#extend_item", ordinal = 5, deserialize = false)
         private String extendItemRem = "是否扩展每个窗口的数据条目。" +
                 "如果该参数为 true，则会在每个窗口（第一个窗口除外）的起始时间处插入一个数据条目，" +
                 "其值为上一个窗口的最后一个数据条目的值；" +
                 "同时会在每个窗口（最后一个窗口除外）的结束时间处插入一个数据条目，" +
                 "其值为下一个窗口的第一个数据条目的值。" +
                 "将该参数设置为 true 可以提高部分聚合映射器的准确性，如加权平均值映射器。";
+
+        @JSONField(name = "extend_item", ordinal = 6)
+        private boolean extendItem;
 
         public Config() {
         }
@@ -223,14 +225,6 @@ public class WindowMapperRegistry extends AbstractMapperRegistry {
             this.anchorTimestamp = anchorTimestamp;
         }
 
-        public boolean isRemoveEdges() {
-            return removeEdges;
-        }
-
-        public void setRemoveEdges(boolean removeEdges) {
-            this.removeEdges = removeEdges;
-        }
-
         public String getRemoveEdgesRem() {
             return removeEdgesRem;
         }
@@ -239,12 +233,12 @@ public class WindowMapperRegistry extends AbstractMapperRegistry {
             this.removeEdgesRem = removeEdgesRem;
         }
 
-        public boolean isExtendItem() {
-            return extendItem;
+        public boolean isRemoveEdges() {
+            return removeEdges;
         }
 
-        public void setExtendItem(boolean extendItem) {
-            this.extendItem = extendItem;
+        public void setRemoveEdges(boolean removeEdges) {
+            this.removeEdges = removeEdges;
         }
 
         public String getExtendItemRem() {
@@ -255,12 +249,22 @@ public class WindowMapperRegistry extends AbstractMapperRegistry {
             this.extendItemRem = extendItemRem;
         }
 
+        public boolean isExtendItem() {
+            return extendItem;
+        }
+
+        public void setExtendItem(boolean extendItem) {
+            this.extendItem = extendItem;
+        }
+
         @Override
         public String toString() {
             return "Config{" +
                     "duration=" + duration +
                     ", anchorTimestamp=" + anchorTimestamp +
+                    ", removeEdgesRem='" + removeEdgesRem + '\'' +
                     ", removeEdges=" + removeEdges +
+                    ", extendItemRem='" + extendItemRem + '\'' +
                     ", extendItem=" + extendItem +
                     '}';
         }

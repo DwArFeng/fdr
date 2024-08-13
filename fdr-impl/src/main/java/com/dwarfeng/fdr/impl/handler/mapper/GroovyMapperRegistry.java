@@ -64,7 +64,8 @@ public class GroovyMapperRegistry extends AbstractMapperRegistry {
                 groovyScript = out.toString();
             }
             String[] params = new String[]{"0"};
-            return JSON.toJSONString(new Config(groovyScript, params));
+            Config config = new Config(groovyScript, params);
+            return JSON.toJSONString(config, true);
         } catch (Exception e) {
             LOGGER.warn("读取文件 classpath:groovy/ExampleFilterProcessor.groovy 时出现异常", e);
             return "";

@@ -50,7 +50,8 @@ public class EnableRatioMapperRegistry extends AbstractMapperRegistry {
 
     @Override
     public String provideExampleParam() {
-        return JSON.toJSONString(new Config(false));
+        Config config = new Config(false);
+        return JSON.toJSONString(config, true);
     }
 
     @Override
@@ -79,7 +80,7 @@ public class EnableRatioMapperRegistry extends AbstractMapperRegistry {
             // 获得配置。
             Config config = JSON.parseObject(mapParam.getParam(), Config.class);
 
-            boolean invert = config.getInvert();
+            boolean invert = config.isInvert();
 
             // 对数据点进行时间排序(正序)
             items.sort(CompareUtil.DATA_HAPPENED_DATE_ASC_COMPARATOR);
@@ -155,26 +156,18 @@ public class EnableRatioMapperRegistry extends AbstractMapperRegistry {
 
     public static class Config implements Bean {
 
-        private static final long serialVersionUID = 6070172089803753764L;
+        private static final long serialVersionUID = 9005073232397362647L;
 
-        @JSONField(name = "invert", ordinal = 1)
-        private boolean invert;
-
-        @JSONField(name = "#invert", ordinal = 2, deserialize = false)
+        @JSONField(name = "#invert", ordinal = 1, deserialize = false)
         private String invertRem = "true：计算的是假值的比例;false：计算的是真值的比例";
+
+        @JSONField(name = "invert", ordinal = 2)
+        private boolean invert;
 
         public Config() {
         }
 
         public Config(boolean invert) {
-            this.invert = invert;
-        }
-
-        public boolean getInvert() {
-            return invert;
-        }
-
-        public void setInvert(boolean invert) {
             this.invert = invert;
         }
 
@@ -186,11 +179,19 @@ public class EnableRatioMapperRegistry extends AbstractMapperRegistry {
             this.invertRem = invertRem;
         }
 
+        public boolean isInvert() {
+            return invert;
+        }
+
+        public void setInvert(boolean invert) {
+            this.invert = invert;
+        }
+
         @Override
         public String toString() {
             return "Config{" +
-                    "invert=" + invert +
-                    ", invertRem='" + invertRem + '\'' +
+                    "invertRem='" + invertRem + '\'' +
+                    ", invert=" + invert +
                     '}';
         }
     }

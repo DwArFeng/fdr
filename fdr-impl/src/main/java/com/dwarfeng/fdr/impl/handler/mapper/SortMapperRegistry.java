@@ -50,7 +50,8 @@ public class SortMapperRegistry extends AbstractMapperRegistry {
 
     @Override
     public String provideExampleParam() {
-        return JSON.toJSONString(new Config(ORDER_ASC, ORDER_ASC));
+        Config config = new Config(ORDER_ASC, ORDER_ASC);
+        return JSON.toJSONString(config, true);
     }
 
     @Override
@@ -129,21 +130,17 @@ public class SortMapperRegistry extends AbstractMapperRegistry {
 
         private static final long serialVersionUID = 8892297543650020147L;
 
-        @JSONField(name = "sequence_point_key_order", ordinal = 1)
+        @JSONField(name = "#sequence_point_key_order", ordinal = 1, deserialize = false)
+        private String sequencePointKeyOrderRem = String.format("%d: 升序, %d: 降序", ORDER_ASC, ORDER_DESC);
+
+        @JSONField(name = "sequence_point_key_order", ordinal = 2)
         private int sequencePointKeyOrder;
 
-        @JSONField(name = "#sequence_point_key_order", ordinal = 2, deserialize = false)
-        private String sequencePointKeyOrderRem = String.format(
-                "%d: 升序, %d: 降序", ORDER_ASC, ORDER_DESC
-        );
+        @JSONField(name = "#item_happened_date_order", ordinal = 3, deserialize = false)
+        private String itemHappenedDateOrderRem = String.format("%d: 升序, %d: 降序", ORDER_ASC, ORDER_DESC);
 
-        @JSONField(name = "item_happened_date_order", ordinal = 3)
+        @JSONField(name = "item_happened_date_order", ordinal = 4)
         private int itemHappenedDateOrder;
-
-        @JSONField(name = "#item_happened_date_order", ordinal = 4, deserialize = false)
-        private String itemHappenedDateOrderRem = String.format(
-                "%d: 升序, %d: 降序", ORDER_ASC, ORDER_DESC
-        );
 
         public Config() {
         }
@@ -151,14 +148,6 @@ public class SortMapperRegistry extends AbstractMapperRegistry {
         public Config(int sequencePointKeyOrder, int itemHappenedDateOrder) {
             this.sequencePointKeyOrder = sequencePointKeyOrder;
             this.itemHappenedDateOrder = itemHappenedDateOrder;
-        }
-
-        public int getSequencePointKeyOrder() {
-            return sequencePointKeyOrder;
-        }
-
-        public void setSequencePointKeyOrder(int sequencePointKeyOrder) {
-            this.sequencePointKeyOrder = sequencePointKeyOrder;
         }
 
         public String getSequencePointKeyOrderRem() {
@@ -169,12 +158,12 @@ public class SortMapperRegistry extends AbstractMapperRegistry {
             this.sequencePointKeyOrderRem = sequencePointKeyOrderRem;
         }
 
-        public int getItemHappenedDateOrder() {
-            return itemHappenedDateOrder;
+        public int getSequencePointKeyOrder() {
+            return sequencePointKeyOrder;
         }
 
-        public void setItemHappenedDateOrder(int itemHappenedDateOrder) {
-            this.itemHappenedDateOrder = itemHappenedDateOrder;
+        public void setSequencePointKeyOrder(int sequencePointKeyOrder) {
+            this.sequencePointKeyOrder = sequencePointKeyOrder;
         }
 
         public String getItemHappenedDateOrderRem() {
@@ -185,11 +174,21 @@ public class SortMapperRegistry extends AbstractMapperRegistry {
             this.itemHappenedDateOrderRem = itemHappenedDateOrderRem;
         }
 
+        public int getItemHappenedDateOrder() {
+            return itemHappenedDateOrder;
+        }
+
+        public void setItemHappenedDateOrder(int itemHappenedDateOrder) {
+            this.itemHappenedDateOrder = itemHappenedDateOrder;
+        }
+
         @Override
         public String toString() {
             return "Config{" +
-                    "itemHappenedDateOrder=" + itemHappenedDateOrder +
+                    "sequencePointKeyOrderRem='" + sequencePointKeyOrderRem + '\'' +
+                    ", sequencePointKeyOrder=" + sequencePointKeyOrder +
                     ", itemHappenedDateOrderRem='" + itemHappenedDateOrderRem + '\'' +
+                    ", itemHappenedDateOrder=" + itemHappenedDateOrder +
                     '}';
         }
     }

@@ -59,7 +59,8 @@ public class TrimMapperRegistry extends AbstractMapperRegistry {
 
     @Override
     public String provideExampleParam() {
-        return JSON.toJSONString(new Config(false));
+        Config config = new Config(false);
+        return JSON.toJSONString(config, true);
     }
 
     @Component
@@ -72,7 +73,7 @@ public class TrimMapperRegistry extends AbstractMapperRegistry {
             // 获得配置。
             Config config = JSON.parseObject(mapParam.getParam(), Config.class);
 
-            return trimSequence(sequence, config.getOnlyTrimStart());
+            return trimSequence(sequence, config.isOnlyTrimStart());
         }
 
         // 排序并截取序列
@@ -103,26 +104,19 @@ public class TrimMapperRegistry extends AbstractMapperRegistry {
 
     public static class Config implements Bean {
 
-        private static final long serialVersionUID = 3688860693739279015L;
+        private static final long serialVersionUID = -5896032545570585424L;
 
-        @JSONField(name = "only_trim_start", ordinal = 1)
+        @JSONField(name = "#only_trim_start", ordinal = 1, deserialize = false)
+        private String onlyTrimStartRem =
+                "当 onlyTrimStart 为 true 时只剪裁序列的起始时间，false 裁剪序列的起始时间和结束时间";
+
+        @JSONField(name = "only_trim_start", ordinal = 2)
         private boolean onlyTrimStart = false;
-
-        @JSONField(name = "#only_trim_start", ordinal = 2, deserialize = false)
-        private String onlyTrimStartRem = "当onlyTrimStart为true时只剪裁序列的起始时间，false裁剪序列的起始时间和结束时间";
 
         public Config() {
         }
 
         public Config(boolean onlyTrimStart) {
-            this.onlyTrimStart = onlyTrimStart;
-        }
-
-        public boolean getOnlyTrimStart() {
-            return onlyTrimStart;
-        }
-
-        public void setOnlyTrimStart(boolean onlyTrimStart) {
             this.onlyTrimStart = onlyTrimStart;
         }
 
@@ -134,9 +128,20 @@ public class TrimMapperRegistry extends AbstractMapperRegistry {
             this.onlyTrimStartRem = onlyTrimStartRem;
         }
 
+        public boolean isOnlyTrimStart() {
+            return onlyTrimStart;
+        }
+
+        public void setOnlyTrimStart(boolean onlyTrimStart) {
+            this.onlyTrimStart = onlyTrimStart;
+        }
+
         @Override
         public String toString() {
-            return "Config{" + "onlyTrimStart=" + onlyTrimStart + ", onlyTrimStartRem='" + onlyTrimStartRem + '\'' + '}';
+            return "Config{" +
+                    "onlyTrimStartRem='" + onlyTrimStartRem + '\'' +
+                    ", onlyTrimStart=" + onlyTrimStart +
+                    '}';
         }
     }
 }

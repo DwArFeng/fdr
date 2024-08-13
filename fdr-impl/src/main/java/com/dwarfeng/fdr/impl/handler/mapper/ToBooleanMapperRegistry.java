@@ -52,7 +52,8 @@ public class ToBooleanMapperRegistry extends AbstractMapperRegistry {
 
     @Override
     public String provideExampleParam() {
-        return JSON.toJSONString(new Config(false, true));
+        Config config = new Config(false, true);
+        return JSON.toJSONString(config, true);
     }
 
     @Override
@@ -95,10 +96,10 @@ public class ToBooleanMapperRegistry extends AbstractMapperRegistry {
         private Item mapItem(Config config, Item item) {
 
             // 是否忽略大小写
-            boolean stringIgnoreCase = config.getStringIgnoreCase();
+            boolean stringIgnoreCase = config.isStringIgnoreCase();
             boolean itemValue = false;
             // 是否启用严格模式
-            if (config.getStrict()) {
+            if (config.isStrict()) {
 
                 if (!(item.getValue() instanceof String) && !(item.getValue() instanceof Number) && !(item.getValue() instanceof Boolean)) {
                     throw new IllegalStateException("严格模式：传入值格式不正确，请传入字符串、数值或者布尔");
@@ -156,19 +157,19 @@ public class ToBooleanMapperRegistry extends AbstractMapperRegistry {
 
     public static class Config implements Bean {
 
-        private static final long serialVersionUID = 6070172089803753762L;
+        private static final long serialVersionUID = 3399669781973928969L;
 
-        @JSONField(name = "strict", ordinal = 1)
+        @JSONField(name = "#strict", ordinal = 1, deserialize = false)
+        private String strictRem = "true：启用严格模式，不符合直接抛出异常; false：不启用严格模式，不符合转为false";
+
+        @JSONField(name = "strict", ordinal = 2)
         private boolean strict;
 
-        @JSONField(name = "#strict", ordinal = 2, deserialize = false)
-        private String onlyTrimStartRem = "true：启用严格模式，不符合直接抛出异常;false：不启用严格模式，不符合转为false";
-
-        @JSONField(name = "string_ignore_case", ordinal = 3)
-        private boolean stringIgnoreCase;
-
-        @JSONField(name = "#string_ignore_case", ordinal = 4, deserialize = false)
+        @JSONField(name = "#string_ignore_case", ordinal = 3, deserialize = false)
         private String stringIgnoreCaseRem = "true：忽略字符串大小写，false：不忽略大小写";
+
+        @JSONField(name = "string_ignore_case", ordinal = 4)
+        private boolean stringIgnoreCase;
 
         @JSONField(name = "#specification", ordinal = 5, deserialize = false)
         private String specificationRem =
@@ -185,28 +186,20 @@ public class ToBooleanMapperRegistry extends AbstractMapperRegistry {
             this.stringIgnoreCase = stringIgnoreCase;
         }
 
-        public boolean getStrict() {
+        public String getStrictRem() {
+            return strictRem;
+        }
+
+        public void setStrictRem(String strictRem) {
+            this.strictRem = strictRem;
+        }
+
+        public boolean isStrict() {
             return strict;
         }
 
         public void setStrict(boolean strict) {
             this.strict = strict;
-        }
-
-        public String getOnlyTrimStartRem() {
-            return onlyTrimStartRem;
-        }
-
-        public void setOnlyTrimStartRem(String onlyTrimStartRem) {
-            this.onlyTrimStartRem = onlyTrimStartRem;
-        }
-
-        public boolean getStringIgnoreCase() {
-            return stringIgnoreCase;
-        }
-
-        public void setStringIgnoreCase(boolean stringIgnoreCase) {
-            this.stringIgnoreCase = stringIgnoreCase;
         }
 
         public String getStringIgnoreCaseRem() {
@@ -215,6 +208,14 @@ public class ToBooleanMapperRegistry extends AbstractMapperRegistry {
 
         public void setStringIgnoreCaseRem(String stringIgnoreCaseRem) {
             this.stringIgnoreCaseRem = stringIgnoreCaseRem;
+        }
+
+        public boolean isStringIgnoreCase() {
+            return stringIgnoreCase;
+        }
+
+        public void setStringIgnoreCase(boolean stringIgnoreCase) {
+            this.stringIgnoreCase = stringIgnoreCase;
         }
 
         public String getSpecificationRem() {
@@ -228,10 +229,10 @@ public class ToBooleanMapperRegistry extends AbstractMapperRegistry {
         @Override
         public String toString() {
             return "Config{" +
-                    "strict=" + strict +
-                    ", onlyTrimStartRem='" + onlyTrimStartRem + '\'' +
-                    ", stringIgnoreCase=" + stringIgnoreCase +
+                    "strictRem='" + strictRem + '\'' +
+                    ", strict=" + strict +
                     ", stringIgnoreCaseRem='" + stringIgnoreCaseRem + '\'' +
+                    ", stringIgnoreCase=" + stringIgnoreCase +
                     ", specificationRem='" + specificationRem + '\'' +
                     '}';
         }

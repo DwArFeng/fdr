@@ -45,12 +45,12 @@ public class ToDoubleMapperRegistry extends AbstractMapperRegistry {
                 "2. 如果数据条目的值的类型是 String，那么尝试将其转换为双精度浮点数。 \n" +
                 "3. 如果数据条目的值的类型是布尔值，那么根据配置对布尔值进行映射。 \n" +
                 "4. 对于其它的情况，可以进行策略配置，映射为默认值、或 null、或忽略该数据条目。";
-
     }
 
     @Override
     public String provideExampleParam() {
-        return JSON.toJSONString(new Config(1.0, 0.0, 0, 0));
+        Config config = new Config(1.0, 0.0, 0, 0.0);
+        return JSON.toJSONString(config, true);
     }
 
     @Override
@@ -135,7 +135,7 @@ public class ToDoubleMapperRegistry extends AbstractMapperRegistry {
 
     public static class Config implements Bean {
 
-        private static final long serialVersionUID = 6070172089803753761L;
+        private static final long serialVersionUID = -2653631531920274799L;
 
         @JSONField(name = "boolean_true_value", ordinal = 1)
         private double booleanTrueValue;
@@ -143,20 +143,20 @@ public class ToDoubleMapperRegistry extends AbstractMapperRegistry {
         @JSONField(name = "boolean_false_value", ordinal = 2)
         private double booleanFalseValue;
 
-        @JSONField(name = "other_type_strategy", ordinal = 3)
-        private int otherTypeStrategy;
-
-        @JSONField(name = "#other_type_strategy", ordinal = 4, deserialize = false)
+        @JSONField(name = "#other_type_strategy", ordinal = 3, deserialize = false)
         private String otherTypeStrategyRem = "0: 默认值, 1: null, 2: 忽略该数据条目。";
 
+        @JSONField(name = "other_type_strategy", ordinal = 4)
+        private int otherTypeStrategy;
+
         @JSONField(name = "other_type_default_value", ordinal = 5)
-        private int otherTypeDefaultValue;
+        private Double otherTypeDefaultValue;
 
         public Config() {
         }
 
         public Config(
-                double booleanTrueValue, double booleanFalseValue, int otherTypeStrategy, int otherTypeDefaultValue
+                double booleanTrueValue, double booleanFalseValue, int otherTypeStrategy, Double otherTypeDefaultValue
         ) {
             this.booleanTrueValue = booleanTrueValue;
             this.booleanFalseValue = booleanFalseValue;
@@ -180,14 +180,6 @@ public class ToDoubleMapperRegistry extends AbstractMapperRegistry {
             this.booleanFalseValue = booleanFalseValue;
         }
 
-        public int getOtherTypeStrategy() {
-            return otherTypeStrategy;
-        }
-
-        public void setOtherTypeStrategy(int otherTypeStrategy) {
-            this.otherTypeStrategy = otherTypeStrategy;
-        }
-
         public String getOtherTypeStrategyRem() {
             return otherTypeStrategyRem;
         }
@@ -196,11 +188,19 @@ public class ToDoubleMapperRegistry extends AbstractMapperRegistry {
             this.otherTypeStrategyRem = otherTypeStrategyRem;
         }
 
-        public int getOtherTypeDefaultValue() {
+        public int getOtherTypeStrategy() {
+            return otherTypeStrategy;
+        }
+
+        public void setOtherTypeStrategy(int otherTypeStrategy) {
+            this.otherTypeStrategy = otherTypeStrategy;
+        }
+
+        public Double getOtherTypeDefaultValue() {
             return otherTypeDefaultValue;
         }
 
-        public void setOtherTypeDefaultValue(int otherTypeDefaultValue) {
+        public void setOtherTypeDefaultValue(Double otherTypeDefaultValue) {
             this.otherTypeDefaultValue = otherTypeDefaultValue;
         }
 
@@ -209,8 +209,8 @@ public class ToDoubleMapperRegistry extends AbstractMapperRegistry {
             return "Config{" +
                     "booleanTrueValue=" + booleanTrueValue +
                     ", booleanFalseValue=" + booleanFalseValue +
-                    ", otherTypeStrategy=" + otherTypeStrategy +
                     ", otherTypeStrategyRem='" + otherTypeStrategyRem + '\'' +
+                    ", otherTypeStrategy=" + otherTypeStrategy +
                     ", otherTypeDefaultValue=" + otherTypeDefaultValue +
                     '}';
         }
