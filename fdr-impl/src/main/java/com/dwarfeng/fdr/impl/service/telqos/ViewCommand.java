@@ -35,7 +35,6 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
 
     private static final String COMMAND_OPTION_LATEST = "latest";
     private static final String COMMAND_OPTION_LOOKUP = "lookup";
-    @SuppressWarnings("SpellCheckingInspection")
     private static final String COMMAND_OPTION_NATIVE_QUERY = "nquery";
     private static final String COMMAND_OPTION_NATIVE_QUERY_LONG_OPT = "native-query";
     private static final String COMMAND_OPTION_QUERY = "query";

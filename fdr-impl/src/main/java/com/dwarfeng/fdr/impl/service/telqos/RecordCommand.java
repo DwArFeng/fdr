@@ -23,7 +23,6 @@ public class RecordCommand extends CliCommand {
     private static final String COMMAND_OPTION_ONLINE = "online";
     private static final String COMMAND_OPTION_OFFLINE = "offline";
 
-
     private static final String[] COMMAND_OPTION_ARRAY = new String[]{
             COMMAND_OPTION_STATUS,
             COMMAND_OPTION_ONLINE,
