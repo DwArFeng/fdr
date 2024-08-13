@@ -4,7 +4,11 @@
 
 #### 功能构建
 
-- (无)
+- 优化部分过滤器的示例参数。
+  - com.dwarfeng.fdr.impl.handler.filter.ValueTypeFilterRegistry。
+  - com.dwarfeng.fdr.impl.handler.filter.LogicAndFilterRegistry。
+  - com.dwarfeng.fdr.impl.handler.filter.LogicNotFilterRegistry。
+  - com.dwarfeng.fdr.impl.handler.filter.RegexFilterRegistry。
 
 #### Bug修复
 

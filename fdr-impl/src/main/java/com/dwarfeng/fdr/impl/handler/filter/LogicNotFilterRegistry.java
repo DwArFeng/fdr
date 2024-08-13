@@ -45,7 +45,7 @@ public class LogicNotFilterRegistry extends AbstractFilterRegistry {
     @Override
     public String provideExampleParam() {
         Config config = new Config("delegate_type", "delegate_param");
-        return JSON.toJSONString(config);
+        return JSON.toJSONString(config, true);
     }
 
     @Override

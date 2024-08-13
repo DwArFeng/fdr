@@ -52,8 +52,8 @@ public class LogicAndFilterRegistry extends AbstractFilterRegistry {
         items.add(new Item("delegate_type_1", "delegate_param_1"));
         items.add(new Item("delegate_type_2", "delegate_param_2"));
         items.add(new Item("delegate_type_3", "delegate_param_3"));
-
-        return JSON.toJSONString(new Config(items));
+        Config config = new Config(items);
+        return JSON.toJSONString(config, true);
     }
 
     @Override

@@ -117,25 +117,17 @@ public class ValueTypeFilterRegistry extends AbstractFilterRegistry {
 
         private static final long serialVersionUID = -4561948369022196472L;
 
-        @JSONField(name = "canonical_names", ordinal = 1)
-        private List<String> canonicalNames;
+        @JSONField(name = "#canonical_names", ordinal = 1, deserialize = false)
+        private String canonicalNamesRem =
+                "在上述列表中填写类的全限定名，如果对象值的类型是列表中任意一个类的子类，则不被过滤。";
 
-        @JSONField(name = "#canonical_names", ordinal = 2, deserialize = false)
-        private String canonicalNamesRem = "在上述列表中填写类的全限定名，如果对象值的类型是列表中任意一个类的子类，" +
-                "则不被过滤。";
+        @JSONField(name = "canonical_names", ordinal = 2)
+        private List<String> canonicalNames;
 
         public Config() {
         }
 
         public Config(List<String> canonicalNames) {
-            this.canonicalNames = canonicalNames;
-        }
-
-        public List<String> getCanonicalNames() {
-            return canonicalNames;
-        }
-
-        public void setCanonicalNames(List<String> canonicalNames) {
             this.canonicalNames = canonicalNames;
         }
 
@@ -147,11 +139,19 @@ public class ValueTypeFilterRegistry extends AbstractFilterRegistry {
             this.canonicalNamesRem = canonicalNamesRem;
         }
 
+        public List<String> getCanonicalNames() {
+            return canonicalNames;
+        }
+
+        public void setCanonicalNames(List<String> canonicalNames) {
+            this.canonicalNames = canonicalNames;
+        }
+
         @Override
         public String toString() {
             return "Config{" +
-                    "canonicalNames=" + canonicalNames +
-                    ", canonicalNamesRem='" + canonicalNamesRem + '\'' +
+                    "canonicalNamesRem='" + canonicalNamesRem + '\'' +
+                    ", canonicalNames=" + canonicalNames +
                     '}';
         }
     }
