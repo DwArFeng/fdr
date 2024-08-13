@@ -4,8 +4,13 @@
 
 #### 功能构建
 
+- Wiki 编写。
+  - docs/wiki/zh_CN/Bridge.md。
+  - docs/wiki/zh_CN/PresetBridgeImplements.md。
+
 - Wiki 更新。
   - docs/wiki/zh_CN/HowToUseTelqosViewCommand.md。
+  - docs/wiki/zh_CN/Contents.md。
 
 - 优化重置功能。
   - 为重置处理器的重置方法添加了同步锁。
