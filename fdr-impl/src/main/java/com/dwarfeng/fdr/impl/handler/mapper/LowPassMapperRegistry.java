@@ -78,31 +78,28 @@ public class LowPassMapperRegistry extends AbstractMapperRegistry {
 
         @Override
         protected Sequence doOneToOneMap(MapParam mapParam, Sequence sequence) {
-
             return lowPass(mapParam, sequence);
         }
 
         @SuppressWarnings("DuplicatedCode")
-        public static Sequence lowPass(MapParam mapParam, Sequence sequence) {
-            // 获得配置。
+        private Sequence lowPass(MapParam mapParam, Sequence sequence) {
+            // 解析配置。
             Config config = JSON.parseObject(mapParam.getParam(), Config.class);
 
+            // 展开参数。
             double threshold = config.getThreshold();
-
             boolean canEqual = config.isCanEqual();
-
             boolean invert = config.isInvert();
 
-            // 定义数据条目列表。
-            List<Item> items;
+            // 定义数据条目列表，并进行过滤。
+            List<Item> items = doFilter(sequence, threshold, canEqual, invert);
 
-            items = doFilter(sequence, threshold, canEqual, invert);
-
+            // 返回结果。
             return new Sequence(sequence.getPointKey(), items, sequence.getStartDate(), sequence.getEndDate());
         }
 
         // 为了保证代码的可读性，此处代码不做简化。
-        @SuppressWarnings("ConstantValue")
+        @SuppressWarnings({"ConstantValue", "DuplicatedCode"})
         private static List<Item> doFilter(Sequence sequence, double threshold, boolean canEqual, boolean invert) {
             List<Item> items;
             if (invert && canEqual) {

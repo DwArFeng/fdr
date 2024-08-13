@@ -25,6 +25,12 @@
   - com.dwarfeng.fdr.impl.handler.mapper.WindowMapperRegistry。
   - com.dwarfeng.fdr.impl.handler.mapper.GroovyMapperRegistry。
 
+- 优化部分过滤器的调用关系。
+  - com.dwarfeng.fdr.impl.handler.mapper.HighPassCounterMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.HighPassMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassCounterMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassMapperRegistry。
+
 #### Bug修复
 
 - 修复部分映射器配置 Bean 不规范的问题。
