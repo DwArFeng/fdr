@@ -177,7 +177,7 @@ nv -query [-json json-string] [-jf json-file]
     },
     {
       "type": "last_mapper",
-      "param": ""
+      "param": "{\"empty_items_strategy\": 1}"
     },
     {
       "type": "align_mapper",

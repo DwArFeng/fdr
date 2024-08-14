@@ -4,6 +4,13 @@
 
 #### 功能构建
 
+- Wiki 编写。
+  - docs/wiki/zh_CN/Mapper.md。
+
+- Wiki 更新。
+  - docs/wiki/zh_CN/HowToUseTelqosViewCommand.md。
+  - docs/wiki/zh_CN/Contents.md。
+
 - 优化 HibernateBridge 的本地查询机制。
   - 增加一般数据本地查询的抽象类 `HibernateBridgeNormalDataNativeLookup`。
   - 增加被过滤数据本地查询的抽象类 `HibernateBridgeFilteredDataNativeLookup`。
