@@ -1,8 +1,12 @@
 package com.dwarfeng.fdr.impl.handler.mapper;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.fdr.stack.exception.MapperException;
 import com.dwarfeng.fdr.stack.exception.MapperMakeException;
 import com.dwarfeng.fdr.stack.handler.Mapper;
+import com.dwarfeng.subgrade.stack.bean.Bean;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -21,6 +25,9 @@ import java.util.List;
 public class FirstMapperRegistry extends AbstractMapperRegistry {
 
     public static final String MAPPER_TYPE = "first_mapper";
+
+    private static final int EMPTY_ITEMS_STRATEGY_VOID = 0;
+    private static final int EMPTY_ITEMS_STRATEGY_NULL = 1;
 
     private final ApplicationContext ctx;
 
@@ -43,7 +50,8 @@ public class FirstMapperRegistry extends AbstractMapperRegistry {
 
     @Override
     public String provideExampleParam() {
-        return "";
+        Config config = new Config(0);
+        return JSON.toJSONString(config, true);
     }
 
     @Override
@@ -70,7 +78,7 @@ public class FirstMapperRegistry extends AbstractMapperRegistry {
         protected Object doAggregate(MapParam mapParam, List<Item> items, Date startDate, Date endDate) {
             // 如果列表为空，则返回 VOID 值。
             if (items.isEmpty()) {
-                return VOID;
+                return returnOnEmptyItems(mapParam);
             }
 
             // 排序以及过滤数据。
@@ -78,10 +86,89 @@ public class FirstMapperRegistry extends AbstractMapperRegistry {
 
             // 如果列表为空，则返回 VOID 值，否则返回列表中的第一个元素的值。
             if (items.isEmpty()) {
-                return VOID;
+                return returnOnEmptyItems(mapParam);
             } else {
                 return items.get(0).getValue();
             }
+        }
+
+        @SuppressWarnings("DuplicatedCode")
+        private Object returnOnEmptyItems(MapParam mapParam) {
+            // 展开参数。
+            String param = mapParam.getParam();
+
+            // 旧版本兼容性处理：如果参数为空，则返回 VOID。
+            if (StringUtils.isBlank(param)) {
+                return VOID;
+            }
+
+            // 解析参数。
+            Config config = JSON.parseObject(param, Config.class);
+            int emptyItemsStrategy = config.getEmptyItemsStrategy();
+
+            // 根据参数返回不同的值。
+            switch (emptyItemsStrategy) {
+                case EMPTY_ITEMS_STRATEGY_VOID:
+                    return VOID;
+                case EMPTY_ITEMS_STRATEGY_NULL:
+                    return null;
+                default:
+                    throw new IllegalArgumentException("未知的 emptyItemsStrategy 值: " + emptyItemsStrategy);
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "FirstMapper{}";
+        }
+    }
+
+    /**
+     * 配置。
+     *
+     * @author DwArFeng
+     * @since 2.2.0
+     */
+    public static class Config implements Bean {
+
+        private static final long serialVersionUID = -6121438121246751483L;
+
+        @JSONField(name = "#empty_items_strategy", ordinal = 1, deserialize = false)
+        private String emptyItemsStrategyRem = EMPTY_ITEMS_STRATEGY_VOID + ": 返回 VOID, " +
+                EMPTY_ITEMS_STRATEGY_NULL + ": 返回 null";
+
+        @JSONField(name = "empty_items_strategy", ordinal = 1)
+        private int emptyItemsStrategy;
+
+        public Config() {
+        }
+
+        public Config(int emptyItemsStrategy) {
+            this.emptyItemsStrategy = emptyItemsStrategy;
+        }
+
+        public String getEmptyItemsStrategyRem() {
+            return emptyItemsStrategyRem;
+        }
+
+        public void setEmptyItemsStrategyRem(String emptyItemsStrategyRem) {
+            this.emptyItemsStrategyRem = emptyItemsStrategyRem;
+        }
+
+        public int getEmptyItemsStrategy() {
+            return emptyItemsStrategy;
+        }
+
+        public void setEmptyItemsStrategy(int emptyItemsStrategy) {
+            this.emptyItemsStrategy = emptyItemsStrategy;
+        }
+
+        @Override
+        public String toString() {
+            return "Config{" +
+                    "emptyItemsStrategyRem='" + emptyItemsStrategyRem + '\'' +
+                    ", emptyItemsStrategy=" + emptyItemsStrategy +
+                    '}';
         }
     }
 }

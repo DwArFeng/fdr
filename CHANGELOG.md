@@ -4,6 +4,10 @@
 
 #### 功能构建
 
+- 优化部分映射器行为。
+  - 为 FirstMapper 增加配置项，可以选择在 Item 列表为空时的行为。
+  - 为 LastMapper 增加配置项，可以选择在 Item 列表为空时的行为。
+
 - 优化部分类的文档注释。
   - com.dwarfeng.fdr.impl.handler.mapper.AggregateMapper。
 
