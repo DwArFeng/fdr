@@ -336,7 +336,7 @@ public class RecordProcessor {
             try {
                 consumer.consume(recordInfo2Consume);
             } catch (Exception e) {
-                LOGGER.warn("逻辑侧消费处理器消费元素时发生异常, 抛弃 RecordInfo: " + recordInfo2Consume, e);
+                LOGGER.warn("逻辑侧消费处理器消费元素时发生异常, 抛弃 RecordInfo: {}", recordInfo2Consume, e);
             }
         }
         scheduledFuture.cancel(true);
@@ -383,7 +383,7 @@ public class RecordProcessor {
         public void consume(RecordInfo recordInfo) throws HandlerException {
             try {
                 // 记录日志，准备工作。
-                LOGGER.debug("记录数据信息: " + recordInfo);
+                LOGGER.debug("记录数据信息: {}", recordInfo);
                 LongIdKey pointKey = recordInfo.getPointKey();
 
                 // 获取 RecordContext。
@@ -402,9 +402,9 @@ public class RecordProcessor {
                     Washer washer = entry.getValue();
 
                     Object rawValue = recordInfo.getValue();
-                    LOGGER.debug("数据信息经过过滤前清洗, 原始数据点信息: " + rawValue);
+                    LOGGER.debug("数据信息经过过滤前清洗, 原始数据点信息: {}", rawValue);
                     Object washedValue = washer.wash(rawValue);
-                    LOGGER.debug("数据信息经过过滤前清洗, 清洗数据点信息: " + washedValue);
+                    LOGGER.debug("数据信息经过过滤前清洗, 清洗数据点信息: {}", washedValue);
 
                     recordInfo.setValue(washedValue);
                 }
@@ -424,7 +424,7 @@ public class RecordProcessor {
                         FilteredData filteredRecord = new FilteredData(
                                 pointKey, filterKey, value, testResult.getMessage(), happenedDate
                         );
-                        LOGGER.debug("数据信息未通过过滤, 过滤数据点信息: " + filteredRecord);
+                        LOGGER.debug("数据信息未通过过滤, 过滤数据点信息: {}", filteredRecord);
 
                         if (point.isFilteredKeepEnabled()) {
                             filteredKeepConsumeHandler.accept(filteredRecord);
@@ -441,9 +441,9 @@ public class RecordProcessor {
                     Washer washer = entry.getValue();
 
                     Object rawValue = recordInfo.getValue();
-                    LOGGER.debug("数据信息经过过滤后清洗, 原始数据点信息: " + rawValue);
+                    LOGGER.debug("数据信息经过过滤后清洗, 原始数据点信息: {}", rawValue);
                     Object washedValue = washer.wash(rawValue);
-                    LOGGER.debug("数据信息经过过滤后清洗, 清洗数据点信息: " + washedValue);
+                    LOGGER.debug("数据信息经过过滤后清洗, 清洗数据点信息: {}", washedValue);
 
                     recordInfo.setValue(washedValue);
                 }
@@ -463,7 +463,7 @@ public class RecordProcessor {
                         TriggeredData triggeredRecord = new TriggeredData(
                                 pointKey, triggerKey, value, testResult.getMessage(), happenedDate
                         );
-                        LOGGER.debug("数据信息满足触发条件, 触发数据点信息: " + triggeredRecord);
+                        LOGGER.debug("数据信息满足触发条件, 触发数据点信息: {}", triggeredRecord);
 
                         if (point.isTriggeredKeepEnabled()) {
                             triggeredKeepConsumeHandler.accept(triggeredRecord);
@@ -480,7 +480,7 @@ public class RecordProcessor {
                     Date happenedDate = recordInfo.getHappenedDate();
 
                     NormalData normalRecord = new NormalData(pointKey, value, happenedDate);
-                    LOGGER.debug("记录一般数据: " + normalRecord);
+                    LOGGER.debug("记录一般数据: {}", normalRecord);
 
                     if (point.isNormalKeepEnabled()) {
                         normalKeepConsumeHandler.accept(normalRecord);
@@ -625,7 +625,7 @@ public class RecordProcessor {
                     consumer.consume(recordInfo);
                 } catch (Exception e) {
                     if (Objects.nonNull(recordInfo)) {
-                        LOGGER.warn("记录数据信息时发生异常, 抛弃 RecordInfo: " + recordInfo, e);
+                        LOGGER.warn("记录数据信息时发生异常, 抛弃 RecordInfo: {}", recordInfo, e);
                     }
                 }
             }

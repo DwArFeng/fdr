@@ -33,7 +33,7 @@ public class WasherHandlerImpl implements WasherHandler {
                     .findFirst().orElseThrow(() -> new UnsupportedWasherTypeException(type));
             Washer washer = washerMaker.makeWasher(type, param);
             LOGGER.debug("清洗器构建成功!");
-            LOGGER.debug("清洗器: " + washer);
+            LOGGER.debug("清洗器: {}", washer);
             return washer;
         } catch (WasherException e) {
             throw e;

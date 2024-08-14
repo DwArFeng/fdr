@@ -131,7 +131,7 @@ public class Launcher {
                 LOGGER.error("无法启动记录服务，异常原因如下", e);
             }
         } else if (startRecordDelay > 0) {
-            LOGGER.info(startRecordDelay + " 毫秒后启动记录服务...");
+            LOGGER.info("{} 毫秒后启动记录服务...", startRecordDelay);
             scheduler.schedule(
                     () -> {
                         LOGGER.info("启动记录服务...");

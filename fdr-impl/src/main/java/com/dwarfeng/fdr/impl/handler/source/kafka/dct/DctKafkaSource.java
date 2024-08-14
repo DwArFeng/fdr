@@ -92,7 +92,7 @@ public class DctKafkaSource extends AbstractSource {
                 );
                 context.record(recordInfo);
             } catch (RecordStoppedException e) {
-                LOGGER.warn("记录处理器被禁用， 消息 " + message + " 以及其后同一批次的消息均不会被提交", e);
+                LOGGER.warn("记录处理器被禁用， 消息 {} 以及其后同一批次的消息均不会被提交", message, e);
                 // 如果记录处理器被禁用，则放弃其后同一批次的消息记录，并且妥善处理offset的提交。
                 // Offset 精确设置到没有提交成功的最后一条信息上。
                 consumer.seek(new TopicPartition(consumerRecord.topic(), consumerRecord.partition()),
@@ -100,7 +100,7 @@ public class DctKafkaSource extends AbstractSource {
                 ack.acknowledge();
                 return;
             } catch (Exception e) {
-                LOGGER.warn("记录处理器无法处理, 消息 " + message + " 将会被忽略", e);
+                LOGGER.warn("记录处理器无法处理, 消息 {} 将会被忽略", message, e);
             }
         }
         ack.acknowledge();

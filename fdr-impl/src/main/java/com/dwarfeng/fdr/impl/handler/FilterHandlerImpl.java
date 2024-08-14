@@ -33,7 +33,7 @@ public class FilterHandlerImpl implements FilterHandler {
                     .findFirst().orElseThrow(() -> new UnsupportedFilterTypeException(type));
             Filter filter = filterMaker.makeFilter(type, param);
             LOGGER.debug("过滤器构建成功!");
-            LOGGER.debug("过滤器: " + filter);
+            LOGGER.debug("过滤器: {}", filter);
             return filter;
         } catch (FilterException e) {
             throw e;

@@ -33,7 +33,7 @@ public class TriggerHandlerImpl implements TriggerHandler {
                     .findFirst().orElseThrow(() -> new UnsupportedTriggerTypeException(type));
             Trigger trigger = triggerMaker.makeTrigger(type, param);
             LOGGER.debug("触发器构建成功!");
-            LOGGER.debug("触发器: " + trigger);
+            LOGGER.debug("触发器: {}", trigger);
             return trigger;
         } catch (TriggerException e) {
             throw e;

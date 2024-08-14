@@ -174,7 +174,7 @@ public class ConsumeHandlerImpl<D extends Data> implements ConsumeHandler<D> {
             try {
                 consumer.consume(element2Consume);
             } catch (Exception e) {
-                LOGGER.warn("记录侧消费处理器消费元素时发生异常, 最多抛弃 " + element2Consume.size() + " 个元素", e);
+                LOGGER.warn("记录侧消费处理器消费元素时发生异常, 最多抛弃 {} 个元素", element2Consume.size(), e);
             }
         }
         scheduledFuture.cancel(true);
@@ -326,7 +326,7 @@ public class ConsumeHandlerImpl<D extends Data> implements ConsumeHandler<D> {
                     }
                 } catch (Exception e) {
                     if (Objects.nonNull(pollList)) {
-                        LOGGER.warn("消费元素时发生异常, 最多抛弃 " + pollList.size() + " 个元素", e);
+                        LOGGER.warn("消费元素时发生异常, 最多抛弃 {} 个元素", pollList.size(), e);
                     }
                 }
             }

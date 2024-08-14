@@ -64,14 +64,14 @@ public abstract class PersistConsumer<D extends Data> implements Consumer<D> {
                 persistHandler.record(record);
                 successList.add(record);
             } catch (Exception e) {
-                LOGGER.error("数据记录失败, 放弃对该数据的记录: " + record, e);
+                LOGGER.error("数据记录失败, 放弃对该数据的记录: {}", record, e);
                 failedList.add(record);
             }
         }
 
         // 如果有记录失败的数据记录，则记录日志。
         if (!failedList.isEmpty()) {
-            LOGGER.error("推送数据时发生异常, 最多 " + failedList.size() + " 个数据信息丢失");
+            LOGGER.error("推送数据时发生异常, 最多 {} 个数据信息丢失", failedList.size());
             failedList.forEach(record -> LOGGER.debug(Objects.toString(record)));
         }
 
@@ -100,14 +100,14 @@ public abstract class PersistConsumer<D extends Data> implements Consumer<D> {
             try {
                 doPush(record);
             } catch (Exception e) {
-                LOGGER.error("数据推送失败, 放弃对该数据的推送: " + record, e);
+                LOGGER.error("数据推送失败, 放弃对该数据的推送: {}", record, e);
                 failedList.add(record);
             }
         }
 
         // 如果有推送失败的数据记录，则记录日志。
         if (!failedList.isEmpty()) {
-            LOGGER.error("推送数据时发生异常, 最多 " + failedList.size() + " 个数据信息丢失");
+            LOGGER.error("推送数据时发生异常, 最多 {} 个数据信息丢失", failedList.size());
             failedList.forEach(record -> LOGGER.debug(Objects.toString(record)));
         }
     }

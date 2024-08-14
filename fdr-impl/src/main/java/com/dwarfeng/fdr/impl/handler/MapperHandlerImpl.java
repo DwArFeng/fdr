@@ -42,7 +42,7 @@ public class MapperHandlerImpl implements MapperHandler {
                     .findFirst().orElseThrow(() -> new UnsupportedMapperTypeException(type));
             Mapper mapper = mapperMaker.makeMapper();
             LOGGER.debug("映射器构建成功!");
-            LOGGER.debug("映射器: " + mapper);
+            LOGGER.debug("映射器: {}", mapper);
             return mapper;
         } catch (MapperException e) {
             throw e;

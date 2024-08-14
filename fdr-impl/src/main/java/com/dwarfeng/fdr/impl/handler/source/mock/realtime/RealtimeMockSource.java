@@ -115,7 +115,7 @@ public class RealtimeMockSource extends AbstractSource {
             for (RealtimeMockSourceDataConfigItem dataConfigItem : dataConfigItems) {
                 String pointType = dataConfigItem.getPointType();
                 if (!methodMap.containsKey(pointType)) {
-                    LOGGER.warn("未知的数据点类型: " + pointType);
+                    LOGGER.warn("未知的数据点类型: {}", pointType);
                     continue;
                 }
 
