@@ -5,20 +5,32 @@ import com.dwarfeng.fdr.impl.handler.bridge.hibernate.service.HibernateBridgeNor
 import com.dwarfeng.subgrade.sdk.hibernate.nativelookup.AbstractDialectNativeLookup;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import org.springframework.stereotype.Component;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-@Component
-public class HibernateBridgeNormalDataNativeLookup extends AbstractDialectNativeLookup<HibernateBridgeNormalData> {
+/**
+ * Hibernate 桥接器一般数据本地查询。
+ *
+ * @author DwArFeng
+ * @since 2.2.0
+ */
+public abstract class HibernateBridgeNormalDataNativeLookup extends
+        AbstractDialectNativeLookup<HibernateBridgeNormalData> {
 
-    public static final String SUPPORT_TYPE = "org.hibernate.dialect.MySQL8Dialect";
+    public HibernateBridgeNormalDataNativeLookup(String supportDialect) {
+        super(supportDialect);
+    }
 
-    public HibernateBridgeNormalDataNativeLookup() {
-        super(SUPPORT_TYPE);
+    /*
+     * 在 HibernateBridge 中，所有的数据查询业务均不需要调用该方法。
+     * 因此为了简化实现，该方法直接抛出异常。
+     */
+    @Override
+    public List<HibernateBridgeNormalData> lookupEntity(Connection connection, String preset, Object[] args) {
+        throw new IllegalArgumentException("不支持不带分页信息的查询");
     }
 
     @Override
@@ -32,11 +44,6 @@ public class HibernateBridgeNormalDataNativeLookup extends AbstractDialectNative
             default:
                 return false;
         }
-    }
-
-    @Override
-    public List<HibernateBridgeNormalData> lookupEntity(Connection connection, String preset, Object[] args) {
-        throw new IllegalArgumentException("不支持不带分页信息的查询");
     }
 
     @Override
@@ -68,41 +75,31 @@ public class HibernateBridgeNormalDataNativeLookup extends AbstractDialectNative
         int offset = pagingInfo.getPage() * pagingInfo.getRows();
         int limit = pagingInfo.getRows();
 
-        // 构建SQL。
-        StringBuilder sqlBuilder = new StringBuilder();
-        Mysql8NativeLookupUtil.selectColumnsFromTable(
-                sqlBuilder, "tbl_hibernate_bridge_normal_data", "tbl",
-                "id", "point_id", "value", "happened_date"
-        );
-        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
-        Mysql8NativeLookupUtil.where(sqlBuilder);
-        Mysql8NativeLookupUtil.pointLongIdEquals(sqlBuilder, "tbl", "point_id");
-        Mysql8NativeLookupUtil.and(sqlBuilder);
-        Mysql8NativeLookupUtil.happenedDateBetweenCloseClose(sqlBuilder, "tbl", "happened_date");
-        Mysql8NativeLookupUtil.orderByHappenedDateAsc(sqlBuilder, "tbl", "happened_date");
-        Mysql8NativeLookupUtil.limit(sqlBuilder);
-
-        // 构建 PreparedStatement。
-        PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
-        preparedStatement.setLong(1, pointLongId);
-        preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
-        preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
-        preparedStatement.setInt(4, offset);
-        preparedStatement.setInt(5, limit);
-
-        // 执行查询，构建结果。
-        ResultSet resultSet = preparedStatement.executeQuery();
-        List<HibernateBridgeNormalData> HibernateBridgeNormalDatas = new ArrayList<>();
-        while (resultSet.next()) {
-            HibernateBridgeNormalDatas.add(new HibernateBridgeNormalData(
-                    new LongIdKey(resultSet.getLong(1)),
-                    new LongIdKey(resultSet.getLong(2)),
-                    resultSet.getString(3),
-                    new Date(resultSet.getTimestamp(4).getTime())
-            ));
-        }
-        return HibernateBridgeNormalDatas;
+        // 查询数据。
+        return lookupChildForPointBetweenCloseClose(connection, pointLongId, startDate, endDate, offset, limit);
     }
+
+    /**
+     * 查询指定点位在指定时间范围内的数据。
+     *
+     * <p>
+     * 该方法查询的数据的时间范围为 [startDate, endDate]，即包含起始时间，包含结束时间。
+     *
+     * <p>
+     * 返回的数据从 offset（以 0 开始） 开始，最多返回 limit 条数据。
+     *
+     * @param connection  数据库连接。
+     * @param pointLongId 点位 ID。
+     * @param startDate   起始时间。
+     * @param endDate     结束时间。
+     * @param offset      偏移量。
+     * @param limit       限制量。
+     * @return 查询得到的数据。
+     * @throws SQLException SQL 异常。
+     */
+    protected abstract List<HibernateBridgeNormalData> lookupChildForPointBetweenCloseClose(
+            Connection connection, long pointLongId, Date startDate, Date endDate, int offset, int limit
+    ) throws SQLException;
 
     @SuppressWarnings("DuplicatedCode")
     private List<HibernateBridgeNormalData> childForPointBetweenCloseOpen(
@@ -115,41 +112,31 @@ public class HibernateBridgeNormalDataNativeLookup extends AbstractDialectNative
         int offset = pagingInfo.getPage() * pagingInfo.getRows();
         int limit = pagingInfo.getRows();
 
-        // 构建SQL。
-        StringBuilder sqlBuilder = new StringBuilder();
-        Mysql8NativeLookupUtil.selectColumnsFromTable(
-                sqlBuilder, "tbl_hibernate_bridge_normal_data", "tbl",
-                "id", "point_id", "value", "happened_date"
-        );
-        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
-        Mysql8NativeLookupUtil.where(sqlBuilder);
-        Mysql8NativeLookupUtil.pointLongIdEquals(sqlBuilder, "tbl", "point_id");
-        Mysql8NativeLookupUtil.and(sqlBuilder);
-        Mysql8NativeLookupUtil.happenedDateBetweenCloseOpen(sqlBuilder, "tbl", "happened_date");
-        Mysql8NativeLookupUtil.orderByHappenedDateAsc(sqlBuilder, "tbl", "happened_date");
-        Mysql8NativeLookupUtil.limit(sqlBuilder);
-
-        // 构建 PreparedStatement。
-        PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
-        preparedStatement.setLong(1, pointLongId);
-        preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
-        preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
-        preparedStatement.setInt(4, offset);
-        preparedStatement.setInt(5, limit);
-
-        // 执行查询，构建结果。
-        ResultSet resultSet = preparedStatement.executeQuery();
-        List<HibernateBridgeNormalData> HibernateBridgeNormalDatas = new ArrayList<>();
-        while (resultSet.next()) {
-            HibernateBridgeNormalDatas.add(new HibernateBridgeNormalData(
-                    new LongIdKey(resultSet.getLong(1)),
-                    new LongIdKey(resultSet.getLong(2)),
-                    resultSet.getString(3),
-                    new Date(resultSet.getTimestamp(4).getTime())
-            ));
-        }
-        return HibernateBridgeNormalDatas;
+        // 查询数据。
+        return lookupChildForPointBetweenCloseOpen(connection, pointLongId, startDate, endDate, offset, limit);
     }
+
+    /**
+     * 查询指定点位在指定时间范围内的数据。
+     *
+     * <p>
+     * 该方法查询的数据的时间范围为 [startDate, endDate)，即包含起始时间，不包含结束时间。
+     *
+     * <p>
+     * 返回的数据从 offset（以 0 开始） 开始，最多返回 limit 条数据。
+     *
+     * @param connection  数据库连接。
+     * @param pointLongId 点位 ID。
+     * @param startDate   起始时间。
+     * @param endDate     结束时间。
+     * @param offset      偏移量。
+     * @param limit       限制量。
+     * @return 查询得到的数据。
+     * @throws SQLException SQL 异常。
+     */
+    protected abstract List<HibernateBridgeNormalData> lookupChildForPointBetweenCloseOpen(
+            Connection connection, long pointLongId, Date startDate, Date endDate, int offset, int limit
+    ) throws SQLException;
 
     @SuppressWarnings("DuplicatedCode")
     private List<HibernateBridgeNormalData> childForPointBetweenOpenClose(
@@ -162,41 +149,31 @@ public class HibernateBridgeNormalDataNativeLookup extends AbstractDialectNative
         int offset = pagingInfo.getPage() * pagingInfo.getRows();
         int limit = pagingInfo.getRows();
 
-        // 构建SQL。
-        StringBuilder sqlBuilder = new StringBuilder();
-        Mysql8NativeLookupUtil.selectColumnsFromTable(
-                sqlBuilder, "tbl_hibernate_bridge_normal_data", "tbl",
-                "id", "point_id", "value", "happened_date"
-        );
-        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
-        Mysql8NativeLookupUtil.where(sqlBuilder);
-        Mysql8NativeLookupUtil.pointLongIdEquals(sqlBuilder, "tbl", "point_id");
-        Mysql8NativeLookupUtil.and(sqlBuilder);
-        Mysql8NativeLookupUtil.happenedDateBetweenOpenClose(sqlBuilder, "tbl", "happened_date");
-        Mysql8NativeLookupUtil.orderByHappenedDateAsc(sqlBuilder, "tbl", "happened_date");
-        Mysql8NativeLookupUtil.limit(sqlBuilder);
-
-        // 构建 PreparedStatement。
-        PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
-        preparedStatement.setLong(1, pointLongId);
-        preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
-        preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
-        preparedStatement.setInt(4, offset);
-        preparedStatement.setInt(5, limit);
-
-        // 执行查询，构建结果。
-        ResultSet resultSet = preparedStatement.executeQuery();
-        List<HibernateBridgeNormalData> HibernateBridgeNormalDatas = new ArrayList<>();
-        while (resultSet.next()) {
-            HibernateBridgeNormalDatas.add(new HibernateBridgeNormalData(
-                    new LongIdKey(resultSet.getLong(1)),
-                    new LongIdKey(resultSet.getLong(2)),
-                    resultSet.getString(3),
-                    new Date(resultSet.getTimestamp(4).getTime())
-            ));
-        }
-        return HibernateBridgeNormalDatas;
+        // 查询数据。
+        return lookupChildForPointBetweenOpenClose(connection, pointLongId, startDate, endDate, offset, limit);
     }
+
+    /**
+     * 查询指定点位在指定时间范围内的数据。
+     *
+     * <p>
+     * 该方法查询的数据的时间范围为 (startDate, endDate]，即不包含起始时间，包含结束时间。
+     *
+     * <p>
+     * 返回的数据从 offset（以 0 开始） 开始，最多返回 limit 条数据。
+     *
+     * @param connection  数据库连接。
+     * @param pointLongId 点位 ID。
+     * @param startDate   起始时间。
+     * @param endDate     结束时间。
+     * @param offset      偏移量。
+     * @param limit       限制量。
+     * @return 查询得到的数据。
+     * @throws SQLException SQL 异常。
+     */
+    protected abstract List<HibernateBridgeNormalData> lookupChildForPointBetweenOpenClose(
+            Connection connection, long pointLongId, Date startDate, Date endDate, int offset, int limit
+    ) throws SQLException;
 
     @SuppressWarnings("DuplicatedCode")
     private List<HibernateBridgeNormalData> childForPointBetweenOpenOpen(
@@ -209,41 +186,31 @@ public class HibernateBridgeNormalDataNativeLookup extends AbstractDialectNative
         int offset = pagingInfo.getPage() * pagingInfo.getRows();
         int limit = pagingInfo.getRows();
 
-        // 构建SQL。
-        StringBuilder sqlBuilder = new StringBuilder();
-        Mysql8NativeLookupUtil.selectColumnsFromTable(
-                sqlBuilder, "tbl_hibernate_bridge_normal_data", "tbl",
-                "id", "point_id", "value", "happened_date"
-        );
-        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
-        Mysql8NativeLookupUtil.where(sqlBuilder);
-        Mysql8NativeLookupUtil.pointLongIdEquals(sqlBuilder, "tbl", "point_id");
-        Mysql8NativeLookupUtil.and(sqlBuilder);
-        Mysql8NativeLookupUtil.happenedDateBetweenOpenOpen(sqlBuilder, "tbl", "happened_date");
-        Mysql8NativeLookupUtil.orderByHappenedDateAsc(sqlBuilder, "tbl", "happened_date");
-        Mysql8NativeLookupUtil.limit(sqlBuilder);
-
-        // 构建 PreparedStatement。
-        PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
-        preparedStatement.setLong(1, pointLongId);
-        preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
-        preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
-        preparedStatement.setInt(4, offset);
-        preparedStatement.setInt(5, limit);
-
-        // 执行查询，构建结果。
-        ResultSet resultSet = preparedStatement.executeQuery();
-        List<HibernateBridgeNormalData> HibernateBridgeNormalDatas = new ArrayList<>();
-        while (resultSet.next()) {
-            HibernateBridgeNormalDatas.add(new HibernateBridgeNormalData(
-                    new LongIdKey(resultSet.getLong(1)),
-                    new LongIdKey(resultSet.getLong(2)),
-                    resultSet.getString(3),
-                    new Date(resultSet.getTimestamp(4).getTime())
-            ));
-        }
-        return HibernateBridgeNormalDatas;
+        // 查询数据。
+        return lookupChildForPointBetweenOpenOpen(connection, pointLongId, startDate, endDate, offset, limit);
     }
+
+    /**
+     * 查询指定点位在指定时间范围内的数据。
+     *
+     * <p>
+     * 该方法查询的数据的时间范围为 (startDate, endDate)，即不包含起始时间，不包含结束时间。
+     *
+     * <p>
+     * 返回的数据从 offset（以 0 开始） 开始，最多返回 limit 条数据。
+     *
+     * @param connection  数据库连接。
+     * @param pointLongId 点位 ID。
+     * @param startDate   起始时间。
+     * @param endDate     结束时间。
+     * @param offset      偏移量。
+     * @param limit       限制量。
+     * @return 查询得到的数据。
+     * @throws SQLException SQL 异常。
+     */
+    protected abstract List<HibernateBridgeNormalData> lookupChildForPointBetweenOpenOpen(
+            Connection connection, long pointLongId, Date startDate, Date endDate, int offset, int limit
+    ) throws SQLException;
 
     @Override
     public int lookupCount(Connection connection, String preset, Object[] args) throws SQLException {
@@ -261,131 +228,118 @@ public class HibernateBridgeNormalDataNativeLookup extends AbstractDialectNative
         }
     }
 
-    @SuppressWarnings("DuplicatedCode")
-    private int childForPointBetweenCloseCloseCount(
-            Connection connection, Object[] args
-    ) throws SQLException {
+    private int childForPointBetweenCloseCloseCount(Connection connection, Object[] args) throws SQLException {
         // 展开参数。
         long pointLongId = ((LongIdKey) args[0]).getLongId();
         Date startDate = (Date) args[1];
         Date endDate = (Date) args[2];
 
-        // 构建SQL。
-        StringBuilder sqlBuilder = new StringBuilder();
-        Mysql8NativeLookupUtil.selectCountFromTable(
-                sqlBuilder, "tbl_hibernate_bridge_normal_data", "tbl", "id"
-        );
-        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
-        Mysql8NativeLookupUtil.where(sqlBuilder);
-        Mysql8NativeLookupUtil.pointLongIdEquals(sqlBuilder, "tbl", "point_id");
-        Mysql8NativeLookupUtil.and(sqlBuilder);
-        Mysql8NativeLookupUtil.happenedDateBetweenCloseClose(sqlBuilder, "tbl", "happened_date");
-
-        // 构建 PreparedStatement。
-        PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
-        preparedStatement.setLong(1, pointLongId);
-        preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
-        preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
-
-        // 执行查询，返回结果。
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-        return Long.valueOf(resultSet.getLong(1)).intValue();
+        // 查询数据。
+        return lookupChildForPointBetweenCloseCloseCount(connection, pointLongId, startDate, endDate);
     }
 
-    @SuppressWarnings("DuplicatedCode")
-    private int childForPointBetweenCloseOpenCount(
-            Connection connection, Object[] args
-    ) throws SQLException {
+    /**
+     * 查询指定点位在指定时间范围内的数据数量。
+     *
+     * <p>
+     * 该方法查询的数据的时间范围为 [startDate, endDate]，即包含起始时间，包含结束时间。
+     *
+     * @param connection  数据库连接。
+     * @param pointLongId 点位 ID。
+     * @param startDate   起始时间。
+     * @param endDate     结束时间。
+     * @return 查询得到的数据数量。
+     * @throws SQLException SQL 异常。
+     */
+    protected abstract int lookupChildForPointBetweenCloseCloseCount(
+            Connection connection, long pointLongId, Date startDate, Date endDate
+    ) throws SQLException;
+
+    private int childForPointBetweenCloseOpenCount(Connection connection, Object[] args) throws SQLException {
         // 展开参数。
         long pointLongId = ((LongIdKey) args[0]).getLongId();
         Date startDate = (Date) args[1];
         Date endDate = (Date) args[2];
 
-        // 构建SQL。
-        StringBuilder sqlBuilder = new StringBuilder();
-        Mysql8NativeLookupUtil.selectCountFromTable(
-                sqlBuilder, "tbl_hibernate_bridge_normal_data", "tbl", "id"
-        );
-        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
-        Mysql8NativeLookupUtil.where(sqlBuilder);
-        Mysql8NativeLookupUtil.pointLongIdEquals(sqlBuilder, "tbl", "point_id");
-        Mysql8NativeLookupUtil.and(sqlBuilder);
-        Mysql8NativeLookupUtil.happenedDateBetweenCloseOpen(sqlBuilder, "tbl", "happened_date");
-
-        // 构建 PreparedStatement。
-        PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
-        preparedStatement.setLong(1, pointLongId);
-        preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
-        preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
-
-        // 执行查询，返回结果。
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-        return Long.valueOf(resultSet.getLong(1)).intValue();
+        // 查询数据。
+        return lookupChildForPointBetweenCloseOpenCount(connection, pointLongId, startDate, endDate);
     }
 
-    @SuppressWarnings("DuplicatedCode")
-    private int childForPointBetweenOpenCloseCount(
-            Connection connection, Object[] args
-    ) throws SQLException {
+    /**
+     * 查询指定点位在指定时间范围内的数据数量。
+     *
+     * <p>
+     * 该方法查询的数据的时间范围为 [startDate, endDate)，即包含起始时间，不包含结束时间。
+     *
+     * @param connection  数据库连接。
+     * @param pointLongId 点位 ID。
+     * @param startDate   起始时间。
+     * @param endDate     结束时间。
+     * @return 查询得到的数据数量。
+     * @throws SQLException SQL 异常。
+     */
+    protected abstract int lookupChildForPointBetweenCloseOpenCount(
+            Connection connection, long pointLongId, Date startDate, Date endDate
+    ) throws SQLException;
+
+    private int childForPointBetweenOpenCloseCount(Connection connection, Object[] args) throws SQLException {
         // 展开参数。
         long pointLongId = ((LongIdKey) args[0]).getLongId();
         Date startDate = (Date) args[1];
         Date endDate = (Date) args[2];
 
-        // 构建SQL。
-        StringBuilder sqlBuilder = new StringBuilder();
-        Mysql8NativeLookupUtil.selectCountFromTable(
-                sqlBuilder, "tbl_hibernate_bridge_normal_data", "tbl", "id"
-        );
-        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
-        Mysql8NativeLookupUtil.where(sqlBuilder);
-        Mysql8NativeLookupUtil.pointLongIdEquals(sqlBuilder, "tbl", "point_id");
-        Mysql8NativeLookupUtil.and(sqlBuilder);
-        Mysql8NativeLookupUtil.happenedDateBetweenOpenClose(sqlBuilder, "tbl", "happened_date");
-
-        // 构建 PreparedStatement。
-        PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
-        preparedStatement.setLong(1, pointLongId);
-        preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
-        preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
-
-        // 执行查询，返回结果。
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-        return Long.valueOf(resultSet.getLong(1)).intValue();
+        // 查询数据。
+        return lookupChildForPointBetweenOpenCloseCount(connection, pointLongId, startDate, endDate);
     }
 
-    @SuppressWarnings("DuplicatedCode")
-    private int childForPointBetweenOpenOpenCount(
-            Connection connection, Object[] args
-    ) throws SQLException {
+    /**
+     * 查询指定点位在指定时间范围内的数据数量。
+     *
+     * <p>
+     * 该方法查询的数据的时间范围为 (startDate, endDate]，即不包含起始时间，包含结束时间。
+     *
+     * @param connection  数据库连接。
+     * @param pointLongId 点位 ID。
+     * @param startDate   起始时间。
+     * @param endDate     结束时间。
+     * @return 查询得到的数据数量。
+     * @throws SQLException SQL 异常。
+     */
+    protected abstract int lookupChildForPointBetweenOpenCloseCount(
+            Connection connection, long pointLongId, Date startDate, Date endDate
+    ) throws SQLException;
+
+    private int childForPointBetweenOpenOpenCount(Connection connection, Object[] args) throws SQLException {
         // 展开参数。
         long pointLongId = ((LongIdKey) args[0]).getLongId();
         Date startDate = (Date) args[1];
         Date endDate = (Date) args[2];
 
-        // 构建SQL。
-        StringBuilder sqlBuilder = new StringBuilder();
-        Mysql8NativeLookupUtil.selectCountFromTable(
-                sqlBuilder, "tbl_hibernate_bridge_normal_data", "tbl", "id"
-        );
-        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
-        Mysql8NativeLookupUtil.where(sqlBuilder);
-        Mysql8NativeLookupUtil.pointLongIdEquals(sqlBuilder, "tbl", "point_id");
-        Mysql8NativeLookupUtil.and(sqlBuilder);
-        Mysql8NativeLookupUtil.happenedDateBetweenOpenOpen(sqlBuilder, "tbl", "happened_date");
+        // 查询数据。
+        return lookupChildForPointBetweenOpenOpenCount(connection, pointLongId, startDate, endDate);
+    }
 
-        // 构建 PreparedStatement。
-        PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
-        preparedStatement.setLong(1, pointLongId);
-        preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
-        preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
+    /**
+     * 查询指定点位在指定时间范围内的数据数量。
+     *
+     * <p>
+     * 该方法查询的数据的时间范围为 (startDate, endDate)，即不包含起始时间，不包含结束时间。
+     *
+     * @param connection  数据库连接。
+     * @param pointLongId 点位 ID。
+     * @param startDate   起始时间。
+     * @param endDate     结束时间。
+     * @return 查询得到的数据数量。
+     * @throws SQLException SQL 异常。
+     */
+    protected abstract int lookupChildForPointBetweenOpenOpenCount(
+            Connection connection, long pointLongId, Date startDate, Date endDate
+    ) throws SQLException;
 
-        // 执行查询，返回结果。
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-        return Long.valueOf(resultSet.getLong(1)).intValue();
+    @Override
+    public String toString() {
+        return "HibernateBridgeNormalDataNativeLookup{" +
+                "supportDialect='" + supportDialect + '\'' +
+                '}';
     }
 }

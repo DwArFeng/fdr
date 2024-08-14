@@ -4,6 +4,11 @@
 
 #### 功能构建
 
+- 优化 HibernateBridge 的本地查询机制。
+  - 增加一般数据本地查询的抽象类 `HibernateBridgeNormalDataNativeLookup`。
+  - 增加被过滤数据本地查询的抽象类 `HibernateBridgeFilteredDataNativeLookup`。
+  - 增加被触发数据本地查询的抽象类 `HibernateBridgeTriggeredDataNativeLookup`。
+
 - 优化部分映射器行为。
   - 为 FirstMapper 增加配置项，可以选择在 Item 列表为空时的行为。
   - 为 LastMapper 增加配置项，可以选择在 Item 列表为空时的行为。
