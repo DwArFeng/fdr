@@ -45,7 +45,8 @@ public class BooleanTriggerRegistry extends AbstractTriggerRegistry {
 
     @Override
     public String provideExampleParam() {
-        return JSON.toJSONString(new Config(true), true);
+        Config config = new Config(true);
+        return JSON.toJSONString(config, true);
     }
 
     @Override

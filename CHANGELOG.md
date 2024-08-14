@@ -4,6 +4,12 @@
 
 #### 功能构建
 
+- 优化部分触发器的示例参数。
+  - com.dwarfeng.fdr.impl.handler.trigger.LogicAndTriggerRegistry。
+  - com.dwarfeng.fdr.impl.handler.trigger.BooleanTriggerRegistry。
+  - com.dwarfeng.fdr.impl.handler.trigger.LogicNotTriggerRegistry。
+  - com.dwarfeng.fdr.impl.handler.trigger.RegexTriggerRegistry。
+
 - 优化部分过滤器的示例参数。
   - com.dwarfeng.fdr.impl.handler.filter.ValueTypeFilterRegistry。
   - com.dwarfeng.fdr.impl.handler.filter.LogicAndFilterRegistry。

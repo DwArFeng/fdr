@@ -43,7 +43,8 @@ public class RegexTriggerRegistry extends AbstractTriggerRegistry {
 
     @Override
     public String provideExampleParam() {
-        return JSON.toJSONString(new Config("^\\d+$"), true);
+        Config config = new Config("^\\d+$");
+        return JSON.toJSONString(config, true);
     }
 
     @Override
