@@ -58,6 +58,9 @@
 
 #### Bug修复
 
+- Wiki 格式修正。
+  - docs/wiki/zh_CN/PresetBridgeImplements.md。
+
 - 修复部分映射器配置 Bean 不规范的问题。
   - com.dwarfeng.fdr.impl.handler.mapper.EnableRatioMapperRegistry。
   - com.dwarfeng.fdr.impl.handler.mapper.HighPassMapperRegistry。

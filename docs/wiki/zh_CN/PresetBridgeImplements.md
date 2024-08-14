@@ -119,7 +119,7 @@ bridge.hibernate.hibernate.accelerate_enabled=true
 
 需要注意的是，如果使用项目本身的配置，那么就意味着历史点位表将会位于项目本身的数据库中，这可能会对项目本身的数据库造成一定的压力。
 
-# bridge.hibernate.hibernate.accelerate_enabled
+#### bridge.hibernate.hibernate.accelerate_enabled
 
 该配置项用于指定是否启用 NativeLookup 机制加速部分查询。
 
