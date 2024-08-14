@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 优化部分类的文档注释。
+  - com.dwarfeng.fdr.impl.handler.mapper.AggregateMapper。
+
 - 优化部分触发器的示例参数。
   - com.dwarfeng.fdr.impl.handler.trigger.LogicAndTriggerRegistry。
   - com.dwarfeng.fdr.impl.handler.trigger.BooleanTriggerRegistry。

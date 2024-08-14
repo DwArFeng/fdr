@@ -19,6 +19,16 @@ import java.util.*;
  */
 public abstract class AggregateMapper extends OneToOneMapper {
 
+    /**
+     * 空值对象。
+     *
+     * <p>
+     * 该对象用于 {@link #doAggregate(MapParam, List, Date, Date)} 方法的返回值；
+     * 如果执行聚合操作后，没有任何值，则返回该对象。
+     *
+     * <p>
+     * 如果聚合后的值为该对象，则不会构造新的数据条目。
+     */
     protected static final Object VOID = new Object();
 
     @Override
@@ -58,6 +68,13 @@ public abstract class AggregateMapper extends OneToOneMapper {
      *
      * <p>
      * 返回的对象如果为 {@link #VOID}，则不会构造新的数据条目。
+     *
+     * <p>
+     * 针对返回值，<code>null</code> 与 <code>VOID</code> 的区别在于，
+     * <code>null</code> 值是一个合法的返回值，代表聚合操作之后的值为 <code>null</code>；
+     * 而 <code>VOID</code> 代表聚合操作之后没有任何值。<br>
+     * 如果该方法的返回值是 <code>null</code>，则会构造一个新的数据条目，数据条目的值为 <code>null</code>；
+     * 如果该方法的返回值是 <code>VOID</code>，则不会构造新的数据条目。
      *
      * <p>
      * 需要注意的是，参数 item 的数据的发生时间不保证在 startDate 和 endDate 之间，聚合操作需要根据实际情况进行处理。
