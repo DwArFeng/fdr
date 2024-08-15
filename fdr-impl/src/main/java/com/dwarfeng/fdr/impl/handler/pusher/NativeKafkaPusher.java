@@ -67,80 +67,79 @@ public class NativeKafkaPusher extends AbstractPusher {
 
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
     @Override
-    public void normalUpdated(NormalData normalRecord) {
-        String message = JSON.toJSONString(FastJsonNormalData.of(normalRecord), SerializerFeature.WriteClassName);
+    public void normalUpdated(NormalData normalData) {
+        String message = JSON.toJSONString(FastJsonNormalData.of(normalData), SerializerFeature.WriteClassName);
         kafkaTemplate.send(normalUpdatedTopic, message);
     }
 
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
     @Override
-    public void normalUpdated(List<NormalData> normalRecords) {
-        normalRecords.forEach(this::normalUpdated);
+    public void normalUpdated(List<NormalData> normalDatas) {
+        normalDatas.forEach(this::normalUpdated);
     }
 
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
     @Override
-    public void normalRecorded(NormalData normalRecord) {
-        String message = JSON.toJSONString(FastJsonNormalData.of(normalRecord), SerializerFeature.WriteClassName);
+    public void normalRecorded(NormalData normalData) {
+        String message = JSON.toJSONString(FastJsonNormalData.of(normalData), SerializerFeature.WriteClassName);
         kafkaTemplate.send(normalRecordedTopic, message);
     }
 
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
     @Override
-    public void normalRecorded(List<NormalData> normalRecords) {
-        normalRecords.forEach(this::normalRecorded);
+    public void normalRecorded(List<NormalData> normalDatas) {
+        normalDatas.forEach(this::normalRecorded);
     }
 
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
     @Override
-    public void filteredUpdated(FilteredData filteredRecord) {
-        String message = JSON.toJSONString(FastJsonFilteredData.of(filteredRecord), SerializerFeature.WriteClassName);
+    public void filteredUpdated(FilteredData filteredData) {
+        String message = JSON.toJSONString(FastJsonFilteredData.of(filteredData), SerializerFeature.WriteClassName);
         kafkaTemplate.send(filteredUpdatedTopic, message);
     }
 
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
     @Override
-    public void filteredUpdated(List<FilteredData> filteredRecords) {
-        filteredRecords.forEach(this::filteredUpdated);
+    public void filteredUpdated(List<FilteredData> filteredDatas) {
+        filteredDatas.forEach(this::filteredUpdated);
     }
 
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
     @Override
-    public void filteredRecorded(FilteredData filteredRecord) {
-        String message = JSON.toJSONString(FastJsonFilteredData.of(filteredRecord), SerializerFeature.WriteClassName);
+    public void filteredRecorded(FilteredData filteredData) {
+        String message = JSON.toJSONString(FastJsonFilteredData.of(filteredData), SerializerFeature.WriteClassName);
         kafkaTemplate.send(filteredRecordedTopic, message);
     }
 
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
     @Override
-    public void filteredRecorded(List<FilteredData> filteredRecords) {
-
+    public void filteredRecorded(List<FilteredData> filteredDatas) {
     }
 
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
     @Override
-    public void triggeredUpdated(TriggeredData triggeredRecord) {
-        String message = JSON.toJSONString(FastJsonTriggeredData.of(triggeredRecord), SerializerFeature.WriteClassName);
+    public void triggeredUpdated(TriggeredData triggeredData) {
+        String message = JSON.toJSONString(FastJsonTriggeredData.of(triggeredData), SerializerFeature.WriteClassName);
         kafkaTemplate.send(triggeredUpdatedTopic, message);
     }
 
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
     @Override
-    public void triggeredUpdated(List<TriggeredData> triggeredRecords) {
-        triggeredRecords.forEach(this::triggeredUpdated);
+    public void triggeredUpdated(List<TriggeredData> triggeredDatas) {
+        triggeredDatas.forEach(this::triggeredUpdated);
     }
 
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
     @Override
-    public void triggeredRecorded(TriggeredData triggeredRecord) {
-        String message = JSON.toJSONString(FastJsonTriggeredData.of(triggeredRecord), SerializerFeature.WriteClassName);
+    public void triggeredRecorded(TriggeredData triggeredData) {
+        String message = JSON.toJSONString(FastJsonTriggeredData.of(triggeredData), SerializerFeature.WriteClassName);
         kafkaTemplate.send(triggeredRecordedTopic, message);
     }
 
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
     @Override
-    public void triggeredRecorded(List<TriggeredData> triggeredRecords) {
-        triggeredRecords.forEach(this::triggeredRecorded);
+    public void triggeredRecorded(List<TriggeredData> triggeredDatas) {
+        triggeredDatas.forEach(this::triggeredRecorded);
     }
 
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")

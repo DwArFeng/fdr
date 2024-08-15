@@ -17,17 +17,17 @@ public class NormalPersistConsumer extends PersistConsumer<NormalData> {
 
     @BehaviorAnalyse
     @Override
-    public void consume(@SkipRecord List<NormalData> records) throws HandlerException {
-        super.consume(records);
+    public void consume(@SkipRecord List<NormalData> datas) throws HandlerException {
+        super.consume(datas);
     }
 
     @Override
-    protected void doPush(List<NormalData> records) throws HandlerException {
-        pushHandler.normalRecorded(records);
+    protected void doPush(List<NormalData> datas) throws HandlerException {
+        pushHandler.normalRecorded(datas);
     }
 
     @Override
-    protected void doPush(NormalData record) throws HandlerException {
-        pushHandler.normalRecorded(record);
+    protected void doPush(NormalData data) throws HandlerException {
+        pushHandler.normalRecorded(data);
     }
 }

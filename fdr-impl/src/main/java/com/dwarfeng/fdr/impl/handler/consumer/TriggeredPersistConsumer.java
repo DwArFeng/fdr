@@ -17,17 +17,17 @@ public class TriggeredPersistConsumer extends PersistConsumer<TriggeredData> {
 
     @BehaviorAnalyse
     @Override
-    public void consume(@SkipRecord List<TriggeredData> records) throws HandlerException {
-        super.consume(records);
+    public void consume(@SkipRecord List<TriggeredData> datas) throws HandlerException {
+        super.consume(datas);
     }
 
     @Override
-    protected void doPush(List<TriggeredData> records) throws HandlerException {
-        pushHandler.triggeredRecorded(records);
+    protected void doPush(List<TriggeredData> datas) throws HandlerException {
+        pushHandler.triggeredRecorded(datas);
     }
 
     @Override
-    protected void doPush(TriggeredData record) throws HandlerException {
-        pushHandler.triggeredRecorded(record);
+    protected void doPush(TriggeredData data) throws HandlerException {
+        pushHandler.triggeredRecorded(data);
     }
 }

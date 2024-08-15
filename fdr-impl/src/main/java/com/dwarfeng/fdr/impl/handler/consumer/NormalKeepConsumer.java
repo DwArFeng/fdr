@@ -21,17 +21,17 @@ public class NormalKeepConsumer extends KeepConsumer<NormalData> {
 
     @BehaviorAnalyse
     @Override
-    public void consume(@SkipRecord List<NormalData> records) throws HandlerException {
-        super.consume(records);
+    public void consume(@SkipRecord List<NormalData> datas) throws HandlerException {
+        super.consume(datas);
     }
 
     @Override
-    protected void doPush(List<NormalData> records) throws HandlerException {
-        pushHandler.normalUpdated(records);
+    protected void doPush(List<NormalData> datas) throws HandlerException {
+        pushHandler.normalUpdated(datas);
     }
 
     @Override
-    protected void doPush(NormalData record) throws HandlerException {
-        pushHandler.normalUpdated(record);
+    protected void doPush(NormalData data) throws HandlerException {
+        pushHandler.normalUpdated(data);
     }
 }

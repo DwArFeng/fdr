@@ -17,17 +17,17 @@ public class FilteredPersistConsumer extends PersistConsumer<FilteredData> {
 
     @BehaviorAnalyse
     @Override
-    public void consume(@SkipRecord List<FilteredData> records) throws HandlerException {
-        super.consume(records);
+    public void consume(@SkipRecord List<FilteredData> datas) throws HandlerException {
+        super.consume(datas);
     }
 
     @Override
-    protected void doPush(List<FilteredData> records) throws HandlerException {
-        pushHandler.filteredRecorded(records);
+    protected void doPush(List<FilteredData> datas) throws HandlerException {
+        pushHandler.filteredRecorded(datas);
     }
 
     @Override
-    protected void doPush(FilteredData record) throws HandlerException {
-        pushHandler.filteredRecorded(record);
+    protected void doPush(FilteredData data) throws HandlerException {
+        pushHandler.filteredRecorded(data);
     }
 }

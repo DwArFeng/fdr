@@ -21,17 +21,17 @@ public class TriggeredKeepConsumer extends KeepConsumer<TriggeredData> {
 
     @BehaviorAnalyse
     @Override
-    public void consume(@SkipRecord List<TriggeredData> records) throws HandlerException {
-        super.consume(records);
+    public void consume(@SkipRecord List<TriggeredData> datas) throws HandlerException {
+        super.consume(datas);
     }
 
     @Override
-    protected void doPush(List<TriggeredData> records) throws HandlerException {
-        pushHandler.triggeredUpdated(records);
+    protected void doPush(List<TriggeredData> datas) throws HandlerException {
+        pushHandler.triggeredUpdated(datas);
     }
 
     @Override
-    protected void doPush(TriggeredData record) throws HandlerException {
-        pushHandler.triggeredUpdated(record);
+    protected void doPush(TriggeredData data) throws HandlerException {
+        pushHandler.triggeredUpdated(data);
     }
 }

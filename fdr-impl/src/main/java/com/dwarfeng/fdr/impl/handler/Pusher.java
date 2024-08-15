@@ -26,98 +26,98 @@ public interface Pusher {
     /**
      * 一般数据更新时执行的广播操作。
      *
-     * @param normalRecord 一般数据记录。
+     * @param normalData 一般数据。
      * @throws HandlerException 处理器异常。
      */
-    void normalUpdated(NormalData normalRecord) throws HandlerException;
+    void normalUpdated(NormalData normalData) throws HandlerException;
 
     /**
      * 一般数据更新时执行的广播操作。
      *
-     * @param normalRecords 一般数据记录组成的列表。
+     * @param normalDatas 一般数据组成的列表。
      * @throws HandlerException 处理器异常。
      */
-    void normalUpdated(List<NormalData> normalRecords) throws HandlerException;
+    void normalUpdated(List<NormalData> normalDatas) throws HandlerException;
 
     /**
      * 一般数据记录时执行的广播操作。
      *
-     * @param normalRecord 一般数据记录。
+     * @param normalData 一般数据。
      * @throws HandlerException 处理器异常。
      */
-    void normalRecorded(NormalData normalRecord) throws HandlerException;
+    void normalRecorded(NormalData normalData) throws HandlerException;
 
     /**
      * 一般数据记录时执行的广播操作。
      *
-     * @param normalRecords 一般数据记录组成的列表。
+     * @param normalDatas 一般数据组成的列表。
      * @throws HandlerException 处理器异常。
      */
-    void normalRecorded(List<NormalData> normalRecords) throws HandlerException;
+    void normalRecorded(List<NormalData> normalDatas) throws HandlerException;
 
     /**
      * 被过滤数据更新时执行的广播操作。
      *
-     * @param filteredRecord 被过滤数据记录。
+     * @param filteredData 被过滤数据。
      * @throws HandlerException 处理器异常。
      */
-    void filteredUpdated(FilteredData filteredRecord) throws HandlerException;
+    void filteredUpdated(FilteredData filteredData) throws HandlerException;
 
     /**
      * 被过滤数据更新时执行的广播操作。
      *
-     * @param filteredRecords 被过滤数据记录组成的列表。
+     * @param filteredDatas 被过滤数据组成的列表。
      * @throws HandlerException 处理器异常。
      */
-    void filteredUpdated(List<FilteredData> filteredRecords) throws HandlerException;
+    void filteredUpdated(List<FilteredData> filteredDatas) throws HandlerException;
 
     /**
      * 被过滤数据记录时执行的广播操作。
      *
-     * @param filteredRecord 被过滤数据记录。
+     * @param filteredData 被过滤数据。
      * @throws HandlerException 处理器异常。
      */
-    void filteredRecorded(FilteredData filteredRecord) throws HandlerException;
+    void filteredRecorded(FilteredData filteredData) throws HandlerException;
 
     /**
      * 被过滤数据记录时执行的广播操作。
      *
-     * @param filteredRecords 被过滤数据记录组成的列表。
+     * @param filteredDatas 被过滤数据组成的列表。
      * @throws HandlerException 处理器异常。
      */
-    void filteredRecorded(List<FilteredData> filteredRecords) throws HandlerException;
+    void filteredRecorded(List<FilteredData> filteredDatas) throws HandlerException;
 
     /**
      * 被触发数据更新时执行的广播操作。
      *
-     * @param triggeredRecord 被触发数据记录。
+     * @param triggeredData 被触发数据。
      * @throws HandlerException 处理器异常。
      */
-    void triggeredUpdated(TriggeredData triggeredRecord) throws HandlerException;
+    void triggeredUpdated(TriggeredData triggeredData) throws HandlerException;
 
     /**
      * 被触发数据更新时执行的广播操作。
      *
-     * @param triggeredRecords 被触发数据记录组成的列表。
+     * @param triggeredDatas 被触发数据组成的列表。
      * @throws HandlerException 处理器异常。
      */
-    void triggeredUpdated(List<TriggeredData> triggeredRecords) throws HandlerException;
+    void triggeredUpdated(List<TriggeredData> triggeredDatas) throws HandlerException;
 
     /**
      * 被触发数据记录时执行的广播操作。
      *
-     * @param triggeredRecord 被触发数据记录。
+     * @param triggeredData 被触发数据。
      * @throws HandlerException 处理器异常。
      */
-    void triggeredRecorded(TriggeredData triggeredRecord) throws HandlerException;
+    void triggeredRecorded(TriggeredData triggeredData) throws HandlerException;
 
     /**
      * 被触发数据记录时执行的广播操作。
      *
-     * @param triggeredRecords 被触发数据记录组成的列表。
+     * @param triggeredDatas 被触发数据组成的列表。
      * @throws HandlerException 处理器异常。
      */
-    void triggeredRecorded(List<TriggeredData> triggeredRecords) throws HandlerException;
+    void triggeredRecorded(List<TriggeredData> triggeredDatas) throws HandlerException;
 
     /**
      * 记录功能重置时执行的广播操作。

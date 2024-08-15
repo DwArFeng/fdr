@@ -23,51 +23,51 @@ public class DrainPusher extends AbstractPusher {
     }
 
     @Override
-    public void normalUpdated(NormalData normalRecord) {
+    public void normalUpdated(NormalData normalData) {
     }
 
     @Override
-    public void normalUpdated(List<NormalData> normalRecords) {
+    public void normalUpdated(List<NormalData> normalDatas) {
     }
 
     @Override
-    public void normalRecorded(NormalData normalRecord) {
+    public void normalRecorded(NormalData normalData) {
     }
 
     @Override
-    public void normalRecorded(List<NormalData> normalRecords) {
+    public void normalRecorded(List<NormalData> normalDatas) {
     }
 
     @Override
-    public void filteredUpdated(FilteredData filteredRecord) {
+    public void filteredUpdated(FilteredData filteredData) {
     }
 
     @Override
-    public void filteredUpdated(List<FilteredData> filteredRecords) {
+    public void filteredUpdated(List<FilteredData> filteredDatas) {
     }
 
     @Override
-    public void filteredRecorded(FilteredData filteredRecord) {
+    public void filteredRecorded(FilteredData filteredData) {
     }
 
     @Override
-    public void filteredRecorded(List<FilteredData> filteredRecords) {
+    public void filteredRecorded(List<FilteredData> filteredDatas) {
     }
 
     @Override
-    public void triggeredUpdated(TriggeredData triggeredRecord) {
+    public void triggeredUpdated(TriggeredData triggeredData) {
     }
 
     @Override
-    public void triggeredUpdated(List<TriggeredData> triggeredRecords) {
+    public void triggeredUpdated(List<TriggeredData> triggeredDatas) {
     }
 
     @Override
-    public void triggeredRecorded(TriggeredData triggeredRecord) {
+    public void triggeredRecorded(TriggeredData triggeredData) {
     }
 
     @Override
-    public void triggeredRecorded(List<TriggeredData> triggeredRecords) {
+    public void triggeredRecorded(List<TriggeredData> triggeredDatas) {
     }
 
     @Override

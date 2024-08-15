@@ -25,11 +25,11 @@ import java.util.stream.Collectors;
  * @author DwArFeng
  * @since 2.0.0
  */
-public abstract class KeepConsumer<R extends Data> implements Consumer<R> {
+public abstract class KeepConsumer<D extends Data> implements Consumer<D> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KeepConsumer.class);
 
-    protected final KeepHandler<R> keepHandler;
+    protected final KeepHandler<D> keepHandler;
     protected final PushHandler pushHandler;
 
     protected final CuratorFramework curatorFramework;
@@ -37,7 +37,7 @@ public abstract class KeepConsumer<R extends Data> implements Consumer<R> {
     protected final String latchPath;
 
     public KeepConsumer(
-            KeepHandler<R> keepHandler, PushHandler pushHandler, CuratorFramework curatorFramework, String latchPath
+            KeepHandler<D> keepHandler, PushHandler pushHandler, CuratorFramework curatorFramework, String latchPath
     ) {
         this.keepHandler = keepHandler;
         this.pushHandler = pushHandler;
@@ -46,61 +46,61 @@ public abstract class KeepConsumer<R extends Data> implements Consumer<R> {
     }
 
     @Override
-    public void consume(List<R> records) throws HandlerException {
+    public void consume(List<D> datas) throws HandlerException {
         try {
-            internalConsume(records);
+            internalConsume(datas);
         } catch (Exception e) {
             throw HandlerExceptionHelper.parse(e);
         }
     }
 
-    private void internalConsume(List<R> records) throws Exception {
+    private void internalConsume(List<D> datas) throws Exception {
         // 由于数据的保持操作与数据的处理顺序有关，因此使用分布式锁，保证同一时间内只有一个消费者在处理数据。
         InterProcessMutex lock = new InterProcessMutex(curatorFramework, latchPath);
 
         // 数据去重。
-        // 遍历所有的记录，按照 Record.getPointKey() 的值进行分组，每组数据只保留最后一条记录。
-        Map<LongIdKey, R> localMap = records.stream().collect(
+        // 遍历所有的数据，按照 Record.getPointKey() 的值进行分组，每组数据只保留最后一条数据。
+        Map<LongIdKey, D> localMap = datas.stream().collect(
                 Collectors.toMap(Data::getPointKey, Function.identity(), (a, b) -> b)
         );
 
         // 分布式锁。
         lock.acquire();
         try {
-            // 将 localMap 中的所有值转换为列表，并赋值给 records。
-            records = new ArrayList<>(localMap.values());
+            // 将 localMap 中的所有值转换为列表，并赋值给 datas。
+            datas = new ArrayList<>(localMap.values());
 
-            // 更新数据，并将更新成功的数据记录组成的列表赋值给 records。
-            records = updateRecords(records);
+            // 更新数据，并将更新成功的数据数据组成的列表赋值给 datas。
+            datas = updateRecords(datas);
         } finally {
             lock.release();
         }
 
         // 推送数据。
-        pushRecords(records);
+        pushRecords(datas);
     }
 
     /**
      * 更新数据。
      *
-     * @param records 数据记录组成的列表。
-     * @return 更新成功的数据记录组成的列表。
+     * @param datas 数据组成的列表。
+     * @return 更新成功的数据组成的列表。
      */
-    private List<R> updateRecords(List<R> records) {
+    private List<D> updateRecords(List<D> datas) {
         // 优先尝试批量更新数据，如果批量更新失败，则尝试逐条更新数据。
         try {
-            keepHandler.update(records);
-            return records;
+            keepHandler.update(datas);
+            return datas;
         } catch (Exception e) {
             LOGGER.error("数据更新失败, 试图使用不同的策略进行推送: 逐条更新", e);
         }
 
-        // 定义列表，分别用于存放更新成功和更新失败的数据记录。
-        List<R> successList = new ArrayList<>();
-        List<R> failedList = new ArrayList<>();
+        // 定义列表，分别用于存放更新成功和更新失败的数据。
+        List<D> successList = new ArrayList<>();
+        List<D> failedList = new ArrayList<>();
 
-        // 遍历 records 中的所有数据记录，逐条更新数据。
-        for (R record : records) {
+        // 遍历 datas 中的所有数据，逐条更新数据。
+        for (D record : datas) {
             try {
                 keepHandler.update(record);
                 successList.add(record);
@@ -110,34 +110,34 @@ public abstract class KeepConsumer<R extends Data> implements Consumer<R> {
             }
         }
 
-        // 如果有更新失败的数据记录，则记录日志。
+        // 如果有更新失败的数据，则记录日志。
         if (!failedList.isEmpty()) {
             LOGGER.error("推送数据时发生异常, 最多 {} 个数据信息丢失", failedList.size());
             failedList.forEach(record -> LOGGER.debug(Objects.toString(record)));
         }
 
-        // 返回更新成功的数据记录组成的列表。
+        // 返回更新成功的数据组成的列表。
         return successList;
     }
 
     /**
      * 推送数据。
      *
-     * @param records 数据记录组成的列表。
+     * @param datas 数据组成的列表。
      */
-    private void pushRecords(List<R> records) {
+    private void pushRecords(List<D> datas) {
         // 优先尝试批量推送数据，如果批量推送失败，则尝试逐条推送数据。
         try {
-            doPush(records);
+            doPush(datas);
         } catch (Exception e) {
             LOGGER.error("数据推送失败, 试图使用不同的策略进行推送: 逐条推送", e);
         }
 
-        // 定义列表，用于存放推送失败的数据记录。
-        List<R> failedList = new ArrayList<>();
+        // 定义列表，用于存放推送失败的数据。
+        List<D> failedList = new ArrayList<>();
 
-        // 遍历 records 中的所有数据记录，逐条推送数据。
-        for (R record : records) {
+        // 遍历 datas 中的所有数据，逐条推送数据。
+        for (D record : datas) {
             try {
                 doPush(record);
             } catch (Exception e) {
@@ -146,7 +146,7 @@ public abstract class KeepConsumer<R extends Data> implements Consumer<R> {
             }
         }
 
-        // 如果有推送失败的数据记录，则记录日志。
+        // 如果有推送失败的数据，则记录日志。
         if (!failedList.isEmpty()) {
             LOGGER.error("推送数据时发生异常, 最多 {} 个数据信息丢失", failedList.size());
             failedList.forEach(record -> LOGGER.debug(Objects.toString(record)));
@@ -156,18 +156,18 @@ public abstract class KeepConsumer<R extends Data> implements Consumer<R> {
     /**
      * 推送数据。
      *
-     * @param records 数据记录组成的列表。
+     * @param datas 数据组成的列表。
      * @throws HandlerException 处理器异常。
      */
-    protected abstract void doPush(List<R> records) throws HandlerException;
+    protected abstract void doPush(List<D> datas) throws HandlerException;
 
     /**
      * 推送数据。
      *
-     * @param record 数据记录。
+     * @param data 数据。
      * @throws HandlerException 处理器异常。
      */
-    protected abstract void doPush(R record) throws HandlerException;
+    protected abstract void doPush(D data) throws HandlerException;
 
     @Override
     public String toString() {

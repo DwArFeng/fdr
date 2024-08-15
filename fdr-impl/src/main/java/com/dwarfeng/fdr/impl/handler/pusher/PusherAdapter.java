@@ -35,62 +35,62 @@ public abstract class PusherAdapter extends AbstractPusher {
 
     @SuppressWarnings("RedundantThrows")
     @Override
-    public void normalUpdated(NormalData normalRecord) throws HandlerException {
+    public void normalUpdated(NormalData normalData) throws HandlerException {
     }
 
     @SuppressWarnings("RedundantThrows")
     @Override
-    public void normalUpdated(List<NormalData> normalRecords) throws HandlerException {
+    public void normalUpdated(List<NormalData> normalDatas) throws HandlerException {
     }
 
     @SuppressWarnings("RedundantThrows")
     @Override
-    public void normalRecorded(NormalData normalRecord) throws HandlerException {
+    public void normalRecorded(NormalData normalData) throws HandlerException {
     }
 
     @SuppressWarnings("RedundantThrows")
     @Override
-    public void normalRecorded(List<NormalData> normalRecords) throws HandlerException {
+    public void normalRecorded(List<NormalData> normalDatas) throws HandlerException {
     }
 
     @SuppressWarnings("RedundantThrows")
     @Override
-    public void filteredUpdated(FilteredData filteredRecord) throws HandlerException {
+    public void filteredUpdated(FilteredData filteredData) throws HandlerException {
     }
 
     @SuppressWarnings("RedundantThrows")
     @Override
-    public void filteredUpdated(List<FilteredData> filteredRecords) throws HandlerException {
+    public void filteredUpdated(List<FilteredData> filteredDatas) throws HandlerException {
     }
 
     @SuppressWarnings("RedundantThrows")
     @Override
-    public void filteredRecorded(FilteredData filteredRecord) throws HandlerException {
+    public void filteredRecorded(FilteredData filteredData) throws HandlerException {
     }
 
     @SuppressWarnings("RedundantThrows")
     @Override
-    public void filteredRecorded(List<FilteredData> filteredRecords) throws HandlerException {
+    public void filteredRecorded(List<FilteredData> filteredDatas) throws HandlerException {
     }
 
     @SuppressWarnings("RedundantThrows")
     @Override
-    public void triggeredUpdated(TriggeredData triggeredRecord) throws HandlerException {
+    public void triggeredUpdated(TriggeredData triggeredData) throws HandlerException {
     }
 
     @SuppressWarnings("RedundantThrows")
     @Override
-    public void triggeredUpdated(List<TriggeredData> triggeredRecords) throws HandlerException {
+    public void triggeredUpdated(List<TriggeredData> triggeredDatas) throws HandlerException {
     }
 
     @SuppressWarnings("RedundantThrows")
     @Override
-    public void triggeredRecorded(TriggeredData triggeredRecord) throws HandlerException {
+    public void triggeredRecorded(TriggeredData triggeredData) throws HandlerException {
     }
 
     @SuppressWarnings("RedundantThrows")
     @Override
-    public void triggeredRecorded(List<TriggeredData> triggeredRecords) throws HandlerException {
+    public void triggeredRecorded(List<TriggeredData> triggeredDatas) throws HandlerException {
     }
 
     @SuppressWarnings("RedundantThrows")

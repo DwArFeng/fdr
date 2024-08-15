@@ -21,17 +21,17 @@ public class FilteredKeepConsumer extends KeepConsumer<FilteredData> {
 
     @BehaviorAnalyse
     @Override
-    public void consume(@SkipRecord List<FilteredData> records) throws HandlerException {
-        super.consume(records);
+    public void consume(@SkipRecord List<FilteredData> datas) throws HandlerException {
+        super.consume(datas);
     }
 
     @Override
-    protected void doPush(List<FilteredData> records) throws HandlerException {
-        pushHandler.filteredUpdated(records);
+    protected void doPush(List<FilteredData> datas) throws HandlerException {
+        pushHandler.filteredUpdated(datas);
     }
 
     @Override
-    protected void doPush(FilteredData record) throws HandlerException {
-        pushHandler.filteredUpdated(record);
+    protected void doPush(FilteredData data) throws HandlerException {
+        pushHandler.filteredUpdated(data);
     }
 }

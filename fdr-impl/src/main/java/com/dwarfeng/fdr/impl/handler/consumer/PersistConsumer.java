@@ -31,72 +31,72 @@ public abstract class PersistConsumer<D extends Data> implements Consumer<D> {
     }
 
     @Override
-    public void consume(List<D> records) throws HandlerException {
-        // 记录数据，并将记录成功的数据记录组成的列表赋值给 records。
-        records = recordRecords(records);
+    public void consume(List<D> datas) throws HandlerException {
+        // 记录数据，并将记录成功的数据组成的列表赋值给 datas。
+        datas = recordRecords(datas);
 
         // 推送数据。
-        pushRecords(records);
+        pushRecords(datas);
     }
 
     /**
      * 记录数据。
      *
-     * @param records 数据记录组成的列表。
-     * @return 记录成功的数据记录组成的列表。
+     * @param datas 数据组成的列表。
+     * @return 记录成功的数据组成的列表。
      */
-    protected List<D> recordRecords(List<D> records) {
+    protected List<D> recordRecords(List<D> datas) {
         // 优先尝试批量记录数据，如果批量记录失败，则尝试逐条记录数据。
         try {
-            persistHandler.record(records);
-            return records;
+            persistHandler.record(datas);
+            return datas;
         } catch (HandlerException e) {
             LOGGER.error("数据记录失败, 试图使用不同的策略进行推送: 逐条记录", e);
         }
 
-        // 定义列表，分别用于存放记录成功和记录失败的数据记录。
+        // 定义列表，分别用于存放记录成功和记录失败的数据。
         List<D> successList = new ArrayList<>();
         List<D> failedList = new ArrayList<>();
 
-        // 遍历 records 中的所有数据记录，逐条记录数据。
-        for (D record : records) {
+        // 遍历 datas 中的所有数据，逐条记录数据。
+        for (D data : datas) {
             try {
-                persistHandler.record(record);
-                successList.add(record);
+                persistHandler.record(data);
+                successList.add(data);
             } catch (Exception e) {
-                LOGGER.error("数据记录失败, 放弃对该数据的记录: {}", record, e);
-                failedList.add(record);
+                LOGGER.error("数据记录失败, 放弃对该数据的记录: {}", data, e);
+                failedList.add(data);
             }
         }
 
-        // 如果有记录失败的数据记录，则记录日志。
+        // 如果有记录失败的数据，则记录日志。
         if (!failedList.isEmpty()) {
             LOGGER.error("推送数据时发生异常, 最多 {} 个数据信息丢失", failedList.size());
             failedList.forEach(record -> LOGGER.debug(Objects.toString(record)));
         }
 
-        // 返回更新成功的数据记录组成的列表。
+        // 返回更新成功的数据组成的列表。
         return successList;
     }
 
     /**
      * 推送数据。
      *
-     * @param records 数据记录组成的列表。
+     * @param datas 数据组成的列表。
      */
-    private void pushRecords(List<D> records) {
+    private void pushRecords(List<D> datas) {
         // 优先尝试批量推送数据，如果批量推送失败，则尝试逐条推送数据。
         try {
-            doPush(records);
+            doPush(datas);
         } catch (Exception e) {
             LOGGER.error("数据推送失败, 试图使用不同的策略进行推送: 逐条推送", e);
         }
 
-        // 定义列表，用于存放推送失败的数据记录。
+        // 定义列表，用于存放推送失败的数据。
         List<D> failedList = new ArrayList<>();
 
-        // 遍历 records 中的所有数据记录，逐条推送数据。
-        for (D record : records) {
+        // 遍历 datas 中的所有数据，逐条推送数据。
+        for (D record : datas) {
             try {
                 doPush(record);
             } catch (Exception e) {
@@ -105,7 +105,7 @@ public abstract class PersistConsumer<D extends Data> implements Consumer<D> {
             }
         }
 
-        // 如果有推送失败的数据记录，则记录日志。
+        // 如果有推送失败的数据，则记录日志。
         if (!failedList.isEmpty()) {
             LOGGER.error("推送数据时发生异常, 最多 {} 个数据信息丢失", failedList.size());
             failedList.forEach(record -> LOGGER.debug(Objects.toString(record)));
@@ -115,18 +115,18 @@ public abstract class PersistConsumer<D extends Data> implements Consumer<D> {
     /**
      * 推送数据。
      *
-     * @param records 数据记录组成的列表。
+     * @param datas 数据组成的列表。
      * @throws HandlerException 处理器异常。
      */
-    protected abstract void doPush(List<D> records) throws HandlerException;
+    protected abstract void doPush(List<D> datas) throws HandlerException;
 
     /**
      * 推送数据。
      *
-     * @param record 数据记录。
+     * @param data 数据。
      * @throws HandlerException 处理器异常。
      */
-    protected abstract void doPush(D record) throws HandlerException;
+    protected abstract void doPush(D data) throws HandlerException;
 
     @Override
     public String toString() {

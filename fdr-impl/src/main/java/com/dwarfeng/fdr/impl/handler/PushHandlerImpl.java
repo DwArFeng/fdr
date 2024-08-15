@@ -34,63 +34,63 @@ public class PushHandlerImpl implements PushHandler {
     }
 
     @Override
-    public void normalUpdated(NormalData normalRecord) throws HandlerException {
-        pusher.normalUpdated(normalRecord);
+    public void normalUpdated(NormalData normalData) throws HandlerException {
+        pusher.normalUpdated(normalData);
     }
 
     @Override
-    public void normalUpdated(List<NormalData> normalRecords) throws HandlerException {
-        pusher.normalUpdated(normalRecords);
+    public void normalUpdated(List<NormalData> normalDatas) throws HandlerException {
+        pusher.normalUpdated(normalDatas);
     }
 
     @Override
-    public void normalRecorded(NormalData normalRecord) throws HandlerException {
-        pusher.normalRecorded(normalRecord);
+    public void normalRecorded(NormalData normalData) throws HandlerException {
+        pusher.normalRecorded(normalData);
     }
 
     @Override
-    public void normalRecorded(List<NormalData> normalRecords) throws HandlerException {
-        pusher.normalRecorded(normalRecords);
+    public void normalRecorded(List<NormalData> normalDatas) throws HandlerException {
+        pusher.normalRecorded(normalDatas);
     }
 
     @Override
-    public void filteredUpdated(FilteredData filteredRecord) throws HandlerException {
-        pusher.filteredUpdated(filteredRecord);
+    public void filteredUpdated(FilteredData filteredData) throws HandlerException {
+        pusher.filteredUpdated(filteredData);
     }
 
     @Override
-    public void filteredUpdated(List<FilteredData> filteredRecords) throws HandlerException {
-        pusher.filteredUpdated(filteredRecords);
+    public void filteredUpdated(List<FilteredData> filteredDatas) throws HandlerException {
+        pusher.filteredUpdated(filteredDatas);
     }
 
     @Override
-    public void filteredRecorded(FilteredData filteredRecord) throws HandlerException {
-        pusher.filteredRecorded(filteredRecord);
+    public void filteredRecorded(FilteredData filteredData) throws HandlerException {
+        pusher.filteredRecorded(filteredData);
     }
 
     @Override
-    public void filteredRecorded(List<FilteredData> filteredRecords) throws HandlerException {
-        pusher.filteredRecorded(filteredRecords);
+    public void filteredRecorded(List<FilteredData> filteredDatas) throws HandlerException {
+        pusher.filteredRecorded(filteredDatas);
     }
 
     @Override
-    public void triggeredUpdated(TriggeredData triggeredRecord) throws HandlerException {
-        pusher.triggeredUpdated(triggeredRecord);
+    public void triggeredUpdated(TriggeredData triggeredData) throws HandlerException {
+        pusher.triggeredUpdated(triggeredData);
     }
 
     @Override
-    public void triggeredUpdated(List<TriggeredData> triggeredRecords) throws HandlerException {
-        pusher.triggeredUpdated(triggeredRecords);
+    public void triggeredUpdated(List<TriggeredData> triggeredDatas) throws HandlerException {
+        pusher.triggeredUpdated(triggeredDatas);
     }
 
     @Override
-    public void triggeredRecorded(TriggeredData triggeredRecord) throws HandlerException {
-        pusher.triggeredRecorded(triggeredRecord);
+    public void triggeredRecorded(TriggeredData triggeredData) throws HandlerException {
+        pusher.triggeredRecorded(triggeredData);
     }
 
     @Override
-    public void triggeredRecorded(List<TriggeredData> triggeredRecords) throws HandlerException {
-        pusher.triggeredRecorded(triggeredRecords);
+    public void triggeredRecorded(List<TriggeredData> triggeredDatas) throws HandlerException {
+        pusher.triggeredRecorded(triggeredDatas);
     }
 
     @Override

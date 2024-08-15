@@ -4,7 +4,23 @@
 
 #### 功能构建
 
-- (无)
+- 优化部分类中方法的参数。
+  - com.dwarfeng.fdr.impl.handler.consumer.FilteredKeepConsumer。
+  - com.dwarfeng.fdr.impl.handler.consumer.FilteredPersistConsumer。
+  - com.dwarfeng.fdr.impl.handler.consumer.KeepConsumer。
+  - com.dwarfeng.fdr.impl.handler.consumer.NormalKeepConsumer。
+  - com.dwarfeng.fdr.impl.handler.consumer.NormalPersistConsumer。
+  - com.dwarfeng.fdr.impl.handler.consumer.PersistConsumer。
+  - com.dwarfeng.fdr.impl.handler.consumer.TriggeredKeepConsumer。
+  - com.dwarfeng.fdr.impl.handler.consumer.TriggeredPersistConsumer。
+  - com.dwarfeng.fdr.impl.handler.pusher.DrainPusher。
+  - com.dwarfeng.fdr.impl.handler.pusher.LogPusher。
+  - com.dwarfeng.fdr.impl.handler.pusher.MultiPusher。
+  - com.dwarfeng.fdr.impl.handler.pusher.NativeKafkaPusher。
+  - com.dwarfeng.fdr.impl.handler.pusher.PusherAdapter。
+  - com.dwarfeng.fdr.impl.handler.Pusher。
+  - com.dwarfeng.fdr.impl.handler.PushHandlerImpl。
+  - com.dwarfeng.fdr.stack.handler.PushHandler。
 
 #### Bug修复
 

@@ -43,85 +43,85 @@ public class LogPusher extends AbstractPusher {
     }
 
     @Override
-    public void normalUpdated(NormalData normalRecord) throws HandlerException {
+    public void normalUpdated(NormalData normalData) throws HandlerException {
         String title = "推送更新一般数据:";
-        String message = JSON.toJSONString(FastJsonNormalData.of(normalRecord), true);
+        String message = JSON.toJSONString(FastJsonNormalData.of(normalData), true);
         logData(title, message);
     }
 
     @Override
-    public void normalUpdated(List<NormalData> normalRecords) throws HandlerException {
-        for (NormalData normalRecord : normalRecords) {
+    public void normalUpdated(List<NormalData> normalDatas) throws HandlerException {
+        for (NormalData normalRecord : normalDatas) {
             normalUpdated(normalRecord);
         }
     }
 
     @Override
-    public void normalRecorded(NormalData normalRecord) throws HandlerException {
+    public void normalRecorded(NormalData normalData) throws HandlerException {
         String title = "推送记录一般数据:";
-        String message = JSON.toJSONString(FastJsonNormalData.of(normalRecord), true);
+        String message = JSON.toJSONString(FastJsonNormalData.of(normalData), true);
         logData(title, message);
     }
 
     @Override
-    public void normalRecorded(List<NormalData> normalRecords) throws HandlerException {
-        for (NormalData normalRecord : normalRecords) {
+    public void normalRecorded(List<NormalData> normalDatas) throws HandlerException {
+        for (NormalData normalRecord : normalDatas) {
             normalRecorded(normalRecord);
         }
     }
 
     @Override
-    public void filteredUpdated(FilteredData filteredRecord) throws HandlerException {
+    public void filteredUpdated(FilteredData filteredData) throws HandlerException {
         String title = "推送更新被过滤数据:";
-        String message = JSON.toJSONString(FastJsonFilteredData.of(filteredRecord), true);
+        String message = JSON.toJSONString(FastJsonFilteredData.of(filteredData), true);
         logData(title, message);
     }
 
     @Override
-    public void filteredUpdated(List<FilteredData> filteredRecords) throws HandlerException {
-        for (FilteredData filteredRecord : filteredRecords) {
+    public void filteredUpdated(List<FilteredData> filteredDatas) throws HandlerException {
+        for (FilteredData filteredRecord : filteredDatas) {
             filteredUpdated(filteredRecord);
         }
     }
 
     @Override
-    public void filteredRecorded(FilteredData filteredRecord) throws HandlerException {
+    public void filteredRecorded(FilteredData filteredData) throws HandlerException {
         String title = "推送记录被过滤数据:";
-        String message = JSON.toJSONString(FastJsonFilteredData.of(filteredRecord), true);
+        String message = JSON.toJSONString(FastJsonFilteredData.of(filteredData), true);
         logData(title, message);
     }
 
     @Override
-    public void filteredRecorded(List<FilteredData> filteredRecords) throws HandlerException {
-        for (FilteredData filteredRecord : filteredRecords) {
+    public void filteredRecorded(List<FilteredData> filteredDatas) throws HandlerException {
+        for (FilteredData filteredRecord : filteredDatas) {
             filteredRecorded(filteredRecord);
         }
     }
 
     @Override
-    public void triggeredUpdated(TriggeredData triggeredRecord) throws HandlerException {
+    public void triggeredUpdated(TriggeredData triggeredData) throws HandlerException {
         String title = "推送更新被触发数据:";
-        String message = JSON.toJSONString(FastJsonTriggeredData.of(triggeredRecord), true);
+        String message = JSON.toJSONString(FastJsonTriggeredData.of(triggeredData), true);
         logData(title, message);
     }
 
     @Override
-    public void triggeredUpdated(List<TriggeredData> triggeredRecords) throws HandlerException {
-        for (TriggeredData triggeredRecord : triggeredRecords) {
+    public void triggeredUpdated(List<TriggeredData> triggeredDatas) throws HandlerException {
+        for (TriggeredData triggeredRecord : triggeredDatas) {
             triggeredUpdated(triggeredRecord);
         }
     }
 
     @Override
-    public void triggeredRecorded(TriggeredData triggeredRecord) throws HandlerException {
+    public void triggeredRecorded(TriggeredData triggeredData) throws HandlerException {
         String title = "推送记录被触发数据:";
-        String message = JSON.toJSONString(FastJsonTriggeredData.of(triggeredRecord), true);
+        String message = JSON.toJSONString(FastJsonTriggeredData.of(triggeredData), true);
         logData(title, message);
     }
 
     @Override
-    public void triggeredRecorded(List<TriggeredData> triggeredRecords) throws HandlerException {
-        for (TriggeredData triggeredRecord : triggeredRecords) {
+    public void triggeredRecorded(List<TriggeredData> triggeredDatas) throws HandlerException {
+        for (TriggeredData triggeredRecord : triggeredDatas) {
             triggeredRecorded(triggeredRecord);
         }
     }
