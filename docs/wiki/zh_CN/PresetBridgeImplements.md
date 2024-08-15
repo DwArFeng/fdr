@@ -262,7 +262,9 @@ from(bucket: "${xxx_bucket}")
  |> aggregateWindow(every: ${params[0]}ms, offset: ${params[1]}ms, fn:${params[2]})
 ```
 
-#### custom
+[influxdb aggregateWindow 函数文档](https://docs.influxdata.com/flux/v0/stdlib/universe/aggregatewindow/)
+
+##### custom
 
 `custom` 预设用于对数据点进行自定义查询操作，该预设需要一个参数作为用户自定义的 flux 语句片段，
 拼接在查询语句模板后面。
@@ -285,3 +287,5 @@ ${params[0]}
 
 需要注意的是，`custom` 预设的参数是一个 flux 语句片段，因此需要符合 flux 语法规范。
 同时， **一定不要** 将用户输入的内容直接作为 fluxFragment 输入到参数数组中，这样会导致 flux 注入等安全问题。
+
+[influxdb flux 语法文档](https://docs.influxdata.com/flux/v0/)

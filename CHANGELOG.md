@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- Wiki 更新。
+  - docs/wiki/zh_CN/PresetBridgeImplements.md。
+
 - 优化部分类中方法的参数。
   - com.dwarfeng.fdr.impl.handler.consumer.FilteredKeepConsumer。
   - com.dwarfeng.fdr.impl.handler.consumer.FilteredPersistConsumer。
