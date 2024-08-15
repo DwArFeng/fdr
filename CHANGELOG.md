@@ -8,7 +8,8 @@
 
 #### Bug修复
 
-- (无)
+- Wiki 格式修正。
+  - docs/wiki/zh_CN/PresetBridgeImplements.md。
 
 #### 功能移除
 

@@ -11,9 +11,9 @@
 
 | 名称                                  | 说明                                     |
 |-------------------------------------|----------------------------------------|
-| [DrainBridge](#DrainBridge)         | 简单地丢弃掉所有的数据的桥接器，一般用于占位。                |
-| [HibernateBridge](#HibernateBridge) | 使用 Hibernate 与关系型数据库交互的桥接器，支持多种不同的数据库。 |
-| [InfluxdbBridge](#InfluxdbBridge)   | 使用 Influxdb 时序数据库的桥接器。                 |
+| [DrainBridge](#drainbridge)         | 简单地丢弃掉所有的数据的桥接器，一般用于占位。                |
+| [HibernateBridge](#hibernatebridge) | 使用 Hibernate 与关系型数据库交互的桥接器，支持多种不同的数据库。 |
+| [InfluxdbBridge](#influxdbbridge)   | 使用 Influxdb 时序数据库的桥接器。                 |
 | MockBridge                          | 模拟桥接器。                                 |
 | MultiBridge                         | 多重桥接器，代理多个桥接器。                         |
 | RedisBridge                         | 使用 Redis 与实时数据交互的桥接器。                  |
