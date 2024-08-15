@@ -4,6 +4,12 @@
 
 #### 功能构建
 
+- 优化部分类的文档注释。
+  - com.dwarfeng.fdr.impl.handler.mapper.HighPassCounterMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassCounterMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassExistenceMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassMapperRegistry。
+
 - 为部分类添加 `toString` 方法。
   - com.dwarfeng.fdr.impl.handler.consumer.FilteredPersistConsumer。
   - com.dwarfeng.fdr.impl.handler.consumer.TriggeredPersistConsumer。

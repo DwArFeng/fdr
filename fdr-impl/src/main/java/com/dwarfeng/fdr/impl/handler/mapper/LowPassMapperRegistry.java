@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * 低通映射器注册
+ * 低通映射器注册。
  *
  * <p>
  * 保留低于阈值的数据。

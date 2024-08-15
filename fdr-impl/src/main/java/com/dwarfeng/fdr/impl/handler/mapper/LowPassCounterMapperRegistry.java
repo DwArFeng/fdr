@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * 低通计数映射器
+ * 低通计数映射器注册。
  *
  * <p>
  * 计算低于阈值的数据的个数。

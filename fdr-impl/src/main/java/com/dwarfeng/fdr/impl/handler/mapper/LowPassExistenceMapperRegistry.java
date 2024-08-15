@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 低通存在映射器注册
+ * 低通存在映射器注册。
  *
  * <p>
  * 低通存在映射器，用于判断是否存在低于阈值的数据。
