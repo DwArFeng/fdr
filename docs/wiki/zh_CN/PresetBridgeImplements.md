@@ -41,12 +41,12 @@ DrainBridge 的写入操作为空实现，不会对数据进行任何操作；Dr
 
 可以看到，DrainBridge 桥接器不需要进行任何配置。
 
-## 保持器
+### 保持器
 
 DrainBridge 的保持器中的 `update` 方法为空实现，不会对数据进行任何操作；
 `latest` 方法会抛出异常，不支持读取操作。
 
-## 持久器
+### 持久器
 
 DrainBridge 的持久器中的 `record` 方法为空实现，不会对数据进行任何操作；
 `lookup` 以及 `nativeQuery` 方法会抛出异常，不支持读取操作。
@@ -140,18 +140,18 @@ bridge.hibernate.hibernate.accelerate_enabled=true
 |-------------------------------------|---------|
 | org.hibernate.dialect.MySQL8Dialect | MySQL 8 |
 
-## 保持器
+### 保持器
 
 HibernateBridge 不支持保持器。
 
-## 持久器
+### 持久器
 
 HibernateBridge 的持久器中的 `record` 方法会将数据点存储到数据库中；`lookup` 方法会从数据库中查询数据点；
 `nativeQuery` 暂不支持。
 
-### 查看
+#### 查看
 
-#### 预设清单
+##### 预设清单
 
 HibernateBridge 的查看预设清单如下：
 
@@ -159,13 +159,13 @@ HibernateBridge 的查看预设清单如下：
 |---------------------|------|-------:|--------:|--------:|
 | [default](#default) | 默认预设 |     支持 |      支持 |      支持 |
 
-#### default
+##### default
 
 `default` 预设是查看方法支持的唯一预设，它支持一般数据、被过滤数据、被触发数据。
 
 `default` 不需要任何查询参数。
 
-### 原生查询
+#### 原生查询
 
 HibernateBridge 暂不支持原生查询。
 
@@ -199,18 +199,18 @@ bridge.influxdb.organization=com.dwarfeng
 
 可以看到，配置项有详细的注释，您可以根据注释进行配置。
 
-## 保持器
+### 保持器
 
 HibernateBridge 不支持保持器。
 
-## 持久器
+### 持久器
 
 InfluxdbBridge 的持久器中的 `record` 方法会将数据点存储到 Influxdb 中；`lookup` 方法会从 Influxdb 中查询数据点的原始值；
 `nativeQuery` 方法会根据预设查询从 Influxdb 中查询数据点的开窗值或自定义的查询值。
 
-### 查看
+#### 查看
 
-#### 预设清单
+##### 预设清单
 
 InfluxdbBridge 的查看预设清单如下：
 
@@ -218,15 +218,15 @@ InfluxdbBridge 的查看预设清单如下：
 |-----------------------|------|-------:|--------:|--------:|
 | [default](#default-1) | 默认预设 |     支持 |      支持 |      支持 |
 
-#### default
+##### default
 
 `default` 预设是查看方法支持的唯一预设，它支持一般数据、被过滤数据、被触发数据。
 
 `default` 不需要任何查询参数。
 
-### 原生查询
+#### 原生查询
 
-#### 预设清单
+##### 预设清单
 
 InfluxdbBridge 的原生查询预设清单如下：
 
@@ -236,21 +236,21 @@ InfluxdbBridge 的原生查询预设清单如下：
 | [aggregate_window](#aggregate_window) | 默认预设 |     支持 |      支持 |      支持 |
 | [custom](#custom)                     | 默认预设 |     支持 |      支持 |      支持 |
 
-#### default
+##### default
 
 `default` 预设是原生查询方法的默认预设，它支持一般数据、被过滤数据、被触发数据。
 
 `default` 预设的行为与 `aggregate_window` 预设的行为完全一致，您可以参考 `aggregate_window` 预设的说明。
 
-#### aggregate_window
+##### aggregate_window
 
 `aggregate_window` 预设用于对数据点进行聚合开窗操作，该预设需要三个参数，如下：
 
-| 索引 | 参数类型               | 说明                                                                        |
-|---:|--------------------|---------------------------------------------------------------------------|
-|  0 | `long`             | aggregateWindowEvery，即聚合窗口的大小，单位为毫秒。                                      |
-|  1 | `long`             | aggregateWindowOffset，即聚合窗口的偏移量，单位为毫秒。                                    |
-|  2 | `java.lang.String` | aggregateWindowFunction，即聚合窗口的函数，支持的函数有 `mean`、`sum`、`count`、`min`、`max`。 |
+| 索引 | 参数类型               | 说明                                                |
+|---:|--------------------|---------------------------------------------------|
+|  0 | `long`             | aggregateWindowEvery，即聚合窗口的大小，单位为毫秒。              |
+|  1 | `long`             | aggregateWindowOffset，即聚合窗口的偏移量，单位为毫秒。            |
+|  2 | `java.lang.String` | aggregateWindowFunction，即聚合窗口的函数，可参阅 influxdb 文档。 |
 
 `aggregate_window` 预设会生成如下的 flux 语句：
 
