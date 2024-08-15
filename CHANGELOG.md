@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- Wiki 编写。
+  - docs/wiki/zh_CN/PresetMapperImplements.md。
+
 - 优化部分类的文档注释。
   - com.dwarfeng.fdr.impl.handler.mapper.HighPassCounterMapperRegistry。
   - com.dwarfeng.fdr.impl.handler.mapper.LowPassCounterMapperRegistry。
@@ -20,6 +23,7 @@
 
 - Wiki 更新。
   - docs/wiki/zh_CN/PresetBridgeImplements.md。
+  - docs/wiki/zh_CN/Contents.md。
 
 - 优化部分类中方法的参数。
   - com.dwarfeng.fdr.impl.handler.consumer.FilteredKeepConsumer。

@@ -51,6 +51,7 @@
 - [Bridge](./Bridge.md) - 桥接器，详细说明了本项目的桥接器机制。
 - [Preset Bridge Implements](./PresetBridgeImplements.md) - 预设桥接器实现，详细说明了本项目内置的所有桥接器。
 - [Mapper](./Mapper.md) - 映射器，详细说明了本项目的映射器机制。
+- [Preset Mapper Implements](./PresetMapperImplements.md) - 预设映射器实现，详细说明了本项目内置的所有映射器。
 
 ## 维护与调试
 
