@@ -34,4 +34,14 @@ public class TriggeredKeepConsumer extends KeepConsumer<TriggeredData> {
     protected void doPush(TriggeredData data) throws HandlerException {
         pushHandler.triggeredUpdated(data);
     }
+
+    @Override
+    public String toString() {
+        return "TriggeredKeepConsumer{" +
+                "keepHandler=" + keepHandler +
+                ", pushHandler=" + pushHandler +
+                ", curatorFramework=" + curatorFramework +
+                ", latchPath='" + latchPath + '\'' +
+                '}';
+    }
 }

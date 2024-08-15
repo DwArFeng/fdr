@@ -34,4 +34,14 @@ public class NormalKeepConsumer extends KeepConsumer<NormalData> {
     protected void doPush(NormalData data) throws HandlerException {
         pushHandler.normalUpdated(data);
     }
+
+    @Override
+    public String toString() {
+        return "NormalKeepConsumer{" +
+                "keepHandler=" + keepHandler +
+                ", pushHandler=" + pushHandler +
+                ", curatorFramework=" + curatorFramework +
+                ", latchPath='" + latchPath + '\'' +
+                '}';
+    }
 }

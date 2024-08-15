@@ -30,4 +30,12 @@ public class FilteredPersistConsumer extends PersistConsumer<FilteredData> {
     protected void doPush(FilteredData data) throws HandlerException {
         pushHandler.filteredRecorded(data);
     }
+
+    @Override
+    public String toString() {
+        return "FilteredPersistConsumer{" +
+                "persistHandler=" + persistHandler +
+                ", pushHandler=" + pushHandler +
+                '}';
+    }
 }

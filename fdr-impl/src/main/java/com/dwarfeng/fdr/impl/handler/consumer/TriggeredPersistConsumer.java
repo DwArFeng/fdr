@@ -30,4 +30,12 @@ public class TriggeredPersistConsumer extends PersistConsumer<TriggeredData> {
     protected void doPush(TriggeredData data) throws HandlerException {
         pushHandler.triggeredRecorded(data);
     }
+
+    @Override
+    public String toString() {
+        return "TriggeredPersistConsumer{" +
+                "persistHandler=" + persistHandler +
+                ", pushHandler=" + pushHandler +
+                '}';
+    }
 }

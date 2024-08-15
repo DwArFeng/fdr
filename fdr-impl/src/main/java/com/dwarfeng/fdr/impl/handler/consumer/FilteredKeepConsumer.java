@@ -34,4 +34,14 @@ public class FilteredKeepConsumer extends KeepConsumer<FilteredData> {
     protected void doPush(FilteredData data) throws HandlerException {
         pushHandler.filteredUpdated(data);
     }
+
+    @Override
+    public String toString() {
+        return "FilteredKeepConsumer{" +
+                "keepHandler=" + keepHandler +
+                ", pushHandler=" + pushHandler +
+                ", curatorFramework=" + curatorFramework +
+                ", latchPath='" + latchPath + '\'' +
+                '}';
+    }
 }

@@ -30,4 +30,12 @@ public class NormalPersistConsumer extends PersistConsumer<NormalData> {
     protected void doPush(NormalData data) throws HandlerException {
         pushHandler.normalRecorded(data);
     }
+
+    @Override
+    public String toString() {
+        return "NormalPersistConsumer{" +
+                "persistHandler=" + persistHandler +
+                ", pushHandler=" + pushHandler +
+                '}';
+    }
 }

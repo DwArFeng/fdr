@@ -4,6 +4,14 @@
 
 #### 功能构建
 
+- 为部分类添加 `toString` 方法。
+  - com.dwarfeng.fdr.impl.handler.consumer.FilteredPersistConsumer。
+  - com.dwarfeng.fdr.impl.handler.consumer.TriggeredPersistConsumer。
+  - com.dwarfeng.fdr.impl.handler.consumer.NormalPersistConsumer。
+  - com.dwarfeng.fdr.impl.handler.consumer.NormalKeepConsumer。
+  - com.dwarfeng.fdr.impl.handler.consumer.FilteredKeepConsumer。
+  - com.dwarfeng.fdr.impl.handler.consumer.TriggeredKeepConsumer。
+
 - Wiki 更新。
   - docs/wiki/zh_CN/PresetBridgeImplements.md。
 
