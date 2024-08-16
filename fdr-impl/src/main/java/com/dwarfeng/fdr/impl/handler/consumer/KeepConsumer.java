@@ -125,6 +125,7 @@ public abstract class KeepConsumer<D extends Data> implements Consumer<D> {
      *
      * @param datas 数据组成的列表。
      */
+    @SuppressWarnings("DuplicatedCode")
     private void pushRecords(List<D> datas) {
         // 优先尝试批量推送数据，如果批量推送失败，则尝试逐条推送数据。
         try {
