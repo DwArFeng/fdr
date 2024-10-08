@@ -14,17 +14,16 @@ import java.util.List;
  * 本征映射器注册。
  *
  * @author DwArFeng
- * @since 2.0.0
+ * @since 2.2.2
  */
-@Deprecated
 @Component
-public class IdentifyMapperRegistry extends AbstractMapperRegistry {
+public class IdentityMapperRegistry extends AbstractMapperRegistry {
 
-    public static final String MAPPER_TYPE = "identify_mapper";
+    public static final String MAPPER_TYPE = "identity_mapper";
 
     private final ApplicationContext ctx;
 
-    public IdentifyMapperRegistry(ApplicationContext ctx) {
+    public IdentityMapperRegistry(ApplicationContext ctx) {
         super(MAPPER_TYPE);
         this.ctx = ctx;
     }
@@ -47,7 +46,7 @@ public class IdentifyMapperRegistry extends AbstractMapperRegistry {
     @Override
     public Mapper makeMapper() throws MapperException {
         try {
-            return ctx.getBean(IdentifyMapper.class);
+            return ctx.getBean(IdentityMapper.class);
         } catch (Exception e) {
             throw new MapperMakeException(e);
         }
@@ -55,15 +54,14 @@ public class IdentifyMapperRegistry extends AbstractMapperRegistry {
 
     @Override
     public String toString() {
-        return "IdentifyMapperRegistry{" +
+        return "IdentityMapperRegistry{" +
                 "mapperType='" + mapperType + '\'' +
                 '}';
     }
 
-    @Deprecated
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class IdentifyMapper extends AbstractMapper {
+    public static class IdentityMapper extends AbstractMapper {
 
         @Override
         protected List<Sequence> doMap(MapParam mapParam, List<Sequence> sequences) {
@@ -72,7 +70,7 @@ public class IdentifyMapperRegistry extends AbstractMapperRegistry {
 
         @Override
         public String toString() {
-            return "IdentifyMapper{}";
+            return "IdentityMapper{}";
         }
     }
 }

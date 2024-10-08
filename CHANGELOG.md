@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 映射器名称优化。
+  - 废弃名称不合理的 `IdentityMapperRegistry`，并使用 `IdentityMapperRegistry` 代替。
+
 - 依赖升级。
   - 升级 `protobuf` 依赖版本为 `3.25.5` 以规避漏洞。
   - 升级 `dcti` 依赖版本为 `1.1.9.a` 以规避漏洞。

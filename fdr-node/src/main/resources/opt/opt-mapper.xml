@@ -48,9 +48,17 @@
         -->
 
         <!-- 加载 IdentifyMapper -->
+        <!-- 该映射器由于命名规范性问题，已经被废弃，请使用下方 IdentityMapper 代替 -->
         <!--
         <context:include-filter
                 type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.IdentifyMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 IdentityMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.IdentityMapperRegistry"
         />
         -->
 
