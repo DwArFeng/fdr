@@ -12,17 +12,16 @@ import org.springframework.stereotype.Component;
  * 本征清洗器注册。
  *
  * @author DwArFeng
- * @since 2.0.0
+ * @since 2.2.2
  */
-@Deprecated
 @Component
-public class IdentifyWasherRegistry extends AbstractWasherRegistry {
+public class IdentityWasherRegistry extends AbstractWasherRegistry {
 
-    public static final String WASHER_TYPE = "identify_washer";
+    public static final String WASHER_TYPE = "identity_washer";
 
     private final ApplicationContext ctx;
 
-    public IdentifyWasherRegistry(ApplicationContext ctx) {
+    public IdentityWasherRegistry(ApplicationContext ctx) {
         super(WASHER_TYPE);
         this.ctx = ctx;
     }
@@ -45,7 +44,7 @@ public class IdentifyWasherRegistry extends AbstractWasherRegistry {
     @Override
     public Washer makeWasher(String type, String param) throws WasherException {
         try {
-            return ctx.getBean(IdentifyWasher.class);
+            return ctx.getBean(IdentityWasher.class);
         } catch (Exception e) {
             throw new WasherMakeException(e);
         }
@@ -53,15 +52,14 @@ public class IdentifyWasherRegistry extends AbstractWasherRegistry {
 
     @Override
     public String toString() {
-        return "IdentifyWasherRegistry{" +
+        return "IdentityWasherRegistry{" +
                 "washerType='" + washerType + '\'' +
                 '}';
     }
 
-    @Deprecated
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class IdentifyWasher extends AbstractWasher {
+    public static class IdentityWasher extends AbstractWasher {
 
         @Override
         protected Object doWash(Object rawValue) {
@@ -70,7 +68,7 @@ public class IdentifyWasherRegistry extends AbstractWasherRegistry {
 
         @Override
         public String toString() {
-            return "IdentifyWasher{}";
+            return "IdentityWasher{}";
         }
     }
 }

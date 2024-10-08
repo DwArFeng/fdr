@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 清洗器名称优化。
+  - 废弃名称不合理的 `IdentityWasherRegistry`，并使用 `IdentityWasherRegistry` 代替。
+
 - 映射器名称优化。
   - 废弃名称不合理的 `IdentityMapperRegistry`，并使用 `IdentityMapperRegistry` 代替。
 

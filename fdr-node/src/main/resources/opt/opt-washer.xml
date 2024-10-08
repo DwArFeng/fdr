@@ -20,9 +20,17 @@
         -->
 
         <!-- 加载 IdentifyWasher -->
+        <!-- 该清洗器由于命名规范性问题，已经被废弃，请使用下方 IdentityMapper 代替 -->
         <!--
         <context:include-filter
                 type="assignable" expression="com.dwarfeng.fdr.impl.handler.washer.IdentifyWasherRegistry"
+        />
+        -->
+
+        <!-- 加载 IdentityWasher -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.washer.IdentityWasherRegistry"
         />
         -->
 
