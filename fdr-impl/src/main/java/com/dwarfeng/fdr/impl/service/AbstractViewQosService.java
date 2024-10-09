@@ -5,6 +5,8 @@ import com.dwarfeng.fdr.stack.handler.ViewHandler;
 import com.dwarfeng.fdr.stack.service.ViewQosService;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
@@ -32,6 +34,8 @@ public abstract class AbstractViewQosService<D extends Data> implements ViewQosS
         this.sem = sem;
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public List<D> latest(List<LongIdKey> pointKeys) throws ServiceException {
         try {
@@ -41,6 +45,8 @@ public abstract class AbstractViewQosService<D extends Data> implements ViewQosS
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public QueryResult lookup(QueryInfo queryInfo) throws ServiceException {
         try {
@@ -50,6 +56,8 @@ public abstract class AbstractViewQosService<D extends Data> implements ViewQosS
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public QueryResult nativeQuery(NativeQueryInfo queryInfo) throws ServiceException {
         try {
@@ -59,6 +67,8 @@ public abstract class AbstractViewQosService<D extends Data> implements ViewQosS
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public LookupResult<D> query(LookupInfo lookupInfo) throws ServiceException {
         try {

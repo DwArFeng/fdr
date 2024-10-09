@@ -5,6 +5,8 @@ import com.dwarfeng.fdr.stack.handler.ViewHandler;
 import com.dwarfeng.fdr.stack.service.ViewService;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
@@ -30,6 +32,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         this.sem = sem;
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public D latest(LongIdKey pointKey) throws ServiceException {
         try {
@@ -39,6 +43,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public List<D> latest(List<LongIdKey> pointKeys) throws ServiceException {
         try {
@@ -48,6 +54,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public LookupResult<D> lookup(LookupInfo lookupInfo) throws ServiceException {
         try {
@@ -57,6 +65,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public List<LookupResult<D>> lookup(List<LookupInfo> lookupInfos) throws ServiceException {
         try {
@@ -66,6 +76,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public QueryResult query(QueryInfo queryInfo) throws ServiceException {
         try {
@@ -75,6 +87,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public List<QueryResult> query(List<QueryInfo> queryInfos) throws ServiceException {
         try {
@@ -84,6 +98,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public QueryResult nativeQuery(NativeQueryInfo queryInfo) throws ServiceException {
         try {
@@ -93,6 +109,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public List<QueryResult> nativeQuery(List<NativeQueryInfo> queryInfos) throws ServiceException {
         try {
@@ -102,6 +120,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public CompletableFuture<D> latestAsync(LongIdKey pointKey) throws ServiceException {
         try {
@@ -111,6 +131,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public CompletableFuture<List<D>> latestAsync(List<LongIdKey> pointKeys) throws ServiceException {
         try {
@@ -120,6 +142,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public CompletableFuture<LookupResult<D>> lookupAsync(LookupInfo lookupInfo) throws ServiceException {
         try {
@@ -129,6 +153,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public CompletableFuture<List<LookupResult<D>>> lookupAsync(List<LookupInfo> lookupInfos) throws ServiceException {
         try {
@@ -138,6 +164,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public CompletableFuture<QueryResult> nativeQueryAsync(NativeQueryInfo queryInfo) throws ServiceException {
         try {
@@ -147,6 +175,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public CompletableFuture<List<QueryResult>> nativeQueryAsync(List<NativeQueryInfo> queryInfos)
             throws ServiceException {
@@ -157,6 +187,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public CompletableFuture<QueryResult> queryAsync(QueryInfo queryInfo) throws ServiceException {
         try {
@@ -166,6 +198,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
         }
     }
 
+    @BehaviorAnalyse
+    @SkipRecord
     @Override
     public CompletableFuture<List<QueryResult>> queryAsync(List<QueryInfo> queryInfos) throws ServiceException {
         try {

@@ -4,6 +4,10 @@
 
 #### 功能构建
 
+- 为观察服务增加行为分析注解。
+  - com.dwarfeng.fdr.impl.service.AbstractViewService。
+  - com.dwarfeng.fdr.impl.service.AbstractViewQosService。
+
 - 清洗器名称优化。
   - 废弃名称不合理的 `IdentityWasherRegistry`，并使用 `IdentityWasherRegistry` 代替。
 
