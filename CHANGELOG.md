@@ -10,7 +10,9 @@
 
 #### Bug修复
 
-- (无)
+- 修复消费者重复推送消费事件的 bug。
+  - com.dwarfeng.fdr.impl.handler.consumer.KeepConsumer。
+  - com.dwarfeng.fdr.impl.handler.consumer.PersistConsumer。
 
 #### 功能移除
 
