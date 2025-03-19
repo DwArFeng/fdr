@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 优化部分配置文件中的注释。
+  - 优化 `fdr/query.properties` 配置文件中的注释。
+
 - 优化消费者实现中的部分日志的文案。
   - com.dwarfeng.fdr.impl.handler.consumer.KeepConsumer。
   - com.dwarfeng.fdr.impl.handler.consumer.PersistConsumer。
