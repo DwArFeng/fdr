@@ -4,6 +4,10 @@
 
 #### 功能构建
 
+- 优化部分类中部分方法的行为分析行为。
+  - com.dwarfeng.fdr.impl.service.AbstractViewQosService。
+  - com.dwarfeng.fdr.impl.service.AbstractViewService。
+
 - 优化部分配置文件中的注释。
   - 优化 `fdr/query.properties` 配置文件中的注释。
 

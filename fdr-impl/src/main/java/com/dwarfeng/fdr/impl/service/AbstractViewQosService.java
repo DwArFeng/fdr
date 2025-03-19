@@ -37,7 +37,7 @@ public abstract class AbstractViewQosService<D extends Data> implements ViewQosS
     @BehaviorAnalyse
     @SkipRecord
     @Override
-    public List<D> latest(List<LongIdKey> pointKeys) throws ServiceException {
+    public List<D> latest(@SkipRecord List<LongIdKey> pointKeys) throws ServiceException {
         try {
             return viewHandler.latest(pointKeys);
         } catch (Exception e) {

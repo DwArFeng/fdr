@@ -46,7 +46,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
     @BehaviorAnalyse
     @SkipRecord
     @Override
-    public List<D> latest(List<LongIdKey> pointKeys) throws ServiceException {
+    public List<D> latest(@SkipRecord List<LongIdKey> pointKeys) throws ServiceException {
         try {
             return viewHandler.latest(pointKeys);
         } catch (Exception e) {
@@ -68,7 +68,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
     @BehaviorAnalyse
     @SkipRecord
     @Override
-    public List<LookupResult<D>> lookup(List<LookupInfo> lookupInfos) throws ServiceException {
+    public List<LookupResult<D>> lookup(@SkipRecord List<LookupInfo> lookupInfos) throws ServiceException {
         try {
             return viewHandler.lookup(lookupInfos);
         } catch (Exception e) {
@@ -90,7 +90,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
     @BehaviorAnalyse
     @SkipRecord
     @Override
-    public List<QueryResult> query(List<QueryInfo> queryInfos) throws ServiceException {
+    public List<QueryResult> query(@SkipRecord List<QueryInfo> queryInfos) throws ServiceException {
         try {
             return viewHandler.query(queryInfos);
         } catch (Exception e) {
@@ -112,7 +112,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
     @BehaviorAnalyse
     @SkipRecord
     @Override
-    public List<QueryResult> nativeQuery(List<NativeQueryInfo> queryInfos) throws ServiceException {
+    public List<QueryResult> nativeQuery(@SkipRecord List<NativeQueryInfo> queryInfos) throws ServiceException {
         try {
             return viewHandler.nativeQuery(queryInfos);
         } catch (Exception e) {
@@ -134,7 +134,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
     @BehaviorAnalyse
     @SkipRecord
     @Override
-    public CompletableFuture<List<D>> latestAsync(List<LongIdKey> pointKeys) throws ServiceException {
+    public CompletableFuture<List<D>> latestAsync(@SkipRecord List<LongIdKey> pointKeys) throws ServiceException {
         try {
             return viewHandler.latestAsync(pointKeys);
         } catch (Exception e) {
@@ -156,7 +156,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
     @BehaviorAnalyse
     @SkipRecord
     @Override
-    public CompletableFuture<List<LookupResult<D>>> lookupAsync(List<LookupInfo> lookupInfos) throws ServiceException {
+    public CompletableFuture<List<LookupResult<D>>> lookupAsync(@SkipRecord List<LookupInfo> lookupInfos) throws ServiceException {
         try {
             return viewHandler.lookupAsync(lookupInfos);
         } catch (Exception e) {
@@ -201,7 +201,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
     @BehaviorAnalyse
     @SkipRecord
     @Override
-    public CompletableFuture<List<QueryResult>> queryAsync(List<QueryInfo> queryInfos) throws ServiceException {
+    public CompletableFuture<List<QueryResult>> queryAsync(@SkipRecord List<QueryInfo> queryInfos) throws ServiceException {
         try {
             return viewHandler.queryAsync(queryInfos);
         } catch (Exception e) {
