@@ -4,6 +4,15 @@
 
 #### 功能构建
 
+- 依赖升级。
+  - 升级 `spring` 依赖版本为 `5.3.39` 以规避漏洞。
+  - 升级 `netty` 依赖版本为 `4.1.115.Final` 以规避漏洞。
+  - 升级 `zookeeper` 依赖版本为 `3.9.3` 以规避漏洞。
+  - 升级 `snowflake` 依赖版本为 `1.5.3.a` 以规避漏洞。
+  - 升级 `subgrade` 依赖版本为 `1.5.7.a` 以规避漏洞。
+  - 升级 `spring-terminator` 依赖版本为 `1.0.14.a` 以规避漏洞。
+  - 升级 `spring-telqos` 依赖版本为 `1.1.11.b` 以规避漏洞。
+
 - 为部分重置器的依赖注入对象增加限定符，以避免潜在的冲突。
   - com.dwarfeng.fdr.impl.handler.resetter.DubboResetter。
 
