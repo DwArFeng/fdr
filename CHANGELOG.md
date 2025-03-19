@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 为部分重置器的依赖注入对象增加限定符，以避免潜在的冲突。
+  - com.dwarfeng.fdr.impl.handler.resetter.DubboResetter。
+
 - 优化部分类中部分方法的行为分析行为。
   - com.dwarfeng.fdr.impl.service.AbstractViewQosService。
   - com.dwarfeng.fdr.impl.service.AbstractViewService。
