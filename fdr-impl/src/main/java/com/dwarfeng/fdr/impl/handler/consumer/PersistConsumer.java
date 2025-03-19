@@ -51,7 +51,7 @@ public abstract class PersistConsumer<D extends Data> implements Consumer<D> {
             persistHandler.record(datas);
             return datas;
         } catch (HandlerException e) {
-            LOGGER.error("数据记录失败, 试图使用不同的策略进行推送: 逐条记录", e);
+            LOGGER.error("数据记录失败, 试图使用不同的策略进行记录: 逐条记录", e);
         }
 
         // 定义列表，分别用于存放记录成功和记录失败的数据。
@@ -71,7 +71,7 @@ public abstract class PersistConsumer<D extends Data> implements Consumer<D> {
 
         // 如果有记录失败的数据，则记录日志。
         if (!failedList.isEmpty()) {
-            LOGGER.error("推送数据时发生异常, 最多 {} 个数据信息丢失", failedList.size());
+            LOGGER.error("记录数据时发生异常, 最多 {} 个数据信息丢失", failedList.size());
             failedList.forEach(record -> LOGGER.debug(Objects.toString(record)));
         }
 

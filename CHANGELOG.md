@@ -4,7 +4,9 @@
 
 #### 功能构建
 
-- (无)
+- 优化消费者实现中的部分日志的文案。
+  - com.dwarfeng.fdr.impl.handler.consumer.KeepConsumer。
+  - com.dwarfeng.fdr.impl.handler.consumer.PersistConsumer。
 
 #### Bug修复
 

@@ -92,7 +92,7 @@ public abstract class KeepConsumer<D extends Data> implements Consumer<D> {
             keepHandler.update(datas);
             return datas;
         } catch (Exception e) {
-            LOGGER.error("数据更新失败, 试图使用不同的策略进行推送: 逐条更新", e);
+            LOGGER.error("数据更新失败, 试图使用不同的策略进行更新: 逐条更新", e);
         }
 
         // 定义列表，分别用于存放更新成功和更新失败的数据。
@@ -112,7 +112,7 @@ public abstract class KeepConsumer<D extends Data> implements Consumer<D> {
 
         // 如果有更新失败的数据，则记录日志。
         if (!failedList.isEmpty()) {
-            LOGGER.error("推送数据时发生异常, 最多 {} 个数据信息丢失", failedList.size());
+            LOGGER.error("更新数据时发生异常, 最多 {} 个数据信息丢失", failedList.size());
             failedList.forEach(record -> LOGGER.debug(Objects.toString(record)));
         }
 
