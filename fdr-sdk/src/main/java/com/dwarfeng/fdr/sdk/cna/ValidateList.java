@@ -103,6 +103,8 @@ public class ValidateList<E> extends AbstractList<E> implements List<E> {
         return delegate.retainAll(c);
     }
 
+    // 代理方法，忽略所有警告。
+    @SuppressWarnings("NullableProblems")
     @Override
     public void replaceAll(UnaryOperator<E> operator) {
         delegate.replaceAll(operator);
@@ -169,6 +171,8 @@ public class ValidateList<E> extends AbstractList<E> implements List<E> {
         return delegate.subList(fromIndex, toIndex);
     }
 
+    // 代理方法，忽略所有警告。
+    @SuppressWarnings("NullableProblems")
     @Override
     public Spliterator<E> spliterator() {
         return delegate.spliterator();
