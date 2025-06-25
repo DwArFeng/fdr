@@ -4,6 +4,10 @@
 
 ### 功能构建
 
+- 优化部分 QOS 服务实现的异常处理逻辑，以规避潜在的异常处理问题。
+  - com.dwarfeng.fdr.impl.service.MapQosServiceImpl。
+  - com.dwarfeng.fdr.impl.service.RecordQosServiceImpl。
+
 - 依赖升级。
   - 升级 `kafka` 依赖版本为 `3.9.0` 以规避漏洞。
   - 升级 `netty` 依赖版本为 `4.1.119.Final` 以规避漏洞。

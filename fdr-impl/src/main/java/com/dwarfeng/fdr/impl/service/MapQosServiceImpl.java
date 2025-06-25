@@ -5,7 +5,6 @@ import com.dwarfeng.fdr.stack.handler.Mapper;
 import com.dwarfeng.fdr.stack.service.MapQosService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
@@ -38,7 +37,7 @@ public class MapQosServiceImpl implements MapQosService {
         lock.lock();
         try {
             return mapLocalCacheHandler.get(mapperType);
-        } catch (HandlerException e) {
+        } catch (Exception e) {
             throw ServiceExceptionHelper.logParse("从本地缓存中获取映射器时发生异常", LogLevel.WARN, e, sem);
         } finally {
             lock.unlock();
