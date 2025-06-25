@@ -21,8 +21,8 @@
 ### 功能构建
 
 - 优化项目的启停脚本，以规避潜在的路径问题。
-  - binres/statistics-stop.sh。
-  - binres/statistics-start.sh。
+  - binres/fdr-stop.sh。
+  - binres/fdr-start.sh。
 
 - 依赖升级。
   - 升级 `spring` 依赖版本为 `5.3.39` 以规避漏洞。
