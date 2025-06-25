@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 优化部分异常类的名称。
+  - RecordStoppedException -> RecordHandlerStoppedException。
+
 - 优化部分 QOS 服务实现的异常处理逻辑，以规避潜在的异常处理问题。
   - com.dwarfeng.fdr.impl.service.MapQosServiceImpl。
   - com.dwarfeng.fdr.impl.service.RecordQosServiceImpl。

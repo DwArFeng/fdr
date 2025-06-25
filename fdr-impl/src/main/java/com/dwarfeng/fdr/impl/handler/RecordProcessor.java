@@ -8,7 +8,7 @@ import com.dwarfeng.fdr.stack.bean.dto.RecordInfo;
 import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.exception.PointNotExistsException;
-import com.dwarfeng.fdr.stack.exception.RecordStoppedException;
+import com.dwarfeng.fdr.stack.exception.RecordHandlerStoppedException;
 import com.dwarfeng.fdr.stack.handler.*;
 import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -124,7 +124,7 @@ public class RecordProcessor {
     private void internalRecord(RecordInfo recordInfo) throws Exception {
         // 判断是否允许记录，如果不允许，直接报错。
         if (!startFlag) {
-            throw new RecordStoppedException();
+            throw new RecordHandlerStoppedException();
         }
         consumeBuffer.accept(recordInfo);
     }

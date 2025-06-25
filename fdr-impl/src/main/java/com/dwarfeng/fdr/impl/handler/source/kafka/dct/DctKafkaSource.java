@@ -3,7 +3,7 @@ package com.dwarfeng.fdr.impl.handler.source.kafka.dct;
 import com.dwarfeng.dct.handler.DataCodingHandler;
 import com.dwarfeng.fdr.impl.handler.source.AbstractSource;
 import com.dwarfeng.fdr.stack.bean.dto.RecordInfo;
-import com.dwarfeng.fdr.stack.exception.RecordStoppedException;
+import com.dwarfeng.fdr.stack.exception.RecordHandlerStoppedException;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -91,7 +91,7 @@ public class DctKafkaSource extends AbstractSource {
                         dctData.getHappenedDate()
                 );
                 context.record(recordInfo);
-            } catch (RecordStoppedException e) {
+            } catch (RecordHandlerStoppedException e) {
                 LOGGER.warn("记录处理器被禁用， 消息 {} 以及其后同一批次的消息均不会被提交", message, e);
                 // 如果记录处理器被禁用，则放弃其后同一批次的消息记录，并且妥善处理offset的提交。
                 // Offset 精确设置到没有提交成功的最后一条信息上。
