@@ -1,24 +1,24 @@
 # ChangeLog
 
-### Release_2.3.0_20250625_build_A
+## Release_2.3.0_20250625_build_A
 
-#### 功能构建
-
-- (无)
-
-#### Bug修复
+### 功能构建
 
 - (无)
 
-#### 功能移除
+### Bug 修复
+
+- (无)
+
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_2.2.3_20250319_build_A
+## Release_2.2.3_20250319_build_A
 
-#### 功能构建
+### 功能构建
 
 - 优化项目的启停脚本，以规避潜在的路径问题。
   - binres/statistics-stop.sh。
@@ -47,21 +47,21 @@
   - com.dwarfeng.fdr.impl.handler.consumer.KeepConsumer。
   - com.dwarfeng.fdr.impl.handler.consumer.PersistConsumer。
 
-#### Bug修复
+### Bug 修复
 
 - 修复消费者重复推送消费事件的 bug。
   - com.dwarfeng.fdr.impl.handler.consumer.KeepConsumer。
   - com.dwarfeng.fdr.impl.handler.consumer.PersistConsumer。
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_2.2.2_20241009_build_A
+## Release_2.2.2_20241009_build_A
 
-#### 功能构建
+### 功能构建
 
 - 为观察服务增加行为分析注解。
   - com.dwarfeng.fdr.impl.service.AbstractViewService。
@@ -77,19 +77,19 @@
   - 升级 `protobuf` 依赖版本为 `3.25.5` 以规避漏洞。
   - 升级 `dcti` 依赖版本为 `1.1.9.a` 以规避漏洞。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_2.2.1_20240816_build_A
+## Release_2.2.1_20240816_build_A
 
-#### 功能构建
+### 功能构建
 
 - Wiki 编写。
   - docs/wiki/zh_CN/PresetMapperImplements.md。
@@ -130,20 +130,20 @@
   - com.dwarfeng.fdr.impl.handler.PushHandlerImpl。
   - com.dwarfeng.fdr.stack.handler.PushHandler。
 
-#### Bug修复
+### Bug 修复
 
 - Wiki 格式修正。
   - docs/wiki/zh_CN/PresetBridgeImplements.md。
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_2.2.0_20240814_build_A
+## Release_2.2.0_20240814_build_A
 
-#### 功能构建
+### 功能构建
 
 - Wiki 编写。
   - docs/wiki/zh_CN/Mapper.md。
@@ -197,7 +197,7 @@
   - com.dwarfeng.fdr.impl.handler.mapper.LowPassCounterMapperRegistry。
   - com.dwarfeng.fdr.impl.handler.mapper.LowPassMapperRegistry。
 
-#### Bug修复
+### Bug 修复
 
 - Wiki 格式修正。
   - docs/wiki/zh_CN/PresetBridgeImplements.md。
@@ -210,15 +210,15 @@
   - com.dwarfeng.fdr.impl.handler.mapper.ToBooleanMapperRegistry。
   - com.dwarfeng.fdr.impl.handler.mapper.TrimMapperRegistry。
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_2.1.5_20240813_build_A
+## Release_2.1.5_20240813_build_A
 
-#### 功能构建
+### 功能构建
 
 - Wiki 编写。
   - docs/wiki/zh_CN/Bridge.md。
@@ -238,20 +238,20 @@
   - com.dwarfeng.fdr.impl.service.telqos.RecordCommand。
   - com.dwarfeng.fdr.impl.service.telqos.ViewCommand。
 
-#### Bug修复
+### Bug 修复
 
 - 重置功能 bug 修复。
   - 修复重置器重置记录时，如果之前记录功能未启动，会错误地启动记录功能的 bug。
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_2.1.4_20240810_build_A
+## Release_2.1.4_20240810_build_A
 
-#### 功能构建
+### 功能构建
 
 - 优化部分维护服务实现中的部分方法的性能。
   - com.dwarfeng.fdr.impl.service.FilterInfoMaintainServiceImpl。
@@ -319,7 +319,7 @@
   - 升级 `spring-telqos` 依赖版本为 `1.1.10.a` 以规避漏洞。
   - 升级 `influxdb` 依赖版本为 `6.12.0` 以规避漏洞。
 
-#### Bug修复
+### Bug 修复
 
 - 修复部分 CrudOperation 中部分存在性判断方法行为异常的 bug。
   - com.dwarfeng.fdr.impl.service.operation.FilterInfoCrudOperation。
@@ -346,19 +346,19 @@
 
 - 修复 telqos 工具类中部分注解不正确的 bug。
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_2.1.3_20231226_build_A
+## Release_2.1.3_20231226_build_A
 
-#### 功能构建
+### 功能构建
 
 - (无)
 
-#### Bug修复
+### Bug 修复
 
 - 增加部分映射器缺失的 `@Component` 注解。
   - com.dwarfeng.fdr.impl.handler.mapper.HighPassCounterMapperRegistry。
@@ -371,33 +371,33 @@
 - 修复 com.dwarfeng.fdr.impl.handler.AbstractQueryHandler 中的 bug。
   - 修复 querySingle 方法对序列重复处理的 bug。
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_2.1.2_20231107_build_A
+## Release_2.1.2_20231107_build_A
 
-#### 功能构建
+### 功能构建
 
 - Wiki 编写。
   - docs/wiki/zh_CN/VersionBlacklist.md
 
-#### Bug修复
+### Bug 修复
 
 - 修复关键 bug。
   - 修复记录启动方法被调用后，记录功能无法正常启动的 bug。
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_2.1.1_20231104_build_A
+## Release_2.1.1_20231104_build_A
 
-#### 功能构建
+### 功能构建
 
 - 优化 `push.properties` 配置文件有关 Kafka 部分的注释。
 
@@ -408,19 +408,19 @@
 - 依赖升级。
   - 升级 `zookeeper` 依赖版本为 `3.7.2` 以规避漏洞。
 
-#### Bug修复
+### Bug 修复
 
 - 修复 influxdb 桥接器中部分类与变量命名不规范的问题。
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_2.1.0_20231006_build_A
+## Release_2.1.0_20231006_build_A
 
-#### 功能构建
+### 功能构建
 
 - 类名、配置项、文档注释重命名。
   - dwarfengDct -> dct。
@@ -443,11 +443,11 @@
   - 更新 Source.Context.record 方法的文档注释。
   - 更新 KeepHandler 中更新数据方法的文档注释。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - 去除不需要的接口方法。
   - com.dwarfeng.fdr.stack.handler.KeepHandler.writeOnly。
@@ -457,9 +457,9 @@
 
 ---
 
-### Release_2.0.3_20231006_build_A
+## Release_2.0.3_20231006_build_A
 
-#### 功能构建
+### 功能构建
 
 - 优化配置文件。
   - 优化 `impl` 模块测试配置 `application-context-database.xml`，使得项目在运行测试时打印生成的 SQL 语句。
@@ -467,19 +467,19 @@
 - Wiki 更新。
   - 优化 `Contents.md` 中的内容。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_2.0.2_20230619_build_A
+## Release_2.0.2_20230619_build_A
 
-#### 功能构建
+### 功能构建
 
 - Wiki 编写。
   - docs/wiki/zh_CN/Source.md。
@@ -499,19 +499,19 @@
   - com.dwarfeng.fdr.impl.handler.mapper.LowPassCounterMapperRegistry。
   - com.dwarfeng.fdr.impl.handler.mapper.LowPassExistenceMapperRegistry。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_2.0.1_20230616_build_A
+## Release_2.0.1_20230616_build_A
 
-#### 功能构建
+### 功能构建
 
 - 依赖升级。
   - 升级 `guava` 依赖版本为 `32.0.1-jre` 以规避漏洞。
@@ -532,19 +532,19 @@
   - com.dwarfeng.fdr.impl.service.telqos.LogicConsumerCommand。
   - com.dwarfeng.fdr.impl.service.telqos.RecordConsumerCommand。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_2.0.0_20230614_build_A
+## Release_2.0.0_20230614_build_A
 
-#### 功能构建
+### 功能构建
 
 - 依赖升级。
   - 升级 `spring` 依赖版本为 `5.3.27` 以规避漏洞。
@@ -584,16 +584,16 @@
   - com.dwarfeng.fdr.impl.handler.bridge.drain.DrainBridge。
   - com.dwarfeng.fdr.impl.handler.bridge.multi.MultiBridge。
 
-#### Bug修复
+### Bug 修复
 
 - 修复 `DubboResetter` 注册微服务时没有指定 `group` 的问题。
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### 更早的版本
+## 更早的版本
 
 [View all changelogs](./changelogs)
