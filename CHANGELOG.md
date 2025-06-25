@@ -4,6 +4,8 @@
 
 ### 功能构建
 
+- 优化实体映射器机制。
+
 - 优化部分异常类的名称。
   - RecordStoppedException -> RecordHandlerStoppedException。
 
