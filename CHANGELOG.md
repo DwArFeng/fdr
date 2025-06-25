@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 优化 `application-context-*.xml` 文件的配置项。
+  - application-context-placeholder.xml。
+
 - 优化部分类构造器方法中的参数名。
   - com.dwarfeng.fdr.impl.handler.pusher.AbstractPusher。
 
