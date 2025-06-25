@@ -34,6 +34,8 @@ public interface BeanMapper {
     StringIdKey stringIdKeyFromHibernate(HibernateStringIdKey hibernateStringIdKey);
 
     // -----------------------------------------------------------Fdr Entity-----------------------------------------------------------
+    @Mapping(target = "modifiedDatamark", ignore = true)
+    @Mapping(target = "createdDatamark", ignore = true)
     @Mapping(target = "pointLongId", ignore = true)
     @Mapping(target = "point", ignore = true)
     @Mapping(target = "longId", ignore = true)
@@ -54,6 +56,8 @@ public interface BeanMapper {
     @InheritInverseConfiguration
     MapperSupport mapperSupportFromHibernate(HibernateMapperSupport hibernateMapperSupport);
 
+    @Mapping(target = "modifiedDatamark", ignore = true)
+    @Mapping(target = "createdDatamark", ignore = true)
     @Mapping(target = "washerInfos", ignore = true)
     @Mapping(target = "triggerInfos", ignore = true)
     @Mapping(target = "longId", ignore = true)
@@ -63,6 +67,8 @@ public interface BeanMapper {
     @InheritInverseConfiguration
     Point pointFromHibernate(HibernatePoint hibernatePoint);
 
+    @Mapping(target = "modifiedDatamark", ignore = true)
+    @Mapping(target = "createdDatamark", ignore = true)
     @Mapping(target = "pointLongId", ignore = true)
     @Mapping(target = "point", ignore = true)
     @Mapping(target = "longId", ignore = true)
@@ -77,6 +83,8 @@ public interface BeanMapper {
     @InheritInverseConfiguration
     TriggerSupport triggerSupportFromHibernate(HibernateTriggerSupport hibernateTriggerSupport);
 
+    @Mapping(target = "modifiedDatamark", ignore = true)
+    @Mapping(target = "createdDatamark", ignore = true)
     @Mapping(target = "pointLongId", ignore = true)
     @Mapping(target = "point", ignore = true)
     @Mapping(target = "longId", ignore = true)

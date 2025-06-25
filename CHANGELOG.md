@@ -4,6 +4,18 @@
 
 ### 功能构建
 
+- 导入运维指令。
+  - com.dwarfeng.datamark.service.telqos.*。
+
+- 增加 Hibernate 实体数据标记字段，并应用相关实体侦听器。
+  - com.dwarfeng.fdr.impl.bean.entity.HibernateFilterInfo。
+  - com.dwarfeng.fdr.impl.bean.entity.HibernatePoint。
+  - com.dwarfeng.fdr.impl.bean.entity.HibernateTriggerInfo。
+  - com.dwarfeng.fdr.impl.bean.entity.HibernateWasherInfo。
+
+- 增加依赖。
+  - 增加依赖 `dwarfeng-datamark` 以应用其新功能，版本为 `1.0.3.a`。
+
 - 优化 `application-context-*.xml` 文件的配置项。
   - application-context-placeholder.xml。
 

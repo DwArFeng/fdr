@@ -1,5 +1,7 @@
 package com.dwarfeng.fdr.impl.bean.entity;
 
+import com.dwarfeng.datamark.bean.jpa.DatamarkEntityListener;
+import com.dwarfeng.datamark.bean.jpa.DatamarkField;
 import com.dwarfeng.fdr.sdk.util.Constraints;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
@@ -10,9 +12,10 @@ import java.util.Optional;
 @Entity
 @IdClass(HibernateLongIdKey.class)
 @Table(name = "tbl_washer_info")
+@EntityListeners(DatamarkEntityListener.class)
 public class HibernateWasherInfo implements Bean {
 
-    private static final long serialVersionUID = -4599735679134222629L;
+    private static final long serialVersionUID = 1008611851969492766L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -49,6 +52,22 @@ public class HibernateWasherInfo implements Bean {
     })
     private HibernatePoint point;
 
+    // -----------------------------------------------------------审计-----------------------------------------------------------
+    @DatamarkField(handlerName = "pointDatamarkHandler")
+    @Column(
+            name = "created_datamark",
+            length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE,
+            updatable = false
+    )
+    private String createdDatamark;
+
+    @DatamarkField(handlerName = "pointDatamarkHandler")
+    @Column(
+            name = "modified_datamark",
+            length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE
+    )
+    private String modifiedDatamark;
+
     public HibernateWasherInfo() {
     }
 
@@ -70,6 +89,7 @@ public class HibernateWasherInfo implements Bean {
     }
 
     // -----------------------------------------------------------常规属性区-----------------------------------------------------------
+
     public Long getLongId() {
         return longId;
     }
@@ -142,6 +162,22 @@ public class HibernateWasherInfo implements Bean {
         this.point = point;
     }
 
+    public String getCreatedDatamark() {
+        return createdDatamark;
+    }
+
+    public void setCreatedDatamark(String createdDatamark) {
+        this.createdDatamark = createdDatamark;
+    }
+
+    public String getModifiedDatamark() {
+        return modifiedDatamark;
+    }
+
+    public void setModifiedDatamark(String modifiedDatamark) {
+        this.modifiedDatamark = modifiedDatamark;
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
@@ -153,6 +189,8 @@ public class HibernateWasherInfo implements Bean {
                 "type = " + type + ", " +
                 "param = " + param + ", " +
                 "remark = " + remark + ", " +
-                "point = " + point + ")";
+                "point = " + point + ", " +
+                "createdDatamark = " + createdDatamark + ", " +
+                "modifiedDatamark = " + modifiedDatamark + ")";
     }
 }

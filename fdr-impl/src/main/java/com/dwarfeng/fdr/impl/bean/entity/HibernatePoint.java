@@ -1,5 +1,7 @@
 package com.dwarfeng.fdr.impl.bean.entity;
 
+import com.dwarfeng.datamark.bean.jpa.DatamarkEntityListener;
+import com.dwarfeng.datamark.bean.jpa.DatamarkField;
 import com.dwarfeng.fdr.sdk.util.Constraints;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
@@ -12,9 +14,10 @@ import java.util.Set;
 @Entity
 @IdClass(HibernateLongIdKey.class)
 @Table(name = "tbl_point")
+@EntityListeners(DatamarkEntityListener.class)
 public class HibernatePoint implements Bean {
 
-    private static final long serialVersionUID = 9072149765442387222L;
+    private static final long serialVersionUID = -3127037531020838059L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -55,6 +58,22 @@ public class HibernatePoint implements Bean {
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateWasherInfo.class, mappedBy = "point")
     private Set<HibernateWasherInfo> washerInfos = new HashSet<>();
+
+    // -----------------------------------------------------------审计-----------------------------------------------------------
+    @DatamarkField(handlerName = "pointDatamarkHandler")
+    @Column(
+            name = "created_datamark",
+            length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE,
+            updatable = false
+    )
+    private String createdDatamark;
+
+    @DatamarkField(handlerName = "pointDatamarkHandler")
+    @Column(
+            name = "modified_datamark",
+            length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE
+    )
+    private String modifiedDatamark;
 
     public HibernatePoint() {
     }
@@ -165,6 +184,22 @@ public class HibernatePoint implements Bean {
         this.washerInfos = washerInfos;
     }
 
+    public String getCreatedDatamark() {
+        return createdDatamark;
+    }
+
+    public void setCreatedDatamark(String createdDatamark) {
+        this.createdDatamark = createdDatamark;
+    }
+
+    public String getModifiedDatamark() {
+        return modifiedDatamark;
+    }
+
+    public void setModifiedDatamark(String modifiedDatamark) {
+        this.modifiedDatamark = modifiedDatamark;
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
@@ -176,6 +211,8 @@ public class HibernatePoint implements Bean {
                 "filteredKeepEnabled = " + filteredKeepEnabled + ", " +
                 "filteredPersistEnabled = " + filteredPersistEnabled + ", " +
                 "triggeredKeepEnabled = " + triggeredKeepEnabled + ", " +
-                "triggeredPersistEnabled = " + triggeredPersistEnabled + ")";
+                "triggeredPersistEnabled = " + triggeredPersistEnabled + ", " +
+                "createdDatamark = " + createdDatamark + ", " +
+                "modifiedDatamark = " + modifiedDatamark + ")";
     }
 }

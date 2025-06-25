@@ -16,6 +16,7 @@ public class ServiceExceptionMapperConfiguration {
     @Bean
     public MapServiceExceptionMapper serviceExceptionMapper() {
         Map<Class<? extends Exception>, ServiceException.Code> destination = ServiceExceptionHelper.putDefaultDestination(null);
+        destination = com.dwarfeng.datamark.util.ServiceExceptionHelper.putDefaultDestination(destination);
         destination.put(FilterException.class, ServiceExceptionCodes.FILTER_FAILED);
         destination.put(FilterMakeException.class, ServiceExceptionCodes.FILTER_MAKE_FAILED);
         destination.put(UnsupportedFilterTypeException.class, ServiceExceptionCodes.FILTER_TYPE_UNSUPPORTED);
