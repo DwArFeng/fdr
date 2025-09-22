@@ -50,7 +50,7 @@ public class PointPresetCriteriaMaker implements PresetCriteriaMaker {
     private void childForNormalPersistenceEnabled(DetachedCriteria detachedCriteria, Object[] objects) {
         try {
             boolean pattern = (boolean) objects[0];
-            detachedCriteria.add(Restrictions.eqOrIsNull("normal_persist_enabled", pattern));
+            detachedCriteria.add(Restrictions.eqOrIsNull("normalPersistEnabled", pattern));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
         }

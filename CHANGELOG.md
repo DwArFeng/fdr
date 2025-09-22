@@ -9,6 +9,7 @@
 #### Bug修复
 
 - 修复 com.dwarfeng.fdr.impl.dao.preset.PointPresetCriteriaMaker 中错误的驼峰命名。
+- 修复 com.dwarfeng.fdr.impl.dao.preset.PointPresetCriteriaMaker 中错误的限制条件。
 
 #### 功能移除
 
