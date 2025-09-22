@@ -21,4 +21,6 @@ public interface PointMaintainService extends BatchCrudService<LongIdKey, Point>
      * @since 1.9.6
      */
     String REMARK_LIKE = "remark_like";
+
+    String CHILD_FOR_NORMAL_PERSISTENCE_ENABLED = "child_for_normal_persistence_enabled";
 }

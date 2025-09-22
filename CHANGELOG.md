@@ -4,6 +4,22 @@
 
 #### 功能构建
 
+- 新增预设查询 childForNormalPersistenceEnabled。
+
+#### Bug修复
+
+- 修复 com.dwarfeng.fdr.impl.dao.preset.PointPresetCriteriaMaker 中错误的驼峰命名。
+
+#### 功能移除
+
+- (无)
+
+---
+
+### Release_2.2.3_20250319_build_A
+
+#### 功能构建
+
 - 优化项目的启停脚本，以规避潜在的路径问题。
   - binres/statistics-stop.sh。
   - binres/statistics-start.sh。

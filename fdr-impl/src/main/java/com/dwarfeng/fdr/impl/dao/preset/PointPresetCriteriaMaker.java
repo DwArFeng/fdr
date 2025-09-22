@@ -19,7 +19,10 @@ public class PointPresetCriteriaMaker implements PresetCriteriaMaker {
                 nameLike(detachedCriteria, objects);
                 break;
             case PointMaintainService.REMARK_LIKE:
-                remark_like(detachedCriteria, objects);
+                remarkLike(detachedCriteria, objects);
+                break;
+            case PointMaintainService.CHILD_FOR_NORMAL_PERSISTENCE_ENABLED:
+                childForNormalPersistenceEnabled(detachedCriteria, objects);
                 break;
             default:
                 throw new IllegalArgumentException("无法识别的预设: " + s);
@@ -35,10 +38,19 @@ public class PointPresetCriteriaMaker implements PresetCriteriaMaker {
         }
     }
 
-    private void remark_like(DetachedCriteria detachedCriteria, Object[] objects) {
+    private void remarkLike(DetachedCriteria detachedCriteria, Object[] objects) {
         try {
             String pattern = (String) objects[0];
             detachedCriteria.add(Restrictions.like("remark", pattern, MatchMode.ANYWHERE));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+        }
+    }
+
+    private void childForNormalPersistenceEnabled(DetachedCriteria detachedCriteria, Object[] objects) {
+        try {
+            boolean pattern = (boolean) objects[0];
+            detachedCriteria.add(Restrictions.eqOrIsNull("normal_persist_enabled", pattern));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
         }
