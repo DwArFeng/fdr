@@ -178,7 +178,7 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
     @BehaviorAnalyse
     @SkipRecord
     @Override
-    public CompletableFuture<List<QueryResult>> nativeQueryAsync(List<NativeQueryInfo> queryInfos)
+    public CompletableFuture<List<QueryResult>> nativeQueryAsync(@SkipRecord List<NativeQueryInfo> queryInfos)
             throws ServiceException {
         try {
             return viewHandler.nativeQueryAsync(queryInfos);
