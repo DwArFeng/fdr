@@ -79,6 +79,9 @@
 
 ### Bug 修复
 
+- 修正配置类中的错误。
+  - ExceptionCodeOffsetConfiguration。
+
 - 修复运维指令中的 bug。
   - 修复 `RecordConsumerCommand` 中 `lc` 以及 `ln` 选项输出信息错误的问题。
 
