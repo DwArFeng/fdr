@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 优化记录侧消费机制。
+  - 优化 `[最大空闲时间] <= 0` 时的行为，使其更加符合直觉。
+
 - 优化部分类中部分方法的行为分析行为。
   - com.dwarfeng.fdr.impl.service.AbstractViewService。
 
