@@ -431,7 +431,8 @@ public class ConsumeHandlerImpl<D extends Data> implements ConsumeHandler<D> {
                 // 更新最新空闲检查时间。
                 lastIdleCheckDate = currentTimeMillis;
                 // 取出最多 [批处理] 个数个元素，如果 [buffer] 中的元素没有这么多，则全部取出。
-                int processingElementSize = Math.min(batchSize, buffer.size());
+                // 如果 [批处理] 小于等于 0，则取出所有元素。
+                int processingElementSize = Math.min(batchSize > 0 ? batchSize : Integer.MAX_VALUE, buffer.size());
                 List<R> subList = buffer.subList(0, processingElementSize);
                 List<R> elements2Return = new ArrayList<>(subList);
                 subList.clear();
