@@ -4,6 +4,10 @@
 
 ### 功能构建
 
+- 优化支持实体机制。
+  - 新建支持 QoS 服务 com.dwarfeng.fdr.stack.service.SupportQosService。
+  - 将支持实体维护服务的重置功能迁移至 QoS 服务。
+
 - 优化实体映射器机制。
 
 - 优化部分异常类的名称。
