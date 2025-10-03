@@ -375,30 +375,50 @@ public class ConsumeHandlerImpl<D extends Data> implements ConsumeHandler<D> {
                 /*
                  * 线程阻塞的逻辑。
                  *   最终的效果是达到如下的目的。
-                 *     [最大空闲时间]或者[批处理]这两个参数有一个小于等于0，意思是只要[buffer]中有至少一个元素，就立即处理。
-                 *     除此之外([最大空闲时间]和[批处理]两个参数都大于0)
-                 *       当[buffer]的数量小于[批处理]的数且([当前时间]-[最近检查日期] < [最大空闲时间])时，一直阻塞。
+                 *     [最大空闲时间] 或者 [批处理] 这两个参数有一个小于等于0，意思是只要 [buffer] 中有至少一个元素，
+                 *     就立即处理。
+                 *     除此之外([最大空闲时间] 和 [批处理] 两个参数都大于 0)
+                 *       当[buffer]的数量小于[批处理] 的数且([当前时间] - [最近检查日期] < [最大空闲时间])时，一直阻塞。
                  *     以上条件发生的前提是 [runningFlag] 必须为 true，一旦 [runningFlag] 为 false，则其余参数为任何值都
                  *     不能够阻塞。
-                 * 三者要同时满足:
-                 *   1. [buffer]中没有任何元素，或者[批处理]大于0并且[buffer]中的元素小于[批处理]中的元素。
-                 *      解释: [buffer]中没有任何元素，肯定是要阻塞的。
-                 *            [批处理]小于等于0的意思是只要[buffer]中有一个元素，就不能阻塞，因为"buffer.isEmpty()"的结果
-                 *            为false已经判断了[buffer]中至少含有一个元素，因此该处逻辑只需判断[批处理]小于等于0。
-                 *            [批处理]大于0，且[buffer]中元素的数量小于[批处理]的数量的话，是需要阻塞的。由于前条语句
-                 *            "buffer.isEmpty() || batchSize <= 0"的结果为false已经判断了[buffer]中至少含有一个元素且[批处理]
-                 *            大于0，此时需要判断[buffer]是否小于[批处理]，如果小于批处理，则阻塞。
-                 *   2. [空闲时间]小于[最大空闲时间]，或者[最大空闲时间]小于等于0且buffer中没有任何元素。
-                 *      解释: 定义[空闲时间] = [当前时间] - [最近检查日期]
-                 *            这部分逻辑比较简单，依照定义给出逻辑判断式。
-                 *   3. [runningFlag] 必须为 true。
-                 *      解释: 这部分逻辑比较简单，依照定义给出逻辑判断式。
+                 * 以下三个条件同时满足时，阻塞线程，否则不阻塞:
+                 *   1. [buffer] 中没有任何元素，或者 [批处理] 大于 0，
+                 *      或者 ([批处理] 大于 0 并且 [buffer] 中的元素小于 [批处理])。
+                 *      解释: [buffer] 中没有任何元素，必须要阻塞。
+                 *            ([批处理] 大于 0 并且 [buffer] 中的元素小于 [批处理]) 子句中，[批处理] 大于 0 的意思是
+                 *            只有 [批处理] 启用，才考虑后续条件，因为基于 buffer.isEmpty() 为 false，
+                 *            此时 [buffer] 中至少有一个元素，[批处理] > 0 意味着 [批处理] 启用，
+                 *            只有 [批处理] 启用才需要考虑 [buffer] 中元素的数量与 [批处理] 数量的关系，
+                 *            否则不应该考虑 [批处理] 的数量，子句直接返回 false。
+                 *            因此 [批处理] > 0 时，子句中的短路与逻辑的结果取决于后续条件，
+                 *            [批处理] <= 0，即 [批处理] > 0 为 false 时，子句直接返回 false，即不阻塞，使上述逻辑成立。
+                 *            如果 [批处理] 启用，就必须考虑 [buffer] 中的元素数量是否小于 [批处理] 的数量，
+                 *            如果 [buffer] 中的元素数量小于 [批处理] 的数量，就必须阻塞，反之必须不阻塞。
+                 *            [buffer] 中的元素数量 < [批处理] 时，子句返回 true，即可能阻塞，
+                 *            [buffer] 中的元素数量 >= [批处理]，即 [buffer] 中的元素数量 < [批处理] 为 false 时，
+                 *            子句返回 false，即不阻塞，使上述逻辑成立。
+                 *   2. ([最大空闲时间] <= 0 且 [buffer] 中没有任何元素) 或者 ([时间偏移] > 0)。
+                 *      解释: ([最大空闲时间] <= 0 且 [buffer] 中没有任何元素) 子句中，[最大空闲时间] <= 0 的意思是
+                 *            [最大空闲时间] 不启用，当 [最大空闲时间] 不启用时，只要 [buffer] 中有任何元素，就不应该阻塞，
+                 *            因此 [最大空闲时间] <= 0 时，子句的结果取决于 buffer.isEmpty() 的值，
+                 *            buffer.isEmpty() 为 true 时，子句返回 true，即可能阻塞，
+                 *            buffer.isEmpty() 为 false 时，子句返回 false，即不阻塞，使上述逻辑成立。
+                 *            ([时间偏移] > 0) 子句中，[时间偏移] 的定义如下:
+                 *            [时间偏移] = [最大空闲时间] - [当前时间] + [最近检查日期]，
+                 *            该值指代当前的时间距离下一个最大等待时间点的时间差，
+                 *            [时间偏移] > 0 意味着当前时间还没有达到下一个最大等待时间点，必须阻塞，
+                 *            [时间偏移] <= 0 意味着当前时间已经达到了下一个最大等待时间点，不应该阻塞。
+                 *            [时间偏移] > 0 时子句返回 true，即可能阻塞，
+                 *            [时间偏移] <= 0，即 [时间偏移] > 0 为 false 时，子句返回 false，即不阻塞，使上述逻辑成立。
+                 *   3. [blockEnabled] 必须为 true。
+                 *      解释: [blockEnabled] 为 true 时，子句返回 true，即可能阻塞，
+                 *            [blockEnabled] 为 false 时，子句返回 false，即不阻塞，使上述逻辑成立。
                  */
-                while ((buffer.isEmpty() || batchSize <= 0 || buffer.size() < batchSize)
-                        //注意: 以下两行是一句
+                while ((buffer.isEmpty() || (batchSize > 0 && buffer.size() < batchSize))
+                        // 注意: 以下两行是一句
                         && (maxIdleTime <= 0 && buffer.isEmpty() || maxIdleTime > 0
                         && (timeOffset = maxIdleTime - currentTimeMillis + lastIdleCheckDate) > 0)
-                        //注意: 以上两行是一句
+                        // 注意: 以上两行是一句
                         && blockEnabled
                 ) {
                     try {
@@ -416,7 +436,7 @@ public class ConsumeHandlerImpl<D extends Data> implements ConsumeHandler<D> {
 
                 // 更新最新空闲检查时间。
                 lastIdleCheckDate = currentTimeMillis;
-                // 取出最多[批处理]个数个元素，如果[buffer]中的元素没有这么多，则全部取出。
+                // 取出最多 [批处理] 个数个元素，如果 [buffer] 中的元素没有这么多，则全部取出。
                 int processingElementSize = Math.min(batchSize, buffer.size());
                 List<R> subList = buffer.subList(0, processingElementSize);
                 List<R> elements2Return = new ArrayList<>(subList);
