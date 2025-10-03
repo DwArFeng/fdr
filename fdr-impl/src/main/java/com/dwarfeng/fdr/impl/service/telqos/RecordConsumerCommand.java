@@ -226,14 +226,13 @@ public class RecordConsumerCommand extends CliCommand {
     }
 
     private void handleLc(Context context) throws Exception {
-        context.sendMessage("1.\tevent\t事件类型消费者");
-        context.sendMessage("2.\tvalue\t值类型消费者");
+        context.sendMessage(String.format("%-4d %-12s %s", 1, "keep", "保持类消费者"));
+        context.sendMessage(String.format("%-4d %-12s %s", 2, "persist", "持久类消费者"));
     }
 
     private void handleLn(Context context) throws Exception {
-        context.sendMessage("1.\tfiltered\t过滤器消费者");
-        context.sendMessage("2.\ttriggered\t触发器消费者");
-        context.sendMessage("3.\tpersistence\t持久值消费者");
-        context.sendMessage("4.\trealtime\t实时值消费者");
+        context.sendMessage(String.format("%-4d %-12s %s", 1, "normal", "一般数据消费者"));
+        context.sendMessage(String.format("%-4d %-12s %s", 2, "filtered", "被过滤数据消费者"));
+        context.sendMessage(String.format("%-4d %-12s %s", 3, "triggered", "被触发数据消费者"));
     }
 }
