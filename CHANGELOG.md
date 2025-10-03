@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 优化部分类构造器方法中的参数名。
+  - com.dwarfeng.fdr.impl.handler.pusher.AbstractPusher。
+
 - 优化 `changelogs` 目录结构，以适配新的版本规范。
 
 - 优化 `docs/wiki` 目录结构。
