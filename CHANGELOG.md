@@ -63,6 +63,10 @@
 
 ### 功能移除
 
+- 去除实际未使用的接口。
+  - com.dwarfeng.fdr.impl.handler.PersistenceKeeper。
+  - com.dwarfeng.fdr.impl.handler.RealtimeKeeper。
+
 - 去除支持实体维护服务的重置功能。
   - com.dwarfeng.fdr.stack.service.FilterSupportMaintainService。
   - com.dwarfeng.fdr.stack.service.MapperSupportMaintainService。
