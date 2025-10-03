@@ -29,7 +29,7 @@ FDR 是飞行术语，指的是“飞行数据记录器”，常被称为“黑�
 You are reading the Chinese document, you can find documents in other languages in the [wiki](../../wiki) directory.
 
 - [简体中文](./Introduction.md)
-- [English](../en_US/Introduction.md)
+- [English](../en-US/Introduction.md)
 
 ## 特性
 
