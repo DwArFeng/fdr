@@ -1,27 +1,20 @@
 package com.dwarfeng.fdr.impl.service;
 
-import com.dwarfeng.fdr.impl.handler.TriggerSupporter;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerSupport;
 import com.dwarfeng.fdr.stack.service.TriggerSupportMaintainService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
-import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
-import com.dwarfeng.subgrade.stack.log.LogLevel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class TriggerSupportMaintainServiceImpl implements TriggerSupportMaintainService {
@@ -30,26 +23,14 @@ public class TriggerSupportMaintainServiceImpl implements TriggerSupportMaintain
     private final DaoOnlyEntireLookupService<TriggerSupport> entireLookupService;
     private final DaoOnlyPresetLookupService<TriggerSupport> presetLookupService;
 
-    private final List<TriggerSupporter> triggerSupporters;
-
-    private final ServiceExceptionMapper sem;
-
     public TriggerSupportMaintainServiceImpl(
             GeneralBatchCrudService<StringIdKey, TriggerSupport> crudService,
             DaoOnlyEntireLookupService<TriggerSupport> entireLookupService,
-            DaoOnlyPresetLookupService<TriggerSupport> presetLookupService,
-            List<TriggerSupporter> triggerSupporters,
-            ServiceExceptionMapper sem
+            DaoOnlyPresetLookupService<TriggerSupport> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;
         this.presetLookupService = presetLookupService;
-        if (Objects.isNull(triggerSupporters)) {
-            this.triggerSupporters = new ArrayList<>();
-        } else {
-            this.triggerSupporters = triggerSupporters;
-        }
-        this.sem = sem;
     }
 
     @Override
@@ -275,25 +256,6 @@ public class TriggerSupportMaintainServiceImpl implements TriggerSupportMaintain
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<TriggerSupport> lookupAsList(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
         return presetLookupService.lookupAsList(preset, objs, pagingInfo);
-    }
-
-    @Override
-    @BehaviorAnalyse
-    public void reset() throws ServiceException {
-        try {
-            List<StringIdKey> triggerKeys = entireLookupService.lookupAsList().stream()
-                    .map(TriggerSupport::getKey).collect(Collectors.toList());
-            crudService.batchDelete(triggerKeys);
-            List<TriggerSupport> triggerSupports = triggerSupporters.stream().map(supporter -> new TriggerSupport(
-                    new StringIdKey(supporter.provideType()),
-                    supporter.provideLabel(),
-                    supporter.provideDescription(),
-                    supporter.provideExampleParam()
-            )).collect(Collectors.toList());
-            crudService.batchInsert(triggerSupports);
-        } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("重置触发器支持时发生异常", LogLevel.WARN, e, sem);
-        }
     }
 
     /**

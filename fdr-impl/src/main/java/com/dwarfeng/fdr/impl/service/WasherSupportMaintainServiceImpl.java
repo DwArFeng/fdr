@@ -1,27 +1,20 @@
 package com.dwarfeng.fdr.impl.service;
 
-import com.dwarfeng.fdr.impl.handler.WasherSupporter;
 import com.dwarfeng.fdr.stack.bean.entity.WasherSupport;
 import com.dwarfeng.fdr.stack.service.WasherSupportMaintainService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
-import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
-import com.dwarfeng.subgrade.stack.log.LogLevel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class WasherSupportMaintainServiceImpl implements WasherSupportMaintainService {
@@ -30,26 +23,14 @@ public class WasherSupportMaintainServiceImpl implements WasherSupportMaintainSe
     private final DaoOnlyEntireLookupService<WasherSupport> entireLookupService;
     private final DaoOnlyPresetLookupService<WasherSupport> presetLookupService;
 
-    private final List<WasherSupporter> washerSupporters;
-
-    private final ServiceExceptionMapper sem;
-
     public WasherSupportMaintainServiceImpl(
             GeneralBatchCrudService<StringIdKey, WasherSupport> crudService,
             DaoOnlyEntireLookupService<WasherSupport> entireLookupService,
-            DaoOnlyPresetLookupService<WasherSupport> presetLookupService,
-            List<WasherSupporter> washerSupporters,
-            ServiceExceptionMapper sem
+            DaoOnlyPresetLookupService<WasherSupport> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;
         this.presetLookupService = presetLookupService;
-        if (Objects.isNull(washerSupporters)) {
-            this.washerSupporters = new ArrayList<>();
-        } else {
-            this.washerSupporters = washerSupporters;
-        }
-        this.sem = sem;
     }
 
     @Override
@@ -276,25 +257,6 @@ public class WasherSupportMaintainServiceImpl implements WasherSupportMaintainSe
     public List<WasherSupport> lookupAsList(String preset, Object[] objs, PagingInfo pagingInfo)
             throws ServiceException {
         return presetLookupService.lookupAsList(preset, objs, pagingInfo);
-    }
-
-    @Override
-    @BehaviorAnalyse
-    public void reset() throws ServiceException {
-        try {
-            List<StringIdKey> washerKeys = entireLookupService.lookupAsList().stream()
-                    .map(WasherSupport::getKey).collect(Collectors.toList());
-            crudService.batchDelete(washerKeys);
-            List<WasherSupport> washerSupports = washerSupporters.stream().map(supporter -> new WasherSupport(
-                    new StringIdKey(supporter.provideType()),
-                    supporter.provideLabel(),
-                    supporter.provideDescription(),
-                    supporter.provideExampleParam()
-            )).collect(Collectors.toList());
-            crudService.batchInsert(washerSupports);
-        } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("重置清洗器支持时发生异常", LogLevel.WARN, e, sem);
-        }
     }
 
     /**

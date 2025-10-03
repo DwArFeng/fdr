@@ -1,27 +1,20 @@
 package com.dwarfeng.fdr.impl.service;
 
-import com.dwarfeng.fdr.impl.handler.FilterSupporter;
 import com.dwarfeng.fdr.stack.bean.entity.FilterSupport;
 import com.dwarfeng.fdr.stack.service.FilterSupportMaintainService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
-import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
-import com.dwarfeng.subgrade.stack.log.LogLevel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainService {
@@ -30,26 +23,14 @@ public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainSe
     private final DaoOnlyEntireLookupService<FilterSupport> entireLookupService;
     private final DaoOnlyPresetLookupService<FilterSupport> presetLookupService;
 
-    private final List<FilterSupporter> filterSupporters;
-
-    private final ServiceExceptionMapper sem;
-
     public FilterSupportMaintainServiceImpl(
             GeneralBatchCrudService<StringIdKey, FilterSupport> crudService,
             DaoOnlyEntireLookupService<FilterSupport> entireLookupService,
-            DaoOnlyPresetLookupService<FilterSupport> presetLookupService,
-            List<FilterSupporter> filterSupporters,
-            ServiceExceptionMapper sem
+            DaoOnlyPresetLookupService<FilterSupport> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;
         this.presetLookupService = presetLookupService;
-        if (Objects.isNull(filterSupporters)) {
-            this.filterSupporters = new ArrayList<>();
-        } else {
-            this.filterSupporters = filterSupporters;
-        }
-        this.sem = sem;
     }
 
     @Override
@@ -276,25 +257,6 @@ public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainSe
     public List<FilterSupport> lookupAsList(String preset, Object[] objs, PagingInfo pagingInfo)
             throws ServiceException {
         return presetLookupService.lookupAsList(preset, objs, pagingInfo);
-    }
-
-    @Override
-    @BehaviorAnalyse
-    public void reset() throws ServiceException {
-        try {
-            List<StringIdKey> filterKeys = entireLookupService.lookupAsList().stream()
-                    .map(FilterSupport::getKey).collect(Collectors.toList());
-            crudService.batchDelete(filterKeys);
-            List<FilterSupport> filterSupports = filterSupporters.stream().map(supporter -> new FilterSupport(
-                    new StringIdKey(supporter.provideType()),
-                    supporter.provideLabel(),
-                    supporter.provideDescription(),
-                    supporter.provideExampleParam()
-            )).collect(Collectors.toList());
-            crudService.batchInsert(filterSupports);
-        } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("重置过滤器支持时发生异常", LogLevel.WARN, e, sem);
-        }
     }
 
     /**
