@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.bridge.drain;
 
-import com.dwarfeng.fdr.impl.handler.bridge.WriteOnlyPersister;
+import com.dwarfeng.fdr.sdk.handler.bridge.WriteOnlyPersister;
 import com.dwarfeng.fdr.stack.struct.Data;
 import org.springframework.stereotype.Component;
 

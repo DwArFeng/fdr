@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.impl.handler;
 
+import com.dwarfeng.fdr.sdk.handler.WasherMaker;
 import com.dwarfeng.fdr.stack.exception.UnsupportedWasherTypeException;
 import com.dwarfeng.fdr.stack.exception.WasherException;
 import com.dwarfeng.fdr.stack.handler.Washer;

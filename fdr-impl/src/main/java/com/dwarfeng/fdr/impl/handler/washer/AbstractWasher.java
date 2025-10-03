@@ -1,27 +1,16 @@
 package com.dwarfeng.fdr.impl.handler.washer;
 
-import com.dwarfeng.fdr.stack.exception.WasherException;
-import com.dwarfeng.fdr.stack.exception.WasherExecutionException;
-import com.dwarfeng.fdr.stack.handler.Washer;
-
 /**
  * 清洗器的抽象实现。
  *
  * @author DwArFeng
+ * @see com.dwarfeng.fdr.sdk.handler.washer.AbstractWasher
  * @since 2.0.0
+ * @deprecated 该对象已经被废弃，请使用 sdk 模块下的对应对象代替。
  */
-public abstract class AbstractWasher implements Washer {
+@Deprecated
+public abstract class AbstractWasher extends com.dwarfeng.fdr.sdk.handler.washer.AbstractWasher {
 
-    @Override
-    public Object wash(Object rawValue) throws WasherException {
-        try {
-            return doWash(rawValue);
-        } catch (WasherException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new WasherExecutionException(e);
-        }
+    public AbstractWasher() {
     }
-
-    protected abstract Object doWash(Object rawValue) throws Exception;
 }

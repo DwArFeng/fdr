@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.impl.handler;
 
+import com.dwarfeng.fdr.sdk.handler.TriggerMaker;
 import com.dwarfeng.fdr.stack.exception.TriggerException;
 import com.dwarfeng.fdr.stack.exception.UnsupportedTriggerTypeException;
 import com.dwarfeng.fdr.stack.handler.Trigger;

@@ -1,5 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.mapper;
 
+import com.dwarfeng.fdr.sdk.handler.mapper.AbstractMapperRegistry;
+import com.dwarfeng.fdr.sdk.handler.mapper.OneToOneMapper;
 import com.dwarfeng.fdr.stack.exception.MapperException;
 import com.dwarfeng.fdr.stack.exception.MapperMakeException;
 import com.dwarfeng.fdr.stack.handler.Mapper;

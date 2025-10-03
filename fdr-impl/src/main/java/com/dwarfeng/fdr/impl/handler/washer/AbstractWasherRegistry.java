@@ -1,49 +1,19 @@
 package com.dwarfeng.fdr.impl.handler.washer;
 
-import com.dwarfeng.fdr.impl.handler.WasherMaker;
-import com.dwarfeng.fdr.impl.handler.WasherSupporter;
-
-import java.util.Objects;
-
 /**
  * 抽象清洗器注册。
  *
  * @author DwArFeng
+ * @see com.dwarfeng.fdr.sdk.handler.washer.AbstractWasherRegistry
  * @since 2.0.0
+ * @deprecated 该对象已经被废弃，请使用 sdk 模块下的对应对象代替。
  */
-public abstract class AbstractWasherRegistry implements WasherMaker, WasherSupporter {
-
-    protected String washerType;
+public abstract class AbstractWasherRegistry extends com.dwarfeng.fdr.sdk.handler.washer.AbstractWasherRegistry {
 
     public AbstractWasherRegistry() {
     }
 
     public AbstractWasherRegistry(String washerType) {
-        this.washerType = washerType;
-    }
-
-    @Override
-    public boolean supportType(String type) {
-        return Objects.equals(washerType, type);
-    }
-
-    @Override
-    public String provideType() {
-        return washerType;
-    }
-
-    public String getWasherType() {
-        return washerType;
-    }
-
-    public void setWasherType(String washerType) {
-        this.washerType = washerType;
-    }
-
-    @Override
-    public String toString() {
-        return "AbstractWasherRegistry{" +
-                "washerType='" + washerType + '\'' +
-                '}';
+        super(washerType);
     }
 }

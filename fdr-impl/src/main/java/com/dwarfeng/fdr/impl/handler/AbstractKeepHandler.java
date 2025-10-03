@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.impl.handler;
 
+import com.dwarfeng.fdr.sdk.handler.Bridge;
 import com.dwarfeng.fdr.stack.exception.LatestException;
 import com.dwarfeng.fdr.stack.exception.UpdateException;
 import com.dwarfeng.fdr.stack.handler.KeepHandler;

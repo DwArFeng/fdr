@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.bridge.influxdb;
 
-import com.dwarfeng.fdr.impl.handler.bridge.PersisterOnlyBridge;
+import com.dwarfeng.fdr.sdk.handler.bridge.PersisterOnlyBridge;
 import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
 import com.dwarfeng.fdr.stack.bean.dto.NormalData;
 import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;

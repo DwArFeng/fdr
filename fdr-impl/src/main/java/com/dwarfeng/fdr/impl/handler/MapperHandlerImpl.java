@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.impl.handler;
 
+import com.dwarfeng.fdr.sdk.handler.MapperMaker;
 import com.dwarfeng.fdr.stack.exception.MapperException;
 import com.dwarfeng.fdr.stack.exception.UnsupportedMapperTypeException;
 import com.dwarfeng.fdr.stack.handler.Mapper;

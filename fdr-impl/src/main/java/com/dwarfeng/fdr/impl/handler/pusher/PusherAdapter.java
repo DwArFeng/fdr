@@ -1,12 +1,5 @@
 package com.dwarfeng.fdr.impl.handler.pusher;
 
-import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
-import com.dwarfeng.fdr.stack.bean.dto.NormalData;
-import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
-
-import java.util.List;
-
 /**
  * 推送器适配器。
  *
@@ -21,92 +14,17 @@ import java.util.List;
  * </ul>
  *
  * @author DwArFeng
+ * @see com.dwarfeng.fdr.sdk.handler.pusher.PusherAdapter
  * @since 2.2.0
+ * @deprecated 该类已经被废弃，请使用 sdk 模块下的对应类代替。
  */
-public abstract class PusherAdapter extends AbstractPusher {
+@Deprecated
+public abstract class PusherAdapter extends com.dwarfeng.fdr.sdk.handler.pusher.PusherAdapter {
 
     public PusherAdapter() {
-        super();
     }
 
     public PusherAdapter(String pusherType) {
         super(pusherType);
-    }
-
-    @SuppressWarnings("RedundantThrows")
-    @Override
-    public void normalUpdated(NormalData normalData) throws HandlerException {
-    }
-
-    @SuppressWarnings("RedundantThrows")
-    @Override
-    public void normalUpdated(List<NormalData> normalDatas) throws HandlerException {
-    }
-
-    @SuppressWarnings("RedundantThrows")
-    @Override
-    public void normalRecorded(NormalData normalData) throws HandlerException {
-    }
-
-    @SuppressWarnings("RedundantThrows")
-    @Override
-    public void normalRecorded(List<NormalData> normalDatas) throws HandlerException {
-    }
-
-    @SuppressWarnings("RedundantThrows")
-    @Override
-    public void filteredUpdated(FilteredData filteredData) throws HandlerException {
-    }
-
-    @SuppressWarnings("RedundantThrows")
-    @Override
-    public void filteredUpdated(List<FilteredData> filteredDatas) throws HandlerException {
-    }
-
-    @SuppressWarnings("RedundantThrows")
-    @Override
-    public void filteredRecorded(FilteredData filteredData) throws HandlerException {
-    }
-
-    @SuppressWarnings("RedundantThrows")
-    @Override
-    public void filteredRecorded(List<FilteredData> filteredDatas) throws HandlerException {
-    }
-
-    @SuppressWarnings("RedundantThrows")
-    @Override
-    public void triggeredUpdated(TriggeredData triggeredData) throws HandlerException {
-    }
-
-    @SuppressWarnings("RedundantThrows")
-    @Override
-    public void triggeredUpdated(List<TriggeredData> triggeredDatas) throws HandlerException {
-    }
-
-    @SuppressWarnings("RedundantThrows")
-    @Override
-    public void triggeredRecorded(TriggeredData triggeredData) throws HandlerException {
-    }
-
-    @SuppressWarnings("RedundantThrows")
-    @Override
-    public void triggeredRecorded(List<TriggeredData> triggeredDatas) throws HandlerException {
-    }
-
-    @SuppressWarnings("RedundantThrows")
-    @Override
-    public void recordReset() throws HandlerException {
-    }
-
-    @SuppressWarnings("RedundantThrows")
-    @Override
-    public void mapReset() throws HandlerException {
-    }
-
-    @Override
-    public String toString() {
-        return "PusherAdapter{" +
-                "pusherType='" + pusherType + '\'' +
-                '}';
     }
 }

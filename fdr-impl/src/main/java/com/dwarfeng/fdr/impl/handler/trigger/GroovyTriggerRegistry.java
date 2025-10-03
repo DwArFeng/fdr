@@ -2,6 +2,8 @@ package com.dwarfeng.fdr.impl.handler.trigger;
 
 import com.dwarfeng.dutil.basic.io.IOUtil;
 import com.dwarfeng.dutil.basic.io.StringOutputStream;
+import com.dwarfeng.fdr.sdk.handler.trigger.AbstractTrigger;
+import com.dwarfeng.fdr.sdk.handler.trigger.AbstractTriggerRegistry;
 import com.dwarfeng.fdr.stack.exception.TriggerException;
 import com.dwarfeng.fdr.stack.exception.TriggerMakeException;
 import com.dwarfeng.fdr.stack.handler.Trigger;

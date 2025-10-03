@@ -1,18 +1,18 @@
 package com.dwarfeng.fdr.impl.handler.bridge;
 
-import com.dwarfeng.fdr.impl.handler.Bridge.Keeper;
 import com.dwarfeng.fdr.stack.struct.Data;
 
 /**
  * 保持器的抽象实现。
  *
  * @author DwArFeng
+ * @see com.dwarfeng.fdr.sdk.handler.bridge.AbstractKeeper
  * @since 2.0.0
+ * @deprecated 该对象已经被废弃，请使用 sdk 模块下的对应对象代替。
  */
-public abstract class AbstractKeeper<D extends Data> implements Keeper<D> {
+@Deprecated
+public abstract class AbstractKeeper<D extends Data> extends com.dwarfeng.fdr.sdk.handler.bridge.AbstractKeeper<D> {
 
-    @Override
-    public String toString() {
-        return "AbstractKeeper{}";
+    public AbstractKeeper() {
     }
 }

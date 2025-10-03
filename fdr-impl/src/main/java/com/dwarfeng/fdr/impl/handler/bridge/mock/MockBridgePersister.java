@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.bridge.mock;
 
-import com.dwarfeng.fdr.impl.handler.bridge.FullPersister;
+import com.dwarfeng.fdr.sdk.handler.bridge.FullPersister;
 import com.dwarfeng.fdr.sdk.util.ViewUtil;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;

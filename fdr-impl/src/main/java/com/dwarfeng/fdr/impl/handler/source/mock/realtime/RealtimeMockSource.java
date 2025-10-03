@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.source.mock.realtime;
 
 import com.alibaba.fastjson.JSON;
-import com.dwarfeng.fdr.impl.handler.source.AbstractSource;
+import com.dwarfeng.fdr.sdk.handler.source.AbstractSource;
 import com.dwarfeng.fdr.stack.bean.dto.RecordInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.slf4j.Logger;

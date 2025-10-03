@@ -1,27 +1,16 @@
 package com.dwarfeng.fdr.impl.handler.trigger;
 
-import com.dwarfeng.fdr.stack.exception.TriggerException;
-import com.dwarfeng.fdr.stack.exception.TriggerExecutionException;
-import com.dwarfeng.fdr.stack.handler.Trigger;
-
 /**
  * 触发器的抽象实现。
  *
  * @author DwArFeng
+ * @see com.dwarfeng.fdr.sdk.handler.trigger.AbstractTrigger
  * @since 2.0.0
+ * @deprecated 该对象已经被废弃，请使用 sdk 模块下的对应对象代替。
  */
-public abstract class AbstractTrigger implements Trigger {
+@Deprecated
+public abstract class AbstractTrigger extends com.dwarfeng.fdr.sdk.handler.trigger.AbstractTrigger {
 
-    @Override
-    public TestResult test(TestInfo testInfo) throws TriggerException {
-        try {
-            return doTest(testInfo);
-        } catch (TriggerException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new TriggerExecutionException(e);
-        }
+    public AbstractTrigger() {
     }
-
-    protected abstract TestResult doTest(TestInfo testInfo) throws Exception;
 }

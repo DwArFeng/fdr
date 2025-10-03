@@ -2,6 +2,8 @@ package com.dwarfeng.fdr.impl.handler.washer;
 
 import com.dwarfeng.dutil.basic.io.IOUtil;
 import com.dwarfeng.dutil.basic.io.StringOutputStream;
+import com.dwarfeng.fdr.sdk.handler.washer.AbstractWasher;
+import com.dwarfeng.fdr.sdk.handler.washer.AbstractWasherRegistry;
 import com.dwarfeng.fdr.stack.exception.WasherException;
 import com.dwarfeng.fdr.stack.exception.WasherMakeException;
 import com.dwarfeng.fdr.stack.handler.Washer;

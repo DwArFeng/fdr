@@ -1,8 +1,8 @@
 package com.dwarfeng.fdr.impl.handler.bridge.multi;
 
-import com.dwarfeng.fdr.impl.handler.Bridge;
-import com.dwarfeng.fdr.impl.handler.Bridge.Persister;
-import com.dwarfeng.fdr.impl.handler.bridge.AbstractPersister;
+import com.dwarfeng.fdr.sdk.handler.Bridge;
+import com.dwarfeng.fdr.sdk.handler.Bridge.Persister;
+import com.dwarfeng.fdr.sdk.handler.bridge.AbstractPersister;
 import com.dwarfeng.fdr.stack.bean.dto.LookupInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupResult;
 import com.dwarfeng.fdr.stack.bean.dto.NativeQueryInfo;

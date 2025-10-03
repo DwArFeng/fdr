@@ -1,45 +1,20 @@
 package com.dwarfeng.fdr.impl.handler.bridge;
 
-import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
-import com.dwarfeng.fdr.stack.bean.dto.NormalData;
-import com.dwarfeng.fdr.stack.bean.dto.TriggeredData;
-import com.dwarfeng.fdr.stack.exception.PersisterNotSupportedException;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
-
 /**
  * 仅支持保持器的桥接器。
  *
  * @author DwArFeng
+ * @see com.dwarfeng.fdr.sdk.handler.bridge.KeeperOnlyBridge
  * @since 2.0.0
+ * @deprecated 该对象已经被废弃，请使用 sdk 模块下的对应对象代替。
  */
-public abstract class KeeperOnlyBridge extends AbstractBridge {
+@Deprecated
+public abstract class KeeperOnlyBridge extends com.dwarfeng.fdr.sdk.handler.bridge.KeeperOnlyBridge {
 
     public KeeperOnlyBridge() {
     }
 
     public KeeperOnlyBridge(String bridgeType) {
         super(bridgeType);
-    }
-
-    @Override
-    public Persister<NormalData> getNormalDataPersister() throws HandlerException {
-        throw new PersisterNotSupportedException();
-    }
-
-    @Override
-    public Persister<FilteredData> getFilteredDataPersister() throws HandlerException {
-        throw new PersisterNotSupportedException();
-    }
-
-    @Override
-    public Persister<TriggeredData> getTriggeredDataPersister() throws HandlerException {
-        throw new PersisterNotSupportedException();
-    }
-
-    @Override
-    public String toString() {
-        return "KeeperOnlyBridge{" +
-                "bridgeType='" + bridgeType + '\'' +
-                '}';
     }
 }

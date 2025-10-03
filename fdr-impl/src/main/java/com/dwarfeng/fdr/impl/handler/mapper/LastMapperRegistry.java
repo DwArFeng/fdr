@@ -2,6 +2,8 @@ package com.dwarfeng.fdr.impl.handler.mapper;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.fdr.sdk.handler.mapper.AbstractMapperRegistry;
+import com.dwarfeng.fdr.sdk.handler.mapper.AggregateMapper;
 import com.dwarfeng.fdr.stack.exception.MapperException;
 import com.dwarfeng.fdr.stack.handler.Mapper;
 import com.dwarfeng.subgrade.stack.bean.Bean;

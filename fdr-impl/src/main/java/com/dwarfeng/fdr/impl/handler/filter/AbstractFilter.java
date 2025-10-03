@@ -1,27 +1,16 @@
 package com.dwarfeng.fdr.impl.handler.filter;
 
-import com.dwarfeng.fdr.stack.exception.FilterException;
-import com.dwarfeng.fdr.stack.exception.FilterExecutionException;
-import com.dwarfeng.fdr.stack.handler.Filter;
-
 /**
  * 过滤器的抽象实现。
  *
  * @author DwArFeng
+ * @see com.dwarfeng.fdr.sdk.handler.filter.AbstractFilter
  * @since 2.0.0
+ * @deprecated 该对象已经被废弃，请使用 sdk 模块下的对应对象代替。
  */
-public abstract class AbstractFilter implements Filter {
+@Deprecated
+public abstract class AbstractFilter extends com.dwarfeng.fdr.sdk.handler.filter.AbstractFilter {
 
-    @Override
-    public TestResult test(TestInfo testInfo) throws FilterException {
-        try {
-            return doTest(testInfo);
-        } catch (FilterException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new FilterExecutionException(e);
-        }
+    public AbstractFilter() {
     }
-
-    protected abstract TestResult doTest(TestInfo testInfo) throws Exception;
 }

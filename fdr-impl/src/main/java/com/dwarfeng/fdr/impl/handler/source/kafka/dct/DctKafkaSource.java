@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.source.kafka.dct;
 
 import com.dwarfeng.dct.handler.DataCodingHandler;
-import com.dwarfeng.fdr.impl.handler.source.AbstractSource;
+import com.dwarfeng.fdr.sdk.handler.source.AbstractSource;
 import com.dwarfeng.fdr.stack.bean.dto.RecordInfo;
 import com.dwarfeng.fdr.stack.exception.RecordHandlerStoppedException;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;

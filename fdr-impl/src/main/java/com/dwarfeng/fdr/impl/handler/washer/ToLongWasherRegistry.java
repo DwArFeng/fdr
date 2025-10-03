@@ -1,5 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.washer;
 
+import com.dwarfeng.fdr.sdk.handler.washer.AbstractWasher;
+import com.dwarfeng.fdr.sdk.handler.washer.AbstractWasherRegistry;
 import com.dwarfeng.fdr.sdk.util.Constants;
 import com.dwarfeng.fdr.stack.exception.WasherException;
 import com.dwarfeng.fdr.stack.exception.WasherMakeException;
