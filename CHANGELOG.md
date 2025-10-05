@@ -13,6 +13,8 @@
   - 优化 fdr/consume.properties 中的注释格式。
 
 - 代码格式优化。
+  - 优化 MapLocalCacheHandler 接口的文档注释。
+  - 优化 RecordLocalCacheHandler 接口的文档注释。
   - 优化 RecordHandlerImpl.record 方法的 lock 代码块的格式。
   - 优化 ConsumeHandlerImpl 的日志输出格式。
   - 优化 RecordLocalCacheHandler.RecordContext.toString 方法的输出格式。
