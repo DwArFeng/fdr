@@ -4,6 +4,11 @@
 
 ### 功能构建
 
+- 优化 com.dwarfeng.fdr.impl.handler.pusher.NativeKafkaPusher 推送器。
+  - 优化配置项 `native.kafka` -> `kafka.native`。
+  - 修改相关对象的 `@Value` 注解的值。
+  - 修改相关配置文件的配置项。
+
 - 优化 com.dwarfeng.fdr.stack.service.RecordQosService 服务。
   - 使用 RecordLocalCache 代替 RecordLocalCacheHandler.RecordContext。
   - 修改相关方法的签名。
