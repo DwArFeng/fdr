@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 配置文件格式优化。
+  - 优化 fdr/consume.properties 中的注释格式。
+
 - 代码格式优化。
   - 优化 ConsumeHandlerImpl 的日志输出格式。
   - 优化 RecordLocalCacheHandler.RecordContext.toString 方法的输出格式。
