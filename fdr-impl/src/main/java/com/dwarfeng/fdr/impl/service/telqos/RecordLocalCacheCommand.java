@@ -1,9 +1,9 @@
 package com.dwarfeng.fdr.impl.service.telqos;
 
 import com.dwarfeng.fdr.stack.handler.Filter;
-import com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler.RecordContext;
 import com.dwarfeng.fdr.stack.handler.Trigger;
 import com.dwarfeng.fdr.stack.service.RecordQosService;
+import com.dwarfeng.fdr.stack.struct.RecordLocalCache;
 import com.dwarfeng.springtelqos.node.config.TelqosCommand;
 import com.dwarfeng.springtelqos.sdk.command.CliCommand;
 import com.dwarfeng.springtelqos.stack.command.Context;
@@ -97,22 +97,22 @@ public class RecordLocalCacheCommand extends CliCommand {
             context.sendMessage("请留意选项 p 后接参数的类型应该是数字 ");
             return;
         }
-        RecordContext recordContext = recordQosService.getRecordContext(new LongIdKey(pointId));
-        if (Objects.isNull(recordContext)) {
+        RecordLocalCache recordLocalCache = recordQosService.getRecordLocalCache(new LongIdKey(pointId));
+        if (Objects.isNull(recordLocalCache)) {
             context.sendMessage("not exists!");
             return;
         }
-        context.sendMessage(String.format("point: %s", recordContext.getPoint().toString()));
+        context.sendMessage(String.format("point: %s", recordLocalCache.getPoint().toString()));
         context.sendMessage("filters:");
         int index = 0;
-        for (Map.Entry<LongIdKey, Filter> entry : recordContext.getFilterMap().entrySet()) {
+        for (Map.Entry<LongIdKey, Filter> entry : recordLocalCache.getFilterMap().entrySet()) {
             LongIdKey key = entry.getKey();
             Filter value = entry.getValue();
             context.sendMessage(String.format("  %-3d key:%s value:%s", ++index, key, value));
         }
         context.sendMessage("triggers:");
         index = 0;
-        for (Map.Entry<LongIdKey, Trigger> entry : recordContext.getTriggerMap().entrySet()) {
+        for (Map.Entry<LongIdKey, Trigger> entry : recordLocalCache.getTriggerMap().entrySet()) {
             LongIdKey key = entry.getKey();
             Trigger value = entry.getValue();
             context.sendMessage(String.format("  %-3d key:%s value:%s", ++index, key, value));

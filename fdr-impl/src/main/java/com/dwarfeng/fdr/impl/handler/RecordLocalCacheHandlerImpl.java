@@ -9,6 +9,7 @@ import com.dwarfeng.fdr.stack.service.EnabledFilterInfoLookupService;
 import com.dwarfeng.fdr.stack.service.EnabledTriggerInfoLookupService;
 import com.dwarfeng.fdr.stack.service.EnabledWasherInfoLookupService;
 import com.dwarfeng.fdr.stack.service.PointMaintainService;
+import com.dwarfeng.fdr.stack.struct.RecordLocalCache;
 import com.dwarfeng.subgrade.impl.handler.Fetcher;
 import com.dwarfeng.subgrade.impl.handler.GeneralLocalCacheHandler;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
@@ -24,10 +25,10 @@ import java.util.Map;
 @Component
 public class RecordLocalCacheHandlerImpl implements RecordLocalCacheHandler {
 
-    private final GeneralLocalCacheHandler<LongIdKey, RecordContext> handler;
+    private final GeneralLocalCacheHandler<LongIdKey, RecordLocalCache> handler;
 
-    public RecordLocalCacheHandlerImpl(RecordContextFetcher recordContextFetcher) {
-        handler = new GeneralLocalCacheHandler<>(recordContextFetcher);
+    public RecordLocalCacheHandlerImpl(RecordLocalCacheFetcher recordLocalCacheFetcher) {
+        handler = new GeneralLocalCacheHandler<>(recordLocalCacheFetcher);
     }
 
     @BehaviorAnalyse
@@ -38,7 +39,7 @@ public class RecordLocalCacheHandlerImpl implements RecordLocalCacheHandler {
 
     @BehaviorAnalyse
     @Override
-    public RecordContext get(LongIdKey key) throws HandlerException {
+    public RecordLocalCache get(LongIdKey key) throws HandlerException {
         return handler.get(key);
     }
 
@@ -55,7 +56,7 @@ public class RecordLocalCacheHandlerImpl implements RecordLocalCacheHandler {
     }
 
     @Component
-    public static class RecordContextFetcher implements Fetcher<LongIdKey, RecordContext> {
+    public static class RecordLocalCacheFetcher implements Fetcher<LongIdKey, RecordLocalCache> {
 
         private final PointMaintainService pointMaintainService;
         private final EnabledWasherInfoLookupService enabledWasherInfoLookupService;
@@ -66,7 +67,7 @@ public class RecordLocalCacheHandlerImpl implements RecordLocalCacheHandler {
         private final FilterHandler filterHandler;
         private final TriggerHandler triggerHandler;
 
-        public RecordContextFetcher(
+        public RecordLocalCacheFetcher(
                 PointMaintainService pointMaintainService,
                 EnabledWasherInfoLookupService enabledWasherInfoLookupService,
                 EnabledFilterInfoLookupService enabledFilterInfoLookupService,
@@ -98,7 +99,7 @@ public class RecordLocalCacheHandlerImpl implements RecordLocalCacheHandler {
         @Transactional(
                 transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class
         )
-        public RecordContext fetch(LongIdKey key) throws Exception {
+        public RecordLocalCache fetch(LongIdKey key) throws Exception {
             Point point = pointMaintainService.get(key);
             List<WasherInfo> washerInfos = enabledWasherInfoLookupService.getEnabledWasherInfos(key);
             List<FilterInfo> filterInfos = enabledFilterInfoLookupService.getEnabledFilterInfos(key);
@@ -135,9 +136,7 @@ public class RecordLocalCacheHandlerImpl implements RecordLocalCacheHandler {
                 );
             }
 
-            return new RecordLocalCacheHandler.RecordContext(
-                    point, preFilterWasherMap, filterMap, postFilterWasherMap, triggerMap
-            );
+            return new RecordLocalCache(point, preFilterWasherMap, filterMap, postFilterWasherMap, triggerMap);
         }
     }
 }

@@ -10,6 +10,7 @@ import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.exception.PointNotExistsException;
 import com.dwarfeng.fdr.stack.exception.RecordHandlerStoppedException;
 import com.dwarfeng.fdr.stack.handler.*;
+import com.dwarfeng.fdr.stack.struct.RecordLocalCache;
 import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
@@ -386,16 +387,16 @@ public class RecordProcessor {
                 LOGGER.debug("记录数据信息: {}", recordInfo);
                 LongIdKey pointKey = recordInfo.getPointKey();
 
-                // 获取 RecordContext。
-                RecordLocalCacheHandler.RecordContext recordContext = recordLocalCacheHandler.get(pointKey);
-                if (Objects.isNull(recordContext)) {
+                // 获取 RecordLocalCache。
+                RecordLocalCache recordLocalCache = recordLocalCacheHandler.get(pointKey);
+                if (Objects.isNull(recordLocalCache)) {
                     throw new PointNotExistsException(pointKey);
                 }
-                Point point = recordContext.getPoint();
-                Map<LongIdKey, Washer> preFilterWasherMap = recordContext.getPreFilterWasherMap();
-                Map<LongIdKey, Filter> filterMap = recordContext.getFilterMap();
-                Map<LongIdKey, Washer> postFilterWasherMap = recordContext.getPostFilterWasherMap();
-                Map<LongIdKey, Trigger> triggerMap = recordContext.getTriggerMap();
+                Point point = recordLocalCache.getPoint();
+                Map<LongIdKey, Washer> preFilterWasherMap = recordLocalCache.getPreFilterWasherMap();
+                Map<LongIdKey, Filter> filterMap = recordLocalCache.getFilterMap();
+                Map<LongIdKey, Washer> postFilterWasherMap = recordLocalCache.getPostFilterWasherMap();
+                Map<LongIdKey, Trigger> triggerMap = recordLocalCache.getTriggerMap();
 
                 // 遍历所有的过滤前清洗器，清洗数据。
                 for (Map.Entry<LongIdKey, Washer> entry : preFilterWasherMap.entrySet()) {

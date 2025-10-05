@@ -7,6 +7,7 @@ import com.dwarfeng.fdr.stack.handler.ConsumeHandler;
 import com.dwarfeng.fdr.stack.handler.RecordHandler;
 import com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler;
 import com.dwarfeng.fdr.stack.service.RecordQosService;
+import com.dwarfeng.fdr.stack.struct.RecordLocalCache;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.bean.Bean;
@@ -22,8 +23,6 @@ import javax.annotation.PreDestroy;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler.RecordContext;
 
 @Service
 public class RecordQosServiceImpl implements RecordQosService {
@@ -86,11 +85,11 @@ public class RecordQosServiceImpl implements RecordQosService {
 
     @Override
     @BehaviorAnalyse
-    public RecordContext getRecordContext(LongIdKey pointKey) throws ServiceException {
+    public RecordLocalCache getRecordLocalCache(LongIdKey pointKey) throws ServiceException {
         try {
             return recordLocalCacheHandler.get(pointKey);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("从本地缓存中获取记录上下文时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse("从本地缓存中获取记录本地缓存时发生异常", LogLevel.WARN, e, sem);
         }
     }
 

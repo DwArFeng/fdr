@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.stack.service;
 
-import com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler.RecordContext;
+import com.dwarfeng.fdr.stack.struct.RecordLocalCache;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
@@ -15,13 +15,13 @@ import com.dwarfeng.subgrade.stack.service.Service;
 public interface RecordQosService extends Service {
 
     /**
-     * 获取指定数据点的记录上下文。
+     * 获取指定数据点的记录本地缓存。
      *
      * @param pointKey 指定的数据点。
-     * @return 指定数据点的记录上下文，或者是null。
+     * @return 指定数据点的记录本地缓存，或者是null。
      * @throws ServiceException 服务异常。
      */
-    RecordContext getRecordContext(LongIdKey pointKey) throws ServiceException;
+    RecordLocalCache getRecordLocalCache(LongIdKey pointKey) throws ServiceException;
 
     /**
      * 清除本地缓存。

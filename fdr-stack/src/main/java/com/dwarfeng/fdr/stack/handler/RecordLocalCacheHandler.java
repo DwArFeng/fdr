@@ -1,12 +1,8 @@
 package com.dwarfeng.fdr.stack.handler;
 
-import com.dwarfeng.fdr.stack.bean.entity.Point;
+import com.dwarfeng.fdr.stack.struct.RecordLocalCache;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.handler.LocalCacheHandler;
-
-import java.util.Map;
-
-import static com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler.RecordContext;
 
 /**
  * 记录本地缓存处理器。
@@ -18,67 +14,5 @@ import static com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler.RecordConte
  * @author DwArFeng
  * @since 1.2.0
  */
-public interface RecordLocalCacheHandler extends LocalCacheHandler<LongIdKey, RecordContext> {
-
-    /**
-     * 数据记录上下文。
-     *
-     * <p>
-     * 注意： 该类中的字段 filterMap 和 triggerMap 需要保证遍历顺序，建议使用 LinkedHashMap 实现。
-     *
-     * @author DwArFeng
-     * @since 1.2.0
-     */
-    final class RecordContext {
-
-        private final Point point;
-        private final Map<LongIdKey, Washer> preFilterWasherMap;
-        private final Map<LongIdKey, Filter> filterMap;
-        private final Map<LongIdKey, Washer> postFilterWasherMap;
-        private final Map<LongIdKey, Trigger> triggerMap;
-
-        public RecordContext(
-                Point point, Map<LongIdKey, Washer> preFilterWasherMap,
-                Map<LongIdKey, Filter> filterMap,
-                Map<LongIdKey, Washer> postFilterWasherMap,
-                Map<LongIdKey, Trigger> triggerMap
-        ) {
-            this.point = point;
-            this.preFilterWasherMap = preFilterWasherMap;
-            this.filterMap = filterMap;
-            this.postFilterWasherMap = postFilterWasherMap;
-            this.triggerMap = triggerMap;
-        }
-
-        public Point getPoint() {
-            return point;
-        }
-
-        public Map<LongIdKey, Washer> getPreFilterWasherMap() {
-            return preFilterWasherMap;
-        }
-
-        public Map<LongIdKey, Filter> getFilterMap() {
-            return filterMap;
-        }
-
-        public Map<LongIdKey, Washer> getPostFilterWasherMap() {
-            return postFilterWasherMap;
-        }
-
-        public Map<LongIdKey, Trigger> getTriggerMap() {
-            return triggerMap;
-        }
-
-        @Override
-        public String toString() {
-            return "RecordContext{" +
-                    "point=" + point +
-                    ", preFilterWasherMap=" + preFilterWasherMap +
-                    ", filterMap=" + filterMap +
-                    ", postFilterWasherMap=" + postFilterWasherMap +
-                    ", triggerMap=" + triggerMap +
-                    '}';
-        }
-    }
+public interface RecordLocalCacheHandler extends LocalCacheHandler<LongIdKey, RecordLocalCache> {
 }

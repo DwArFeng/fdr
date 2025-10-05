@@ -4,6 +4,10 @@
 
 ### 功能构建
 
+- 优化 com.dwarfeng.fdr.stack.service.RecordQosService 服务。
+  - 使用 RecordLocalCache 代替 RecordLocalCacheHandler.RecordContext。
+  - 修改相关方法的签名。
+
 - 配置文件格式优化。
   - 优化 fdr/record.properties 中的注释格式。
   - 优化 fdr/consume.properties 中的注释格式。
