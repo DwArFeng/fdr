@@ -74,7 +74,9 @@ public interface RecordLocalCacheHandler extends LocalCacheHandler<LongIdKey, Re
         public String toString() {
             return "RecordContext{" +
                     "point=" + point +
+                    ", preFilterWasherMap=" + preFilterWasherMap +
                     ", filterMap=" + filterMap +
+                    ", postFilterWasherMap=" + postFilterWasherMap +
                     ", triggerMap=" + triggerMap +
                     '}';
         }
