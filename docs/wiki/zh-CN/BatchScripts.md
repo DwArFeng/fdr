@@ -4,42 +4,16 @@
 
 ### 可配置变量
 
-#### basedir
-
-basedir 是本项目的安装目录，默认值为：
-
-```bat
-SET basedir=C:\Program Files\fdr
-```
-
-如果您希望将本项目安装到其它目录，可以修改此变量。
-
-该路径变量支持空格。
-
-#### logdir
-
-logdir 是本项目的日志目录，默认值为：
-
-```bat
-SET logdir=%basedir%\logs
-```
-
-其中，`%basedir%` 是 basedir 变量的值。即默认情况下，日志目录为 `C:\Program Files\fdr\logs`。
-
-如果您希望将本项目的日志输出到其它目录，可以修改此变量。
-
-该路径变量支持空格。
-
 #### jvm_memory_opts
 
 jvm_memory_opts 是本项目的 JVM 内存选项，默认值为：
 
 ```bat
 SET jvm_memory_opts=^
-  -Xmx100m ^
-  -XX:MaxMetaspaceSize=130m ^
-  -XX:ReservedCodeCacheSize=15m ^
-  -XX:CompressedClassSpaceSize=15m
+-Xmx100m ^
+-XX:MaxMetaspaceSize=130m ^
+-XX:ReservedCodeCacheSize=15m ^
+-XX:CompressedClassSpaceSize=15m
 ```
 
 如果您希望修改本项目的 JVM 内存选项，可以修改此变量，变量中各选项含义如下：
@@ -48,22 +22,6 @@ SET jvm_memory_opts=^
 - MaxMetaspaceSize：最大元空间大小。
 - ReservedCodeCacheSize：保留代码缓存大小。
 - CompressedClassSpaceSize：压缩类空间大小。
-
-#### java_log_encoding_opts
-
-java_log_encoding_opts 是本项目日志编码选项，默认值为：
-
-```bat
-SET java_log_encoding_opts=^
-  -Dlog.consoleEncoding=GBK ^
-  -Dlog.fileEncoding=UTF-8
-```
-
-一般来说，Windows 系统的默认字符集是 GBK，如果使用其它字符集，控制台的输出内容可能会乱码。
-
-但是对于文本文件来说，Windows 系统支持 UTF-8 编码，所以您不需要修改此选项。
-
-如果您的 Windows 系统使用的是其它字符集，可以修改此选项。
 
 #### java_jmxremote_opts
 
@@ -81,7 +39,41 @@ SET java_jmxremote_opts=
 
 ```bat
 SET java_jmxremote_opts=^
-  -Dcom.sun.management.jmxremote.port=23000 ^
-  -Dcom.sun.management.jmxremote.authenticate=false ^
-  -Dcom.sun.management.jmxremote.ssl=false
+-Dcom.sun.management.jmxremote.port=23000 ^
+-Dcom.sun.management.jmxremote.authenticate=false ^
+-Dcom.sun.management.jmxremote.ssl=false
 ```
+
+### 固定变量
+
+#### basedir
+
+basedir 是本项目的根目录，其值为：
+
+```bat
+cd /d "%~dp0.."
+SET "basedir=%cd%"
+```
+
+当启动脚本运行时，basedir 被动态地指定为当前脚本所在目录的上一级。无论在哪个目录中部署本项目，basedir 总会指向正确的路径。
+基于以上原因，您无需更改该变量的值。
+
+### java_logging_opts
+
+java_logging_opts 是本项目的日志配置选项，其值为：
+
+```bat
+SET java_logging_opts=^
+-Dlog4j2.configurationFile=confext/logging-settings.xml,conf/logging/settings.xml ^
+-Dlog4j.shutdownHookEnabled=false ^
+-Dlog4j2.is.webapp=false
+```
+
+该选项为项目中的 log4j2 日志框架提供了相关的系统参数（System Property）。
+
+如果想要调整该项目的日志行为，您应该修改日志的配置文件，而不是该变量，以下文件可供您修改：
+
+- `conf\logging\settings.xml`：项目内部代码的日志行为推荐使用该文件更改。
+- `confext\logging-settings.xml`：插件代码的日志行为推荐使用该文件更改，以便于与项目的日志配置文件隔离。
+
+上述文件修改时，如果日志配置发生冲突，以 `conf\logging\settings.xml` 中的配置为准。

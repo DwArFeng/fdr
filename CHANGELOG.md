@@ -12,6 +12,8 @@
   - docs/wiki/zh-CN/images/RecordStartFlowChart.png。
   - docs/wiki/zh-CN/images/RecordStopFlowChart.png。
   - docs/wiki/zh-CN/images/SystemArchitecture.png。
+  - docs/wiki/zh-CN/BatchScripts.md。
+  - docs/wiki/zh-CN/ShellScripts.md。
   - docs/wiki/zh-CN/VersionBlacklist.md。
   - docs/wiki/zh-CN/ConfDirectory.md。
 
