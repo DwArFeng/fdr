@@ -93,7 +93,7 @@ public class ConsumeHandlerImpl<D extends Data> implements ConsumeHandler<D> {
             capacityCheckFuture = scheduler.scheduleAtFixedRate(() -> {
                 double ratio = (double) consumeBuffer.bufferedSize() / (double) consumeBuffer.getBufferSize();
                 if (ratio >= warnThreshold) {
-                    String message = "消费者为 {} 的记录侧的待消费元素占用缓存比例为 {}，超过报警值 {}，请检查";
+                    String message = "消费者为 {} 的记录侧的待消费元素占用缓存比例为 {}, 超过报警值 {}, 请检查";
                     LOGGER.warn(message, consumer.getClass().getSimpleName(), ratio, warnThreshold);
                 }
             }, Constants.SCHEDULER_CHECK_INTERVAL);
@@ -158,12 +158,12 @@ public class ConsumeHandlerImpl<D extends Data> implements ConsumeHandler<D> {
                 consumeBuffer.bufferedSize()
         );
         LOGGER.info(
-                "消费者为 {} 的记录侧消费处理器中剩余的元素过多时，需要较长时间消费，请耐心等待...",
+                "消费者为 {} 的记录侧消费处理器中剩余的元素过多时, 需要较长时间消费, 请耐心等待...",
                 consumer.getClass().getSimpleName()
         );
         ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(
                 () -> {
-                    String message = "消费者 {} 消费记录侧消费处理器中剩余的元素 {} 个，请耐心等待...";
+                    String message = "消费者 {} 消费记录侧消费处理器中剩余的元素 {} 个, 请耐心等待...";
                     LOGGER.info(message, consumer.getClass().getSimpleName(), consumeBuffer.bufferedSize());
                 },
                 new Date(System.currentTimeMillis() + Constants.SCHEDULER_CHECK_INTERVAL),

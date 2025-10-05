@@ -5,6 +5,7 @@
 ### 功能构建
 
 - 代码格式优化。
+  - 优化 ConsumeHandlerImpl 的日志输出格式。
   - 优化 RecordLocalCacheHandler.RecordContext.toString 方法的输出格式。
 
 - 优化 impl 模块下的 `logging` 目录结构。
