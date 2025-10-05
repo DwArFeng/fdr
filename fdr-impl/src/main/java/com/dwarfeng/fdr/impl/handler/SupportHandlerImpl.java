@@ -67,7 +67,6 @@ public class SupportHandlerImpl implements SupportHandler {
         }
     }
 
-    @SuppressWarnings("DuplicatedCode")
     private void doResetFilter() throws Exception {
         List<StringIdKey> filterKeys = filterSupportMaintainService.lookupAsList().stream()
                 .map(FilterSupport::getKey).collect(Collectors.toList());
@@ -93,7 +92,6 @@ public class SupportHandlerImpl implements SupportHandler {
         }
     }
 
-    @SuppressWarnings("DuplicatedCode")
     private void doResetWasher() throws Exception {
         List<StringIdKey> washerKeys = washerSupportMaintainService.lookupAsList().stream()
                 .map(WasherSupport::getKey).collect(Collectors.toList());
@@ -119,7 +117,6 @@ public class SupportHandlerImpl implements SupportHandler {
         }
     }
 
-    @SuppressWarnings("DuplicatedCode")
     private void doResetTrigger() throws Exception {
         List<StringIdKey> triggerKeys = triggerSupportMaintainService.lookupAsList().stream()
                 .map(TriggerSupport::getKey).collect(Collectors.toList());
@@ -145,7 +142,6 @@ public class SupportHandlerImpl implements SupportHandler {
         }
     }
 
-    @SuppressWarnings("DuplicatedCode")
     private void doResetMapper() throws Exception {
         List<StringIdKey> mapperKeys = mapperSupportMaintainService.lookupAsList().stream()
                 .map(MapperSupport::getKey).collect(Collectors.toList());
