@@ -104,6 +104,8 @@
 
 ### Bug 修复
 
+- 修正 `fdr-impl` 模块中错误的 dubbo 应用名称。
+
 - 修正配置类中的错误。
   - ExceptionCodeOffsetConfiguration。
 
