@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 可执行制品目录结构优化。
+  - 增加 `docs` 目录，以提供项目的文档和指南。
+
 - Wiki 更新。
   - docs/wiki/zh-CN/images/BridgeArchitecture.png。
   - docs/wiki/zh-CN/images/DataAcquisitionFlowChart.png。
