@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.service.telqos;
 
 import com.dwarfeng.fdr.stack.handler.Filter;
-import com.dwarfeng.fdr.stack.handler.Trigger;
+import com.dwarfeng.fdr.stack.handler.Washer;
 import com.dwarfeng.fdr.stack.service.RecordQosService;
 import com.dwarfeng.fdr.stack.struct.RecordLocalCache;
 import com.dwarfeng.springtelqos.node.config.TelqosCommand;
@@ -103,18 +103,25 @@ public class RecordLocalCacheCommand extends CliCommand {
             return;
         }
         context.sendMessage(String.format("point: %s", recordLocalCache.getPoint().toString()));
-        context.sendMessage("filters:");
+        context.sendMessage("pre filter washers:");
         int index = 0;
+        for (Map.Entry<LongIdKey, Washer> entry : recordLocalCache.getPreFilterWasherMap().entrySet()) {
+            LongIdKey key = entry.getKey();
+            Washer value = entry.getValue();
+            context.sendMessage(String.format("  %-3d key:%s value:%s", ++index, key, value));
+        }
+        context.sendMessage("filters:");
+        index = 0;
         for (Map.Entry<LongIdKey, Filter> entry : recordLocalCache.getFilterMap().entrySet()) {
             LongIdKey key = entry.getKey();
             Filter value = entry.getValue();
             context.sendMessage(String.format("  %-3d key:%s value:%s", ++index, key, value));
         }
-        context.sendMessage("triggers:");
+        context.sendMessage("post filter washers:");
         index = 0;
-        for (Map.Entry<LongIdKey, Trigger> entry : recordLocalCache.getTriggerMap().entrySet()) {
+        for (Map.Entry<LongIdKey, Washer> entry : recordLocalCache.getPostFilterWasherMap().entrySet()) {
             LongIdKey key = entry.getKey();
-            Trigger value = entry.getValue();
+            Washer value = entry.getValue();
             context.sendMessage(String.format("  %-3d key:%s value:%s", ++index, key, value));
         }
     }

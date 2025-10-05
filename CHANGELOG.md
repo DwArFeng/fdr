@@ -13,6 +13,7 @@
   - 优化 fdr/consume.properties 中的注释格式。
 
 - 代码格式优化。
+  - 优化 RecordLocalCacheCommand 的 COMMAND_OPTION_LOOKUP 选项的输出格式。
   - 优化 MapLocalCacheHandler 接口的文档注释。
   - 优化 RecordLocalCacheHandler 接口的文档注释。
   - 优化 RecordHandlerImpl.record 方法的 lock 代码块的格式。
