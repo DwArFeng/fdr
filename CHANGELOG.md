@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- Wiki 更新。
+  - docs/wiki/zh-CN/ConfDirectory.md。
+
 - 优化 com.dwarfeng.fdr.impl.handler.pusher.NativeKafkaPusher 推送器。
   - 优化配置项 `native.kafka` -> `kafka.native`。
   - 修改相关对象的 `@Value` 注解的值。
