@@ -61,8 +61,8 @@ public class RecordHandlerImpl implements RecordHandler {
     @BehaviorAnalyse
     @Override
     public void record(RecordInfo recordInfo) throws HandlerException {
+        lock.lock();
         try {
-            lock.lock();
             recordProcessor.record(recordInfo);
         } finally {
             lock.unlock();
