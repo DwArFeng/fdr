@@ -5,6 +5,13 @@
 ### 功能构建
 
 - Wiki 更新。
+  - docs/wiki/zh-CN/images/BridgeArchitecture.png。
+  - docs/wiki/zh-CN/images/DataAcquisitionFlowChart.png。
+  - docs/wiki/zh-CN/images/QueryFlow.png。
+  - docs/wiki/zh-CN/images/RecordInfoProcessingFlowChart.png。
+  - docs/wiki/zh-CN/images/RecordStartFlowChart.png。
+  - docs/wiki/zh-CN/images/RecordStopFlowChart.png。
+  - docs/wiki/zh-CN/images/SystemArchitecture.png。
   - docs/wiki/zh-CN/ConfDirectory.md。
 
 - 优化 com.dwarfeng.fdr.impl.handler.pusher.NativeKafkaPusher 推送器。
