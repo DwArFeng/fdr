@@ -19,7 +19,7 @@ public class PointPresetCriteriaMaker implements PresetCriteriaMaker {
                 nameLike(detachedCriteria, objects);
                 break;
             case PointMaintainService.REMARK_LIKE:
-                remark_like(detachedCriteria, objects);
+                remarkLike(detachedCriteria, objects);
                 break;
             default:
                 throw new IllegalArgumentException("无法识别的预设: " + s);
@@ -35,7 +35,7 @@ public class PointPresetCriteriaMaker implements PresetCriteriaMaker {
         }
     }
 
-    private void remark_like(DetachedCriteria detachedCriteria, Object[] objects) {
+    private void remarkLike(DetachedCriteria detachedCriteria, Object[] objects) {
         try {
             String pattern = (String) objects[0];
             detachedCriteria.add(Restrictions.like("remark", pattern, MatchMode.ANYWHERE));

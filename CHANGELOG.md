@@ -9,7 +9,8 @@
 
 ### Bug 修复
 
-- (无)
+- 修复部分预设 Criteria 制造器中的方法命名问题。
+  - com.dwarfeng.fdr.impl.dao.preset.PointPresetCriteriaMaker。
 
 ### 功能移除
 
