@@ -230,13 +230,12 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
             context.sendMessage("");
             for (int i = cropResult.beginIndex; i < cropResult.endIndex; i++) {
                 D data = datas.get(i);
-                printQueryData(i, cropResult.endIndex, data, context);
+                printLookupData(i, cropResult.endIndex, data, context);
             }
         }
     }
 
-    protected abstract void printLookupData(int i, int endIndex, QueryResult.Item item, Context context)
-            throws Exception;
+    protected abstract void printLookupData(int i, int endIndex, D data, Context context) throws Exception;
 
     private void handleQuery(Context context, CommandLine cmd) throws Exception {
         QueryInfo queryInfo;
@@ -362,13 +361,14 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
                 context.sendMessage("");
                 for (int i = cropResult.beginIndex; i < cropResult.endIndex; i++) {
                     QueryResult.Item item = items.get(i);
-                    printLookupData(i, cropResult.endIndex, item, context);
+                    printQueryData(i, cropResult.endIndex, item, context);
                 }
             }
         }
     }
 
-    protected abstract void printQueryData(int i, int endIndex, D data, Context context) throws Exception;
+    protected abstract void printQueryData(int i, int endIndex, QueryResult.Item item, Context context)
+            throws Exception;
 
     private <T> CropResult cropData(List<T> originData, Context context, String quitPrompt) throws Exception {
         int beginIndex;

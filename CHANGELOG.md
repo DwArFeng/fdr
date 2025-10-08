@@ -4,6 +4,12 @@
 
 ### 功能构建
 
+- 优化部分运维指令中的代码。
+  - 优化 ViewCommand 中的部分代码签名及顺序，使其更具有可读性。
+  - 优化 NormalViewCommand 中的部分代码签名及顺序，使其更具有可读性。
+  - 优化 FilteredViewCommand 中的部分代码签名及顺序，使其更具有可读性。
+  - 优化 TriggeredViewCommand 中的部分代码签名及顺序，使其更具有可读性。
+
 - 增加预设查询。
   - com.dwarfeng.fdr.stack.service.PointMaintainService.NORMAL_KEEP_ENABLED_EQ。
   - com.dwarfeng.fdr.stack.service.PointMaintainService.NORMAL_PERSIST_ENABLED_EQ。

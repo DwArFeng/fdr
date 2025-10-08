@@ -22,7 +22,7 @@ public class NormalViewCommand extends ViewCommand<NormalData> {
     }
 
     @Override
-    protected void printQueryData(int i, int endIndex, NormalData data, Context context) throws Exception {
+    protected void printLookupData(int i, int endIndex, NormalData data, Context context) throws Exception {
         printNormalData(i, endIndex, data, context);
     }
 
@@ -57,7 +57,7 @@ public class NormalViewCommand extends ViewCommand<NormalData> {
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    protected void printLookupData(int i, int endIndex, QueryResult.Item item, Context context) throws Exception {
+    protected void printQueryData(int i, int endIndex, QueryResult.Item item, Context context) throws Exception {
         context.sendMessage(String.format(
                 "索引: %d/%d",
                 i, endIndex

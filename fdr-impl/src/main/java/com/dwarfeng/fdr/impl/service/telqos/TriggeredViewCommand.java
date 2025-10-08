@@ -22,7 +22,7 @@ public class TriggeredViewCommand extends ViewCommand<TriggeredData> {
     }
 
     @Override
-    protected void printQueryData(int i, int endIndex, TriggeredData data, Context context) throws Exception {
+    protected void printLookupData(int i, int endIndex, TriggeredData data, Context context) throws Exception {
         printTriggeredData(i, endIndex, data, context);
     }
 
@@ -65,7 +65,7 @@ public class TriggeredViewCommand extends ViewCommand<TriggeredData> {
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    protected void printLookupData(int i, int endIndex, QueryResult.Item item, Context context) throws Exception {
+    protected void printQueryData(int i, int endIndex, QueryResult.Item item, Context context) throws Exception {
         context.sendMessage(String.format(
                 "索引: %d/%d",
                 i, endIndex

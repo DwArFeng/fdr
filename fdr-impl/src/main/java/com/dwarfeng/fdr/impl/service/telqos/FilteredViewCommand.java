@@ -22,7 +22,7 @@ public class FilteredViewCommand extends ViewCommand<FilteredData> {
     }
 
     @Override
-    protected void printQueryData(int i, int endIndex, FilteredData data, Context context) throws Exception {
+    protected void printLookupData(int i, int endIndex, FilteredData data, Context context) throws Exception {
         printFilteredData(i, endIndex, data, context);
     }
 
@@ -65,7 +65,7 @@ public class FilteredViewCommand extends ViewCommand<FilteredData> {
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    protected void printLookupData(int i, int endIndex, QueryResult.Item item, Context context) throws Exception {
+    protected void printQueryData(int i, int endIndex, QueryResult.Item item, Context context) throws Exception {
         context.sendMessage(String.format(
                 "索引: %d/%d",
                 i, endIndex
