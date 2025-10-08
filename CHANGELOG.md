@@ -4,6 +4,14 @@
 
 ### 功能构建
 
+- 增加预设查询。
+  - com.dwarfeng.fdr.stack.service.PointMaintainService.NORMAL_KEEP_ENABLED_EQ。
+  - com.dwarfeng.fdr.stack.service.PointMaintainService.NORMAL_PERSIST_ENABLED_EQ。
+  - com.dwarfeng.fdr.stack.service.PointMaintainService.FILTERED_KEEP_ENABLED_EQ。
+  - com.dwarfeng.fdr.stack.service.PointMaintainService.FILTERED_PERSIST_ENABLED_EQ。
+  - com.dwarfeng.fdr.stack.service.PointMaintainService.TRIGGERED_KEEP_ENABLED_EQ。
+  - com.dwarfeng.fdr.stack.service.PointMaintainService.TRIGGERED_PERSIST_ENABLED_EQ。
+
 - 依赖升级。
   - 升级 `zookeeper` 依赖版本为 `3.9.4` 以规避漏洞。
 

@@ -21,4 +21,34 @@ public interface PointMaintainService extends BatchCrudService<LongIdKey, Point>
      * @since 1.9.6
      */
     String REMARK_LIKE = "remark_like";
+
+    /**
+     * @since 2.3.1
+     */
+    String NORMAL_KEEP_ENABLED_EQ = "normal_keep_enabled_eq";
+
+    /**
+     * @since 2.3.1
+     */
+    String NORMAL_PERSIST_ENABLED_EQ = "normal_persist_enabled_eq";
+
+    /**
+     * @since 2.3.1
+     */
+    String FILTERED_KEEP_ENABLED_EQ = "filtered_keep_enabled_eq";
+
+    /**
+     * @since 2.3.1
+     */
+    String FILTERED_PERSIST_ENABLED_EQ = "filtered_persist_enabled_eq";
+
+    /**
+     * @since 2.3.1
+     */
+    String TRIGGERED_KEEP_ENABLED_EQ = "triggered_keep_enabled_eq";
+
+    /**
+     * @since 2.3.1
+     */
+    String TRIGGERED_PERSIST_ENABLED_EQ = "triggered_persist_enabled_eq";
 }
