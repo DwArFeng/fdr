@@ -17,6 +17,9 @@
 
 ### Bug 修复
 
+- 修复 influxdb 桥接器中的部分代码问题。
+  - 修复 `custom` 原生查询时，如果查询结果中的 `_time` 为 `null` 时，抛出空指针异常的 bug。
+
 - 修复部分预设 Criteria 制造器中的方法命名问题。
   - com.dwarfeng.fdr.impl.dao.preset.PointPresetCriteriaMaker。
 

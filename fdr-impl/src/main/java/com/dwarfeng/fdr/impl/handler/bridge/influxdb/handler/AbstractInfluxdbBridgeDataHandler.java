@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Influxdb 桥接器数据处理器的抽象实现。
@@ -184,8 +185,9 @@ public abstract class AbstractInfluxdbBridgeDataHandler implements InfluxdbBridg
 
             for (FluxRecord record : records) {
                 Object value = record.getValue();
+                Instant happenedInstant = Optional.ofNullable(record.getTime()).orElse(Instant.EPOCH);
                 items.add(new InfluxdbBridgeQueryResult.InfluxdbBridgeItem(
-                        record.getMeasurement(), value, record.getTime()
+                        record.getMeasurement(), value, happenedInstant
                 ));
             }
             sequences.add(new InfluxdbBridgeQueryResult.InfluxdbBridgeSequence(measurement, items, start, stop));
