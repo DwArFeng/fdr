@@ -4,6 +4,11 @@
 
 ### 功能构建
 
+- Wiki 更新。
+  - docs/wiki/README.md。
+  - docs/wiki/en-US/README.md。
+  - docs/wiki/zh-CN/README.md。
+
 - 优化 `assembly.xml`，文件格式，去除不必要的注释。
 
 - 优化启停脚本注释，以规避潜在的字符集问题。
