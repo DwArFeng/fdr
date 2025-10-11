@@ -4,6 +4,8 @@
 
 ### 功能构建
 
+- 优化 `assembly.xml`，文件格式，去除不必要的注释。
+
 - 优化启停脚本注释，以规避潜在的字符集问题。
   - binres/fdr-start.bat。
   - binres/fdr-start.sh。

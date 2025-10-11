@@ -25,7 +25,6 @@
         <fileSet>
             <outputDirectory>docs</outputDirectory>
             <directory>../docs</directory>
-            <!-- 仅应用于文本文件 -->
             <includes>
                 <include>**/*.md</include>
             </includes>
@@ -36,7 +35,6 @@
         <fileSet>
             <outputDirectory>docs</outputDirectory>
             <directory>../docs</directory>
-            <!-- 仅应用于二进制文件 -->
             <includes>
                 <include>**/*.png</include>
             </includes>
