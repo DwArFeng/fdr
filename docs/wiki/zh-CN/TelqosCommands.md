@@ -21,6 +21,10 @@ FDR 2.x 版本提供的 Telqos 命令如下所示：
 | [mlc](#mlc-命令)           | 映射查询本地缓存操作 | 2.0.0.a |
 | [record](#record-命令)     | 记录功能上线/下线  | 2.0.0.a |
 | [reset](#reset-命令)       | 重置处理器操作/查看 | 2.0.0.a |
+| [source](#source-命令)     | 重置处理器操作/查看 | 2.3.0.a |
+| [support](#support-命令)   | 支持操作       | 2.3.0.a |
+
+鉴于所有指令都可以实际操作验证，因此本为对于较长的输出将予以省略，省略的部分将会使用 `etc...` 进行标注。
 
 ## lc 命令
 
@@ -179,34 +183,7 @@ As Provider side:
 +---------------------------------------------------------------------------+---+
 |             fdr2/com.dwarfeng.fdr.stack.service.RecordService             | Y |
 +---------------------------------------------------------------------------+---+
-|           fdr2/com.dwarfeng.fdr.stack.service.NormalViewService           | Y |
-+---------------------------------------------------------------------------+---+
-|          fdr2/com.dwarfeng.fdr.stack.service.FilteredViewService          | Y |
-+---------------------------------------------------------------------------+---+
-|      fdr2/com.dwarfeng.fdr.stack.service.MapperSupportMaintainService     | Y |
-+---------------------------------------------------------------------------+---+
-|      fdr2/com.dwarfeng.fdr.stack.service.WasherSupportMaintainService     | Y |
-+---------------------------------------------------------------------------+---+
-|    fdr2/com.dwarfeng.fdr.stack.service.EnabledTriggerInfoLookupService    | Y |
-+---------------------------------------------------------------------------+---+
-|fdr2/com.dwarfeng.fdr.impl.handler.resetter.DubboResetter$DubboResetService| Y |
-+---------------------------------------------------------------------------+---+
-|      fdr2/com.dwarfeng.fdr.stack.service.FilterSupportMaintainService     | Y |
-+---------------------------------------------------------------------------+---+
-|       fdr2/com.dwarfeng.fdr.stack.service.TriggerInfoMaintainService      | Y |
-+---------------------------------------------------------------------------+---+
-|     fdr2/com.dwarfeng.fdr.stack.service.TriggerSupportMaintainService     | Y |
-+---------------------------------------------------------------------------+---+
-|     fdr2/com.dwarfeng.fdr.stack.service.EnabledFilterInfoLookupService    | Y |
-+---------------------------------------------------------------------------+---+
-|     fdr2/com.dwarfeng.fdr.stack.service.EnabledWasherInfoLookupService    | Y |
-+---------------------------------------------------------------------------+---+
-|       fdr2/com.dwarfeng.fdr.stack.service.WasherInfoMaintainService       | Y |
-+---------------------------------------------------------------------------+---+
-|          fdr2/com.dwarfeng.fdr.stack.service.PointMaintainService         | Y |
-+---------------------------------------------------------------------------+---+
-|          fdr2/com.dwarfeng.fdr.stack.service.TriggeredViewService         | Y |
-+---------------------------------------------------------------------------+---+
+etc...
 As Consumer side:
 +---------------------------------------------+---+
 |            Consumer Service Name            |NUM|
@@ -402,10 +379,10 @@ rcsu -ln
 ```text
 rcsu -c persist -n normal -l -h
 输入任意字符停止持续输出
-1    persist - normal       buffered-size:12      buffer-size:1000    batch-size:100     max-idle-time:1000       thread:4   idle:false
-1    persist - normal       buffered-size:20      buffer-size:1000    batch-size:100     max-idle-time:1000       thread:4   idle:false
-1    persist - normal       buffered-size:325     buffer-size:1000    batch-size:100     max-idle-time:1000       thread:4   idle:false
-1    persist - normal       buffered-size:0       buffer-size:1000    batch-size:100     max-idle-time:1000       thread:4   idle:false
+1    persist - normal       buffered-size:12      buffer-size:1000    etc...
+1    persist - normal       buffered-size:20      buffer-size:1000    etc...
+1    persist - normal       buffered-size:325     buffer-size:1000    etc...
+1    persist - normal       buffered-size:0       buffer-size:1000    etc...
 q
 OK
 ```
@@ -415,7 +392,7 @@ OK
 ```text
 rcsu -c persist -n normal -s -b 2000 -a 200 -m 500 -t 8
 设置完成，消费者新的参数为:
-1    persist - normal       buffered-size:0       buffer-size:2000    batch-size:200     max-idle-time:500        thread:8   idle:false
+1    persist - normal       buffered-size:0       buffer-size:2000    etc...
 OK
 ```
 
@@ -439,7 +416,7 @@ rlc -c
 
 ```text
 rlc -l 1
-point: Point{key=LongIdKey{longId=1}, name='测试点位.1', remark='测试点位.1', normalKeepEnabled=false, normalPersistEnabled=true, filteredKeepEnabled=false, filteredPersistEnabled=false, triggeredKeepEnabled=false, triggeredPersistEnabled=false}
+point: Point{key=LongIdKey{longId=1}, name='测试点位.1', remark='测试点位.1', normalKeepEnabled=false, etc...
 filters:
 triggers:
 OK
@@ -600,5 +577,82 @@ OK
 ```text
 reset --reset-map
 重置成功!
+OK
+```
+
+## source 命令
+
+查看数据源。
+
+查看当前生效的数据源。
+
+### 语法
+
+```text
+usage: source -l
+数据源查看
+    --l   查看数据源
+```
+
+### 示例
+
+```text
+source -l
+01. DctiKafkaSource{registry=org.springframework.kafka.config.KafkaListenerEndpointRegistry@etc...
+OK
+```
+
+## support 命令
+
+支持操作。
+
+重置支持实体。
+
+### 语法
+
+```text
+man support
+usage: support --reset-filter
+support --reset-washer
+support --reset-trigger
+support --reset-mapper
+支持操作
+    --reset-filter    重置过滤器支持
+    --reset-mapper    重置映射器支持
+    --reset-trigger   重置触发器支持
+    --reset-washer    重置清洗器支持
+```
+
+### 示例
+
+#### 重置过滤器支持
+
+```text
+support --reset-filter
+重置过滤器支持成功。
+OK
+```
+
+#### 重置映射器支持
+
+```text
+support --reset-mapper
+重置映射器成功。
+OK
+```
+
+#### 重置触发器支持
+
+```text
+support --reset-trigger
+重置触发器支持成功。
+OK
+```
+
+#### 重置清洗器支持
+
+```text
+support --reset-washer
+重置清洗器支持成功。
 OK
 ```
