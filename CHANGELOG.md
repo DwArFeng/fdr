@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 运维指令优化。
+  - 优化 com.dwarfeng.fdr.impl.service.telqos.SourceCommand 中的指令描述。
+
 - 增加 `temp` 目录，用于存放临时文件。
 
 - 优化部分运维指令中的代码。

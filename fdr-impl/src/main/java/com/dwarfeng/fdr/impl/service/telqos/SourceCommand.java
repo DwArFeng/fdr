@@ -23,7 +23,7 @@ public class SourceCommand extends CliCommand {
     };
 
     private static final String IDENTITY = "source";
-    private static final String DESCRIPTION = "下沉器查看";
+    private static final String DESCRIPTION = "数据源查看";
 
     private static final String CMD_LINE_SYNTAX_LOOKUP = IDENTITY + " " +
             CommandUtil.concatOptionPrefix(COMMAND_OPTION_LOOKUP);
@@ -44,7 +44,7 @@ public class SourceCommand extends CliCommand {
     @Override
     protected List<Option> buildOptions() {
         List<Option> list = new ArrayList<>();
-        list.add(Option.builder().longOpt(COMMAND_OPTION_LOOKUP).desc("查看下沉器").build());
+        list.add(Option.builder().longOpt(COMMAND_OPTION_LOOKUP).desc("查看数据源").build());
         return list;
     }
 
