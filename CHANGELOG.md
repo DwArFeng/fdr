@@ -4,6 +4,11 @@
 
 ### 功能构建
 
+- 优化启停脚本注释，以规避潜在的字符集问题。
+  - binres/fdr-start.bat。
+  - binres/fdr-start.sh。
+  - binres/fdr-stop.sh。
+
 - 运维指令优化。
   - 优化 com.dwarfeng.fdr.impl.service.telqos.SupportCommand 中的指令选项描述。
   - 优化 com.dwarfeng.fdr.impl.service.telqos.SourceCommand 中的指令描述。
