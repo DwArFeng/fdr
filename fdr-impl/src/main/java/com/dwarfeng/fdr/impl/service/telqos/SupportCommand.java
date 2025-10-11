@@ -61,7 +61,7 @@ public class SupportCommand extends CliCommand {
         list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_FILTER).desc("重置过滤器支持").build());
         list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_WASHER).desc("重置清洗器支持").build());
         list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_TRIGGER).desc("重置触发器支持").build());
-        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_MAPPER).desc("重置映射器").build());
+        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_MAPPER).desc("重置映射器支持").build());
         return list;
     }
 
