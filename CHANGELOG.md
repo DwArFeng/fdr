@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- `fdr-node` 子模块类优化注释、文档注释格式、代码换行格式。
+  - com.dwarfeng.fdr.node.configuration.FastJsonConfiguration。
+
 - `fdr-impl` 子模块类优化注释、文档注释格式、代码换行格式。
   - com.dwarfeng.fdr.impl.handler.RecordProcessor。
   - com.dwarfeng.fdr.impl.handler.bridge.hibernate.configuration.HibernateBridgeBaseConfiguration。
