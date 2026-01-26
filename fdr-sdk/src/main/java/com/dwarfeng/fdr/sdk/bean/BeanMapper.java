@@ -251,4 +251,13 @@ public interface BeanMapper {
 
     @InheritInverseConfiguration
     QueryInfo queryInfoFromWebInput(WebInputQueryInfo webInputQueryInfo);
+
+    WebInputPointCompositeLookupInfo pointCompositeLookupInfoToWebInput(
+            PointCompositeLookupInfo pointCompositeLookupInfo
+    );
+
+    @InheritInverseConfiguration
+    PointCompositeLookupInfo pointCompositeLookupInfoFromWebInput(
+            WebInputPointCompositeLookupInfo webInputPointCompositeLookupInfo
+    );
 }

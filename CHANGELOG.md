@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 增加预设查询。
+  - com.dwarfeng.fdr.stack.service.PointMaintainService.COMPOSITE_LOOKUP。
+
 - 为部分实体添加预留字段。
   - com.dwarfeng.fdr.stack.bean.entity.Point。
 
