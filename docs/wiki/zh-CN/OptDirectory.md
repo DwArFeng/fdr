@@ -6,14 +6,14 @@
 
 ```text
 opt
-    opt-bridge.xml
-    opt-filter.xml
-    opt-mapper.xml
-    opt-pusher.xml
-    opt-resetter.xml
-    opt-source.xml
-    opt-trigger.xml
-    opt-washer.xml
+├─ opt-bridge.xml
+├─ pt-filter.xml
+├─ pt-mapper.xml
+├─ pt-pusher.xml
+├─ pt-resetter.xml
+├─ pt-source.xml
+├─ pt-trigger.xml
+└─ pt-washer.xml
 ```
 
 所有的可选配置都为每个单独的可选项提供了加载配置，默认是注释的，如果用户需要使用某个可选项，
@@ -83,7 +83,7 @@ opt
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
 
-    <!--扫描handler的实现包。 -->
+    <!--扫描 handler 的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.filter" use-default-filters="false">
         <!-- 加载 GroovyFilter -->
         <!--
@@ -159,7 +159,7 @@ opt
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
 
-    <!--扫描handler的实现包。 -->
+    <!--扫描 handler 的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.mapper" use-default-filters="false">
         <!-- 加载 AlignMapper -->
         <!--
@@ -263,7 +263,7 @@ opt
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
 
-    <!--扫描handler的实现包。 -->
+    <!--扫描 handler 的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.pusher" use-default-filters="false">
         <!-- 加载 DctiKafkaPusher -->
         <!--
@@ -417,7 +417,7 @@ opt
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
 
-    <!--扫描handler的实现包。 -->
+    <!--扫描 handler 的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.trigger" use-default-filters="false">
         <!-- 加载 BooleanTrigger -->
         <!--
@@ -479,7 +479,7 @@ opt
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
 
-    <!--扫描handler的实现包。 -->
+    <!--扫描 handler 的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.washer" use-default-filters="false">
         <!-- 加载 GroovyWasher -->
         <!--

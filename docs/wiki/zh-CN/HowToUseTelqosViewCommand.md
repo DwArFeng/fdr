@@ -37,8 +37,8 @@ nv -lookup [-json json-string] [-jf json-file]
 nv -nquery [-json json-string] [-jf json-file]
 nv -query [-json json-string] [-jf json-file]
 一般查看指令
- -jf,--json-file <arg>    json文件
- -json <arg>              json字符串
+ -jf,--json-file <arg>    json 文件
+ -json <arg>              json 字符串
  -latest                  最新数据指令
  -lookup                  查看指令
  -nquery,--native-query   原生查询指令

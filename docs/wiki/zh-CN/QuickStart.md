@@ -2,7 +2,7 @@
 
 ## 确认系统需求
 
-- CPU：2核以上。
+- CPU：2 核以上。
 - 内存：4G 以上。
 - 硬盘：100G 以上。
 - CentOS 7。
@@ -61,7 +61,7 @@ VALUES (2, true, true, '测试点位.2', true, true, '测试点位.2', true, tru
 
 下文列出了启动程序需要改动的最少的配置文件，每个配置文件中仅展示需要改动的配置项。
 
-`conf/curator/connection.properties` 文件中配置 Curator 连接信息。
+`conf/curator/connection.properties` 文件中配置 curator 连接信息。
 
 ```properties
 curator.connect.connect_string=your-host-here:2181
@@ -75,7 +75,7 @@ jdbc.username=root
 jdbc.password=your-password-here
 ```
 
-`conf/dubbo/connection.properties` 文件中配置 Dubbo 连接信息。
+`conf/dubbo/connection.properties` 文件中配置 dubbo 连接信息。
 
 ```properties
 dubbo.registry.zookeeper.address=zookeeper://your-host-here:2181
@@ -92,7 +92,7 @@ keep.triggered_data.type=drain
 persist.triggered_data.type=drain
 ```
 
-`conf/redis/connection.properties` 文件中配置 Redis 连接信息。
+`conf/redis/connection.properties` 文件中配置 redis 连接信息。
 
 ```properties
 redis.host=your-host-here
@@ -159,7 +159,7 @@ sh  bin/fdr-start.sh
 ```
 
 1. 观察数据库，数据库将会自动生成 `tbl_hibernate_bridge_normal_data` 表，表中有历史数据。
-2. 观察 Redis，Redis 将会自动生成 `dbkey.normal_data` Hash表，表中有实时数据。
+2. 观察 Redis，Redis 将会自动生成 `dbkey.normal_data` Hash 表，表中有实时数据。
 
 ## 停止程序
 

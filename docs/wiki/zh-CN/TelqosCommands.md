@@ -232,8 +232,8 @@ nv -lookup [-json json-string] [-jf json-file]
 nv -nquery [-json json-string] [-jf json-file]
 nv -query [-json json-string] [-jf json-file]
 一般查看指令
- -jf,--json-file <arg>    JSON文件
- -json <arg>              JSON字符串
+ -jf,--json-file <arg>    JSON 文件
+ -json <arg>              JSON 字符串
  -latest                  最新数据指令
  -lookup                  查看指令
  -nquery,--native-query   原生查询指令
@@ -261,8 +261,8 @@ fv -lookup [-json json-string] [-jf json-file]
 fv -nquery [-json json-string] [-jf json-file]
 fv -query [-json json-string] [-jf json-file]
 被过滤查看指令
- -jf,--json-file <arg>    JSON文件
- -json <arg>              JSON字符串
+ -jf,--json-file <arg>    JSON 文件
+ -json <arg>              JSON 字符串
  -latest                  最新数据指令
  -lookup                  查看指令
  -nquery,--native-query   原生查询指令
@@ -290,8 +290,8 @@ tv -lookup [-json json-string] [-jf json-file]
 tv -nquery [-json json-string] [-jf json-file]
 tv -query [-json json-string] [-jf json-file]
 被触发查看指令
- -jf,--json-file <arg>    JSON文件
- -json <arg>              JSON字符串
+ -jf,--json-file <arg>    JSON 文件
+ -json <arg>              JSON 字符串
  -latest                  最新数据指令
  -lookup                  查看指令
  -nquery,--native-query   原生查询指令

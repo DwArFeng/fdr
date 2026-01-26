@@ -18,7 +18,7 @@ FDR 是飞行术语，指的是“飞行数据记录器（flight-data-recorder�
 
 真实的 FDR 长这样：
 
-![真实的FDR](docs/wiki/zh-CN/images/RealFdr.jpeg "真实的FDR")
+![真实的 FDR](docs/wiki/zh-CN/images/RealFdr.jpeg "真实的 FDR")
 
 ---
 

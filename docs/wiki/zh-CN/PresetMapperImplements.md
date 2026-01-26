@@ -40,7 +40,7 @@
 ```text
 对序列中的所有数据条目进行对齐操作，修改序列中数据条目的发生时间，使其对齐到序列的起始时间与结束时间之间的某个时间。
 该映射器的参数是一个介于 0 与 1 之间的浮点数，表示对齐的位置。
-0 代表对齐到序列的起始时间；1代表对齐到序列的结束时间。
+0 代表对齐到序列的起始时间；1 代表对齐到序列的结束时间。
 ```
 
 ### 示例参数
@@ -123,7 +123,7 @@ invert 用于控制计算的是真值的比例还是假值的比例：
 ### 描述
 
 ```text
-通过自定义的groovy脚本，实现对带有时间数据的映射。
+通过自定义的 groovy 脚本，实现对带有时间数据的映射。
 ```
 
 ### 示例参数
@@ -193,8 +193,8 @@ class ExampleMapperProcessor implements GroovyMapperRegistry.Processor {
 invert 用于控制计算的是低于阈值的数据还是高于阈值的数据: 
   false：过滤的是高于阈值的数据 
   true：过滤的是低于阈值的数据 
-threshold用于过滤的阈值 
-can_equal是否包含等于阈值的数据
+threshold 用于过滤的阈值 
+can_equal 是否包含等于阈值的数据
 ```
 
 ### 示例参数
@@ -219,8 +219,8 @@ can_equal是否包含等于阈值的数据
 invert 用于控制计算的是低于阈值的数据还是高于阈值的数据: 
   false：过滤的是高于阈值的数据 
   true：过滤的是低于阈值的数据 
-threshold用于过滤的阈值 
-can_equal是否包含等于阈值的数据
+threshold 用于过滤的阈值 
+can_equal 是否包含等于阈值的数据
 ```
 
 ### 示例参数
@@ -245,8 +245,8 @@ can_equal是否包含等于阈值的数据
 invert 用于控制计算的是低于阈值的数据还是高于阈值的数据: 
   false：过滤的是高于阈值的数据 
   true：过滤的是低于阈值的数据 
-threshold用于过滤的阈值 
-can_equal是否包含等于阈值的数据
+threshold 用于过滤的阈值 
+can_equal 是否包含等于阈值的数据
 ```
 
 ### 示例参数
@@ -297,8 +297,8 @@ can_equal是否包含等于阈值的数据
 invert 用于控制计算的是低于阈值的数据还是高于阈值的数据: 
   false：过滤的是高于阈值的数据 
   true：过滤的是低于阈值的数据 
-threshold用于过滤的阈值 
-can_equal是否包含等于阈值的数据
+threshold 用于过滤的阈值 
+can_equal 是否包含等于阈值的数据
 ```
 
 ### 示例参数
@@ -323,8 +323,8 @@ can_equal是否包含等于阈值的数据
 invert 用于控制计算的是低于阈值的数据还是高于阈值的数据: 
   false：过滤的是低于阈值的数据 
   true：过滤的是高于阈值的数据 
-threshold用于过滤的阈值 
-can_equal是否包含等于阈值的数据
+threshold 用于过滤的阈值 
+can_equal 是否包含等于阈值的数据
 ```
 
 ### 示例参数
@@ -349,8 +349,8 @@ can_equal是否包含等于阈值的数据
 invert 用于控制计算的是低于阈值的数据还是高于阈值的数据: 
   false：过滤的是高于阈值的数据 
   true：过滤的是低于阈值的数据 
-threshold用于过滤的阈值 
-can_equal是否包含等于阈值的数据
+threshold 用于过滤的阈值 
+can_equal 是否包含等于阈值的数据
 ```
 
 ### 示例参数
@@ -435,7 +435,7 @@ can_equal是否包含等于阈值的数据
 
 ```json
 {
-  "#strict":"true：启用严格模式，不符合直接抛出异常; false：不启用严格模式，不符合转为false",
+  "#strict":"true：启用严格模式，不符合直接抛出异常; false：不启用严格模式，不符合转为 false",
   "strict":false,
   "#string_ignore_case":"true：忽略字符串大小写，false：不忽略大小写",
   "string_ignore_case":true,

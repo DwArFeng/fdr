@@ -87,7 +87,7 @@ bridge.hibernate.data_source.min_idle=0
 #
 # 是否启用 NativeLookup 机制加速部分查询。
 # 启用加速机制后，持久数据点、被过滤数据点、被触发数据点的大部分预设查询将通过 JDBC 直接实现（前提是必须使用指定的方言）。
-# 如果原生数据库SQL是不支持的，该程序将会继续使用基于 hibernate criteria 机制的查询。
+# 如果原生数据库 SQL 是不支持的，该程序将会继续使用基于 hibernate criteria 机制的查询。
 #
 # 支持的方言:
 #  1. org.hibernate.dialect.MySQL8Dialect。

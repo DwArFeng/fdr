@@ -22,7 +22,7 @@
 
 - [System Requirements](./SystemRequirements.md) - 系统需求，详细说明本项目推荐的系统要求，以及其它版本的测试报告。
 - [Compile by Source](./CompileBySource.md) - 源码编译，详细说明如何从源码编译本项目。
-- [Install to Centos](./InstallToCentos.md) - CentOS安装，详细说明如何在CentOS上安装本项目。
+- [Install to Centos](./InstallToCentos.md) - CentOS 安装，详细说明如何在 CentOS 上安装本项目。
 
 ### 配置
 
@@ -55,5 +55,5 @@
 
 ## 维护与调试
 
-- [Using Telqos](./UsingTelqos.md) - 使用 Telqos。Telqos 是本项目的 telnet 运维平台，该文档详细说明了如何使用Telqos。
+- [Using Telqos](./UsingTelqos.md) - 使用 Telqos。Telqos 是本项目的 telnet 运维平台，该文档详细说明了如何使用 Telqos。
 - [Telqos Commands](./TelqosCommands.md) - Telqos 命令，详细说明了本项目的 Telqos 命令。

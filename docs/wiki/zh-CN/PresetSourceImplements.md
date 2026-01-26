@@ -53,7 +53,7 @@ dcti 是一个开源项目，其源码可以在 [Github](https://github.com/DwAr
 ###################################################
 # 引导服务器集群。
 source.kafka.dcti.bootstrap_servers=your-ip1:9092,your-ip2:9092,your-ip3:9092
-# 会话的超时限制: 如果consumer在这段时间内没有发送心跳信息，一次 rebalance 将会产生。
+# 会话的超时限制: 如果 consumer 在这段时间内没有发送心跳信息，一次 rebalance 将会产生。
 # 该值必须在[group.min.session.timeout.ms, group.max.session.timeout.ms]范围内，默认: 10000。
 source.kafka.dcti.session_timeout_ms=10000
 # 新的 group 加入 topic 时，从什么位置开始消费。
@@ -119,11 +119,11 @@ dwarfeng-dct 是一个开源项目，其源码可以在 [Github](https://github.
 
 ```properties
 ###################################################
-#                kafka.dct               #
+#                    kafka.dct                    #
 ###################################################
 # 引导服务器集群。
 source.kafka.dct.bootstrap_servers=your-ip1:9092,your-ip2:9092,your-ip3:9092
-# 会话的超时限制: 如果consumer在这段时间内没有发送心跳信息，一次 rebalance 将会产生。
+# 会话的超时限制: 如果 consumer 在这段时间内没有发送心跳信息，一次 rebalance 将会产生。
 # 该值必须在[group.min.session.timeout.ms, group.max.session.timeout.ms]范围内，默认: 10000。
 source.kafka.dct.session_timeout_ms=10000
 # 新的 group 加入 topic 时，从什么位置开始消费。
