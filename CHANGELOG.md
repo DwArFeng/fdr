@@ -4,6 +4,16 @@
 
 ### 功能构建
 
+- 优化部分单元测试代码，以规避潜在的 bug。
+  - com.dwarfeng.fdr.impl.service.FilterInfoMaintainServiceImplTest。
+  - com.dwarfeng.fdr.impl.service.FilterSupportMaintainServiceImplTest。
+  - com.dwarfeng.fdr.impl.service.MapperSupportMaintainServiceImplTest。
+  - com.dwarfeng.fdr.impl.service.PointMaintainServiceImplTest。
+  - com.dwarfeng.fdr.impl.service.TriggerInfoMaintainServiceImplTest。
+  - com.dwarfeng.fdr.impl.service.TriggerSupportMaintainServiceImplTest。
+  - com.dwarfeng.fdr.impl.service.WasherInfoMaintainServiceImplTest。
+  - com.dwarfeng.fdr.impl.service.WasherSupportMaintainServiceImplTest。
+
 - 依赖升级。
   - 升级 `kafka` 依赖版本为 `3.9.1` 以规避漏洞。
   - 升级 `spring-kafka` 依赖版本为 `2.9.13` 以规避漏洞。

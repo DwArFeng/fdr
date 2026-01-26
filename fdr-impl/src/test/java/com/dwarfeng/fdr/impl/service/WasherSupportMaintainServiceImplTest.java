@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
 
@@ -55,6 +56,9 @@ public class WasherSupportMaintainServiceImplTest {
             }
         } finally {
             for (WasherSupport washerSupport : washerSupports) {
+                if (Objects.isNull(washerSupport.getKey())) {
+                    continue;
+                }
                 service.deleteIfExists(washerSupport.getKey());
             }
         }

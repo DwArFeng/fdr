@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
 
@@ -59,9 +60,14 @@ public class WasherInfoMaintainServiceImplTest {
             }
         } finally {
             for (WasherInfo washerInfo : washerInfos) {
+                if (Objects.isNull(washerInfo.getKey())) {
+                    continue;
+                }
                 washerInfoMaintainService.deleteIfExists(washerInfo.getKey());
             }
-            pointMaintainService.deleteIfExists(parentPoint.getKey());
+            if (Objects.nonNull(parentPoint.getKey())) {
+                pointMaintainService.deleteIfExists(parentPoint.getKey());
+            }
         }
     }
 }
