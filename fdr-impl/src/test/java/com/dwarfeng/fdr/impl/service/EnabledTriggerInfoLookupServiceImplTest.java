@@ -17,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -39,7 +40,11 @@ public class EnabledTriggerInfoLookupServiceImplTest {
 
     @Before
     public void setUp() {
-        parentPoint = new Point(null, "name", "remark", true, true, true, true, true, true);
+        parentPoint = new Point(
+                null, "name", "remark", true, true, true, true, true, true,
+                "reservedStringAlpha", "reservedStringBravo", "reservedStringCharlie", "reservedStringDelta",
+                12450L, 12450L, 12450, 12450, true, true, new Date(), new Date()
+        );
         triggerInfos = new ArrayList<>();
         int i = 0;
         for (; i < 5; i++) {

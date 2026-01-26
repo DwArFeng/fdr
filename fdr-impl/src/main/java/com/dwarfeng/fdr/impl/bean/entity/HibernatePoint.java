@@ -7,6 +7,7 @@ import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -17,7 +18,7 @@ import java.util.Set;
 @EntityListeners(DatamarkEntityListener.class)
 public class HibernatePoint implements Bean {
 
-    private static final long serialVersionUID = -3127037531020838059L;
+    private static final long serialVersionUID = 5332170999451244762L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -48,6 +49,43 @@ public class HibernatePoint implements Bean {
 
     @Column(name = "triggered_persist_enabled")
     private boolean triggeredPersistEnabled;
+
+    // -----------------------------------------------------------预留字段-----------------------------------------------------------
+    @Column(name = "reserved_string_alpha", columnDefinition = "TEXT")
+    private String reservedStringAlpha;
+
+    @Column(name = "reserved_string_bravo", columnDefinition = "TEXT")
+    private String reservedStringBravo;
+
+    @Column(name = "reserved_string_charlie", columnDefinition = "TEXT")
+    private String reservedStringCharlie;
+
+    @Column(name = "reserved_string_delta", columnDefinition = "TEXT")
+    private String reservedStringDelta;
+
+    @Column(name = "reserved_long_alpha")
+    private Long reservedLongAlpha;
+
+    @Column(name = "reserved_long_bravo")
+    private Long reservedLongBravo;
+
+    @Column(name = "reserved_integer_alpha")
+    private Integer reservedIntegerAlpha;
+
+    @Column(name = "reserved_integer_bravo")
+    private Integer reservedIntegerBravo;
+
+    @Column(name = "reserved_boolean_alpha")
+    private Boolean reservedBooleanAlpha;
+
+    @Column(name = "reserved_boolean_bravo")
+    private Boolean reservedBooleanBravo;
+
+    @Column(name = "reserved_date_alpha")
+    private Date reservedDateAlpha;
+
+    @Column(name = "reserved_date_bravo")
+    private Date reservedDateBravo;
 
     // -----------------------------------------------------------一对多-----------------------------------------------------------
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateFilterInfo.class, mappedBy = "point")
@@ -160,6 +198,102 @@ public class HibernatePoint implements Bean {
         this.triggeredPersistEnabled = triggeredPersistEnabled;
     }
 
+    public String getReservedStringAlpha() {
+        return reservedStringAlpha;
+    }
+
+    public void setReservedStringAlpha(String reservedStringAlpha) {
+        this.reservedStringAlpha = reservedStringAlpha;
+    }
+
+    public String getReservedStringBravo() {
+        return reservedStringBravo;
+    }
+
+    public void setReservedStringBravo(String reservedStringBravo) {
+        this.reservedStringBravo = reservedStringBravo;
+    }
+
+    public String getReservedStringCharlie() {
+        return reservedStringCharlie;
+    }
+
+    public void setReservedStringCharlie(String reservedStringCharlie) {
+        this.reservedStringCharlie = reservedStringCharlie;
+    }
+
+    public String getReservedStringDelta() {
+        return reservedStringDelta;
+    }
+
+    public void setReservedStringDelta(String reservedStringDelta) {
+        this.reservedStringDelta = reservedStringDelta;
+    }
+
+    public Long getReservedLongAlpha() {
+        return reservedLongAlpha;
+    }
+
+    public void setReservedLongAlpha(Long reservedLongAlpha) {
+        this.reservedLongAlpha = reservedLongAlpha;
+    }
+
+    public Long getReservedLongBravo() {
+        return reservedLongBravo;
+    }
+
+    public void setReservedLongBravo(Long reservedLongBravo) {
+        this.reservedLongBravo = reservedLongBravo;
+    }
+
+    public Integer getReservedIntegerAlpha() {
+        return reservedIntegerAlpha;
+    }
+
+    public void setReservedIntegerAlpha(Integer reservedIntegerAlpha) {
+        this.reservedIntegerAlpha = reservedIntegerAlpha;
+    }
+
+    public Integer getReservedIntegerBravo() {
+        return reservedIntegerBravo;
+    }
+
+    public void setReservedIntegerBravo(Integer reservedIntegerBravo) {
+        this.reservedIntegerBravo = reservedIntegerBravo;
+    }
+
+    public Boolean getReservedBooleanAlpha() {
+        return reservedBooleanAlpha;
+    }
+
+    public void setReservedBooleanAlpha(Boolean reservedBooleanAlpha) {
+        this.reservedBooleanAlpha = reservedBooleanAlpha;
+    }
+
+    public Boolean getReservedBooleanBravo() {
+        return reservedBooleanBravo;
+    }
+
+    public void setReservedBooleanBravo(Boolean reservedBooleanBravo) {
+        this.reservedBooleanBravo = reservedBooleanBravo;
+    }
+
+    public Date getReservedDateAlpha() {
+        return reservedDateAlpha;
+    }
+
+    public void setReservedDateAlpha(Date reservedDateAlpha) {
+        this.reservedDateAlpha = reservedDateAlpha;
+    }
+
+    public Date getReservedDateBravo() {
+        return reservedDateBravo;
+    }
+
+    public void setReservedDateBravo(Date reservedDateBravo) {
+        this.reservedDateBravo = reservedDateBravo;
+    }
+
     public Set<HibernateFilterInfo> getFilterInfos() {
         return filterInfos;
     }
@@ -212,6 +346,18 @@ public class HibernatePoint implements Bean {
                 "filteredPersistEnabled = " + filteredPersistEnabled + ", " +
                 "triggeredKeepEnabled = " + triggeredKeepEnabled + ", " +
                 "triggeredPersistEnabled = " + triggeredPersistEnabled + ", " +
+                "reservedStringAlpha = " + reservedStringAlpha + ", " +
+                "reservedStringBravo = " + reservedStringBravo + ", " +
+                "reservedStringCharlie = " + reservedStringCharlie + ", " +
+                "reservedStringDelta = " + reservedStringDelta + ", " +
+                "reservedLongAlpha = " + reservedLongAlpha + ", " +
+                "reservedLongBravo = " + reservedLongBravo + ", " +
+                "reservedIntegerAlpha = " + reservedIntegerAlpha + ", " +
+                "reservedIntegerBravo = " + reservedIntegerBravo + ", " +
+                "reservedBooleanAlpha = " + reservedBooleanAlpha + ", " +
+                "reservedBooleanBravo = " + reservedBooleanBravo + ", " +
+                "reservedDateAlpha = " + reservedDateAlpha + ", " +
+                "reservedDateBravo = " + reservedDateBravo + ", " +
                 "createdDatamark = " + createdDatamark + ", " +
                 "modifiedDatamark = " + modifiedDatamark + ")";
     }

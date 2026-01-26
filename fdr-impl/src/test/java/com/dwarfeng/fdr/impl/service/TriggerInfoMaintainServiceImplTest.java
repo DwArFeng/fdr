@@ -14,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,7 +34,11 @@ public class TriggerInfoMaintainServiceImplTest {
 
     @Before
     public void setUp() {
-        parentPoint = new Point(null, "name", "remark", true, true, true, true, true, true);
+        parentPoint = new Point(
+                null, "name", "remark", true, true, true, true, true, true,
+                "reservedStringAlpha", "reservedStringBravo", "reservedStringCharlie", "reservedStringDelta",
+                12450L, 12450L, 12450, 12450, true, true, new Date(), new Date()
+        );
         triggerInfos = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             TriggerInfo triggerInfo = new TriggerInfo(null, null, i, true, "type", "param", "remark");

@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Objects;
  */
 public class FastJsonPoint implements Bean {
 
-    private static final long serialVersionUID = -4105403032098910366L;
+    private static final long serialVersionUID = -3299564750268049742L;
 
     public static FastJsonPoint of(Point point) {
         if (Objects.isNull(point)) {
@@ -30,7 +31,19 @@ public class FastJsonPoint implements Bean {
                     point.isFilteredKeepEnabled(),
                     point.isFilteredPersistEnabled(),
                     point.isTriggeredKeepEnabled(),
-                    point.isTriggeredPersistEnabled()
+                    point.isTriggeredPersistEnabled(),
+                    point.getReservedStringAlpha(),
+                    point.getReservedStringBravo(),
+                    point.getReservedStringCharlie(),
+                    point.getReservedStringDelta(),
+                    point.getReservedLongAlpha(),
+                    point.getReservedLongBravo(),
+                    point.getReservedIntegerAlpha(),
+                    point.getReservedIntegerBravo(),
+                    point.getReservedBooleanAlpha(),
+                    point.getReservedBooleanBravo(),
+                    point.getReservedDateAlpha(),
+                    point.getReservedDateBravo()
             );
         }
     }
@@ -62,6 +75,46 @@ public class FastJsonPoint implements Bean {
     @JSONField(name = "triggered_persist_enabled", ordinal = 9)
     private boolean triggeredPersistEnabled;
 
+    // region 预留字段
+
+    @JSONField(name = "reserved_string_alpha", ordinal = 10)
+    private String reservedStringAlpha;
+
+    @JSONField(name = "reserved_string_bravo", ordinal = 11)
+    private String reservedStringBravo;
+
+    @JSONField(name = "reserved_string_charlie", ordinal = 12)
+    private String reservedStringCharlie;
+
+    @JSONField(name = "reserved_string_delta", ordinal = 13)
+    private String reservedStringDelta;
+
+    @JSONField(name = "reserved_long_alpha", ordinal = 14)
+    private Long reservedLongAlpha;
+
+    @JSONField(name = "reserved_long_bravo", ordinal = 15)
+    private Long reservedLongBravo;
+
+    @JSONField(name = "reserved_integer_alpha", ordinal = 16)
+    private Integer reservedIntegerAlpha;
+
+    @JSONField(name = "reserved_integer_bravo", ordinal = 17)
+    private Integer reservedIntegerBravo;
+
+    @JSONField(name = "reserved_boolean_alpha", ordinal = 18)
+    private Boolean reservedBooleanAlpha;
+
+    @JSONField(name = "reserved_boolean_bravo", ordinal = 19)
+    private Boolean reservedBooleanBravo;
+
+    @JSONField(name = "reserved_date_alpha", ordinal = 20)
+    private Date reservedDateAlpha;
+
+    @JSONField(name = "reserved_date_bravo", ordinal = 21)
+    private Date reservedDateBravo;
+
+    // endregion
+
     public FastJsonPoint() {
     }
 
@@ -79,6 +132,37 @@ public class FastJsonPoint implements Bean {
         this.filteredPersistEnabled = filteredPersistEnabled;
         this.triggeredKeepEnabled = triggeredKeepEnabled;
         this.triggeredPersistEnabled = triggeredPersistEnabled;
+    }
+
+    public FastJsonPoint(
+            FastJsonLongIdKey key, String name, String remark, boolean normalKeepEnabled, boolean normalPersistEnabled,
+            boolean filteredKeepEnabled, boolean filteredPersistEnabled, boolean triggeredKeepEnabled,
+            boolean triggeredPersistEnabled, String reservedStringAlpha, String reservedStringBravo,
+            String reservedStringCharlie, String reservedStringDelta, Long reservedLongAlpha, Long reservedLongBravo,
+            Integer reservedIntegerAlpha, Integer reservedIntegerBravo, Boolean reservedBooleanAlpha,
+            Boolean reservedBooleanBravo, Date reservedDateAlpha, Date reservedDateBravo
+    ) {
+        this.key = key;
+        this.name = name;
+        this.remark = remark;
+        this.normalKeepEnabled = normalKeepEnabled;
+        this.normalPersistEnabled = normalPersistEnabled;
+        this.filteredKeepEnabled = filteredKeepEnabled;
+        this.filteredPersistEnabled = filteredPersistEnabled;
+        this.triggeredKeepEnabled = triggeredKeepEnabled;
+        this.triggeredPersistEnabled = triggeredPersistEnabled;
+        this.reservedStringAlpha = reservedStringAlpha;
+        this.reservedStringBravo = reservedStringBravo;
+        this.reservedStringCharlie = reservedStringCharlie;
+        this.reservedStringDelta = reservedStringDelta;
+        this.reservedLongAlpha = reservedLongAlpha;
+        this.reservedLongBravo = reservedLongBravo;
+        this.reservedIntegerAlpha = reservedIntegerAlpha;
+        this.reservedIntegerBravo = reservedIntegerBravo;
+        this.reservedBooleanAlpha = reservedBooleanAlpha;
+        this.reservedBooleanBravo = reservedBooleanBravo;
+        this.reservedDateAlpha = reservedDateAlpha;
+        this.reservedDateBravo = reservedDateBravo;
     }
 
     public FastJsonLongIdKey getKey() {
@@ -153,6 +237,103 @@ public class FastJsonPoint implements Bean {
         this.triggeredPersistEnabled = triggeredPersistEnabled;
     }
 
+    public String getReservedStringAlpha() {
+        return reservedStringAlpha;
+    }
+
+    public void setReservedStringAlpha(String reservedStringAlpha) {
+        this.reservedStringAlpha = reservedStringAlpha;
+    }
+
+    public String getReservedStringBravo() {
+        return reservedStringBravo;
+    }
+
+    public void setReservedStringBravo(String reservedStringBravo) {
+        this.reservedStringBravo = reservedStringBravo;
+    }
+
+    public String getReservedStringCharlie() {
+        return reservedStringCharlie;
+    }
+
+    public void setReservedStringCharlie(String reservedStringCharlie) {
+        this.reservedStringCharlie = reservedStringCharlie;
+    }
+
+    public String getReservedStringDelta() {
+        return reservedStringDelta;
+    }
+
+    public void setReservedStringDelta(String reservedStringDelta) {
+        this.reservedStringDelta = reservedStringDelta;
+    }
+
+    public Long getReservedLongAlpha() {
+        return reservedLongAlpha;
+    }
+
+    public void setReservedLongAlpha(Long reservedLongAlpha) {
+        this.reservedLongAlpha = reservedLongAlpha;
+    }
+
+    public Long getReservedLongBravo() {
+        return reservedLongBravo;
+    }
+
+    public void setReservedLongBravo(Long reservedLongBravo) {
+        this.reservedLongBravo = reservedLongBravo;
+    }
+
+    public Integer getReservedIntegerAlpha() {
+        return reservedIntegerAlpha;
+    }
+
+    public void setReservedIntegerAlpha(Integer reservedIntegerAlpha) {
+        this.reservedIntegerAlpha = reservedIntegerAlpha;
+    }
+
+    public Integer getReservedIntegerBravo() {
+        return reservedIntegerBravo;
+    }
+
+    public void setReservedIntegerBravo(Integer reservedIntegerBravo) {
+        this.reservedIntegerBravo = reservedIntegerBravo;
+    }
+
+    public Boolean getReservedBooleanAlpha() {
+        return reservedBooleanAlpha;
+    }
+
+    public void setReservedBooleanAlpha(Boolean reservedBooleanAlpha) {
+        this.reservedBooleanAlpha = reservedBooleanAlpha;
+    }
+
+    public Boolean getReservedBooleanBravo() {
+        return reservedBooleanBravo;
+    }
+
+    public void setReservedBooleanBravo(Boolean reservedBooleanBravo) {
+        this.reservedBooleanBravo = reservedBooleanBravo;
+    }
+
+    public Date getReservedDateAlpha() {
+        return reservedDateAlpha;
+    }
+
+    public void setReservedDateAlpha(Date reservedDateAlpha) {
+        this.reservedDateAlpha = reservedDateAlpha;
+    }
+
+    public Date getReservedDateBravo() {
+        return reservedDateBravo;
+    }
+
+    public void setReservedDateBravo(Date reservedDateBravo) {
+        this.reservedDateBravo = reservedDateBravo;
+    }
+
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public String toString() {
         return "FastJsonPoint{" +
@@ -165,6 +346,18 @@ public class FastJsonPoint implements Bean {
                 ", filteredPersistEnabled=" + filteredPersistEnabled +
                 ", triggeredKeepEnabled=" + triggeredKeepEnabled +
                 ", triggeredPersistEnabled=" + triggeredPersistEnabled +
+                ", reservedStringAlpha='" + reservedStringAlpha + '\'' +
+                ", reservedStringBravo='" + reservedStringBravo + '\'' +
+                ", reservedStringCharlie='" + reservedStringCharlie + '\'' +
+                ", reservedStringDelta='" + reservedStringDelta + '\'' +
+                ", reservedLongAlpha=" + reservedLongAlpha +
+                ", reservedLongBravo=" + reservedLongBravo +
+                ", reservedIntegerAlpha=" + reservedIntegerAlpha +
+                ", reservedIntegerBravo=" + reservedIntegerBravo +
+                ", reservedBooleanAlpha=" + reservedBooleanAlpha +
+                ", reservedBooleanBravo=" + reservedBooleanBravo +
+                ", reservedDateAlpha=" + reservedDateAlpha +
+                ", reservedDateBravo=" + reservedDateBravo +
                 '}';
     }
 }

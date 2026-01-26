@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 为部分实体添加预留字段。
+  - com.dwarfeng.fdr.stack.bean.entity.Point。
+
 - 优化部分单元测试代码，以规避潜在的 bug。
   - com.dwarfeng.fdr.impl.service.FilterInfoMaintainServiceImplTest。
   - com.dwarfeng.fdr.impl.service.FilterSupportMaintainServiceImplTest。
