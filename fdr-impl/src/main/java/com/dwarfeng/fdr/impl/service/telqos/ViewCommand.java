@@ -176,14 +176,16 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
 
         // 输出数据。
         while (true) {
-            CropResult cropResult = cropData(datas, context, "输入 q 退出查询");
-            if (cropResult.exitFlag) {
+            CommandUtil.CropResult cropResult = CommandUtil.cropData(
+                    context, datas, "数据总数: " + datas.size(), "输入 q 退出查询"
+            );
+            if (cropResult.isExitFlag()) {
                 break;
             }
             context.sendMessage("");
-            for (int i = cropResult.beginIndex; i < cropResult.endIndex; i++) {
+            for (int i = cropResult.getBeginIndex(); i < cropResult.getEndIndex(); i++) {
                 D data = datas.get(i);
-                printLatestData(i, cropResult.endIndex, data, context);
+                printLatestData(i, cropResult.getEndIndex(), data, context);
             }
         }
     }
@@ -223,14 +225,16 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
 
         // 输出数据。
         while (true) {
-            CropResult cropResult = cropData(datas, context, "输入 q 退出查询");
-            if (cropResult.exitFlag) {
+            CommandUtil.CropResult cropResult = CommandUtil.cropData(
+                    context, datas, "数据总数: " + datas.size(), "输入 q 退出查询"
+            );
+            if (cropResult.isExitFlag()) {
                 break;
             }
             context.sendMessage("");
-            for (int i = cropResult.beginIndex; i < cropResult.endIndex; i++) {
+            for (int i = cropResult.getBeginIndex(); i < cropResult.getEndIndex(); i++) {
                 D data = datas.get(i);
-                printLookupData(i, cropResult.endIndex, data, context);
+                printLookupData(i, cropResult.getEndIndex(), data, context);
             }
         }
     }
@@ -354,14 +358,16 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
             List<QueryResult.Item> items = sequence.getItems();
 
             while (true) {
-                CropResult cropResult = cropData(items, context, "输入 q 返回至序列选择");
-                if (cropResult.exitFlag) {
+                CommandUtil.CropResult cropResult = CommandUtil.cropData(
+                        context, items, "数据总数: " + items.size(), "输入 q 返回至序列选择"
+                );
+                if (cropResult.isExitFlag()) {
                     break;
                 }
                 context.sendMessage("");
-                for (int i = cropResult.beginIndex; i < cropResult.endIndex; i++) {
+                for (int i = cropResult.getBeginIndex(); i < cropResult.getEndIndex(); i++) {
                     QueryResult.Item item = items.get(i);
-                    printQueryData(i, cropResult.endIndex, item, context);
+                    printQueryData(i, cropResult.getEndIndex(), item, context);
                 }
             }
         }
@@ -369,84 +375,4 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
 
     protected abstract void printQueryData(int i, int endIndex, QueryResult.Item item, Context context)
             throws Exception;
-
-    private <T> CropResult cropData(List<T> originData, Context context, String quitPrompt) throws Exception {
-        int beginIndex;
-        int endIndex;
-
-        while (true) {
-            context.sendMessage("数据总数: " + originData.size());
-            context.sendMessage("");
-            context.sendMessage("输入 all 查看所有数据");
-            context.sendMessage("输入 begin-end 查看指定范围的数据");
-            context.sendMessage(quitPrompt);
-            context.sendMessage("");
-
-            String message = context.receiveMessage();
-
-            if (message.equalsIgnoreCase("q")) {
-                return new CropResult(-1, -1, true);
-            } else if (message.equalsIgnoreCase("all")) {
-                beginIndex = 0;
-                endIndex = originData.size();
-            } else {
-                String[] split = message.split("-");
-                if (split.length != 2) {
-                    context.sendMessage("输入格式错误");
-                    context.sendMessage("");
-                    continue;
-                }
-                try {
-                    beginIndex = Integer.parseInt(split[0]);
-                    endIndex = Integer.parseInt(split[1]);
-                } catch (NumberFormatException e) {
-                    context.sendMessage("输入格式错误");
-                    context.sendMessage("");
-                    continue;
-                }
-                if (beginIndex < 0 || endIndex > originData.size() || beginIndex >= endIndex) {
-                    context.sendMessage("输入范围错误");
-                    context.sendMessage("");
-                    continue;
-                }
-            }
-            break;
-        }
-
-        return new CropResult(beginIndex, endIndex, false);
-    }
-
-    protected static final class CropResult {
-
-        private final int beginIndex;
-        private final int endIndex;
-        private final boolean exitFlag;
-
-        public CropResult(int beginIndex, int endIndex, boolean exitFlag) {
-            this.beginIndex = beginIndex;
-            this.endIndex = endIndex;
-            this.exitFlag = exitFlag;
-        }
-
-        public int getBeginIndex() {
-            return beginIndex;
-        }
-
-        public int getEndIndex() {
-            return endIndex;
-        }
-
-        public boolean isExitFlag() {
-            return exitFlag;
-        }
-
-        @Override
-        public String toString() {
-            return "CropResult{" +
-                    "beginIndex=" + beginIndex +
-                    ", endIndex=" + endIndex +
-                    ", exitFlag=" + exitFlag +
-                    '}';
-        }
-    }
 }
