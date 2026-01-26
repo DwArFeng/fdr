@@ -36,6 +36,7 @@ public class ServiceExceptionMapperConfiguration {
         destination.put(LatestNotSupportedException.class, ServiceExceptionCodes.LATEST_NOT_SUPPORTED);
         destination.put(LookupNotSupportedException.class, ServiceExceptionCodes.LOOKUP_NOT_SUPPORTED);
         destination.put(QueryNotSupportedException.class, ServiceExceptionCodes.QUERY_NOT_SUPPORTED);
+        destination.put(NativeQueryNotSupportedException.class, ServiceExceptionCodes.NATIVE_QUERY_NOT_SUPPORTED);
         destination.put(WasherException.class, ServiceExceptionCodes.WASHER_FAILED);
         destination.put(WasherMakeException.class, ServiceExceptionCodes.WASHER_MAKE_FAILED);
         destination.put(UnsupportedWasherTypeException.class, ServiceExceptionCodes.WASHER_TYPE_UNSUPPORTED);

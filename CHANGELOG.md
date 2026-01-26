@@ -94,7 +94,8 @@
 
 ### Bug 修复
 
-- (无)
+- 修复部分异常未配置服务异常映射的 bug。
+  - com.dwarfeng.fdr.stack.exception.NativeQueryNotSupportedException。
 
 ### 功能移除
 
