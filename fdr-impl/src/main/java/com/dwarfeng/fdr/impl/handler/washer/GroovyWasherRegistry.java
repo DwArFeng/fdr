@@ -41,12 +41,12 @@ public class GroovyWasherRegistry extends AbstractWasherRegistry {
 
     @Override
     public String provideLabel() {
-        return "Groovy清洗器";
+        return "Groovy 清洗器";
     }
 
     @Override
     public String provideDescription() {
-        return "通过自定义的groovy脚本，判断数据点是否不被清洗";
+        return "通过自定义的 groovy 脚本，判断数据点是否不被清洗";
     }
 
     @Override
@@ -70,7 +70,7 @@ public class GroovyWasherRegistry extends AbstractWasherRegistry {
     @Override
     public Washer makeWasher(String type, String param) throws WasherException {
         try (GroovyClassLoader classLoader = new GroovyClassLoader()) {
-            // 通过Groovy脚本生成处理器。
+            // 通过 Groovy 脚本生成处理器。
             Class<?> aClass = classLoader.parseClass(param);
             Processor processor = (Processor) aClass.newInstance();
             // 生成并返回清洗器。
@@ -112,7 +112,7 @@ public class GroovyWasherRegistry extends AbstractWasherRegistry {
     }
 
     /**
-     * Groovy处理器。
+     * Groovy 处理器。
      *
      * @author DwArFeng
      * @since 1.5.2

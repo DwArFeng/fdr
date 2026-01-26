@@ -84,20 +84,20 @@ public class EnableRatioMapperRegistry extends AbstractMapperRegistry {
 
             boolean invert = config.isInvert();
 
-            // 对数据点进行时间排序(正序)
+            // 对数据点进行时间排序(正序)。
             items.sort(CompareUtil.DATA_HAPPENED_DATE_ASC_COMPARATOR);
 
-            //更新开始时间，去掉真空期
+            // 更新开始时间，去掉真空期。
             startDate = items.get(0).getHappenedDate();
 
-            // 判断中间存在不为boolean类型的数据抛出异常
+            // 判断中间存在不为 boolean 类型的数据抛出异常。
             for (Item item : items) {
                 if (!(item.getValue() instanceof Boolean)) {
-                    throw new IllegalStateException("存在数据点值不为boolean类型");
+                    throw new IllegalStateException("存在数据点值不为 boolean 类型");
                 }
             }
 
-            // 计算占比
+            // 计算占比。
             return calRatioByItems(items, startDate, endDate, invert);
         }
 
@@ -107,20 +107,20 @@ public class EnableRatioMapperRegistry extends AbstractMapperRegistry {
          * @param items     排完序的数据点数组
          * @param startDate 序列开始时间
          * @param endDate   序列结束时间
-         * @param invert    true 计算false的占比、false 计算true的占比
+         * @param invert    true 计算 false 的占比、false 计算 true 的占比
          * @return 获取占比
          */
         private double calRatioByItems(List<Item> items, Date startDate, Date endDate, boolean invert) {
-            // 符合时间
+            // 符合时间。
             BigDecimal calTime = BigDecimal.ZERO;
             boolean calFlag = false;
 
             BigDecimal startDateTime = BigDecimal.valueOf(startDate.getTime());
             BigDecimal endDateTime = BigDecimal.valueOf(endDate.getTime());
-            // 总时间
+            // 总时间。
             BigDecimal allTime = endDateTime.subtract(startDateTime);
 
-            // 上一次符合的时间
+            // 上一次符合的时间。
             BigDecimal preTime = BigDecimal.ZERO;
 
             for (Item item : items) {
@@ -142,7 +142,7 @@ public class EnableRatioMapperRegistry extends AbstractMapperRegistry {
                 }
             }
 
-            // 处理结束的时间，当最后时间的calFlag还是true时处理
+            // 处理结束的时间，当最后时间的 calFlag 还是 true 时处理。
             if (calFlag) {
                 calTime = calTime.add(endDateTime.subtract(preTime));
             }

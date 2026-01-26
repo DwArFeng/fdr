@@ -32,7 +32,7 @@ public class TriggerSupportMaintainServiceImplTest {
             TriggerSupport triggerSupport = new TriggerSupport(
                     new StringIdKey("trigger-support-" + (i + 1)),
                     "label-" + (i + 1),
-                    "这是测试用的TriggerSupport",
+                    "这是测试用的 TriggerSupport",
                     "1233211234567"
             );
             triggerSupports.add(triggerSupport);

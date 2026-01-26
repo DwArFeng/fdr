@@ -32,7 +32,7 @@ public class FilterSupportMaintainServiceImplTest {
             FilterSupport filterSupport = new FilterSupport(
                     new StringIdKey("filter-support-" + (i + 1)),
                     "label-" + (i + 1),
-                    "这是测试用的FilterSupport",
+                    "这是测试用的 FilterSupport",
                     "1233211234567"
             );
             filterSupports.add(filterSupport);

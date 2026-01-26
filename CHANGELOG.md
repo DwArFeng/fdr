@@ -4,6 +4,41 @@
 
 ### 功能构建
 
+- `fdr-impl` 子模块类优化注释、文档注释格式、代码换行格式。
+  - com.dwarfeng.fdr.impl.handler.RecordProcessor。
+  - com.dwarfeng.fdr.impl.handler.bridge.hibernate.configuration.HibernateBridgeBaseConfiguration。
+  - com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao.nativelookup.HibernateBridgeMysql8FilteredDataNativeLookup。
+  - com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao.nativelookup.HibernateBridgeMysql8NormalDataNativeLookup。
+  - com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao.nativelookup.HibernateBridgeMysql8TriggeredDataNativeLookup。
+  - com.dwarfeng.fdr.impl.handler.bridge.influxdb.handler.InfluxdbBridgeDataHandler。
+  - com.dwarfeng.fdr.impl.handler.bridge.mock.MockBridgePersister。
+  - com.dwarfeng.fdr.impl.handler.filter.GroovyFilterRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.AlignMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.EnableRatioMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.GroovyMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.HighPassCounterMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.HighPassExistenceMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.HighPassMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassCounterMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassExistenceMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.LowPassMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.ToBooleanMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.mapper.TrimMapperRegistry。
+  - com.dwarfeng.fdr.impl.handler.pusher.NativeKafkaPusher。
+  - com.dwarfeng.fdr.impl.handler.source.kafka.dct.DctKafkaSource。
+  - com.dwarfeng.fdr.impl.handler.source.kafka.dct.DctKafkaSourceConfiguration。
+  - com.dwarfeng.fdr.impl.handler.source.kafka.dcti.DctiKafkaSource。
+  - com.dwarfeng.fdr.impl.handler.source.kafka.dcti.DctiKafkaSourceConfiguration。
+  - com.dwarfeng.fdr.impl.handler.trigger.GroovyTriggerRegistry。
+  - com.dwarfeng.fdr.impl.handler.washer.GroovyWasherRegistry。
+  - com.dwarfeng.fdr.impl.service.operation.PointCrudOperation。
+  - com.dwarfeng.fdr.impl.service.telqos.ViewCommand。
+  - com.dwarfeng.fdr.impl.configuration.FastJsonConfiguration。
+  - com.dwarfeng.fdr.impl.service.FilterSupportMaintainServiceImplTest。
+  - com.dwarfeng.fdr.impl.service.MapperSupportMaintainServiceImplTest。
+  - com.dwarfeng.fdr.impl.service.TriggerSupportMaintainServiceImplTest。
+  - com.dwarfeng.fdr.impl.service.WasherSupportMaintainServiceImplTest。
+
 - `fdr-sdk` 子模块类优化注释、文档注释格式、代码换行格式。
   - com.dwarfeng.fdr.sdk.bean.entity.FastJsonTriggerSupport。
 

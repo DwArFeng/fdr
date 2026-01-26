@@ -20,7 +20,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 /**
- * 使用Groovy脚本的触发器注册。
+ * 使用 Groovy 脚本的触发器注册。
  *
  * @author DwArFeng
  * @since 1.7.2
@@ -41,12 +41,12 @@ public class GroovyTriggerRegistry extends AbstractTriggerRegistry {
 
     @Override
     public String provideLabel() {
-        return "Groovy过滤器";
+        return "Groovy 过滤器";
     }
 
     @Override
     public String provideDescription() {
-        return "通过自定义的groovy脚本，判断数据点是否通过过滤";
+        return "通过自定义的 groovy 脚本，判断数据点是否通过过滤";
     }
 
     @Override
@@ -70,7 +70,7 @@ public class GroovyTriggerRegistry extends AbstractTriggerRegistry {
     @Override
     public Trigger makeTrigger(String type, String param) throws TriggerException {
         try (GroovyClassLoader classLoader = new GroovyClassLoader()) {
-            // 通过Groovy脚本生成处理器。
+            // 通过 Groovy 脚本生成处理器。
             Class<?> aClass = classLoader.parseClass(param);
             Processor processor = (Processor) aClass.newInstance();
             // 生成并返回触发器。
@@ -112,7 +112,7 @@ public class GroovyTriggerRegistry extends AbstractTriggerRegistry {
     }
 
     /**
-     * Groovy处理器。
+     * Groovy 处理器。
      *
      * @author DwArFeng
      * @since 1.5.2

@@ -56,7 +56,7 @@ public class DctKafkaSource extends AbstractSource {
         if (Objects.isNull(listenerContainer)) {
             throw new HandlerException("找不到 kafka listener container " + listenerId);
         }
-        //判断监听容器是否启动，未启动则将其启动
+        // 判断监听容器是否启动，未启动则将其启动。
         if (!listenerContainer.isRunning()) {
             listenerContainer.start();
         }
@@ -93,7 +93,7 @@ public class DctKafkaSource extends AbstractSource {
                 context.record(recordInfo);
             } catch (RecordHandlerStoppedException e) {
                 LOGGER.warn("记录处理器被禁用， 消息 {} 以及其后同一批次的消息均不会被提交", message, e);
-                // 如果记录处理器被禁用，则放弃其后同一批次的消息记录，并且妥善处理offset的提交。
+                // 如果记录处理器被禁用，则放弃其后同一批次的消息记录，并且妥善处理 offset 的提交。
                 // Offset 精确设置到没有提交成功的最后一条信息上。
                 consumer.seek(new TopicPartition(consumerRecord.topic(), consumerRecord.partition()),
                         consumerRecord.offset());

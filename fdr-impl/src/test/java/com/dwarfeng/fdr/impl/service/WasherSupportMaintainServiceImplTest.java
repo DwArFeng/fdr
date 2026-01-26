@@ -32,7 +32,7 @@ public class WasherSupportMaintainServiceImplTest {
             WasherSupport washerSupport = new WasherSupport(
                     new StringIdKey("washer-support-" + (i + 1)),
                     "label-" + (i + 1),
-                    "这是测试用的WasherSupport",
+                    "这是测试用的 WasherSupport",
                     "1233211234567"
             );
             washerSupports.add(washerSupport);

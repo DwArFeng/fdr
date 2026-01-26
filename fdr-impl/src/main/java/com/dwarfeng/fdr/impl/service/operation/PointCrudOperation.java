@@ -101,7 +101,7 @@ public class PointCrudOperation implements BatchCrudOperation<LongIdKey, Point> 
 
     @Override
     public void delete(LongIdKey key) throws Exception {
-        //查找点位拥有的过滤器与触发器。
+        // 查找点位拥有的过滤器与触发器。
         List<LongIdKey> filterInfoKeys = filterInfoDao.lookup(
                 FilterInfoMaintainService.CHILD_FOR_POINT, new Object[]{key}
         ).stream().map(FilterInfo::getKey).collect(Collectors.toList());
@@ -112,7 +112,7 @@ public class PointCrudOperation implements BatchCrudOperation<LongIdKey, Point> 
                 WasherInfoMaintainService.CHILD_FOR_POINT, new Object[]{key}
         ).stream().map(WasherInfo::getKey).collect(Collectors.toList());
 
-        //删除点位拥有的过滤器与触发器。
+        // 删除点位拥有的过滤器与触发器。
         filterInfoDao.batchDelete(filterInfoKeys);
         filterInfoCache.batchDelete(filterInfoKeys);
         triggerInfoDao.batchDelete(triggerInfoKeys);
@@ -120,7 +120,7 @@ public class PointCrudOperation implements BatchCrudOperation<LongIdKey, Point> 
         washerInfoDao.batchDelete(washerInfoKeys);
         washerInfoCache.batchDelete(washerInfoKeys);
 
-        //使能过滤器信息和使能触发器缓存信息删除。
+        // 使能过滤器信息和使能触发器缓存信息删除。
         enabledFilterInfoCache.delete(key);
         enabledTriggerInfoCache.delete(key);
         enabledWasherInfoCache.delete(key);

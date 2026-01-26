@@ -32,7 +32,7 @@ public class MapperSupportMaintainServiceImplTest {
             MapperSupport mapperSupport = new MapperSupport(
                     new StringIdKey("mapper-support-" + (i + 1)),
                     "label-" + (i + 1),
-                    "这是测试用的MapperSupport",
+                    "这是测试用的 MapperSupport",
                     "1233211234567"
             );
             mapperSupports.add(mapperSupport);

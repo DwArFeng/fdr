@@ -102,8 +102,10 @@ public class RecordProcessor {
 
     /**
      * 优化的记录方法。
+     *
      * <p>
      * 该记录方法经过优化，在记录期间，绝大部分数据不需要与缓存和数据访问层进行任何交互。尽一切可能的优化了执行效率。
+     *
      * <p>
      * 仅当数据点第一次被调用的时候，该方法才会访问缓存和数据访问层，将元数据取出并缓存在内存后便不再需要继续访问。
      *
@@ -536,7 +538,7 @@ public class RecordProcessor {
                     consumeCondition.awaitUninterruptibly();
                 }
 
-                // 取出第一个RecordInfo，并判断buffer中为空的情形。
+                // 取出第一个 RecordInfo，并判断 buffer 中为空的情形。
                 RecordInfo recordInfo = null;
                 if (!buffer.isEmpty()) {
                     recordInfo = buffer.remove(0);

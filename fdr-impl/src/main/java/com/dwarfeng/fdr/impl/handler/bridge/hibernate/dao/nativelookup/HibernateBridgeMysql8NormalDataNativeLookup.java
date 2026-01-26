@@ -23,7 +23,7 @@ public class HibernateBridgeMysql8NormalDataNativeLookup extends HibernateBridge
     protected List<HibernateBridgeNormalData> lookupChildForPointBetweenCloseClose(
             Connection connection, long pointLongId, Date startDate, Date endDate, int offset, int limit
     ) throws SQLException {
-        // 构建SQL。
+        // 构建 SQL。
         StringBuilder sqlBuilder = new StringBuilder();
         Mysql8NativeLookupUtil.selectColumnsFromTable(
                 sqlBuilder, "tbl_hibernate_bridge_normal_data", "tbl",
@@ -66,7 +66,7 @@ public class HibernateBridgeMysql8NormalDataNativeLookup extends HibernateBridge
     protected List<HibernateBridgeNormalData> lookupChildForPointBetweenCloseOpen(
             Connection connection, long pointLongId, Date startDate, Date endDate, int offset, int limit
     ) throws SQLException {
-        // 构建SQL。
+        // 构建 SQL。
         StringBuilder sqlBuilder = new StringBuilder();
         Mysql8NativeLookupUtil.selectColumnsFromTable(
                 sqlBuilder, "tbl_hibernate_bridge_normal_data", "tbl",
@@ -109,7 +109,7 @@ public class HibernateBridgeMysql8NormalDataNativeLookup extends HibernateBridge
     protected List<HibernateBridgeNormalData> lookupChildForPointBetweenOpenClose(
             Connection connection, long pointLongId, Date startDate, Date endDate, int offset, int limit
     ) throws SQLException {
-        // 构建SQL。
+        // 构建 SQL。
         StringBuilder sqlBuilder = new StringBuilder();
         Mysql8NativeLookupUtil.selectColumnsFromTable(
                 sqlBuilder, "tbl_hibernate_bridge_normal_data", "tbl",
@@ -152,7 +152,7 @@ public class HibernateBridgeMysql8NormalDataNativeLookup extends HibernateBridge
     protected List<HibernateBridgeNormalData> lookupChildForPointBetweenOpenOpen(
             Connection connection, long pointLongId, Date startDate, Date endDate, int offset, int limit
     ) throws SQLException {
-        // 构建SQL。
+        // 构建 SQL。
         StringBuilder sqlBuilder = new StringBuilder();
         Mysql8NativeLookupUtil.selectColumnsFromTable(
                 sqlBuilder, "tbl_hibernate_bridge_normal_data", "tbl",
@@ -195,7 +195,7 @@ public class HibernateBridgeMysql8NormalDataNativeLookup extends HibernateBridge
     protected int lookupChildForPointBetweenCloseCloseCount(
             Connection connection, long pointLongId, Date startDate, Date endDate
     ) throws SQLException {
-        // 构建SQL。
+        // 构建 SQL。
         StringBuilder sqlBuilder = new StringBuilder();
         Mysql8NativeLookupUtil.selectCountFromTable(
                 sqlBuilder, "tbl_hibernate_bridge_normal_data", "tbl", "id"
@@ -225,7 +225,7 @@ public class HibernateBridgeMysql8NormalDataNativeLookup extends HibernateBridge
     protected int lookupChildForPointBetweenCloseOpenCount(
             Connection connection, long pointLongId, Date startDate, Date endDate
     ) throws SQLException {
-        // 构建SQL。
+        // 构建 SQL。
         StringBuilder sqlBuilder = new StringBuilder();
         Mysql8NativeLookupUtil.selectCountFromTable(
                 sqlBuilder, "tbl_hibernate_bridge_normal_data", "tbl", "id"
@@ -255,7 +255,7 @@ public class HibernateBridgeMysql8NormalDataNativeLookup extends HibernateBridge
     protected int lookupChildForPointBetweenOpenCloseCount(
             Connection connection, long pointLongId, Date startDate, Date endDate
     ) throws SQLException {
-        // 构建SQL。
+        // 构建 SQL。
         StringBuilder sqlBuilder = new StringBuilder();
         Mysql8NativeLookupUtil.selectCountFromTable(
                 sqlBuilder, "tbl_hibernate_bridge_normal_data", "tbl", "id"
@@ -285,7 +285,7 @@ public class HibernateBridgeMysql8NormalDataNativeLookup extends HibernateBridge
     protected int lookupChildForPointBetweenOpenOpenCount(
             Connection connection, long pointLongId, Date startDate, Date endDate
     ) throws SQLException {
-        // 构建SQL。
+        // 构建 SQL。
         StringBuilder sqlBuilder = new StringBuilder();
         Mysql8NativeLookupUtil.selectCountFromTable(
                 sqlBuilder, "tbl_hibernate_bridge_normal_data", "tbl", "id"
