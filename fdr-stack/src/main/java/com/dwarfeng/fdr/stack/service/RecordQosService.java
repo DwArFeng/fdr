@@ -18,7 +18,7 @@ public interface RecordQosService extends Service {
      * 获取指定数据点的记录本地缓存。
      *
      * @param pointKey 指定的数据点。
-     * @return 指定数据点的记录本地缓存，或者是null。
+     * @return 指定数据点的记录本地缓存，或者是 null。
      * @throws ServiceException 服务异常。
      */
     RecordLocalCache getRecordLocalCache(LongIdKey pointKey) throws ServiceException;
@@ -33,7 +33,7 @@ public interface RecordQosService extends Service {
     /**
      * 获取指定消费者的消费者状态。
      *
-     * @param consumerId 指定的消费者ID。
+     * @param consumerId 指定的消费者 ID。
      * @return 消费者状态。
      * @throws ServiceException 服务异常。
      */
@@ -42,7 +42,7 @@ public interface RecordQosService extends Service {
     /**
      * 设置指定消费者的参数。
      *
-     * @param consumerId  指定的消费者ID。
+     * @param consumerId  指定的消费者 ID。
      * @param bufferSize  缓冲器的大小。
      * @param batchSize   数据的批处理量。
      * @param maxIdleTime 最大空闲时间。
@@ -94,7 +94,7 @@ public interface RecordQosService extends Service {
     void stopRecord() throws ServiceException;
 
     /**
-     * 消费者ID。
+     * 消费者 ID。
      *
      * @author DwArFeng
      * @since 1.8.0
