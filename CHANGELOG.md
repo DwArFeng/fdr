@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- `fdr-sdk` 子模块类优化注释、文档注释格式、代码换行格式。
+  - com.dwarfeng.fdr.sdk.bean.entity.FastJsonTriggerSupport。
+
 - `fdr-stack` 子模块类优化注释、文档注释格式、代码换行格式。
   - com.dwarfeng.fdr.stack.service.RecordQosService。
 
