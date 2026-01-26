@@ -9,7 +9,7 @@
         http://dwarfeng.com/schema/dwarfeng-datamark/dwarfeng-datamark.xsd"
 >
 
-    <!-- Point 数据标识 -->
+    <!-- Point 数据标识。 -->
     <datamark:handler
             handler-name="pointDatamarkHandler"
             resource-url="${datamark.point.resource_url}"
