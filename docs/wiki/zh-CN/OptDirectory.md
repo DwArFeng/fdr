@@ -7,13 +7,13 @@
 ```text
 opt
 ├─ opt-bridge.xml
-├─ pt-filter.xml
-├─ pt-mapper.xml
-├─ pt-pusher.xml
-├─ pt-resetter.xml
-├─ pt-source.xml
-├─ pt-trigger.xml
-└─ pt-washer.xml
+├─ opt-filter.xml
+├─ opt-mapper.xml
+├─ opt-pusher.xml
+├─ opt-resetter.xml
+├─ opt-source.xml
+├─ opt-trigger.xml
+└─ opt-washer.xml
 ```
 
 所有的可选配置都为每个单独的可选项提供了加载配置，默认是注释的，如果用户需要使用某个可选项，
