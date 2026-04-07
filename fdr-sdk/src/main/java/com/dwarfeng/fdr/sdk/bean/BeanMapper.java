@@ -25,7 +25,8 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface BeanMapper {
 
-    // -----------------------------------------------------------Subgrade Key-----------------------------------------------------------
+    // region Subgrade Key
+
     FastJsonLongIdKey longIdKeyToFastJson(LongIdKey longIdKey);
 
     @InheritInverseConfiguration
@@ -46,7 +47,10 @@ public interface BeanMapper {
     @InheritInverseConfiguration
     LongIdKey longIdKeyFromWebInput(WebInputLongIdKey webInputLongIdKey);
 
-    // -----------------------------------------------------------Fdr Entity-----------------------------------------------------------
+    // endregion
+
+    // region Fdr Entity
+
     FastJsonFilterInfo filterInfoToFastJson(FilterInfo filterInfo);
 
     @InheritInverseConfiguration
@@ -127,7 +131,10 @@ public interface BeanMapper {
     @InheritInverseConfiguration
     WasherInfo washerInfoFromWebInput(WebInputWasherInfo webInputWasherInfo);
 
-    // -----------------------------------------------------------Fdr DTO-----------------------------------------------------------
+    // endregion
+
+    // region Fdr DTO
+
     FastJsonFilteredData filteredDataToFastJson(FilteredData filteredData);
 
     @InheritInverseConfiguration
@@ -260,4 +267,6 @@ public interface BeanMapper {
     PointCompositeLookupInfo pointCompositeLookupInfoFromWebInput(
             WebInputPointCompositeLookupInfo webInputPointCompositeLookupInfo
     );
+
+    // endregion
 }
