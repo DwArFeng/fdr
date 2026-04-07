@@ -13,7 +13,7 @@ import java.util.List;
 public class NativeQueryException extends PersistException {
 
     private static final long serialVersionUID = -5333278462883989219L;
-    
+
     private final List<NativeQueryInfo> nativeQueryInfos;
 
     public NativeQueryException(List<NativeQueryInfo> nativeQueryInfos) {

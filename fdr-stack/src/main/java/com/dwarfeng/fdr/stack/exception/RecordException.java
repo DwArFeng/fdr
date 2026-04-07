@@ -13,7 +13,7 @@ import java.util.List;
 public class RecordException extends PersistException {
 
     private static final long serialVersionUID = 1667735534391737438L;
-    
+
     private final List<? extends Data> datas;
 
     public RecordException(List<? extends Data> datas) {

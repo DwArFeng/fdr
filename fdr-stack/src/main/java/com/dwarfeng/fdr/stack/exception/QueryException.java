@@ -14,7 +14,7 @@ import java.util.List;
 public class QueryException extends HandlerException {
 
     private static final long serialVersionUID = 7976510743461985711L;
-    
+
     private final List<QueryInfo> queryInfos;
 
     public QueryException(List<QueryInfo> queryInfos) {

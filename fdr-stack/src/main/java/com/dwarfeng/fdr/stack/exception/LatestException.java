@@ -13,7 +13,7 @@ import java.util.List;
 public class LatestException extends KeepException {
 
     private static final long serialVersionUID = 9002930984857670384L;
-    
+
     private final List<LongIdKey> pointKeys;
 
     public LatestException(List<LongIdKey> pointKeys) {

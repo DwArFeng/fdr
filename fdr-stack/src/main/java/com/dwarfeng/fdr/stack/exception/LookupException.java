@@ -13,7 +13,7 @@ import java.util.List;
 public class LookupException extends PersistException {
 
     private static final long serialVersionUID = -6070938635079945720L;
-    
+
     private final List<LookupInfo> lookupInfos;
 
     public LookupException(List<LookupInfo> lookupInfos) {

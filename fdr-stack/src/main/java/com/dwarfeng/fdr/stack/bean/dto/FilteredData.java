@@ -22,7 +22,7 @@ import java.util.Date;
 public class FilteredData implements Data, Dto {
 
     private static final long serialVersionUID = -8406790677895109177L;
-    
+
     private LongIdKey pointKey;
     private LongIdKey filterKey;
     private Object value;

@@ -380,6 +380,7 @@ public class Point implements Entity<LongIdKey> {
         this.reservedDateBravo = reservedDateBravo;
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public String toString() {
         return "Point{" +

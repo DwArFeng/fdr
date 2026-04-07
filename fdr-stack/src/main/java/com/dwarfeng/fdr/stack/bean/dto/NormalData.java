@@ -22,7 +22,7 @@ import java.util.Date;
 public class NormalData implements Data, Dto {
 
     private static final long serialVersionUID = -6694722564989291310L;
-    
+
     private LongIdKey pointKey;
     private Object value;
     private Date happenedDate;

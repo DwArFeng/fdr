@@ -14,7 +14,7 @@ import java.util.Date;
 public class RedisBridgeFilteredData implements Entity<LongIdKey> {
 
     private static final long serialVersionUID = 5219385666770559243L;
-    
+
     private LongIdKey key;
     private LongIdKey filterKey;
     private String value;

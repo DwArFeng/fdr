@@ -14,7 +14,7 @@ import java.util.Date;
 public class RedisBridgeNormalData implements Entity<LongIdKey> {
 
     private static final long serialVersionUID = -6401576547629299319L;
-    
+
     private LongIdKey key;
     private String value;
     private Date happenedDate;

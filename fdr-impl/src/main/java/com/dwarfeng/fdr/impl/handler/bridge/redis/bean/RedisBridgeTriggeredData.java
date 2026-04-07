@@ -14,7 +14,7 @@ import java.util.Date;
 public class RedisBridgeTriggeredData implements Entity<LongIdKey> {
 
     private static final long serialVersionUID = 8724161679980954380L;
-    
+
     private LongIdKey key;
     private LongIdKey triggerKey;
     private String value;

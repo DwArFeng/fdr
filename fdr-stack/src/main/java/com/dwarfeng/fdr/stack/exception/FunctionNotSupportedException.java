@@ -11,7 +11,7 @@ import com.dwarfeng.subgrade.stack.exception.HandlerException;
 public class FunctionNotSupportedException extends HandlerException {
 
     private static final long serialVersionUID = -7351444833624248451L;
-    
+
     private final String functionName;
 
     public FunctionNotSupportedException(String functionName) {
