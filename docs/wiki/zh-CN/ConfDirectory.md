@@ -295,7 +295,7 @@ bridge.multi.delegates.keep.normal_data=xxx1,xxx2,xxx3
 
 在项目第一次启动之前，您需要修改 `opt/opt-bridge.xml`，决定项目中需要使用哪些桥接器。您只需要修改使用的桥接器的配置。
 
-该文档档中省略了各个桥接器的具体配置，您可以参考 `conf/fdr/bridge.properties` 中的完整配置，每个配置项都有详细的注释。
+该文档中省略了各个桥接器的具体配置，您可以参考 `conf/fdr/bridge.properties` 中的完整配置，每个配置项都有详细的注释。
 如果您仍然对桥接器的配置或实现细节有疑问，可以参阅 [Preset Bridge Implements](./PresetBridgeImplements.md) 文档。
 
 ### consume.properties
@@ -473,7 +473,7 @@ pusher.log.log_level=INFO
 #
 # 查询时每一个 period 的最大跨度。
 # query.xxx.max_period_span=86400000
-# 查询是每一页的最大数据量。
+# 查询时每一页的最大数据量。
 # query.xxx.max_page_size=1000
 #
 #-------------------------------------------一般查询参数配置说明-------------------------------------------
@@ -496,7 +496,7 @@ query.triggered.max_page_size=1000
 
 ### record.properties
 
-消费服务配置文件，核心配置之一。
+记录服务配置文件，核心配置之一。
 
 ```properties
 #---------------------------------报警配置----------------------------------------
@@ -514,9 +514,9 @@ record.consumer_thread=1
 record.buffer_size=1000
 ```
 
-本配置中的参数直接决定了消费服务的性能，您需要根据您的实际情况进行调整。
+本配置中的参数直接决定了记录服务的性能，您需要根据您的实际情况进行调整。
 
-为了更加直观的观察调整后的效果，本服务提供了关于消费服务的 telnet 指令，您可以使用指令在 telnet 运维系统中动态修改参数，
+为了更加直观的观察调整后的效果，本服务提供了关于记录服务的 telnet 指令，您可以使用指令在 telnet 运维系统中动态修改参数，
 并观察修改后的效果。在运维系统中的更改重启后会失效，因此，当您将参数调整到满意的程度后，您需要将参数修改到配置文件中。
 
 ### reset.properties
