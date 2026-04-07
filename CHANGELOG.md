@@ -5,6 +5,7 @@
 ### 功能构建
 
 - Wiki 更新。
+  - docs/wiki/zh-CN/CompileBySource.md。
   - docs/wiki/zh-CN/OptDirectory.md。
 
 - 优化部分配置文件的注释。

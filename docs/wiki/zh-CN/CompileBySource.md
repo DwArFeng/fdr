@@ -58,6 +58,7 @@
 - com.dwarfeng:spring-telqos
 - com.dwarfeng:dcti
 - com.dwarfeng:dwarfeng-dct
+- com.dwarfeng:dwarfeng-datamark
 
 ### 下载依赖源码
 
@@ -111,6 +112,13 @@
 
   gitee: [https://gitee.com/dwarfeng/dwarfeng-dct](https://gitee.com/dwarfeng/dwarfeng-dct)
 
+
+- com.dwarfeng:dwarfeng-datamark
+
+  github: [https://github.com/DwArFeng/dwarfeng-datamark](https://github.com/DwArFeng/dwarfeng-datamark)
+
+  gitee: [https://gitee.com/dwarfeng/dwarfeng-datamark](https://gitee.com/dwarfeng/dwarfeng-datamark)
+
 ## 下载源码
 
 使用 git 进行源码下载。
@@ -140,7 +148,7 @@ mvn clean package
 找到打包后的目标文件
 
 ```
-fdr-node/target/fdr-node-${version}.jar
+fdr-node/target/fdr-node-${version}-release.tar.gz
 ```
 
 如能找到该文件，则说明编译成功。
