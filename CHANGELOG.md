@@ -4,6 +4,17 @@
 
 ### 功能构建
 
+- `fdr-impl` 子模块类优化注释、文档注释格式、代码换行格式。
+  - com.dwarfeng.fdr.impl.bean.BeanMapper。
+  - com.dwarfeng.fdr.impl.bean.entity.HibernateFilterInfo。
+  - com.dwarfeng.fdr.impl.bean.entity.HibernateFilterSupport。
+  - com.dwarfeng.fdr.impl.bean.entity.HibernateMapperSupport。
+  - com.dwarfeng.fdr.impl.bean.entity.HibernatePoint。
+  - com.dwarfeng.fdr.impl.bean.entity.HibernateTriggerInfo。
+  - com.dwarfeng.fdr.impl.bean.entity.HibernateTriggerSupport。
+  - com.dwarfeng.fdr.impl.bean.entity.HibernateWasherInfo。
+  - com.dwarfeng.fdr.impl.bean.entity.HibernateWasherSupport。
+
 - `fdr-sdk` 子模块类优化注释、文档注释格式、代码换行格式。
   - com.dwarfeng.fdr.sdk.bean.BeanMapper。
 

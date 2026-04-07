@@ -22,7 +22,8 @@ import org.mapstruct.Mapping;
 @Mapper
 public interface BeanMapper {
 
-    // -----------------------------------------------------------Subgrade Key-----------------------------------------------------------
+    // region Subgrade Key
+
     HibernateLongIdKey longIdKeyToHibernate(LongIdKey longIdKey);
 
     @InheritInverseConfiguration
@@ -33,7 +34,10 @@ public interface BeanMapper {
     @InheritInverseConfiguration
     StringIdKey stringIdKeyFromHibernate(HibernateStringIdKey hibernateStringIdKey);
 
-    // -----------------------------------------------------------Fdr Entity-----------------------------------------------------------
+    // endregion
+
+    // region Fdr Entity
+
     @Mapping(target = "modifiedDatamark", ignore = true)
     @Mapping(target = "createdDatamark", ignore = true)
     @Mapping(target = "pointLongId", ignore = true)
@@ -98,4 +102,6 @@ public interface BeanMapper {
 
     @InheritInverseConfiguration
     WasherSupport washerSupportFromHibernate(HibernateWasherSupport hibernateWasherSupport);
+
+    // endregion
 }

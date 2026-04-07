@@ -20,12 +20,16 @@ public class HibernatePoint implements Bean {
 
     private static final long serialVersionUID = 5332170999451244762L;
 
-    // -----------------------------------------------------------主键-----------------------------------------------------------
+    // region 主键
+
     @Id
     @Column(name = "id", nullable = false, unique = true)
     private Long longId;
 
-    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    // endregion
+
+    // region 主属性字段
+
     @Column(name = "name", length = Constraints.LENGTH_NAME, nullable = false)
     private String name;
 
@@ -50,7 +54,10 @@ public class HibernatePoint implements Bean {
     @Column(name = "triggered_persist_enabled")
     private boolean triggeredPersistEnabled;
 
-    // -----------------------------------------------------------预留字段-----------------------------------------------------------
+    // endregion
+
+    // region 预留字段
+
     @Column(name = "reserved_string_alpha", columnDefinition = "TEXT")
     private String reservedStringAlpha;
 
@@ -87,7 +94,10 @@ public class HibernatePoint implements Bean {
     @Column(name = "reserved_date_bravo")
     private Date reservedDateBravo;
 
-    // -----------------------------------------------------------一对多-----------------------------------------------------------
+    // endregion
+
+    // region 一对多
+
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateFilterInfo.class, mappedBy = "point")
     private Set<HibernateFilterInfo> filterInfos = new HashSet<>();
 
@@ -97,7 +107,10 @@ public class HibernatePoint implements Bean {
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateWasherInfo.class, mappedBy = "point")
     private Set<HibernateWasherInfo> washerInfos = new HashSet<>();
 
-    // -----------------------------------------------------------审计-----------------------------------------------------------
+    // endregion
+
+    // region 审计
+
     @DatamarkField(handlerName = "pointDatamarkHandler")
     @Column(
             name = "created_datamark",
@@ -113,10 +126,13 @@ public class HibernatePoint implements Bean {
     )
     private String modifiedDatamark;
 
+    // endregion
+
     public HibernatePoint() {
     }
 
-    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
+    // region 映射用属性区
+
     public HibernateLongIdKey getKey() {
         return Optional.ofNullable(longId).map(HibernateLongIdKey::new).orElse(null);
     }
@@ -125,7 +141,10 @@ public class HibernatePoint implements Bean {
         this.longId = Optional.ofNullable(idKey).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
-    // -----------------------------------------------------------常规属性区-----------------------------------------------------------
+    // endregion
+
+    // region 常规属性区
+
     public Long getLongId() {
         return longId;
     }
@@ -333,6 +352,8 @@ public class HibernatePoint implements Bean {
     public void setModifiedDatamark(String modifiedDatamark) {
         this.modifiedDatamark = modifiedDatamark;
     }
+
+    // endregion
 
     @Override
     public String toString() {
