@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 public class JSFixedFastJsonPoint implements Bean {
 
-    private static final long serialVersionUID = -850230885374287988L;
+    private static final long serialVersionUID = 3638957110597897729L;
 
     public static JSFixedFastJsonPoint of(Point point) {
         if (Objects.isNull(point)) {
@@ -32,6 +32,7 @@ public class JSFixedFastJsonPoint implements Bean {
                     point.isFilteredPersistEnabled(),
                     point.isTriggeredKeepEnabled(),
                     point.isTriggeredPersistEnabled(),
+                    point.getRecordMemorySize(),
                     point.getReservedStringAlpha(),
                     point.getReservedStringBravo(),
                     point.getReservedStringCharlie(),
@@ -75,42 +76,45 @@ public class JSFixedFastJsonPoint implements Bean {
     @JSONField(name = "triggered_persist_enabled", ordinal = 9)
     private boolean triggeredPersistEnabled;
 
+    @JSONField(name = "record_memory_size", ordinal = 10)
+    private int recordMemorySize;
+
     // region 预留字段
 
-    @JSONField(name = "reserved_string_alpha", ordinal = 10)
+    @JSONField(name = "reserved_string_alpha", ordinal = 11)
     private String reservedStringAlpha;
 
-    @JSONField(name = "reserved_string_bravo", ordinal = 11)
+    @JSONField(name = "reserved_string_bravo", ordinal = 12)
     private String reservedStringBravo;
 
-    @JSONField(name = "reserved_string_charlie", ordinal = 12)
+    @JSONField(name = "reserved_string_charlie", ordinal = 13)
     private String reservedStringCharlie;
 
-    @JSONField(name = "reserved_string_delta", ordinal = 13)
+    @JSONField(name = "reserved_string_delta", ordinal = 14)
     private String reservedStringDelta;
 
-    @JSONField(name = "reserved_long_alpha", ordinal = 14)
+    @JSONField(name = "reserved_long_alpha", ordinal = 15)
     private Long reservedLongAlpha;
 
-    @JSONField(name = "reserved_long_bravo", ordinal = 15)
+    @JSONField(name = "reserved_long_bravo", ordinal = 16)
     private Long reservedLongBravo;
 
-    @JSONField(name = "reserved_integer_alpha", ordinal = 16)
+    @JSONField(name = "reserved_integer_alpha", ordinal = 17)
     private Integer reservedIntegerAlpha;
 
-    @JSONField(name = "reserved_integer_bravo", ordinal = 17)
+    @JSONField(name = "reserved_integer_bravo", ordinal = 18)
     private Integer reservedIntegerBravo;
 
-    @JSONField(name = "reserved_boolean_alpha", ordinal = 18)
+    @JSONField(name = "reserved_boolean_alpha", ordinal = 19)
     private Boolean reservedBooleanAlpha;
 
-    @JSONField(name = "reserved_boolean_bravo", ordinal = 19)
+    @JSONField(name = "reserved_boolean_bravo", ordinal = 20)
     private Boolean reservedBooleanBravo;
 
-    @JSONField(name = "reserved_date_alpha", ordinal = 20)
+    @JSONField(name = "reserved_date_alpha", ordinal = 21)
     private Date reservedDateAlpha;
 
-    @JSONField(name = "reserved_date_bravo", ordinal = 21)
+    @JSONField(name = "reserved_date_bravo", ordinal = 22)
     private Date reservedDateBravo;
 
     // endregion
@@ -151,6 +155,39 @@ public class JSFixedFastJsonPoint implements Bean {
         this.filteredPersistEnabled = filteredPersistEnabled;
         this.triggeredKeepEnabled = triggeredKeepEnabled;
         this.triggeredPersistEnabled = triggeredPersistEnabled;
+        this.reservedStringAlpha = reservedStringAlpha;
+        this.reservedStringBravo = reservedStringBravo;
+        this.reservedStringCharlie = reservedStringCharlie;
+        this.reservedStringDelta = reservedStringDelta;
+        this.reservedLongAlpha = reservedLongAlpha;
+        this.reservedLongBravo = reservedLongBravo;
+        this.reservedIntegerAlpha = reservedIntegerAlpha;
+        this.reservedIntegerBravo = reservedIntegerBravo;
+        this.reservedBooleanAlpha = reservedBooleanAlpha;
+        this.reservedBooleanBravo = reservedBooleanBravo;
+        this.reservedDateAlpha = reservedDateAlpha;
+        this.reservedDateBravo = reservedDateBravo;
+    }
+
+    public JSFixedFastJsonPoint(
+            JSFixedFastJsonLongIdKey key, String name, String remark, boolean normalKeepEnabled,
+            boolean normalPersistEnabled, boolean filteredKeepEnabled, boolean filteredPersistEnabled,
+            boolean triggeredKeepEnabled, boolean triggeredPersistEnabled, int recordMemorySize,
+            String reservedStringAlpha, String reservedStringBravo, String reservedStringCharlie,
+            String reservedStringDelta, Long reservedLongAlpha, Long reservedLongBravo, Integer reservedIntegerAlpha,
+            Integer reservedIntegerBravo, Boolean reservedBooleanAlpha, Boolean reservedBooleanBravo,
+            Date reservedDateAlpha, Date reservedDateBravo
+    ) {
+        this.key = key;
+        this.name = name;
+        this.remark = remark;
+        this.normalKeepEnabled = normalKeepEnabled;
+        this.normalPersistEnabled = normalPersistEnabled;
+        this.filteredKeepEnabled = filteredKeepEnabled;
+        this.filteredPersistEnabled = filteredPersistEnabled;
+        this.triggeredKeepEnabled = triggeredKeepEnabled;
+        this.triggeredPersistEnabled = triggeredPersistEnabled;
+        this.recordMemorySize = recordMemorySize;
         this.reservedStringAlpha = reservedStringAlpha;
         this.reservedStringBravo = reservedStringBravo;
         this.reservedStringCharlie = reservedStringCharlie;
@@ -235,6 +272,14 @@ public class JSFixedFastJsonPoint implements Bean {
 
     public void setTriggeredPersistEnabled(boolean triggeredPersistEnabled) {
         this.triggeredPersistEnabled = triggeredPersistEnabled;
+    }
+
+    public int getRecordMemorySize() {
+        return recordMemorySize;
+    }
+
+    public void setRecordMemorySize(int recordMemorySize) {
+        this.recordMemorySize = recordMemorySize;
     }
 
     public String getReservedStringAlpha() {
@@ -346,6 +391,7 @@ public class JSFixedFastJsonPoint implements Bean {
                 ", filteredPersistEnabled=" + filteredPersistEnabled +
                 ", triggeredKeepEnabled=" + triggeredKeepEnabled +
                 ", triggeredPersistEnabled=" + triggeredPersistEnabled +
+                ", recordMemorySize=" + recordMemorySize +
                 ", reservedStringAlpha='" + reservedStringAlpha + '\'' +
                 ", reservedStringBravo='" + reservedStringBravo + '\'' +
                 ", reservedStringCharlie='" + reservedStringCharlie + '\'' +

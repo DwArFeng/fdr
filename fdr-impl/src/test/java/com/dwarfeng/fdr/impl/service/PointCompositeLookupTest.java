@@ -75,6 +75,7 @@ public class PointCompositeLookupTest {
                     normalKeepEnabled, normalPersistEnabled,
                     filteredKeepEnabled, filteredPersistEnabled,
                     triggeredKeepEnabled, triggeredPersistEnabled,
+                    12450,
                     reservedStringAlpha, reservedStringBravo,
                     reservedStringCharlie, reservedStringDelta,
                     reservedLongAlpha, reservedLongBravo,

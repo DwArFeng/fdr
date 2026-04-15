@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 新增实体字段。
+  - com.dwarfeng.fdr.stack.bean.entity.Point。
+
 - 优化文件格式。
   - 优化 `application-context-*.xml` 文件的格式。
 

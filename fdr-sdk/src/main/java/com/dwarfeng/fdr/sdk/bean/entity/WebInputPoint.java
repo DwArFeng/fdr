@@ -22,7 +22,7 @@ import java.util.Objects;
  */
 public class WebInputPoint implements Bean {
 
-    private static final long serialVersionUID = -4739858083232019144L;
+    private static final long serialVersionUID = 5086683915666509317L;
 
     public static Point toStackBean(WebInputPoint webInputPoint) {
         if (Objects.isNull(webInputPoint)) {
@@ -38,6 +38,7 @@ public class WebInputPoint implements Bean {
                     webInputPoint.isFilteredPersistEnabled(),
                     webInputPoint.isTriggeredKeepEnabled(),
                     webInputPoint.isTriggeredPersistEnabled(),
+                    webInputPoint.getRecordMemorySize(),
                     webInputPoint.getReservedStringAlpha(),
                     webInputPoint.getReservedStringBravo(),
                     webInputPoint.getReservedStringCharlie(),
@@ -86,6 +87,9 @@ public class WebInputPoint implements Bean {
 
     @JSONField(name = "triggered_persist_enabled")
     private boolean triggeredPersistEnabled;
+
+    @JSONField(name = "record_memory_size")
+    private int recordMemorySize;
 
     // region 预留字段
 
@@ -202,6 +206,14 @@ public class WebInputPoint implements Bean {
         this.triggeredPersistEnabled = triggeredPersistEnabled;
     }
 
+    public int getRecordMemorySize() {
+        return recordMemorySize;
+    }
+
+    public void setRecordMemorySize(int recordMemorySize) {
+        this.recordMemorySize = recordMemorySize;
+    }
+
     public String getReservedStringAlpha() {
         return reservedStringAlpha;
     }
@@ -311,6 +323,7 @@ public class WebInputPoint implements Bean {
                 ", filteredPersistEnabled=" + filteredPersistEnabled +
                 ", triggeredKeepEnabled=" + triggeredKeepEnabled +
                 ", triggeredPersistEnabled=" + triggeredPersistEnabled +
+                ", recordMemorySize=" + recordMemorySize +
                 ", reservedStringAlpha='" + reservedStringAlpha + '\'' +
                 ", reservedStringBravo='" + reservedStringBravo + '\'' +
                 ", reservedStringCharlie='" + reservedStringCharlie + '\'' +

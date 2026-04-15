@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class Point implements Entity<LongIdKey> {
 
-    private static final long serialVersionUID = -986941622654987835L;
+    private static final long serialVersionUID = 4690701310740589851L;
 
     /**
      * 主键。
@@ -71,6 +71,16 @@ public class Point implements Entity<LongIdKey> {
      * @since 2.0.0
      */
     private boolean triggeredPersistEnabled;
+
+    /**
+     * 记录记忆大小。
+     *
+     * <p>
+     * 小于等于 0 时表示不启用记录记忆功能。
+     *
+     * @since 2.5.0
+     */
+    private int recordMemorySize;
 
     // region 预留字段
 
@@ -182,6 +192,23 @@ public class Point implements Entity<LongIdKey> {
     public Point(
             LongIdKey key, String name, String remark, boolean normalKeepEnabled, boolean normalPersistEnabled,
             boolean filteredKeepEnabled, boolean filteredPersistEnabled, boolean triggeredKeepEnabled,
+            boolean triggeredPersistEnabled, int recordMemorySize
+    ) {
+        this.key = key;
+        this.name = name;
+        this.remark = remark;
+        this.normalKeepEnabled = normalKeepEnabled;
+        this.normalPersistEnabled = normalPersistEnabled;
+        this.filteredKeepEnabled = filteredKeepEnabled;
+        this.filteredPersistEnabled = filteredPersistEnabled;
+        this.triggeredKeepEnabled = triggeredKeepEnabled;
+        this.triggeredPersistEnabled = triggeredPersistEnabled;
+        this.recordMemorySize = recordMemorySize;
+    }
+
+    public Point(
+            LongIdKey key, String name, String remark, boolean normalKeepEnabled, boolean normalPersistEnabled,
+            boolean filteredKeepEnabled, boolean filteredPersistEnabled, boolean triggeredKeepEnabled,
             boolean triggeredPersistEnabled, String reservedStringAlpha, String reservedStringBravo,
             String reservedStringCharlie, String reservedStringDelta, Long reservedLongAlpha, Long reservedLongBravo,
             Integer reservedIntegerAlpha, Integer reservedIntegerBravo, Boolean reservedBooleanAlpha,
@@ -196,6 +223,38 @@ public class Point implements Entity<LongIdKey> {
         this.filteredPersistEnabled = filteredPersistEnabled;
         this.triggeredKeepEnabled = triggeredKeepEnabled;
         this.triggeredPersistEnabled = triggeredPersistEnabled;
+        this.reservedStringAlpha = reservedStringAlpha;
+        this.reservedStringBravo = reservedStringBravo;
+        this.reservedStringCharlie = reservedStringCharlie;
+        this.reservedStringDelta = reservedStringDelta;
+        this.reservedLongAlpha = reservedLongAlpha;
+        this.reservedLongBravo = reservedLongBravo;
+        this.reservedIntegerAlpha = reservedIntegerAlpha;
+        this.reservedIntegerBravo = reservedIntegerBravo;
+        this.reservedBooleanAlpha = reservedBooleanAlpha;
+        this.reservedBooleanBravo = reservedBooleanBravo;
+        this.reservedDateAlpha = reservedDateAlpha;
+        this.reservedDateBravo = reservedDateBravo;
+    }
+
+    public Point(
+            LongIdKey key, String name, String remark, boolean normalKeepEnabled, boolean normalPersistEnabled,
+            boolean filteredKeepEnabled, boolean filteredPersistEnabled, boolean triggeredKeepEnabled,
+            boolean triggeredPersistEnabled, int recordMemorySize, String reservedStringAlpha,
+            String reservedStringBravo, String reservedStringCharlie, String reservedStringDelta,
+            Long reservedLongAlpha, Long reservedLongBravo, Integer reservedIntegerAlpha, Integer reservedIntegerBravo,
+            Boolean reservedBooleanAlpha, Boolean reservedBooleanBravo, Date reservedDateAlpha, Date reservedDateBravo
+    ) {
+        this.key = key;
+        this.name = name;
+        this.remark = remark;
+        this.normalKeepEnabled = normalKeepEnabled;
+        this.normalPersistEnabled = normalPersistEnabled;
+        this.filteredKeepEnabled = filteredKeepEnabled;
+        this.filteredPersistEnabled = filteredPersistEnabled;
+        this.triggeredKeepEnabled = triggeredKeepEnabled;
+        this.triggeredPersistEnabled = triggeredPersistEnabled;
+        this.recordMemorySize = recordMemorySize;
         this.reservedStringAlpha = reservedStringAlpha;
         this.reservedStringBravo = reservedStringBravo;
         this.reservedStringCharlie = reservedStringCharlie;
@@ -282,6 +341,14 @@ public class Point implements Entity<LongIdKey> {
 
     public void setTriggeredPersistEnabled(boolean triggeredPersistEnabled) {
         this.triggeredPersistEnabled = triggeredPersistEnabled;
+    }
+
+    public int getRecordMemorySize() {
+        return recordMemorySize;
+    }
+
+    public void setRecordMemorySize(int recordMemorySize) {
+        this.recordMemorySize = recordMemorySize;
     }
 
     public String getReservedStringAlpha() {
@@ -393,6 +460,7 @@ public class Point implements Entity<LongIdKey> {
                 ", filteredPersistEnabled=" + filteredPersistEnabled +
                 ", triggeredKeepEnabled=" + triggeredKeepEnabled +
                 ", triggeredPersistEnabled=" + triggeredPersistEnabled +
+                ", recordMemorySize=" + recordMemorySize +
                 ", reservedStringAlpha='" + reservedStringAlpha + '\'' +
                 ", reservedStringBravo='" + reservedStringBravo + '\'' +
                 ", reservedStringCharlie='" + reservedStringCharlie + '\'' +

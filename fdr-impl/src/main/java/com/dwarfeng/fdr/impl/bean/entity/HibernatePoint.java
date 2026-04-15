@@ -18,7 +18,7 @@ import java.util.Set;
 @EntityListeners(DatamarkEntityListener.class)
 public class HibernatePoint implements Bean {
 
-    private static final long serialVersionUID = 5332170999451244762L;
+    private static final long serialVersionUID = -6744394817351404152L;
 
     // region 主键
 
@@ -53,6 +53,9 @@ public class HibernatePoint implements Bean {
 
     @Column(name = "triggered_persist_enabled")
     private boolean triggeredPersistEnabled;
+
+    @Column(name = "record_memory_size", nullable = false)
+    private int recordMemorySize;
 
     // endregion
 
@@ -217,6 +220,14 @@ public class HibernatePoint implements Bean {
         this.triggeredPersistEnabled = triggeredPersistEnabled;
     }
 
+    public int getRecordMemorySize() {
+        return recordMemorySize;
+    }
+
+    public void setRecordMemorySize(int recordMemorySize) {
+        this.recordMemorySize = recordMemorySize;
+    }
+
     public String getReservedStringAlpha() {
         return reservedStringAlpha;
     }
@@ -367,6 +378,7 @@ public class HibernatePoint implements Bean {
                 "filteredPersistEnabled = " + filteredPersistEnabled + ", " +
                 "triggeredKeepEnabled = " + triggeredKeepEnabled + ", " +
                 "triggeredPersistEnabled = " + triggeredPersistEnabled + ", " +
+                "recordMemorySize = " + recordMemorySize + ", " +
                 "reservedStringAlpha = " + reservedStringAlpha + ", " +
                 "reservedStringBravo = " + reservedStringBravo + ", " +
                 "reservedStringCharlie = " + reservedStringCharlie + ", " +

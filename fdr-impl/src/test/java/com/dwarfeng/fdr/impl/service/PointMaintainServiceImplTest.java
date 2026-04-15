@@ -32,7 +32,7 @@ public class PointMaintainServiceImplTest {
         points = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             Point point = new Point(
-                    null, "name", "remark", true, true, true, true, true, true,
+                    null, "name", "remark", true, true, true, true, true, true, 12450,
                     "reservedStringAlpha", "reservedStringBravo", "reservedStringCharlie", "reservedStringDelta",
                     12450L, 12450L, 12450, 12450, true, true, new Date(), new Date()
             );
