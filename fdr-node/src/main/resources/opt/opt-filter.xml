@@ -67,5 +67,12 @@
                 type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.ValueTypeFilterRegistry"
         />
         -->
+
+        <!-- 加载 DeadbandFilter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.DeadbandFilterRegistry"
+        />
+        -->
     </context:component-scan>
 </beans>

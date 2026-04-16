@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 实现预设过滤器。
+  - com.dwarfeng.fdr.impl.handler.filter.DeadbandFilterRegistry。
+
 - 实现运维指令。
   - com.dwarfeng.fdr.impl.service.telqos.RecordMemoryCommand。
 
