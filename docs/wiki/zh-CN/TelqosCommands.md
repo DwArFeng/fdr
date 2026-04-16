@@ -18,6 +18,7 @@ FDR 2.x 版本提供的 Telqos 命令如下所示：
 | [lcsu](#lcsu-命令)         | 逻辑侧消费者操作   | 2.0.0.a |
 | [rcsu](#rcsu-命令)         | 记录侧消费者操作   | 2.0.0.a |
 | [rlc](#rlc-命令)           | 数据记录本地缓存操作 | 2.0.0.a |
+| [rmem](#rmem-命令)         | 记录记忆查询与清理  | 2.5.0.a |
 | [mlc](#mlc-命令)           | 映射查询本地缓存操作 | 2.0.0.a |
 | [record](#record-命令)     | 记录功能上线/下线  | 2.0.0.a |
 | [reset](#reset-命令)       | 重置处理器操作/查看 | 2.0.0.a |
@@ -427,6 +428,86 @@ OK
 ```text
 rlc -c
 缓存已清空
+OK
+```
+
+## rmem 命令
+
+记录记忆查询与清理。
+
+### 语法
+
+```text
+usage: rmem -l point-id
+rmem -r point-id
+rmem -c
+记录记忆查询与清理
+ -c              清除记录记忆
+ -l <point-id>   查看指定点位的记录记忆
+ -r <point-id>   移除指定的点位对应的记录记忆
+```
+
+`rmem -l point-id` 指令选项执行时会进入分片交互模式，支持：
+
+- 输入 `all` 查看全部。
+- 输入 `begin-end` 查看指定范围（索引从 0 开始）。
+- 输入 `q` 退出查询。
+
+### 示例
+
+#### 查询指定点位记录记忆
+
+```text
+rmem -l 1
+记录记忆总数: 3
+
+输入 all 查看所有数据
+输入 begin-end 查看指定范围的数据(开始于 0)
+输入 q 退出查询
+
+0-2
+
+索引: 0/2
+  pointId: 1
+  happenedDate: 2026-04-16 16:51:25.527
+  rawValueClass: java.lang.Integer
+  rawValue: -1073062227
+  passed: true
+  valueClass: java.lang.Integer
+  value: -1073062227
+
+索引: 1/2
+  pointId: 1
+  happenedDate: 2026-04-16 16:51:25.030
+  rawValueClass: java.lang.Integer
+  rawValue: 83168215
+  passed: false
+  valueClass: null
+  value: null
+
+记录记忆总数: 3
+
+输入 all 查看所有数据
+输入 begin-end 查看指定范围的数据(开始于 0)
+输入 q 退出查询
+
+q
+OK
+```
+
+#### 清理指定点位记录记忆
+
+```text
+rmem -r 1
+指定的点位对应的记录记忆已移除
+OK
+```
+
+#### 清理全部记录记忆
+
+```text
+rmem -c
+记录记忆已清除
 OK
 ```
 
