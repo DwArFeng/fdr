@@ -4,6 +4,11 @@
 
 ### 功能构建
 
+- 新增记录记忆机制。
+  - 新增 `com.dwarfeng.fdr.stack.handler.RecordMemoryHandler` 接口。
+  - 修改 `com.dwarfeng.fdr.impl.handler.RecordProcessor` 类以支持记录记忆机制。
+  - 增加 `com.dwarfeng.fdr.stack.service.RecordMemoryQosService`。
+
 - 新增实体字段。
   - com.dwarfeng.fdr.stack.bean.entity.Point。
 

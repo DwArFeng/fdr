@@ -1,9 +1,6 @@
 package com.dwarfeng.fdr.impl.handler;
 
-import com.dwarfeng.fdr.stack.handler.MapLocalCacheHandler;
-import com.dwarfeng.fdr.stack.handler.PushHandler;
-import com.dwarfeng.fdr.stack.handler.RecordHandler;
-import com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler;
+import com.dwarfeng.fdr.stack.handler.*;
 import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
@@ -26,6 +23,7 @@ public class ResetProcessor {
 
     private final RecordHandler recordHandler;
     private final RecordLocalCacheHandler recordLocalCacheHandler;
+    private final RecordMemoryHandler recordMemoryHandler;
 
     private final MapLocalCacheHandler mapLocalCacheHandler;
 
@@ -36,11 +34,13 @@ public class ResetProcessor {
     public ResetProcessor(
             RecordHandler recordHandler,
             RecordLocalCacheHandler recordLocalCacheHandler,
+            RecordMemoryHandler recordMemoryHandler,
             MapLocalCacheHandler mapLocalCacheHandler,
             PushHandler pushHandler
     ) {
         this.recordHandler = recordHandler;
         this.recordLocalCacheHandler = recordLocalCacheHandler;
+        this.recordMemoryHandler = recordMemoryHandler;
         this.mapLocalCacheHandler = mapLocalCacheHandler;
         this.pushHandler = pushHandler;
     }
@@ -63,6 +63,7 @@ public class ResetProcessor {
         // 记录处理器停止，且清空本地缓存。
         recordHandler.stop();
         recordLocalCacheHandler.clear();
+        recordMemoryHandler.clear();
 
         // 如果记录处理器之前是启动的，则重新启动。
         if (started) {
