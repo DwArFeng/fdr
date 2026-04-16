@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 实现运维指令。
+  - com.dwarfeng.fdr.impl.service.telqos.RecordMemoryCommand。
+
 - 重构过滤机制。
   - 增加 `Filter.Context` 接口，为过滤的相关方法提供上下文支持。
   - 增加 `Filter.init(context)` 初始化流程。
