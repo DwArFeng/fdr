@@ -4,6 +4,22 @@
 
 ### 功能构建
 
+- 重构过滤机制。
+  - 增加 `Filter.Context` 接口，为过滤的相关方法提供上下文支持。
+  - 增加 `Filter.init(context)` 初始化流程。
+  - 修改 `FilterHandlerImpl` 类，在构建完成后注入过滤上下文。
+
+- 重构清洗机制。
+  - 增加 `Washer.Context` 接口，为清洗的相关方法提供上下文支持。
+  - 增加 `Washer.init(context)` 初始化流程。
+  - 修改 `WasherHandlerImpl` 类，在构建完成后注入清洗上下文。
+  - 重构 `Washer` 接口方法。
+
+- 重构触发机制。
+  - 增加 `Trigger.Context` 接口，为触发的相关方法提供上下文支持。
+  - 增加 `Trigger.init(context)` 初始化流程。
+  - 修改 `TriggerHandlerImpl` 类，在构建完成后注入触发上下文。
+
 - 新增记录记忆机制。
   - 新增 `com.dwarfeng.fdr.stack.handler.RecordMemoryHandler` 接口。
   - 修改 `com.dwarfeng.fdr.impl.handler.RecordProcessor` 类以支持记录记忆机制。

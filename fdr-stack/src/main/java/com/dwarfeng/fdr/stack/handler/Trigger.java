@@ -1,10 +1,12 @@
 package com.dwarfeng.fdr.stack.handler;
 
 import com.dwarfeng.fdr.stack.exception.TriggerException;
+import com.dwarfeng.fdr.stack.struct.RecordMemory;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
 import javax.annotation.Nonnull;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 触发器。
@@ -13,6 +15,18 @@ import java.util.Date;
  * @since 0.0.1-alpha
  */
 public interface Trigger {
+
+    /**
+     * 初始化触发器。
+     *
+     * <p>
+     * 该方法会在触发器初始化后调用，请将 context 存放在触发器的字段中。<br>
+     * 当触发器被触发后，执行上下文中的相应方法即可。
+     *
+     * @param context 触发器的上下文。
+     * @since 2.5.0
+     */
+    void init(Context context);
 
     /**
      * 测试一个数据是否能通过触发器。
@@ -34,6 +48,31 @@ public interface Trigger {
      * @throws TriggerException 触发器异常。
      */
     TestResult test(TestInfo testInfo) throws TriggerException;
+
+    /**
+     * 触发器上下文。
+     *
+     * @author DwArFeng
+     * @since 2.5.0
+     */
+    interface Context {
+
+        /**
+         * 查询指定点位的记录记忆。
+         *
+         * <p>
+         * 返回列表中的记录记忆按时间从新到旧排列，索引 <code>0</code> 对应最新的记录记忆。
+         *
+         * <p>
+         * 调用者有义务仅对返回结果进行查看操作，不应对其进行任何修改。
+         *
+         * @param pointKey 点位主键。
+         * @return 指定点位的记录记忆。
+         * @throws Exception 查询记录记忆时抛出的任何异常。
+         * @since 2.5.0
+         */
+        List<RecordMemory> lookupRecordMemory(LongIdKey pointKey) throws Exception;
+    }
 
     /**
      * 测试信息。

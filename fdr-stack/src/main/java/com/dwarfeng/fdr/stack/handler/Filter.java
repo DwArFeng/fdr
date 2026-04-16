@@ -1,10 +1,12 @@
 package com.dwarfeng.fdr.stack.handler;
 
 import com.dwarfeng.fdr.stack.exception.FilterException;
+import com.dwarfeng.fdr.stack.struct.RecordMemory;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
 import javax.annotation.Nonnull;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 过滤器。
@@ -19,6 +21,18 @@ import java.util.Date;
  * @since 0.0.1-alpha
  */
 public interface Filter {
+
+    /**
+     * 初始化过滤器。
+     *
+     * <p>
+     * 该方法会在过滤器初始化后调用，请将 context 存放在过滤器的字段中。<br>
+     * 当过滤器被触发后，执行上下文中的相应方法即可。
+     *
+     * @param context 过滤器的上下文。
+     * @since 2.5.0
+     */
+    void init(Context context);
 
     /**
      * 测试一个数据是否能通过过滤器。
@@ -40,6 +54,31 @@ public interface Filter {
      * @throws FilterException 过滤器异常。
      */
     TestResult test(TestInfo testInfo) throws FilterException;
+
+    /**
+     * 过滤器上下文。
+     *
+     * @author DwArFeng
+     * @since 2.5.0
+     */
+    interface Context {
+
+        /**
+         * 查询指定点位的记录记忆。
+         *
+         * <p>
+         * 返回列表中的记录记忆按时间从新到旧排列，索引 <code>0</code> 对应最新的记录记忆。
+         *
+         * <p>
+         * 调用者有义务仅对返回结果进行查看操作，不应对其进行任何修改。
+         *
+         * @param pointKey 点位主键。
+         * @return 指定点位的记录记忆。
+         * @throws Exception 查询记录记忆时抛出的任何异常。
+         * @since 2.5.0
+         */
+        List<RecordMemory> lookupRecordMemory(LongIdKey pointKey) throws Exception;
+    }
 
     /**
      * 测试信息。

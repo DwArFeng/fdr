@@ -12,6 +12,13 @@ import com.dwarfeng.fdr.stack.handler.Filter;
  */
 public abstract class AbstractFilter implements Filter {
 
+    protected Context context;
+
+    @Override
+    public void init(Context context) {
+        this.context = context;
+    }
+
     @Override
     public TestResult test(TestInfo testInfo) throws FilterException {
         try {

@@ -2,6 +2,11 @@ package com.dwarfeng.fdr.stack.handler;
 
 import com.dwarfeng.fdr.stack.bean.entity.WasherInfo;
 import com.dwarfeng.fdr.stack.exception.WasherException;
+import com.dwarfeng.fdr.stack.struct.RecordMemory;
+import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * 清洗器。
@@ -33,11 +38,130 @@ import com.dwarfeng.fdr.stack.exception.WasherException;
 public interface Washer {
 
     /**
+     * 初始化清洗器。
+     *
+     * <p>
+     * 该方法会在清洗器初始化后调用，请将 context 存放在清洗器的字段中。<br>
+     * 当清洗器被触发后，执行上下文中的相应方法即可。
+     *
+     * @param context 清洗器的上下文。
+     * @since 2.5.0
+     */
+    void init(Context context);
+
+    /**
+     * 清洗指定的数据对象，并返回清洗结果。
+     *
+     * @param washInfo 清洗信息。
+     * @return 清洗结果。
+     * @throws WasherException 清洗器异常。
+     * @since 2.5.0
+     */
+    WashResult wash(WashInfo washInfo) throws WasherException;
+
+    /**
      * 清洗指定的数据对象，并返回清洗后的数据对象。
      *
      * @param rawValue 指定的数据对象。
      * @return 清洗后的数据对象。
      * @throws WasherException 清洗器异常。
+     * @deprecated 该方法已被废弃，请改为使用 {@link #wash(WashInfo)}。
      */
+    @Deprecated
     Object wash(Object rawValue) throws WasherException;
+
+    /**
+     * 清洗器上下文。
+     *
+     * @author DwArFeng
+     * @since 2.5.0
+     */
+    interface Context {
+
+        /**
+         * 查询指定点位的记录记忆。
+         *
+         * <p>
+         * 返回列表中的记录记忆按时间从新到旧排列，索引 <code>0</code> 对应最新的记录记忆。
+         *
+         * <p>
+         * 调用者有义务仅对返回结果进行查看操作，不应对其进行任何修改。
+         *
+         * @param pointKey 点位主键。
+         * @return 指定点位的记录记忆。
+         * @throws Exception 查询记录记忆时抛出的任何异常。
+         * @since 2.5.0
+         */
+        List<RecordMemory> lookupRecordMemory(LongIdKey pointKey) throws Exception;
+    }
+
+    /**
+     * 清洗信息。
+     *
+     * @author DwArFeng
+     * @since 2.5.0
+     */
+    final class WashInfo {
+
+        private final LongIdKey pointKey;
+        private final Object value;
+        private final Date happenedDate;
+
+        public WashInfo(LongIdKey pointKey, Object value, Date happenedDate) {
+            this.pointKey = pointKey;
+            this.value = value;
+            this.happenedDate = happenedDate;
+        }
+
+        public LongIdKey getPointKey() {
+            return pointKey;
+        }
+
+        public Object getValue() {
+            return value;
+        }
+
+        public Date getHappenedDate() {
+            return happenedDate;
+        }
+
+        @Override
+        public String toString() {
+            return "WashInfo{" +
+                    "pointKey=" + pointKey +
+                    ", value=" + value +
+                    ", happenedDate=" + happenedDate +
+                    '}';
+        }
+    }
+
+    /**
+     * 清洗结果。
+     *
+     * @author DwArFeng
+     * @since 2.5.0
+     */
+    final class WashResult {
+
+        public static WashResult of(Object value) {
+            return new WashResult(value);
+        }
+
+        private final Object value;
+
+        public WashResult(Object value) {
+            this.value = value;
+        }
+
+        public Object getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return "WashResult{" +
+                    "value=" + value +
+                    '}';
+        }
+    }
 }

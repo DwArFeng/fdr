@@ -3,8 +3,11 @@ package com.dwarfeng.fdr.impl.handler;
 import com.dwarfeng.fdr.sdk.handler.TriggerMaker;
 import com.dwarfeng.fdr.stack.exception.TriggerException;
 import com.dwarfeng.fdr.stack.exception.UnsupportedTriggerTypeException;
+import com.dwarfeng.fdr.stack.handler.RecordMemoryHandler;
 import com.dwarfeng.fdr.stack.handler.Trigger;
 import com.dwarfeng.fdr.stack.handler.TriggerHandler;
+import com.dwarfeng.fdr.stack.struct.RecordMemory;
+import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +22,14 @@ public class TriggerHandlerImpl implements TriggerHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TriggerHandlerImpl.class);
 
+    private final RecordMemoryHandler recordMemoryHandler;
+
     private final List<TriggerMaker> triggerMakers;
 
-    public TriggerHandlerImpl(List<TriggerMaker> triggerMakers) {
+    private final InternalTriggerContext triggerContext = new InternalTriggerContext();
+
+    public TriggerHandlerImpl(List<TriggerMaker> triggerMakers, RecordMemoryHandler recordMemoryHandler) {
+        this.recordMemoryHandler = recordMemoryHandler;
         this.triggerMakers = Optional.ofNullable(triggerMakers).orElse(Collections.emptyList());
     }
 
@@ -33,6 +41,7 @@ public class TriggerHandlerImpl implements TriggerHandler {
             TriggerMaker triggerMaker = triggerMakers.stream().filter(maker -> maker.supportType(type))
                     .findFirst().orElseThrow(() -> new UnsupportedTriggerTypeException(type));
             Trigger trigger = triggerMaker.makeTrigger(type, param);
+            trigger.init(triggerContext);
             LOGGER.debug("触发器构建成功!");
             LOGGER.debug("触发器: {}", trigger);
             return trigger;
@@ -40,6 +49,14 @@ public class TriggerHandlerImpl implements TriggerHandler {
             throw e;
         } catch (Exception e) {
             throw new TriggerException(e);
+        }
+    }
+
+    private final class InternalTriggerContext implements Trigger.Context {
+
+        @Override
+        public List<RecordMemory> lookupRecordMemory(LongIdKey pointKey) throws Exception {
+            return recordMemoryHandler.lookup(pointKey);
         }
     }
 }

@@ -412,7 +412,9 @@ public class RecordProcessor {
 
                     Object currentValue = recordInfo.getValue();
                     LOGGER.debug("数据信息经过过滤前清洗, 原始数据点信息: {}", currentValue);
-                    Object washedValue = washer.wash(currentValue);
+                    Washer.WashInfo washInfo = new Washer.WashInfo(pointKey, currentValue, happenedDate);
+                    Washer.WashResult washResult = washer.wash(washInfo);
+                    Object washedValue = Objects.isNull(washResult) ? null : washResult.getValue();
                     LOGGER.debug("数据信息经过过滤前清洗, 清洗数据点信息: {}", washedValue);
 
                     recordInfo.setValue(washedValue);
@@ -451,7 +453,9 @@ public class RecordProcessor {
 
                     Object currentValue = recordInfo.getValue();
                     LOGGER.debug("数据信息经过过滤后清洗, 原始数据点信息: {}", currentValue);
-                    Object washedValue = washer.wash(currentValue);
+                    Washer.WashInfo washInfo = new Washer.WashInfo(pointKey, currentValue, happenedDate);
+                    Washer.WashResult washResult = washer.wash(washInfo);
+                    Object washedValue = Objects.isNull(washResult) ? null : washResult.getValue();
                     LOGGER.debug("数据信息经过过滤后清洗, 清洗数据点信息: {}", washedValue);
 
                     recordInfo.setValue(washedValue);
@@ -652,4 +656,3 @@ public class RecordProcessor {
         }
     }
 }
-

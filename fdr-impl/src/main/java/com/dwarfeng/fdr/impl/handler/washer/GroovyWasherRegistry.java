@@ -98,9 +98,9 @@ public class GroovyWasherRegistry extends AbstractWasherRegistry {
         }
 
         @Override
-        protected Object doWash(Object rawValue) throws Exception {
+        protected WashResult doWash(WashInfo washInfo) throws Exception {
             // 返回 processor 的处理结果。
-            return processor.wash(rawValue);
+            return WashResult.of(processor.wash(washInfo.getValue()));
         }
 
         @Override

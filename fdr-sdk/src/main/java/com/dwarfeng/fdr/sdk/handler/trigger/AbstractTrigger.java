@@ -12,6 +12,13 @@ import com.dwarfeng.fdr.stack.handler.Trigger;
  */
 public abstract class AbstractTrigger implements Trigger {
 
+    protected Context context;
+
+    @Override
+    public void init(Context context) {
+        this.context = context;
+    }
+
     @Override
     public TestResult test(TestInfo testInfo) throws TriggerException {
         try {

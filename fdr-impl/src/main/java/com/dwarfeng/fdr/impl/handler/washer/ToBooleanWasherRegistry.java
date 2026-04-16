@@ -83,15 +83,16 @@ public class ToBooleanWasherRegistry extends AbstractWasherRegistry {
         }
 
         @Override
-        protected Object doWash(Object rawValue) {
+        protected WashResult doWash(WashInfo washInfo) {
+            Object rawValue = washInfo.getValue();
             if (rawValue instanceof Boolean) {
-                return rawValue;
+                return WashResult.of(rawValue);
             } else if (rawValue instanceof String) {
-                return parseString((String) rawValue);
+                return WashResult.of(parseString((String) rawValue));
             } else if (rawValue instanceof Number) {
-                return parseNumber((Number) rawValue);
+                return WashResult.of(parseNumber((Number) rawValue));
             } else {
-                return false;
+                return WashResult.of(false);
             }
         }
 

@@ -68,17 +68,18 @@ public class ToLongWasherRegistry extends AbstractWasherRegistry {
     public static class ToLongWasher extends AbstractWasher {
 
         @Override
-        protected Object doWash(Object rawValue) {
+        protected WashResult doWash(WashInfo washInfo) {
+            Object rawValue = washInfo.getValue();
             if (rawValue instanceof Number) {
-                return ((Number) rawValue).longValue();
+                return WashResult.of(((Number) rawValue).longValue());
             } else if (rawValue instanceof String) {
                 try {
-                    return Long.parseLong((String) rawValue);
+                    return WashResult.of(Long.parseLong((String) rawValue));
                 } catch (NumberFormatException e) {
-                    return Constants.DATA_VALUE_ILLEGAL;
+                    return WashResult.of(Constants.DATA_VALUE_ILLEGAL);
                 }
             } else {
-                return Constants.DATA_VALUE_ILLEGAL;
+                return WashResult.of(Constants.DATA_VALUE_ILLEGAL);
             }
         }
 

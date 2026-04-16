@@ -66,8 +66,8 @@ public class IdentifyWasherRegistry extends AbstractWasherRegistry {
     public static class IdentifyWasher extends AbstractWasher {
 
         @Override
-        protected Object doWash(Object rawValue) {
-            return rawValue;
+        protected WashResult doWash(WashInfo washInfo) {
+            return WashResult.of(washInfo.getValue());
         }
 
         @Override

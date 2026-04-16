@@ -12,6 +12,29 @@ import com.dwarfeng.fdr.stack.handler.Washer;
  */
 public abstract class AbstractWasher implements Washer {
 
+    protected Context context;
+
+    @Override
+    public void init(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public WashResult wash(WashInfo washInfo) throws WasherException {
+        try {
+            return doWash(washInfo);
+        } catch (WasherException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new WasherExecutionException(e);
+        }
+    }
+
+    protected WashResult doWash(WashInfo washInfo) throws Exception {
+        return WashResult.of(washInfo.getValue());
+    }
+
+    @Deprecated
     @Override
     public Object wash(Object rawValue) throws WasherException {
         try {
@@ -23,5 +46,9 @@ public abstract class AbstractWasher implements Washer {
         }
     }
 
-    protected abstract Object doWash(Object rawValue) throws Exception;
+    @SuppressWarnings("RedundantThrows")
+    @Deprecated
+    protected Object doWash(Object rawValue) throws Exception {
+        return rawValue;
+    }
 }

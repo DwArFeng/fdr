@@ -68,17 +68,18 @@ public class ToDoubleWasherRegistry extends AbstractWasherRegistry {
     public static class ToDoubleWasher extends AbstractWasher {
 
         @Override
-        protected Object doWash(Object rawValue) {
+        protected WashResult doWash(WashInfo washInfo) {
+            Object rawValue = washInfo.getValue();
             if (rawValue instanceof Number) {
-                return ((Number) rawValue).doubleValue();
+                return WashResult.of(((Number) rawValue).doubleValue());
             } else if (rawValue instanceof String) {
                 try {
-                    return Double.parseDouble((String) rawValue);
+                    return WashResult.of(Double.parseDouble((String) rawValue));
                 } catch (NumberFormatException e) {
-                    return Constants.DATA_VALUE_ILLEGAL;
+                    return WashResult.of(Constants.DATA_VALUE_ILLEGAL);
                 }
             } else {
-                return Constants.DATA_VALUE_ILLEGAL;
+                return WashResult.of(Constants.DATA_VALUE_ILLEGAL);
             }
         }
 
