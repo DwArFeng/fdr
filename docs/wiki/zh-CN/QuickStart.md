@@ -25,7 +25,7 @@
 ```shell
 cd /usr/local
 tar -zxvf fdr-node-${version}-release.tar.gz
-mv fdr-node-${version} fdr
+mv fdr-node-${version}-release fdr
 ```
 
 ## 数据库初始化
@@ -44,17 +44,34 @@ create table if not exists tbl_point
     name                      varchar(50)  not null,
     normal_keep_enabled       bit          null,
     normal_persist_enabled    bit          null,
+    record_memory_size        int          not null,
     remark                    varchar(100) null,
     triggered_keep_enabled    bit          null,
-    triggered_persist_enabled bit          null
+    triggered_persist_enabled bit          null,
+    reserved_string_alpha     text         null,
+    reserved_string_bravo     text         null,
+    reserved_string_charlie   text         null,
+    reserved_string_delta     text         null,
+    reserved_long_alpha       bigint       null,
+    reserved_long_bravo       bigint       null,
+    reserved_integer_alpha    int          null,
+    reserved_integer_bravo    int          null,
+    reserved_boolean_alpha    bit          null,
+    reserved_boolean_bravo    bit          null,
+    reserved_date_alpha       datetime     null,
+    reserved_date_bravo       datetime     null,
+    created_datamark          varchar(255) null,
+    modified_datamark         varchar(255) null
 );
 
-INSERT INTO fdr2.tbl_point (id, filtered_keep_enabled, filtered_persist_enabled, name, normal_keep_enabled,
-                            normal_persist_enabled, remark, triggered_keep_enabled, triggered_persist_enabled)
-VALUES (1, false, false, '测试点位.1', false, true, '测试点位.1', false, false);
-INSERT INTO fdr2.tbl_point (id, filtered_keep_enabled, filtered_persist_enabled, name, normal_keep_enabled,
-                            normal_persist_enabled, remark, triggered_keep_enabled, triggered_persist_enabled)
-VALUES (2, true, true, '测试点位.2', true, true, '测试点位.2', true, true);
+INSERT INTO fdr.tbl_point (id, filtered_keep_enabled, filtered_persist_enabled, name, normal_keep_enabled,
+                           normal_persist_enabled, record_memory_size, remark, triggered_keep_enabled,
+                           triggered_persist_enabled)
+VALUES (1, false, false, '测试点位.1', false, true, 1000, '测试点位.1', false, false);
+INSERT INTO fdr.tbl_point (id, filtered_keep_enabled, filtered_persist_enabled, name, normal_keep_enabled,
+                           normal_persist_enabled, record_memory_size, remark, triggered_keep_enabled,
+                           triggered_persist_enabled)
+VALUES (2, true, true, '测试点位.2', true, true, 1000, '测试点位.2', true, true);
 ```
 
 ## 最小化配置
@@ -81,7 +98,8 @@ jdbc.password=your-password-here
 dubbo.registry.zookeeper.address=zookeeper://your-host-here:2181
 ```
 
-`conf/fdr/bridge.properties` 文件中配置桥接器信息。
+`conf/fdr/bridge.properties` 文件中配置桥接器信息。发布包中的默认桥接器配置为 `mock`，
+如需按照本文验证 MySQL 历史数据与 Redis 实时数据，需要将相关配置项修改为如下内容。
 
 ```properties
 keep.normal_data.type=redis
@@ -105,6 +123,7 @@ redis.password=your-password-here
 下文列出了启动程序需要改动的可选的配置文件，每个配置文件中仅展示需要改动的配置项。
 
 `opt/opt-bridge.xml` 桥接器可选配置。
+发布包中的桥接器扩展默认以注释形式提供，如需按照本文配置启用对应桥接器，需要取消下列组件扫描配置的注释。
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -131,6 +150,7 @@ redis.password=your-password-here
 ```
 
 `opt/opt-source.xml` 数据源可选配置。
+发布包中的数据源扩展默认以注释形式提供，如需使用 Mock 实时数据源，需要取消下列组件扫描配置的注释。
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
