@@ -8,12 +8,16 @@ import java.util.Date;
 /**
  * Hibernate 桥接被过滤数据。
  *
+ * <p>
+ * 在 3.0.0 版本中，新增了数据发生时间在毫秒内的纳秒偏移。
+ * 数据发生时间由 {@link #happenedDate} 和 {@link #happenedDateNanoOffset} 共同唯一确定。
+ *
  * @author DwArFeng
  * @since 2.0.0
  */
 public class HibernateBridgeFilteredData implements Entity<LongIdKey> {
 
-    private static final long serialVersionUID = 294042820094157311L;
+    private static final long serialVersionUID = 3428134241460333036L;
 
     private LongIdKey key;
     private LongIdKey pointKey;
@@ -22,11 +26,26 @@ public class HibernateBridgeFilteredData implements Entity<LongIdKey> {
     private String message;
     private Date happenedDate;
 
+    /**
+     * @since 3.0.0
+     */
+    private int happenedDateNanoOffset;
+
     public HibernateBridgeFilteredData() {
     }
 
     public HibernateBridgeFilteredData(
-            LongIdKey key, LongIdKey pointKey, LongIdKey filterKey, String value, String message, Date happenedDate
+            Date happenedDate, String message, String value, LongIdKey filterKey, LongIdKey pointKey, LongIdKey key
+    ) {
+        this(key, pointKey, filterKey, value, message, happenedDate, 0);
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public HibernateBridgeFilteredData(
+            LongIdKey key, LongIdKey pointKey, LongIdKey filterKey, String value, String message,
+            Date happenedDate, int happenedDateNanoOffset
     ) {
         this.key = key;
         this.pointKey = pointKey;
@@ -34,6 +53,7 @@ public class HibernateBridgeFilteredData implements Entity<LongIdKey> {
         this.value = value;
         this.message = message;
         this.happenedDate = happenedDate;
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
     }
 
     @Override
@@ -86,6 +106,14 @@ public class HibernateBridgeFilteredData implements Entity<LongIdKey> {
         this.happenedDate = happenedDate;
     }
 
+    public int getHappenedDateNanoOffset() {
+        return happenedDateNanoOffset;
+    }
+
+    public void setHappenedDateNanoOffset(int happenedDateNanoOffset) {
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
+    }
+
     @Override
     public String toString() {
         return "HibernateBridgeFilteredData{" +
@@ -95,6 +123,7 @@ public class HibernateBridgeFilteredData implements Entity<LongIdKey> {
                 ", value='" + value + '\'' +
                 ", message='" + message + '\'' +
                 ", happenedDate=" + happenedDate +
+                ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                 '}';
     }
 }

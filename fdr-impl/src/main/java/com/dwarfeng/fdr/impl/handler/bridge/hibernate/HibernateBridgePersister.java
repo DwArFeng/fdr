@@ -27,8 +27,7 @@ import java.util.concurrent.CompletionException;
  * @author DwArFeng
  * @since 2.0.0
  */
-public abstract class HibernateBridgePersister<D extends Data, T extends Entity<LongIdKey>>
-        extends FullPersister<D> {
+public abstract class HibernateBridgePersister<D extends Data, T extends Entity<LongIdKey>> extends FullPersister<D> {
 
     public static final String LOOKUP_PRESET_DEFAULT = "default";
 

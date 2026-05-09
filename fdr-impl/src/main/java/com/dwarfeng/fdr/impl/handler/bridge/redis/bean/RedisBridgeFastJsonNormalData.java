@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class RedisBridgeFastJsonNormalData implements Bean {
 
-    private static final long serialVersionUID = 9136949940506617201L;
+    private static final long serialVersionUID = 1919001937554258573L;
 
     @JSONField(name = "key", ordinal = 1)
     private FastJsonLongIdKey key;
@@ -25,15 +25,25 @@ public class RedisBridgeFastJsonNormalData implements Bean {
     @JSONField(name = "happened_date", ordinal = 3)
     private Date happenedDate;
 
+    @JSONField(name = "happened_date_nano_offset", ordinal = 4)
+    private int happenedDateNanoOffset;
+
     public RedisBridgeFastJsonNormalData() {
     }
 
     public RedisBridgeFastJsonNormalData(
             FastJsonLongIdKey key, String value, Date happenedDate
     ) {
+        this(key, value, happenedDate, 0);
+    }
+
+    public RedisBridgeFastJsonNormalData(
+            FastJsonLongIdKey key, String value, Date happenedDate, int happenedDateNanoOffset
+    ) {
         this.key = key;
         this.value = value;
         this.happenedDate = happenedDate;
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
     }
 
     public FastJsonLongIdKey getKey() {
@@ -60,12 +70,21 @@ public class RedisBridgeFastJsonNormalData implements Bean {
         this.happenedDate = happenedDate;
     }
 
+    public int getHappenedDateNanoOffset() {
+        return happenedDateNanoOffset;
+    }
+
+    public void setHappenedDateNanoOffset(int happenedDateNanoOffset) {
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
+    }
+
     @Override
     public String toString() {
         return "RedisBridgeFastJsonNormalData{" +
                 "key=" + key +
                 ", value='" + value + '\'' +
                 ", happenedDate=" + happenedDate +
+                ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                 '}';
     }
 }

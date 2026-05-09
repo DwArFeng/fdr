@@ -80,7 +80,10 @@ public class HighPassExistenceMapperRegistry extends AbstractMapperRegistry {
     public static class HighPassExistenceMapper extends AggregateMapper {
 
         @Override
-        protected Object doAggregate(MapParam mapParam, List<Item> items, Date startDate, Date endDate) {
+        protected Object doAggregate(
+                MapParam mapParam, List<Item> items,
+                Date startDate, int startDateNanoOffset, Date endDate, int endDateNanoOffset
+        ) {
             // 获得配置。
             Config config = JSON.parseObject(mapParam.getParam(), Config.class);
 

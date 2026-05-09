@@ -52,6 +52,10 @@ public class FilteredViewCommand extends ViewCommand<FilteredData> {
                     data.getHappenedDate()
             ));
             context.sendMessage(String.format(
+                    "  happenedDateNanoOffset: %d",
+                    data.getHappenedDateNanoOffset()
+            ));
+            context.sendMessage(String.format(
                     "  filterId: %s",
                     data.getFilterKey().getLongId()
             ));
@@ -85,6 +89,10 @@ public class FilteredViewCommand extends ViewCommand<FilteredData> {
         context.sendMessage(String.format(
                 "  happenedDate: %1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS.%1$tL",
                 item.getHappenedDate()
+        ));
+        context.sendMessage(String.format(
+                "  happenedDateNanoOffset: %d",
+                item.getHappenedDateNanoOffset()
         ));
         context.sendMessage("");
     }

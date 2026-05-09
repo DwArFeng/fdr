@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
 import com.dwarfeng.subgrade.sdk.bean.key.JSFixedFastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Objects;
  */
 public class JSFixedFastJsonFilteredData implements Dto {
 
-    private static final long serialVersionUID = -534630551254894014L;
+    private static final long serialVersionUID = -1799171160980420281L;
 
     public static JSFixedFastJsonFilteredData of(FilteredData filteredData) {
         if (Objects.isNull(filteredData)) {
@@ -25,7 +26,24 @@ public class JSFixedFastJsonFilteredData implements Dto {
                     JSFixedFastJsonLongIdKey.of(filteredData.getPointKey()),
                     JSFixedFastJsonLongIdKey.of(filteredData.getFilterKey()),
                     filteredData.getValue(),
-                    filteredData.getMessage()
+                    filteredData.getMessage(),
+                    filteredData.getHappenedDate(),
+                    filteredData.getHappenedDateNanoOffset()
+            );
+        }
+    }
+
+    public static FilteredData toStackBean(JSFixedFastJsonFilteredData jsFixedFastFilteredData) {
+        if (Objects.isNull(jsFixedFastFilteredData)) {
+            return null;
+        } else {
+            return new FilteredData(
+                    JSFixedFastJsonLongIdKey.toStackBean(jsFixedFastFilteredData.getPointKey()),
+                    JSFixedFastJsonLongIdKey.toStackBean(jsFixedFastFilteredData.getFilterKey()),
+                    jsFixedFastFilteredData.getValue(),
+                    jsFixedFastFilteredData.getMessage(),
+                    jsFixedFastFilteredData.getHappenedDate(),
+                    jsFixedFastFilteredData.getHappenedDateNanoOffset()
             );
         }
     }
@@ -42,14 +60,31 @@ public class JSFixedFastJsonFilteredData implements Dto {
     @JSONField(name = "message", ordinal = 4)
     private String message;
 
+    @JSONField(name = "happened_date", ordinal = 5)
+    private Date happenedDate;
+
+    @JSONField(name = "happened_date_nano_offset", ordinal = 6)
+    private int happenedDateNanoOffset;
+
     public JSFixedFastJsonFilteredData() {
     }
 
-    public JSFixedFastJsonFilteredData(JSFixedFastJsonLongIdKey pointKey, JSFixedFastJsonLongIdKey filterKey, Object value, String message) {
+    public JSFixedFastJsonFilteredData(
+            JSFixedFastJsonLongIdKey pointKey, JSFixedFastJsonLongIdKey filterKey, Object value, String message
+    ) {
+        this(pointKey, filterKey, value, message, null, 0);
+    }
+
+    public JSFixedFastJsonFilteredData(
+            JSFixedFastJsonLongIdKey pointKey, JSFixedFastJsonLongIdKey filterKey, Object value, String message,
+            Date happenedDate, int happenedDateNanoOffset
+    ) {
         this.pointKey = pointKey;
         this.filterKey = filterKey;
         this.value = value;
         this.message = message;
+        this.happenedDate = happenedDate;
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
     }
 
     public JSFixedFastJsonLongIdKey getPointKey() {
@@ -84,6 +119,22 @@ public class JSFixedFastJsonFilteredData implements Dto {
         this.message = message;
     }
 
+    public Date getHappenedDate() {
+        return happenedDate;
+    }
+
+    public void setHappenedDate(Date happenedDate) {
+        this.happenedDate = happenedDate;
+    }
+
+    public int getHappenedDateNanoOffset() {
+        return happenedDateNanoOffset;
+    }
+
+    public void setHappenedDateNanoOffset(int happenedDateNanoOffset) {
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
+    }
+
     @Override
     public String toString() {
         return "JSFixedFastJsonFilteredData{" +
@@ -91,6 +142,8 @@ public class JSFixedFastJsonFilteredData implements Dto {
                 ", filterKey=" + filterKey +
                 ", value=" + value +
                 ", message='" + message + '\'' +
+                ", happenedDate=" + happenedDate +
+                ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                 '}';
     }
 }

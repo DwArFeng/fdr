@@ -1,7 +1,9 @@
 package com.dwarfeng.fdr.impl.handler.mapper;
 
+import com.dwarfeng.dutil.basic.time.TimeUtil;
 import com.dwarfeng.fdr.sdk.handler.mapper.AbstractMapperRegistry;
 import com.dwarfeng.fdr.sdk.handler.mapper.OneToOneMapper;
+import com.dwarfeng.fdr.sdk.util.MapperUtil;
 import com.dwarfeng.fdr.stack.exception.MapperException;
 import com.dwarfeng.fdr.stack.exception.MapperMakeException;
 import com.dwarfeng.fdr.stack.handler.Mapper;
@@ -10,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,41 +73,40 @@ public class AlignMapperRegistry extends AbstractMapperRegistry {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class AlignMapper extends OneToOneMapper {
 
-        @SuppressWarnings("ExtractMethodRecommender")
         @Override
         protected Sequence doOneToOneMap(MapParam mapParam, Sequence sequence) {
             // 获取参数，并转换为比率浮点数。
             double ratio = Float.parseFloat(mapParam.getParam());
 
-            // 获取序列的起始时间与结束时间。
-            long startTime = sequence.getStartDate().getTime();
-            long endTime = sequence.getEndDate().getTime();
+            long startNanos = MapperUtil.toEpochNanos(sequence.getStartDate(), sequence.getStartDateNanoOffset());
+            long endNanos = MapperUtil.toEpochNanos(sequence.getEndDate(), sequence.getEndDateNanoOffset());
 
-            // 计算对齐时间。
-            // 对齐时间 = 起始时间 + (结束时间 - 起始时间) * 比率浮点数。
-            // 按照出现概率对特殊值 1, 0, 0.5 进行特殊处理。
-            long alignTime;
-            Date alignDate;
+            long alignNanos;
             if (ratio == 1) {
-                alignTime = endTime;
+                alignNanos = endNanos;
             } else if (ratio == 0) {
-                alignTime = startTime;
+                alignNanos = startNanos;
             } else if (ratio == 0.5) {
-                alignTime = (startTime + endTime) / 2;
+                alignNanos = (startNanos + endNanos) / 2;
             } else {
-                alignTime = (long) (startTime + (endTime - startTime) * ratio);
+                alignNanos = (long) (startNanos + (endNanos - startNanos) * ratio);
             }
-            alignDate = new Date(alignTime);
+            Instant alignInstant = MapperUtil.instantFromEpochNanos(alignNanos);
+            Date alignDate = TimeUtil.toDate(alignInstant);
+            int alignDateNanoOffset = TimeUtil.toNanoOffset(alignInstant);
 
             // 定义数据条目列表。
             List<Item> items;
             // 对序列中的每个数据条目进行映射，修改其发生时间。
             items = sequence.getItems().stream().map(
-                    item -> new Item(item.getPointKey(), item.getValue(), alignDate)
+                    item -> new Item(item.getPointKey(), item.getValue(), alignDate, alignDateNanoOffset)
             ).collect(Collectors.toList());
 
             // 返回新的序列。
-            return new Sequence(sequence.getPointKey(), items, sequence.getStartDate(), sequence.getEndDate());
+            return new Sequence(
+                    sequence.getPointKey(), items, sequence.getStartDate(), sequence.getStartDateNanoOffset(),
+                    sequence.getEndDate(), sequence.getEndDateNanoOffset()
+            );
         }
 
         @Override

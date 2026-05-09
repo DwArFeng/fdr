@@ -1,35 +1,18 @@
 package com.dwarfeng.fdr.impl.handler.bridge.influxdb.util;
 
-import java.time.Instant;
 import java.util.Date;
 
 /**
- * 日期工具类。
+ * InfluxDB 桥接查询区间工具。
+ *
+ * <p>
+ * 仅保留基于毫秒的时间窗偏移，与 {@code LookupInfo} / {@code NativeQueryInfo} 的边界语义一致。
+ * 数据点时间的 Instant 与 Date + 纳秒偏移互转请使用 dutil {@code TimeUtil} 与 fdr-sdk 的 {@code *DataUtil}。
  *
  * @author DwArFeng
  * @since 2.0.0
  */
 public final class DateUtil {
-
-    /**
-     * 将指定的日期转换为 Instant。
-     *
-     * @param date 指定的日期。
-     * @return 指定的日期对应的 Instant。
-     */
-    public static Instant date2Instant(Date date) {
-        return Instant.ofEpochMilli(date.getTime());
-    }
-
-    /**
-     * 将指定的 Instant 转换为 Date。
-     *
-     * @param instant 指定的 Instant。
-     * @return 指定的 Instant 对应的 Date。
-     */
-    public static Date instant2Date(Instant instant) {
-        return new Date(instant.toEpochMilli());
-    }
 
     /**
      * 将指定的日期偏移指定的毫秒数。

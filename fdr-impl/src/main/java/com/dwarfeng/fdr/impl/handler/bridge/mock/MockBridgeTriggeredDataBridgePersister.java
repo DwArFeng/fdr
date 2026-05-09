@@ -36,10 +36,10 @@ public class MockBridgeTriggeredDataBridgePersister extends MockBridgePersister<
     }
 
     @Override
-    protected TriggeredData generateData(LongIdKey pointKey, Object value, Date date) {
+    protected TriggeredData generateData(LongIdKey pointKey, Object value, Date date, int dateNanoOffset) {
         LongIdKey triggerKey = randomGenerator.nextLongIdKey();
         String message = randomGenerator.nextString();
-        return new TriggeredData(pointKey, triggerKey, value, message, date);
+        return new TriggeredData(pointKey, triggerKey, value, message, date, dateNanoOffset);
     }
 
     @Override

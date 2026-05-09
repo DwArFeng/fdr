@@ -2,8 +2,10 @@ package com.dwarfeng.fdr.impl.handler.mapper;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.dutil.basic.time.TimeUtil;
 import com.dwarfeng.fdr.sdk.handler.mapper.AbstractMapperRegistry;
 import com.dwarfeng.fdr.sdk.handler.mapper.OneToManyMapper;
+import com.dwarfeng.fdr.sdk.util.MapperUtil;
 import com.dwarfeng.fdr.stack.exception.MapperException;
 import com.dwarfeng.fdr.stack.exception.MapperMakeException;
 import com.dwarfeng.fdr.stack.handler.Mapper;
@@ -14,6 +16,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -104,15 +107,23 @@ public class WindowMapperRegistry extends AbstractMapperRegistry {
                 return Collections.emptyList();
             }
 
+            long durationNanos = Math.multiplyExact(duration, 1_000_000L);
+            long anchorNanos = Math.multiplyExact(anchorTimestamp, 1_000_000L);
+
             // 根据 duration 和 anchorTimestamp 计算出第一个窗口的开始时间。
             // 第一个窗口的开始时间小于等于第一个 item 的发生时间，且与 anchorTimestamp 的距离是 duration 的整数倍。
-            long firstHappenedTimestamp = items.get(0).getHappenedDate().getTime();
-            long firstTimestamp = firstHappenedTimestamp - Math.abs(firstHappenedTimestamp - anchorTimestamp) % duration;
+            Item firstHappenedItem = items.get(0);
+            long firstHappenedNanos = MapperUtil.toEpochNanos(
+                    firstHappenedItem.getHappenedDate(), firstHappenedItem.getHappenedDateNanoOffset()
+            );
+            long firstTimestampNanos = firstHappenedNanos - Math.abs(firstHappenedNanos - anchorNanos) % durationNanos;
 
             // 根据 duration 和 anchorTimestamp 计算出最后一个窗口的开始时间。
-            // 最后一个窗口的开始时间小于等于最后一个 item 的发生时间，且与 anchorTimestamp 的距离是 duration 的整数倍。
-            long lastHappenedTimestamp = items.get(items.size() - 1).getHappenedDate().getTime();
-            long lastTimestamp = lastHappenedTimestamp - Math.abs(lastHappenedTimestamp - anchorTimestamp) % duration;
+            Item lastHappenedItem = items.get(items.size() - 1);
+            long lastHappenedNanos = MapperUtil.toEpochNanos(
+                    lastHappenedItem.getHappenedDate(), lastHappenedItem.getHappenedDateNanoOffset()
+            );
+            long lastTimestampNanos = lastHappenedNanos - Math.abs(lastHappenedNanos - anchorNanos) % durationNanos;
 
             // 定义一个 int 变量，用于记录当前循环到的数据条目的索引。
             int itemIndex = 0;
@@ -121,11 +132,11 @@ public class WindowMapperRegistry extends AbstractMapperRegistry {
             List<Sequence> result = new ArrayList<>();
 
             // 开始循环开窗。
-            long timestamp = firstTimestamp;
-            while (timestamp <= lastTimestamp) {
+            long timestampNanos = firstTimestampNanos;
+            while (timestampNanos <= lastTimestampNanos) {
                 // 定义当前窗口的开始时间和结束时间。
-                long start = timestamp;
-                long end = timestamp + duration;
+                long startNanos = timestampNanos;
+                long endNanos = timestampNanos + durationNanos;
 
                 // 定义当前窗口的数据条目。
                 List<Item> subItems = new ArrayList<>();
@@ -138,7 +149,15 @@ public class WindowMapperRegistry extends AbstractMapperRegistry {
                 // 从 itemIndex 开始遍历数据条目，直到遍历到的数据条目的 happenedDate 超过了当前窗口的结束时间。
                 // 将遍历到的数据条目添加到当前窗口的数据条目中。
                 // 最后更新 itemIndex。
-                while (itemIndex < items.size() && items.get(itemIndex).getHappenedDate().getTime() < end) {
+                Instant endInstant = MapperUtil.instantFromEpochNanos(endNanos);
+                Date endDate = TimeUtil.toDate(endInstant);
+                int endDateNanoOffset = TimeUtil.toNanoOffset(endInstant);
+
+                while (itemIndex < items.size() && TimeUtil.compare(
+                        items.get(itemIndex).getHappenedDate(),
+                        items.get(itemIndex).getHappenedDateNanoOffset(),
+                        endDate, endDateNanoOffset
+                ) < 0) {
                     subItems.add(items.get(itemIndex));
                     itemIndex++;
                 }
@@ -149,10 +168,15 @@ public class WindowMapperRegistry extends AbstractMapperRegistry {
                 }
 
                 // 将当前窗口的数据条目添加到结果中。
-                result.add(new Sequence(sequence.getPointKey(), subItems, new Date(start), new Date(end)));
+                Instant startInstant = MapperUtil.instantFromEpochNanos(startNanos);
+                result.add(new Sequence(
+                        sequence.getPointKey(), subItems,
+                        TimeUtil.toDate(startInstant), TimeUtil.toNanoOffset(startInstant),
+                        TimeUtil.toDate(endInstant), TimeUtil.toNanoOffset(endInstant)
+                ));
 
                 // 将 timestamp 增加 duration，进入下一个窗口。
-                timestamp += duration;
+                timestampNanos += durationNanos;
             }
 
             // 如果 removeEdges 为 true，则需要去除第一个和最后一个窗口，当结果的数量小于等于 2 时，直接返回空的序列。

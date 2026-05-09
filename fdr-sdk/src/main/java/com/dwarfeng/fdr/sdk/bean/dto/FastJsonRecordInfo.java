@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 public class FastJsonRecordInfo implements Dto {
 
-    private static final long serialVersionUID = -6334801608503819938L;
+    private static final long serialVersionUID = -1190893035020373731L;
 
     public static FastJsonRecordInfo of(RecordInfo recordInfo) {
         if (Objects.isNull(recordInfo)) {
@@ -25,7 +25,21 @@ public class FastJsonRecordInfo implements Dto {
             return new FastJsonRecordInfo(
                     FastJsonLongIdKey.of(recordInfo.getPointKey()),
                     recordInfo.getValue(),
-                    recordInfo.getHappenedDate()
+                    recordInfo.getHappenedDate(),
+                    recordInfo.getHappenedDateNanoOffset()
+            );
+        }
+    }
+
+    public static RecordInfo toStackBean(FastJsonRecordInfo fastRecordInfo) {
+        if (Objects.isNull(fastRecordInfo)) {
+            return null;
+        } else {
+            return new RecordInfo(
+                    FastJsonLongIdKey.toStackBean(fastRecordInfo.getPointKey()),
+                    fastRecordInfo.getValue(),
+                    fastRecordInfo.getHappenedDate(),
+                    fastRecordInfo.getHappenedDateNanoOffset()
             );
         }
     }
@@ -39,13 +53,21 @@ public class FastJsonRecordInfo implements Dto {
     @JSONField(name = "happened_date", ordinal = 3)
     private Date happenedDate;
 
+    @JSONField(name = "happened_date_nano_offset", ordinal = 4)
+    private int happenedDateNanoOffset;
+
     public FastJsonRecordInfo() {
     }
 
     public FastJsonRecordInfo(FastJsonLongIdKey pointKey, Object value, Date happenedDate) {
+        this(pointKey, value, happenedDate, 0);
+    }
+
+    public FastJsonRecordInfo(FastJsonLongIdKey pointKey, Object value, Date happenedDate, int happenedDateNanoOffset) {
         this.pointKey = pointKey;
         this.value = value;
         this.happenedDate = happenedDate;
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
     }
 
     public FastJsonLongIdKey getPointKey() {
@@ -72,12 +94,21 @@ public class FastJsonRecordInfo implements Dto {
         this.happenedDate = happenedDate;
     }
 
+    public int getHappenedDateNanoOffset() {
+        return happenedDateNanoOffset;
+    }
+
+    public void setHappenedDateNanoOffset(int happenedDateNanoOffset) {
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
+    }
+
     @Override
     public String toString() {
         return "FastJsonRecordInfo{" +
                 "pointKey=" + pointKey +
                 ", value=" + value +
                 ", happenedDate=" + happenedDate +
+                ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                 '}';
     }
 }

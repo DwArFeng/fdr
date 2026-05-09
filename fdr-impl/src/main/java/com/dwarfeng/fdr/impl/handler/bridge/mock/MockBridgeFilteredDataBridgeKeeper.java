@@ -36,10 +36,10 @@ public class MockBridgeFilteredDataBridgeKeeper extends MockBridgeKeeper<Filtere
     }
 
     @Override
-    protected FilteredData generateData(LongIdKey pointKey, Object value, Date date) {
+    protected FilteredData generateData(LongIdKey pointKey, Object value, Date date, int dateNanoOffset) {
         LongIdKey filterKey = randomGenerator.nextLongIdKey();
         String message = randomGenerator.nextString();
-        return new FilteredData(pointKey, filterKey, value, message, date);
+        return new FilteredData(pointKey, filterKey, value, message, date, dateNanoOffset);
     }
 
     @Override

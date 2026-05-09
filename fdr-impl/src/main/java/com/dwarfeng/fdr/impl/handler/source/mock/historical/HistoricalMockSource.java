@@ -36,6 +36,8 @@ public class HistoricalMockSource extends AbstractSource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HistoricalMockSource.class);
 
+    private static final int NANOSECONDS_PER_MILLISECOND = 1000000;
+
     private final HistoricalMockSourceRandomGenerator randomGenerator;
     private final ThreadPoolTaskScheduler scheduler;
 
@@ -43,15 +45,23 @@ public class HistoricalMockSource extends AbstractSource {
     private int dataSizePerPointPerSec;
     @Value("${source.mock.historical.start_date}")
     private String startDate;
+    @Value("${source.mock.historical.start_date_nano_offset}")
+    private int startDateNanoOffset;
     @Value("${source.mock.historical.end_date}")
     private String endDate;
+    @Value("${source.mock.historical.end_date_nano_offset}")
+    private int endDateNanoOffset;
     @Value("${source.mock.historical.happened_date_increment}")
     private long happenedDateIncrement;
+    @Value("${source.mock.historical.happened_date_nano_offset_increment}")
+    private int happenedDateNanoOffsetIncrement;
     @Value("${source.mock.historical.data_config}")
     private String dataConfig;
 
     private long anchorTimestamp = 0;
+    private int anchorTimestampNanoOffset = 0;
     private long endTimestamp = 0;
+    private int endTimestampNanoOffset = 0;
     private List<HistoricalMockSourceDataConfigItem> dataConfigItems = null;
     private Map<String, Method> methodMap = null;
     private Future<?> taskFuture = null;
@@ -68,7 +78,9 @@ public class HistoricalMockSource extends AbstractSource {
     public void init() {
         // 解析锚点时间戳、结束时间戳。
         anchorTimestamp = TimeUtil.dateString2Timestamp(startDate);
+        anchorTimestampNanoOffset = startDateNanoOffset;
         endTimestamp = TimeUtil.dateString2Timestamp(endDate);
+        endTimestampNanoOffset = endDateNanoOffset;
 
         // 将 dataConfig 转换为 HistoricalMockSourceDataConfigItem 的列表。
         dataConfigItems = JSON.parseArray(dataConfig, HistoricalMockSourceDataConfigItem.class);
@@ -117,7 +129,7 @@ public class HistoricalMockSource extends AbstractSource {
 
         private void runTask() throws Exception {
             // 如果锚点时间戳大于等于结束时间戳，则停止生成数据。
-            if (anchorTimestamp >= endTimestamp) {
+            if (isAnchorTimestampExceedEndTimestamp()) {
                 LOGGER.debug("锚点时间戳大于等于结束时间戳，停止生成数据。");
                 return;
             }
@@ -139,19 +151,30 @@ public class HistoricalMockSource extends AbstractSource {
                     context.record(new RecordInfo(
                             pointKey,
                             method.invoke(randomGenerator),
-                            new Date(anchorTimestamp)
+                            new Date(anchorTimestamp),
+                            anchorTimestampNanoOffset
                     ));
                 }
 
                 // 锚点时间戳增加 happenedDateIncrement。
                 anchorTimestamp += happenedDateIncrement;
+                anchorTimestampNanoOffset += happenedDateNanoOffsetIncrement;
+                if (anchorTimestampNanoOffset >= NANOSECONDS_PER_MILLISECOND) {
+                    anchorTimestamp += anchorTimestampNanoOffset / NANOSECONDS_PER_MILLISECOND;
+                    anchorTimestampNanoOffset = anchorTimestampNanoOffset % NANOSECONDS_PER_MILLISECOND;
+                }
 
                 // 如果锚点时间戳大于等于结束时间戳，则退出循环。
-                if (anchorTimestamp >= endTimestamp) {
+                if (isAnchorTimestampExceedEndTimestamp()) {
                     LOGGER.info("所有数据点已经生成完成，停止生成数据。");
                     break;
                 }
             }
+        }
+
+        private boolean isAnchorTimestampExceedEndTimestamp() {
+            return anchorTimestamp > endTimestamp ||
+                    (anchorTimestamp == endTimestamp && anchorTimestampNanoOffset >= endTimestampNanoOffset);
         }
     }
 
@@ -162,11 +185,16 @@ public class HistoricalMockSource extends AbstractSource {
                 ", scheduler=" + scheduler +
                 ", dataSizePerPointPerSec=" + dataSizePerPointPerSec +
                 ", startDate='" + startDate + '\'' +
+                ", startDateNanoOffset=" + startDateNanoOffset +
                 ", endDate='" + endDate + '\'' +
+                ", endDateNanoOffset=" + endDateNanoOffset +
                 ", happenedDateIncrement=" + happenedDateIncrement +
+                ", happenedDateNanoOffsetIncrement=" + happenedDateNanoOffsetIncrement +
                 ", dataConfig='" + dataConfig + '\'' +
                 ", anchorTimestamp=" + anchorTimestamp +
+                ", anchorTimestampNanoOffset=" + anchorTimestampNanoOffset +
                 ", endTimestamp=" + endTimestamp +
+                ", endTimestampNanoOffset=" + endTimestampNanoOffset +
                 ", dataConfigItems=" + dataConfigItems +
                 ", methodMap=" + methodMap +
                 ", taskFuture=" + taskFuture +

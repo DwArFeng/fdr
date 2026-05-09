@@ -45,6 +45,11 @@ public class RedisBridgeFilteredDataKeeper extends RedisBridgeKeeper<FilteredDat
     }
 
     @Override
+    protected int getHappenedDateNanoOffset(@Nonnull RedisBridgeFilteredData entity) {
+        return entity.getHappenedDateNanoOffset();
+    }
+
+    @Override
     protected RedisBridgeFilteredData transformData(@Nullable FilteredData data) throws Exception {
         if (Objects.isNull(data)) {
             return null;
@@ -55,7 +60,8 @@ public class RedisBridgeFilteredDataKeeper extends RedisBridgeKeeper<FilteredDat
                 data.getFilterKey(),
                 flatValue,
                 data.getMessage(),
-                data.getHappenedDate()
+                data.getHappenedDate(),
+                data.getHappenedDateNanoOffset()
         );
     }
 
@@ -70,7 +76,8 @@ public class RedisBridgeFilteredDataKeeper extends RedisBridgeKeeper<FilteredDat
                 data.getFilterKey(),
                 value,
                 data.getMessage(),
-                data.getHappenedDate()
+                data.getHappenedDate(),
+                data.getHappenedDateNanoOffset()
         );
     }
 

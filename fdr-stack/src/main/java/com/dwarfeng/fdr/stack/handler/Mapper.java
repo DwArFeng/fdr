@@ -86,6 +86,11 @@ public interface Mapper {
      *         可以使用 sdk 模块中的数据工具类获取比较器，对数据进行排序。
      *     </li>
      * </ul>
+     *
+     * <p>
+     * 在 3.0.0 版本中，新增了数据发生时间在毫秒内的纳秒偏移。
+     * 数据开始时间由 {@link #startDate} 和 {@link #startDateNanoOffset} 共同唯一确定；
+     * 数据结束时间由 {@link #endDate} 和 {@link #endDateNanoOffset} 共同唯一确定。
      */
     final class Sequence {
 
@@ -98,16 +103,42 @@ public interface Mapper {
         @Nonnull
         private final Date startDate;
 
+        /**
+         * 序列参照开始时间在对应毫秒内的纳秒偏移。
+         *
+         * @since 3.0.0
+         */
+        private final int startDateNanoOffset;
+
         @Nonnull
         private final Date endDate;
+
+        /**
+         * 序列参照结束时间在对应毫秒内的纳秒偏移。
+         *
+         * @since 3.0.0
+         */
+        private final int endDateNanoOffset;
 
         public Sequence(
                 @Nonnull LongIdKey pointKey, @Nonnull List<Item> items, @Nonnull Date startDate, @Nonnull Date endDate
         ) {
+            this(pointKey, items, startDate, 0, endDate, 0);
+        }
+
+        /**
+         * @since 3.0.0
+         */
+        public Sequence(
+                @Nonnull LongIdKey pointKey, @Nonnull List<Item> items, @Nonnull Date startDate,
+                int startDateNanoOffset, @Nonnull Date endDate, int endDateNanoOffset
+        ) {
             this.pointKey = pointKey;
             this.items = items;
             this.startDate = startDate;
+            this.startDateNanoOffset = startDateNanoOffset;
             this.endDate = endDate;
+            this.endDateNanoOffset = endDateNanoOffset;
         }
 
         @Nonnull
@@ -125,9 +156,23 @@ public interface Mapper {
             return startDate;
         }
 
+        /**
+         * @since 3.0.0
+         */
+        public int getStartDateNanoOffset() {
+            return startDateNanoOffset;
+        }
+
         @Nonnull
         public Date getEndDate() {
             return endDate;
+        }
+
+        /**
+         * @since 3.0.0
+         */
+        public int getEndDateNanoOffset() {
+            return endDateNanoOffset;
         }
 
         @Override
@@ -136,7 +181,9 @@ public interface Mapper {
                     "pointKey=" + pointKey +
                     ", items=" + items +
                     ", startDate=" + startDate +
+                    ", startDateNanoOffset=" + startDateNanoOffset +
                     ", endDate=" + endDate +
+                    ", endDateNanoOffset=" + endDateNanoOffset +
                     '}';
         }
     }
@@ -146,6 +193,10 @@ public interface Mapper {
      *
      * <p>
      * 条目是一个数据，它包含了数据点的键、数据值、发生时间。
+     *
+     * <p>
+     * 在 3.0.0 版本中，新增了数据发生时间在毫秒内的纳秒偏移。
+     * 数据发生时间由 {@link #happenedDate} 和 {@link #happenedDateNanoOffset} 共同唯一确定。
      *
      * @author DwArFeng
      * @since 2.0.0
@@ -161,10 +212,24 @@ public interface Mapper {
         @Nonnull
         private final Date happenedDate;
 
+        /**
+         * @since 3.0.0
+         */
+        private final int happenedDateNanoOffset;
+
         public Item(@Nonnull LongIdKey pointKey, @Nullable Object value, @Nonnull Date happenedDate) {
+            this(pointKey, value, happenedDate, 0);
+        }
+
+        /**
+         * @since 3.0.0
+         */
+        public Item(@Nonnull LongIdKey pointKey, @Nullable Object value, @Nonnull Date happenedDate,
+                    int happenedDateNanoOffset) {
             this.pointKey = pointKey;
             this.value = value;
             this.happenedDate = happenedDate;
+            this.happenedDateNanoOffset = happenedDateNanoOffset;
         }
 
         @Nonnull
@@ -186,11 +251,17 @@ public interface Mapper {
         }
 
         @Override
+        public int getHappenedDateNanoOffset() {
+            return happenedDateNanoOffset;
+        }
+
+        @Override
         public String toString() {
             return "Item{" +
                     "pointKey=" + pointKey +
                     ", value=" + value +
                     ", happenedDate=" + happenedDate +
+                    ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                     '}';
         }
     }

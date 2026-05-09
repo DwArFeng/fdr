@@ -1,6 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.bridge.redis;
 
 import com.dwarfeng.dct.handler.ValueCodingHandler;
+import com.dwarfeng.dutil.basic.time.TimeUtil;
 import com.dwarfeng.fdr.sdk.handler.bridge.FullKeeper;
 import com.dwarfeng.fdr.stack.struct.Data;
 import com.dwarfeng.subgrade.stack.bean.entity.Entity;
@@ -42,7 +43,10 @@ public abstract class RedisBridgeKeeper<D extends Data, E extends Entity<LongIdK
     protected void doUpdate(D data) throws Exception {
         if (!allowEarlierDataOverride) {
             E oldEntity = service.getIfExists(data.getPointKey());
-            if (Objects.nonNull(oldEntity) && getHappenedDate(oldEntity).after(data.getHappenedDate())) {
+            if (Objects.nonNull(oldEntity) && TimeUtil.compare(
+                    getHappenedDate(oldEntity), getHappenedDateNanoOffset(oldEntity),
+                    data.getHappenedDate(), data.getHappenedDateNanoOffset()
+            ) > 0) {
                 logEarlierDataWillNotUpdate(data, oldEntity);
                 return;
             }
@@ -60,7 +64,10 @@ public abstract class RedisBridgeKeeper<D extends Data, E extends Entity<LongIdK
         for (D data : datas) {
             if (!allowEarlierDataOverride) {
                 E oldEntity = oldEntityMap.get(data.getPointKey());
-                if (Objects.nonNull(oldEntity) && getHappenedDate(oldEntity).after(data.getHappenedDate())) {
+                if (Objects.nonNull(oldEntity) && TimeUtil.compare(
+                        getHappenedDate(oldEntity), getHappenedDateNanoOffset(oldEntity),
+                        data.getHappenedDate(), data.getHappenedDateNanoOffset()
+                ) > 0) {
                     logEarlierDataWillNotUpdate(data, oldEntity);
                     continue;
                 }
@@ -97,6 +104,11 @@ public abstract class RedisBridgeKeeper<D extends Data, E extends Entity<LongIdK
     protected abstract Logger getLogger();
 
     protected abstract Date getHappenedDate(@Nonnull E entity);
+
+    /**
+     * @since 3.0.0
+     */
+    protected abstract int getHappenedDateNanoOffset(@Nonnull E entity);
 
     protected abstract E transformData(@Nullable D data) throws Exception;
 

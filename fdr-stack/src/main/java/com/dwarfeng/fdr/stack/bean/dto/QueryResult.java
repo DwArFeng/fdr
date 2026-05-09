@@ -60,26 +60,54 @@ public class QueryResult implements Dto {
      * <p>
      * 有关查看的详细信息，请参阅术语。
      *
+     * <p>
+     * 在 3.0.0 版本中，新增了数据发生时间在毫秒内的纳秒偏移。
+     * 数据开始时间由 {@link #startDate} 和 {@link #startDateNanoOffset} 共同唯一确定；
+     * 数据结束时间由 {@link #endDate} 和 {@link #endDateNanoOffset} 共同唯一确定。
+     *
      * @author DwArFeng
      * @since 2.0.0
      */
     public static class Sequence implements Dto {
 
-        private static final long serialVersionUID = -70921132759022033L;
+        private static final long serialVersionUID = -7781593252494965756L;
 
         private LongIdKey pointKey;
         private List<Item> items;
         private Date startDate;
+
+        /**
+         * @since 3.0.0
+         */
+        private int startDateNanoOffset;
+
         private Date endDate;
+
+        /**
+         * @since 3.0.0
+         */
+        private int endDateNanoOffset;
 
         public Sequence() {
         }
 
         public Sequence(LongIdKey pointKey, List<Item> items, Date startDate, Date endDate) {
+            this(pointKey, items, startDate, 0, endDate, 0);
+        }
+
+        /**
+         * @since 3.0.0
+         */
+        public Sequence(
+                LongIdKey pointKey, List<Item> items, Date startDate, int startDateNanoOffset,
+                Date endDate, int endDateNanoOffset
+        ) {
             this.pointKey = pointKey;
             this.items = items;
             this.startDate = startDate;
+            this.startDateNanoOffset = startDateNanoOffset;
             this.endDate = endDate;
+            this.endDateNanoOffset = endDateNanoOffset;
         }
 
         public LongIdKey getPointKey() {
@@ -106,6 +134,20 @@ public class QueryResult implements Dto {
             this.startDate = startDate;
         }
 
+        /**
+         * @since 3.0.0
+         */
+        public int getStartDateNanoOffset() {
+            return startDateNanoOffset;
+        }
+
+        /**
+         * @since 3.0.0
+         */
+        public void setStartDateNanoOffset(int startDateNanoOffset) {
+            this.startDateNanoOffset = startDateNanoOffset;
+        }
+
         public Date getEndDate() {
             return endDate;
         }
@@ -114,13 +156,29 @@ public class QueryResult implements Dto {
             this.endDate = endDate;
         }
 
+        /**
+         * @since 3.0.0
+         */
+        public int getEndDateNanoOffset() {
+            return endDateNanoOffset;
+        }
+
+        /**
+         * @since 3.0.0
+         */
+        public void setEndDateNanoOffset(int endDateNanoOffset) {
+            this.endDateNanoOffset = endDateNanoOffset;
+        }
+
         @Override
         public String toString() {
             return "Sequence{" +
                     "pointKey=" + pointKey +
                     ", items=" + items +
                     ", startDate=" + startDate +
+                    ", startDateNanoOffset=" + startDateNanoOffset +
                     ", endDate=" + endDate +
+                    ", endDateNanoOffset=" + endDateNanoOffset +
                     '}';
         }
     }
@@ -137,24 +195,41 @@ public class QueryResult implements Dto {
      * <p>
      * 有关查看的详细信息，请参阅术语。
      *
+     * <p>
+     * 在 3.0.0 版本中，新增了数据发生时间在毫秒内的纳秒偏移。
+     * 数据发生时间由 {@link #happenedDate} 和 {@link #happenedDateNanoOffset} 共同唯一确定。
+     *
      * @author DwArFeng
      * @since 2.0.0
      */
     public static class Item implements Data, Dto {
 
-        private static final long serialVersionUID = 4131477003995249721L;
+        private static final long serialVersionUID = 3502301477786357235L;
 
         private LongIdKey pointKey;
         private Object value;
         private Date happenedDate;
 
+        /**
+         * @since 3.0.0
+         */
+        private int happenedDateNanoOffset;
+
         public Item() {
         }
 
         public Item(LongIdKey pointKey, Object value, Date happenedDate) {
+            this(pointKey, value, happenedDate, 0);
+        }
+
+        /**
+         * @since 3.0.0
+         */
+        public Item(LongIdKey pointKey, Object value, Date happenedDate, int happenedDateNanoOffset) {
             this.pointKey = pointKey;
             this.value = value;
             this.happenedDate = happenedDate;
+            this.happenedDateNanoOffset = happenedDateNanoOffset;
         }
 
         @Nonnull
@@ -187,11 +262,21 @@ public class QueryResult implements Dto {
         }
 
         @Override
+        public int getHappenedDateNanoOffset() {
+            return happenedDateNanoOffset;
+        }
+
+        public void setHappenedDateNanoOffset(int happenedDateNanoOffset) {
+            this.happenedDateNanoOffset = happenedDateNanoOffset;
+        }
+
+        @Override
         public String toString() {
             return "Item{" +
                     "pointKey=" + pointKey +
                     ", value=" + value +
                     ", happenedDate=" + happenedDate +
+                    ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                     '}';
         }
     }

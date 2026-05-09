@@ -250,7 +250,10 @@ public abstract class AbstractQueryHandler implements QueryHandler {
 
                 // 将查询结果转换为 Mapper.Item，添加到返回值中。
                 for (Data data : anchorLookupResult.getDatas()) {
-                    items.add(new Mapper.Item(data.getPointKey(), data.getValue(), data.getHappenedDate()));
+                    items.add(new Mapper.Item(
+                            data.getPointKey(), data.getValue(),
+                            data.getHappenedDate(), data.getHappenedDateNanoOffset()
+                    ));
                 }
 
                 // 如果 anchorLookupResult.isHasMore() 为 true，则更新查询数据。
@@ -273,7 +276,7 @@ public abstract class AbstractQueryHandler implements QueryHandler {
         } while (notLastPeriodFlag);
 
         // 将查询结果添加到返回值中。
-        return new Mapper.Sequence(pointKey, items, startDate, endDate);
+        return new Mapper.Sequence(pointKey, items, startDate, 0, endDate, 0);
     }
 
     private List<Mapper.Sequence> mapSingleSequence(QueryInfo.MapInfo mapInfo, List<Mapper.Sequence> sequences)
@@ -298,10 +301,13 @@ public abstract class AbstractQueryHandler implements QueryHandler {
         for (Mapper.Sequence sequence : sequences) {
             List<QueryResult.Item> items = new ArrayList<>();
             for (Mapper.Item item : sequence.getItems()) {
-                items.add(new QueryResult.Item(item.getPointKey(), item.getValue(), item.getHappenedDate()));
+                items.add(new QueryResult.Item(
+                        item.getPointKey(), item.getValue(), item.getHappenedDate(), item.getHappenedDateNanoOffset()
+                ));
             }
             resultSequences.add(new QueryResult.Sequence(
-                    sequence.getPointKey(), items, sequence.getStartDate(), sequence.getEndDate()
+                    sequence.getPointKey(), items, sequence.getStartDate(), sequence.getStartDateNanoOffset(),
+                    sequence.getEndDate(), sequence.getEndDateNanoOffset()
             ));
         }
         return new QueryResult(resultSequences);

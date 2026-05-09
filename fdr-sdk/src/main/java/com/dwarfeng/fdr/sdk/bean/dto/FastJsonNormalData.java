@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 public class FastJsonNormalData implements Dto {
 
-    private static final long serialVersionUID = 4268721908843113764L;
+    private static final long serialVersionUID = 1909893061645188803L;
 
     public static FastJsonNormalData of(NormalData normalData) {
         if (Objects.isNull(normalData)) {
@@ -25,7 +25,8 @@ public class FastJsonNormalData implements Dto {
             return new FastJsonNormalData(
                     FastJsonLongIdKey.of(normalData.getPointKey()),
                     normalData.getValue(),
-                    normalData.getHappenedDate()
+                    normalData.getHappenedDate(),
+                    normalData.getHappenedDateNanoOffset()
             );
         }
     }
@@ -37,7 +38,8 @@ public class FastJsonNormalData implements Dto {
             return new NormalData(
                     FastJsonLongIdKey.toStackBean(fastNormalData.getPointKey()),
                     fastNormalData.getValue(),
-                    fastNormalData.getHappenedDate()
+                    fastNormalData.getHappenedDate(),
+                    fastNormalData.getHappenedDateNanoOffset()
             );
         }
     }
@@ -51,13 +53,21 @@ public class FastJsonNormalData implements Dto {
     @JSONField(name = "happened_date", ordinal = 3)
     private Date happenedDate;
 
+    @JSONField(name = "happened_date_nano_offset", ordinal = 4)
+    private int happenedDateNanoOffset;
+
     public FastJsonNormalData() {
     }
 
     public FastJsonNormalData(FastJsonLongIdKey pointKey, Object value, Date happenedDate) {
+        this(pointKey, value, happenedDate, 0);
+    }
+
+    public FastJsonNormalData(FastJsonLongIdKey pointKey, Object value, Date happenedDate, int happenedDateNanoOffset) {
         this.pointKey = pointKey;
         this.value = value;
         this.happenedDate = happenedDate;
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
     }
 
     public FastJsonLongIdKey getPointKey() {
@@ -84,12 +94,21 @@ public class FastJsonNormalData implements Dto {
         this.happenedDate = happenedDate;
     }
 
+    public int getHappenedDateNanoOffset() {
+        return happenedDateNanoOffset;
+    }
+
+    public void setHappenedDateNanoOffset(int happenedDateNanoOffset) {
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
+    }
+
     @Override
     public String toString() {
         return "FastJsonNormalData{" +
                 "pointKey=" + pointKey +
                 ", value=" + value +
                 ", happenedDate=" + happenedDate +
+                ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                 '}';
     }
 }

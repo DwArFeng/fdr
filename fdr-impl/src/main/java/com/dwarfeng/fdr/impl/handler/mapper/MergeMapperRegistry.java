@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.mapper;
 
+import com.dwarfeng.dutil.basic.time.TimeUtil;
 import com.dwarfeng.fdr.sdk.handler.mapper.AbstractMapper;
 import com.dwarfeng.fdr.sdk.handler.mapper.AbstractMapperRegistry;
 import com.dwarfeng.fdr.stack.exception.MapperException;
@@ -80,20 +81,33 @@ public class MergeMapperRegistry extends AbstractMapperRegistry {
             for (Sequence sequence : sequences) {
                 LongIdKey pointKey = sequence.getPointKey();
                 Date startDate = sequence.getStartDate();
+                int startDateNanoOffset = sequence.getStartDateNanoOffset();
                 Date endDate = sequence.getEndDate();
+                int endDateNanoOffset = sequence.getEndDateNanoOffset();
                 List<Mapper.Item> items = sequence.getItems();
 
                 if (mergeInfoMap.containsKey(pointKey)) {
                     MergeInfo mergeInfo = mergeInfoMap.get(pointKey);
-                    if (mergeInfo.getStartDate().compareTo(startDate) > 0) {
+                    if (TimeUtil.compare(
+                            mergeInfo.getStartDate(), mergeInfo.getStartDateNanoOffset(),
+                            startDate, startDateNanoOffset
+                    ) > 0) {
                         mergeInfo.setStartDate(startDate);
+                        mergeInfo.setStartDateNanoOffset(startDateNanoOffset);
                     }
-                    if (mergeInfo.getEndDate().compareTo(endDate) < 0) {
+                    if (TimeUtil.compare(
+                            mergeInfo.getEndDate(), mergeInfo.getEndDateNanoOffset(),
+                            endDate, endDateNanoOffset
+                    ) < 0) {
                         mergeInfo.setEndDate(endDate);
+                        mergeInfo.setEndDateNanoOffset(endDateNanoOffset);
                     }
                     mergeInfo.getItems().addAll(items);
                 } else {
-                    mergeInfoMap.put(pointKey, new MergeInfo(pointKey, startDate, endDate, items));
+                    mergeInfoMap.put(
+                            pointKey,
+                            new MergeInfo(pointKey, startDate, startDateNanoOffset, endDate, endDateNanoOffset, items)
+                    );
                 }
             }
 
@@ -102,7 +116,9 @@ public class MergeMapperRegistry extends AbstractMapperRegistry {
                     mergeInfo.getPointKey(),
                     mergeInfo.getItems(),
                     mergeInfo.getStartDate(),
-                    mergeInfo.getEndDate()
+                    mergeInfo.getStartDateNanoOffset(),
+                    mergeInfo.getEndDate(),
+                    mergeInfo.getEndDateNanoOffset()
             )).collect(Collectors.toList());
         }
 
@@ -112,17 +128,26 @@ public class MergeMapperRegistry extends AbstractMapperRegistry {
         }
     }
 
+    // 该类是按照 bean 规范编写的，因此忽略部分方法不使用的警告。
+    @SuppressWarnings("unused")
     private static final class MergeInfo {
 
         private LongIdKey pointKey;
         private Date startDate;
         private Date endDate;
+        private int startDateNanoOffset;
+        private int endDateNanoOffset;
         private List<Mapper.Item> items;
 
-        public MergeInfo(LongIdKey pointKey, Date startDate, Date endDate, List<Mapper.Item> items) {
+        public MergeInfo(
+                LongIdKey pointKey, Date startDate, int startDateNanoOffset, Date endDate, int endDateNanoOffset,
+                List<Mapper.Item> items
+        ) {
             this.pointKey = pointKey;
             this.startDate = startDate;
+            this.startDateNanoOffset = startDateNanoOffset;
             this.endDate = endDate;
+            this.endDateNanoOffset = endDateNanoOffset;
             this.items = items;
         }
 
@@ -142,12 +167,28 @@ public class MergeMapperRegistry extends AbstractMapperRegistry {
             this.startDate = startDate;
         }
 
+        public int getStartDateNanoOffset() {
+            return startDateNanoOffset;
+        }
+
+        public void setStartDateNanoOffset(int startDateNanoOffset) {
+            this.startDateNanoOffset = startDateNanoOffset;
+        }
+
         public Date getEndDate() {
             return endDate;
         }
 
         public void setEndDate(Date endDate) {
             this.endDate = endDate;
+        }
+
+        public int getEndDateNanoOffset() {
+            return endDateNanoOffset;
+        }
+
+        public void setEndDateNanoOffset(int endDateNanoOffset) {
+            this.endDateNanoOffset = endDateNanoOffset;
         }
 
         public List<Mapper.Item> getItems() {
@@ -164,6 +205,8 @@ public class MergeMapperRegistry extends AbstractMapperRegistry {
                     "pointKey=" + pointKey +
                     ", startDate=" + startDate +
                     ", endDate=" + endDate +
+                    ", startDateNanoOffset=" + startDateNanoOffset +
+                    ", endDateNanoOffset=" + endDateNanoOffset +
                     ", items=" + items +
                     '}';
         }

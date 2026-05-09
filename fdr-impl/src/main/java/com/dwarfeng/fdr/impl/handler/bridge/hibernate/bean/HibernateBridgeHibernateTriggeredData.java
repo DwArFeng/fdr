@@ -11,18 +11,25 @@ import java.util.Optional;
 @Entity
 @IdClass(HibernateLongIdKey.class)
 @Table(name = "tbl_hibernate_bridge_triggered_data", indexes = {
-        @Index(name = "idx_point_id_happened_date", columnList = "point_id, happened_date ASC"),
+        @Index(
+                name = "idx_point_id_happened_date_nano_id",
+                columnList = "point_id, happened_date ASC, happened_date_nano_offset ASC, id ASC"
+        ),
 })
 public class HibernateBridgeHibernateTriggeredData implements Bean {
 
-    private static final long serialVersionUID = 4796516981093825524L;
+    private static final long serialVersionUID = 3992006477420059206L;
 
-    // -----------------------------------------------------------主键-----------------------------------------------------------
+    // region 主键
+
     @Id
     @Column(name = "id", nullable = false, unique = true)
     private Long longId;
 
-    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    // endregion
+
+    // region 主属性字段
+
     @Column(name = "point_id", nullable = false)
     private Long pointLongId;
 
@@ -35,10 +42,20 @@ public class HibernateBridgeHibernateTriggeredData implements Bean {
     @Column(name = "message", length = Constraints.LENGTH_MESSAGE, nullable = false)
     private String message;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "happened_date", nullable = false)
     private Date happenedDate;
 
-    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
+    @Column(name = "happened_date_nano_offset", nullable = false)
+    private int happenedDateNanoOffset;
+
+    // endregion
+
+    public HibernateBridgeHibernateTriggeredData() {
+    }
+
+    // region 映射用属性区
+
     public HibernateLongIdKey getKey() {
         return Optional.ofNullable(longId).map(HibernateLongIdKey::new).orElse(null);
     }
@@ -63,7 +80,10 @@ public class HibernateBridgeHibernateTriggeredData implements Bean {
         this.triggerLongId = Optional.ofNullable(idKey).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
-    // -----------------------------------------------------------常规属性区-----------------------------------------------------------
+    // endregion
+
+    // region 常规属性区
+
     public Long getLongId() {
         return longId;
     }
@@ -112,14 +132,26 @@ public class HibernateBridgeHibernateTriggeredData implements Bean {
         this.happenedDate = happenedDate;
     }
 
+    public int getHappenedDateNanoOffset() {
+        return happenedDateNanoOffset;
+    }
+
+    public void setHappenedDateNanoOffset(int happenedDateNanoOffset) {
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
+    }
+
+    // endregion
+
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "longId = " + longId + ", " +
-                "pointLongId = " + pointLongId + ", " +
-                "triggerLongId = " + triggerLongId + ", " +
-                "value = " + value + ", " +
-                "message = " + message + ", " +
-                "happenedDate = " + happenedDate + ")";
+        return "HibernateBridgeHibernateTriggeredData{" +
+                "longId=" + longId +
+                ", pointLongId=" + pointLongId +
+                ", triggerLongId=" + triggerLongId +
+                ", value='" + value + '\'' +
+                ", message='" + message + '\'' +
+                ", happenedDate=" + happenedDate +
+                ", happenedDateNanoOffset=" + happenedDateNanoOffset +
+                '}';
     }
 }

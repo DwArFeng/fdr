@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class RedisBridgeFastJsonTriggeredData implements Bean {
 
-    private static final long serialVersionUID = 6285529043549043328L;
+    private static final long serialVersionUID = 7349642215286065502L;
 
     @JSONField(name = "key", ordinal = 1)
     private FastJsonLongIdKey key;
@@ -31,6 +31,9 @@ public class RedisBridgeFastJsonTriggeredData implements Bean {
     @JSONField(name = "happened_date", ordinal = 5)
     private Date happenedDate;
 
+    @JSONField(name = "happened_date_nano_offset", ordinal = 6)
+    private int happenedDateNanoOffset;
+
     public RedisBridgeFastJsonTriggeredData() {
     }
 
@@ -38,11 +41,19 @@ public class RedisBridgeFastJsonTriggeredData implements Bean {
             FastJsonLongIdKey key, FastJsonLongIdKey triggerKey, String value,
             String message, Date happenedDate
     ) {
+        this(key, triggerKey, value, message, happenedDate, 0);
+    }
+
+    public RedisBridgeFastJsonTriggeredData(
+            FastJsonLongIdKey key, FastJsonLongIdKey triggerKey, String value,
+            String message, Date happenedDate, int happenedDateNanoOffset
+    ) {
         this.key = key;
         this.triggerKey = triggerKey;
         this.value = value;
         this.message = message;
         this.happenedDate = happenedDate;
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
     }
 
     public FastJsonLongIdKey getKey() {
@@ -85,6 +96,14 @@ public class RedisBridgeFastJsonTriggeredData implements Bean {
         this.happenedDate = happenedDate;
     }
 
+    public int getHappenedDateNanoOffset() {
+        return happenedDateNanoOffset;
+    }
+
+    public void setHappenedDateNanoOffset(int happenedDateNanoOffset) {
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
+    }
+
     @Override
     public String toString() {
         return "RedisBridgeFastJsonTriggeredData{" +
@@ -93,6 +112,7 @@ public class RedisBridgeFastJsonTriggeredData implements Bean {
                 ", value='" + value + '\'' +
                 ", message='" + message + '\'' +
                 ", happenedDate=" + happenedDate +
+                ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                 '}';
     }
 }

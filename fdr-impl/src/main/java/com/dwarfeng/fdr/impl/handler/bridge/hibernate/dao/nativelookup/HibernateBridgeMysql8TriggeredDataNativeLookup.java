@@ -27,14 +27,18 @@ public class HibernateBridgeMysql8TriggeredDataNativeLookup extends HibernateBri
         StringBuilder sqlBuilder = new StringBuilder();
         Mysql8NativeLookupUtil.selectColumnsFromTable(
                 sqlBuilder, "tbl_hibernate_bridge_triggered_data", "tbl",
-                "id", "point_id", "trigger_id", "value", "message", "happened_date"
+                "id", "point_id", "trigger_id", "value", "message", "happened_date", "happened_date_nano_offset"
         );
-        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date_nano_id");
         Mysql8NativeLookupUtil.where(sqlBuilder);
         Mysql8NativeLookupUtil.pointLongIdEquals(sqlBuilder, "tbl", "point_id");
         Mysql8NativeLookupUtil.and(sqlBuilder);
-        Mysql8NativeLookupUtil.happenedDateBetweenCloseClose(sqlBuilder, "tbl", "happened_date");
-        Mysql8NativeLookupUtil.orderByHappenedDateAsc(sqlBuilder, "tbl", "happened_date");
+        Mysql8NativeLookupUtil.happenedMomentBetweenCloseClose(
+                sqlBuilder, "tbl", "happened_date", "happened_date_nano_offset"
+        );
+        Mysql8NativeLookupUtil.orderByHappenedMomentAsc(
+                sqlBuilder, "tbl", "happened_date", "happened_date_nano_offset", "id"
+        );
         Mysql8NativeLookupUtil.limit(sqlBuilder);
 
         // 构建 PreparedStatement。
@@ -44,20 +48,24 @@ public class HibernateBridgeMysql8TriggeredDataNativeLookup extends HibernateBri
         preparedStatement.setLong(1, pointLongId);
         preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
         preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
-        preparedStatement.setInt(4, offset);
-        preparedStatement.setInt(5, limit);
+        preparedStatement.setTimestamp(4, new Timestamp(endDate.getTime()));
+        preparedStatement.setInt(5, 0);
+        preparedStatement.setInt(6, offset);
+        preparedStatement.setInt(7, limit);
 
         // 执行查询，构建结果。
         ResultSet resultSet = preparedStatement.executeQuery();
         List<HibernateBridgeTriggeredData> HibernateBridgeTriggeredDatas = new ArrayList<>();
         while (resultSet.next()) {
+            Timestamp happenedTs = resultSet.getTimestamp(6);
             HibernateBridgeTriggeredDatas.add(new HibernateBridgeTriggeredData(
                     new LongIdKey(resultSet.getLong(1)),
                     new LongIdKey(resultSet.getLong(2)),
                     new LongIdKey(resultSet.getLong(3)),
                     resultSet.getString(4),
                     resultSet.getString(5),
-                    new Date(resultSet.getTimestamp(6).getTime())
+                    happenedTs == null ? null : new Date(happenedTs.getTime()),
+                    resultSet.getInt(7)
             ));
         }
         return HibernateBridgeTriggeredDatas;
@@ -72,14 +80,16 @@ public class HibernateBridgeMysql8TriggeredDataNativeLookup extends HibernateBri
         StringBuilder sqlBuilder = new StringBuilder();
         Mysql8NativeLookupUtil.selectColumnsFromTable(
                 sqlBuilder, "tbl_hibernate_bridge_triggered_data", "tbl",
-                "id", "point_id", "trigger_id", "value", "message", "happened_date"
+                "id", "point_id", "trigger_id", "value", "message", "happened_date", "happened_date_nano_offset"
         );
-        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date_nano_id");
         Mysql8NativeLookupUtil.where(sqlBuilder);
         Mysql8NativeLookupUtil.pointLongIdEquals(sqlBuilder, "tbl", "point_id");
         Mysql8NativeLookupUtil.and(sqlBuilder);
-        Mysql8NativeLookupUtil.happenedDateBetweenCloseOpen(sqlBuilder, "tbl", "happened_date");
-        Mysql8NativeLookupUtil.orderByHappenedDateAsc(sqlBuilder, "tbl", "happened_date");
+        Mysql8NativeLookupUtil.happenedMomentBetweenCloseOpen(sqlBuilder, "tbl", "happened_date");
+        Mysql8NativeLookupUtil.orderByHappenedMomentAsc(
+                sqlBuilder, "tbl", "happened_date", "happened_date_nano_offset", "id"
+        );
         Mysql8NativeLookupUtil.limit(sqlBuilder);
 
         // 构建 PreparedStatement。
@@ -96,13 +106,15 @@ public class HibernateBridgeMysql8TriggeredDataNativeLookup extends HibernateBri
         ResultSet resultSet = preparedStatement.executeQuery();
         List<HibernateBridgeTriggeredData> HibernateBridgeTriggeredDatas = new ArrayList<>();
         while (resultSet.next()) {
+            Timestamp happenedTs = resultSet.getTimestamp(6);
             HibernateBridgeTriggeredDatas.add(new HibernateBridgeTriggeredData(
                     new LongIdKey(resultSet.getLong(1)),
                     new LongIdKey(resultSet.getLong(2)),
                     new LongIdKey(resultSet.getLong(3)),
                     resultSet.getString(4),
                     resultSet.getString(5),
-                    new Date(resultSet.getTimestamp(6).getTime())
+                    happenedTs == null ? null : new Date(happenedTs.getTime()),
+                    resultSet.getInt(7)
             ));
         }
         return HibernateBridgeTriggeredDatas;
@@ -117,14 +129,18 @@ public class HibernateBridgeMysql8TriggeredDataNativeLookup extends HibernateBri
         StringBuilder sqlBuilder = new StringBuilder();
         Mysql8NativeLookupUtil.selectColumnsFromTable(
                 sqlBuilder, "tbl_hibernate_bridge_triggered_data", "tbl",
-                "id", "point_id", "trigger_id", "value", "message", "happened_date"
+                "id", "point_id", "trigger_id", "value", "message", "happened_date", "happened_date_nano_offset"
         );
-        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date_nano_id");
         Mysql8NativeLookupUtil.where(sqlBuilder);
         Mysql8NativeLookupUtil.pointLongIdEquals(sqlBuilder, "tbl", "point_id");
         Mysql8NativeLookupUtil.and(sqlBuilder);
-        Mysql8NativeLookupUtil.happenedDateBetweenOpenClose(sqlBuilder, "tbl", "happened_date");
-        Mysql8NativeLookupUtil.orderByHappenedDateAsc(sqlBuilder, "tbl", "happened_date");
+        Mysql8NativeLookupUtil.happenedMomentBetweenOpenClose(
+                sqlBuilder, "tbl", "happened_date", "happened_date_nano_offset"
+        );
+        Mysql8NativeLookupUtil.orderByHappenedMomentAsc(
+                sqlBuilder, "tbl", "happened_date", "happened_date_nano_offset", "id"
+        );
         Mysql8NativeLookupUtil.limit(sqlBuilder);
 
         // 构建 PreparedStatement。
@@ -133,21 +149,26 @@ public class HibernateBridgeMysql8TriggeredDataNativeLookup extends HibernateBri
         PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
         preparedStatement.setLong(1, pointLongId);
         preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
-        preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
-        preparedStatement.setInt(4, offset);
-        preparedStatement.setInt(5, limit);
+        preparedStatement.setTimestamp(3, new Timestamp(startDate.getTime()));
+        preparedStatement.setTimestamp(4, new Timestamp(endDate.getTime()));
+        preparedStatement.setTimestamp(5, new Timestamp(endDate.getTime()));
+        preparedStatement.setInt(6, 0);
+        preparedStatement.setInt(7, offset);
+        preparedStatement.setInt(8, limit);
 
         // 执行查询，构建结果。
         ResultSet resultSet = preparedStatement.executeQuery();
         List<HibernateBridgeTriggeredData> HibernateBridgeTriggeredDatas = new ArrayList<>();
         while (resultSet.next()) {
+            Timestamp happenedTs = resultSet.getTimestamp(6);
             HibernateBridgeTriggeredDatas.add(new HibernateBridgeTriggeredData(
                     new LongIdKey(resultSet.getLong(1)),
                     new LongIdKey(resultSet.getLong(2)),
                     new LongIdKey(resultSet.getLong(3)),
                     resultSet.getString(4),
                     resultSet.getString(5),
-                    new Date(resultSet.getTimestamp(6).getTime())
+                    happenedTs == null ? null : new Date(happenedTs.getTime()),
+                    resultSet.getInt(7)
             ));
         }
         return HibernateBridgeTriggeredDatas;
@@ -162,14 +183,18 @@ public class HibernateBridgeMysql8TriggeredDataNativeLookup extends HibernateBri
         StringBuilder sqlBuilder = new StringBuilder();
         Mysql8NativeLookupUtil.selectColumnsFromTable(
                 sqlBuilder, "tbl_hibernate_bridge_triggered_data", "tbl",
-                "id", "point_id", "trigger_id", "value", "message", "happened_date"
+                "id", "point_id", "trigger_id", "value", "message", "happened_date", "happened_date_nano_offset"
         );
-        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date_nano_id");
         Mysql8NativeLookupUtil.where(sqlBuilder);
         Mysql8NativeLookupUtil.pointLongIdEquals(sqlBuilder, "tbl", "point_id");
         Mysql8NativeLookupUtil.and(sqlBuilder);
-        Mysql8NativeLookupUtil.happenedDateBetweenOpenOpen(sqlBuilder, "tbl", "happened_date");
-        Mysql8NativeLookupUtil.orderByHappenedDateAsc(sqlBuilder, "tbl", "happened_date");
+        Mysql8NativeLookupUtil.happenedMomentBetweenOpenOpen(
+                sqlBuilder, "tbl", "happened_date", "happened_date_nano_offset"
+        );
+        Mysql8NativeLookupUtil.orderByHappenedMomentAsc(
+                sqlBuilder, "tbl", "happened_date", "happened_date_nano_offset", "id"
+        );
         Mysql8NativeLookupUtil.limit(sqlBuilder);
 
         // 构建 PreparedStatement。
@@ -178,21 +203,24 @@ public class HibernateBridgeMysql8TriggeredDataNativeLookup extends HibernateBri
         PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
         preparedStatement.setLong(1, pointLongId);
         preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
-        preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
-        preparedStatement.setInt(4, offset);
-        preparedStatement.setInt(5, limit);
+        preparedStatement.setTimestamp(3, new Timestamp(startDate.getTime()));
+        preparedStatement.setTimestamp(4, new Timestamp(endDate.getTime()));
+        preparedStatement.setInt(5, offset);
+        preparedStatement.setInt(6, limit);
 
         // 执行查询，构建结果。
         ResultSet resultSet = preparedStatement.executeQuery();
         List<HibernateBridgeTriggeredData> HibernateBridgeTriggeredDatas = new ArrayList<>();
         while (resultSet.next()) {
+            Timestamp happenedTs = resultSet.getTimestamp(6);
             HibernateBridgeTriggeredDatas.add(new HibernateBridgeTriggeredData(
                     new LongIdKey(resultSet.getLong(1)),
                     new LongIdKey(resultSet.getLong(2)),
                     new LongIdKey(resultSet.getLong(3)),
                     resultSet.getString(4),
                     resultSet.getString(5),
-                    new Date(resultSet.getTimestamp(6).getTime())
+                    happenedTs == null ? null : new Date(happenedTs.getTime()),
+                    resultSet.getInt(7)
             ));
         }
         return HibernateBridgeTriggeredDatas;
@@ -208,11 +236,13 @@ public class HibernateBridgeMysql8TriggeredDataNativeLookup extends HibernateBri
         Mysql8NativeLookupUtil.selectCountFromTable(
                 sqlBuilder, "tbl_hibernate_bridge_triggered_data", "tbl", "id"
         );
-        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date_nano_id");
         Mysql8NativeLookupUtil.where(sqlBuilder);
         Mysql8NativeLookupUtil.pointLongIdEquals(sqlBuilder, "tbl", "point_id");
         Mysql8NativeLookupUtil.and(sqlBuilder);
-        Mysql8NativeLookupUtil.happenedDateBetweenCloseClose(sqlBuilder, "tbl", "happened_date");
+        Mysql8NativeLookupUtil.happenedMomentBetweenCloseClose(
+                sqlBuilder, "tbl", "happened_date", "happened_date_nano_offset"
+        );
 
         // 构建 PreparedStatement。
         // SQL 语句是固定值，不存在安全性问题。
@@ -221,6 +251,8 @@ public class HibernateBridgeMysql8TriggeredDataNativeLookup extends HibernateBri
         preparedStatement.setLong(1, pointLongId);
         preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
         preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
+        preparedStatement.setTimestamp(4, new Timestamp(endDate.getTime()));
+        preparedStatement.setInt(5, 0);
 
         // 执行查询，返回结果。
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -238,11 +270,11 @@ public class HibernateBridgeMysql8TriggeredDataNativeLookup extends HibernateBri
         Mysql8NativeLookupUtil.selectCountFromTable(
                 sqlBuilder, "tbl_hibernate_bridge_triggered_data", "tbl", "id"
         );
-        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date_nano_id");
         Mysql8NativeLookupUtil.where(sqlBuilder);
         Mysql8NativeLookupUtil.pointLongIdEquals(sqlBuilder, "tbl", "point_id");
         Mysql8NativeLookupUtil.and(sqlBuilder);
-        Mysql8NativeLookupUtil.happenedDateBetweenCloseOpen(sqlBuilder, "tbl", "happened_date");
+        Mysql8NativeLookupUtil.happenedMomentBetweenCloseOpen(sqlBuilder, "tbl", "happened_date");
 
         // 构建 PreparedStatement。
         // SQL 语句是固定值，不存在安全性问题。
@@ -268,11 +300,13 @@ public class HibernateBridgeMysql8TriggeredDataNativeLookup extends HibernateBri
         Mysql8NativeLookupUtil.selectCountFromTable(
                 sqlBuilder, "tbl_hibernate_bridge_triggered_data", "tbl", "id"
         );
-        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date_nano_id");
         Mysql8NativeLookupUtil.where(sqlBuilder);
         Mysql8NativeLookupUtil.pointLongIdEquals(sqlBuilder, "tbl", "point_id");
         Mysql8NativeLookupUtil.and(sqlBuilder);
-        Mysql8NativeLookupUtil.happenedDateBetweenOpenClose(sqlBuilder, "tbl", "happened_date");
+        Mysql8NativeLookupUtil.happenedMomentBetweenOpenClose(
+                sqlBuilder, "tbl", "happened_date", "happened_date_nano_offset"
+        );
 
         // 构建 PreparedStatement。
         // SQL 语句是固定值，不存在安全性问题。
@@ -280,7 +314,10 @@ public class HibernateBridgeMysql8TriggeredDataNativeLookup extends HibernateBri
         PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
         preparedStatement.setLong(1, pointLongId);
         preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
-        preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
+        preparedStatement.setTimestamp(3, new Timestamp(startDate.getTime()));
+        preparedStatement.setTimestamp(4, new Timestamp(endDate.getTime()));
+        preparedStatement.setTimestamp(5, new Timestamp(endDate.getTime()));
+        preparedStatement.setInt(6, 0);
 
         // 执行查询，返回结果。
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -298,11 +335,13 @@ public class HibernateBridgeMysql8TriggeredDataNativeLookup extends HibernateBri
         Mysql8NativeLookupUtil.selectCountFromTable(
                 sqlBuilder, "tbl_hibernate_bridge_triggered_data", "tbl", "id"
         );
-        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date");
+        Mysql8NativeLookupUtil.forceIndex(sqlBuilder, "idx_point_id_happened_date_nano_id");
         Mysql8NativeLookupUtil.where(sqlBuilder);
         Mysql8NativeLookupUtil.pointLongIdEquals(sqlBuilder, "tbl", "point_id");
         Mysql8NativeLookupUtil.and(sqlBuilder);
-        Mysql8NativeLookupUtil.happenedDateBetweenOpenOpen(sqlBuilder, "tbl", "happened_date");
+        Mysql8NativeLookupUtil.happenedMomentBetweenOpenOpen(
+                sqlBuilder, "tbl", "happened_date", "happened_date_nano_offset"
+        );
 
         // 构建 PreparedStatement。
         // SQL 语句是固定值，不存在安全性问题。
@@ -310,7 +349,8 @@ public class HibernateBridgeMysql8TriggeredDataNativeLookup extends HibernateBri
         PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
         preparedStatement.setLong(1, pointLongId);
         preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
-        preparedStatement.setTimestamp(3, new Timestamp(endDate.getTime()));
+        preparedStatement.setTimestamp(3, new Timestamp(startDate.getTime()));
+        preparedStatement.setTimestamp(4, new Timestamp(endDate.getTime()));
 
         // 执行查询，返回结果。
         ResultSet resultSet = preparedStatement.executeQuery();

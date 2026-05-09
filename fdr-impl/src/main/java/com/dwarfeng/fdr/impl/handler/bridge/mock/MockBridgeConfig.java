@@ -35,6 +35,8 @@ public class MockBridgeConfig {
 
     @Value("${bridge.mock.lookup.data_interval}")
     private long lookupDataInterval;
+    @Value("${bridge.mock.lookup.data_interval_nano_offset}")
+    private int lookupDataIntervalNanoOffset;
     @Value("${bridge.mock.lookup.delay}")
     private long lookupDelay;
     @Value("${bridge.mock.lookup.offset_delay}")
@@ -131,6 +133,14 @@ public class MockBridgeConfig {
         this.lookupDataInterval = lookupDataInterval;
     }
 
+    public int getLookupDataIntervalNanoOffset() {
+        return lookupDataIntervalNanoOffset;
+    }
+
+    public void setLookupDataIntervalNanoOffset(int lookupDataIntervalNanoOffset) {
+        this.lookupDataIntervalNanoOffset = lookupDataIntervalNanoOffset;
+    }
+
     public long getLookupDelay() {
         return lookupDelay;
     }
@@ -200,6 +210,7 @@ public class MockBridgeConfig {
                 ", recordBeforeDelay=" + recordBeforeDelay +
                 ", recordAfterDelay=" + recordAfterDelay +
                 ", lookupDataInterval=" + lookupDataInterval +
+                ", lookupDataIntervalNanoOffset=" + lookupDataIntervalNanoOffset +
                 ", lookupDelay=" + lookupDelay +
                 ", lookupOffsetDelay=" + lookupOffsetDelay +
                 ", lookupBeforeDelay=" + lookupBeforeDelay +

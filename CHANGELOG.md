@@ -4,6 +4,34 @@
 
 ### 功能构建
 
+- 增强数据时间精度支持。
+  - 增加 `com.dwarfeng.fdr.stack.struct.RecordMemory.happenedDateNanoOffset` 字段。
+  - 增加 `com.dwarfeng.fdr.stack.struct.Data` 中与 `happenedDateNanoOffset` 相关的访问约定。
+  - 增加 `com.dwarfeng.fdr.stack.bean.dto.FilteredData.happenedDateNanoOffset` 字段。
+  - 增加 `com.dwarfeng.fdr.stack.bean.dto.NormalData.happenedDateNanoOffset` 字段。
+  - 增加 `com.dwarfeng.fdr.stack.bean.dto.TriggeredData.happenedDateNanoOffset` 字段。
+  - 增加 `com.dwarfeng.fdr.stack.bean.dto.RecordInfo.happenedDateNanoOffset` 字段。
+  - 增加 `com.dwarfeng.fdr.stack.bean.dto.QueryResult.Sequence.startDateNanoOffset` 字段。
+  - 增加 `com.dwarfeng.fdr.stack.bean.dto.QueryResult.Sequence.endDateNanoOffset` 字段。
+  - 增加 `com.dwarfeng.fdr.stack.bean.dto.QueryResult.Item.happenedDateNanoOffset` 字段。
+  - 增加 `com.dwarfeng.fdr.sdk.util.DataUtil` 工具类，为 `Data` 提供时间操作工具。
+  - 增加 `com.dwarfeng.fdr.sdk.util.NormalDataUtil` 工具类，为 `NormalData` 提供时间操作工具。
+  - 增加 `com.dwarfeng.fdr.sdk.util.FilteredDataUtil` 工具类，为 `FilteredData` 提供时间操作工具。
+  - 增加 `com.dwarfeng.fdr.sdk.util.TriggeredDataUtil` 工具类，为 `TriggeredData` 提供时间操作工具。
+  - 增加 `com.dwarfeng.fdr.sdk.util.RecordInfoUtil` 工具类，为 `RecordInfo` 提供时间操作工具。
+  - 增加 `com.dwarfeng.fdr.sdk.util.QueryResultUtil` 工具类，为 `QueryResult` 提供时间操作工具。
+  - 增加 `com.dwarfeng.fdr.sdk.util.MapperUtil` 工具类，为 `Mapper` 提供时间操作工具。
+  - 调整相关处理器的处理逻辑，以支持纳秒偏移量的传递。
+  - 调整相关清洗器的处理逻辑，以支持纳秒偏移量的传递。
+  - 调整相关过滤器的处理逻辑，以支持纳秒偏移量的传递。
+  - 调整相关触发器的处理逻辑，以支持纳秒偏移量的传递。
+  - 调整相关映射器的处理逻辑，以支持纳秒偏移量的传递。
+  - 优化 `com.dwarfeng.fdr.impl.service.telqos.ViewCommand` 运维指令的显示逻辑，以显示纳秒偏移量信息。
+  - 优化 `com.dwarfeng.fdr.impl.service.telqos.NormalViewCommand` 运维指令的显示逻辑，以显示纳秒偏移量信息。
+  - 优化 `com.dwarfeng.fdr.impl.service.telqos.FilteredViewCommand` 运维指令的显示逻辑，以显示纳秒偏移量信息。
+  - 优化 `com.dwarfeng.fdr.impl.service.telqos.TriggeredViewCommand` 运维指令的显示逻辑，以显示纳秒偏移量信息。
+  - 优化 `com.dwarfeng.fdr.impl.service.telqos.RecordMemoryCommand` 运维指令的显示逻辑，以显示纳秒偏移量信息。
+
 - 依赖升级。
   - 升级 `dcti` 依赖版本为 `2.0.1.a` 并解决兼容性问题，以应用其新功能。
   - 升级 `dwarfeng-dct` 依赖版本为 `2.0.1.a` 并解决兼容性问题，以应用其新功能。

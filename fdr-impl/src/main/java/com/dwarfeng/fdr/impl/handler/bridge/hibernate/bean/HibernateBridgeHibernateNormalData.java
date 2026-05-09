@@ -10,28 +10,48 @@ import java.util.Optional;
 @Entity
 @IdClass(HibernateLongIdKey.class)
 @Table(name = "tbl_hibernate_bridge_normal_data", indexes = {
-        @Index(name = "idx_point_id_happened_date", columnList = "point_id, happened_date ASC"),
+        @Index(
+                name = "idx_point_id_happened_date_nano_id",
+                columnList = "point_id, happened_date ASC, happened_date_nano_offset ASC, id ASC"
+        ),
 })
 public class HibernateBridgeHibernateNormalData implements Bean {
 
-    private static final long serialVersionUID = 7514269291262218912L;
+    private static final long serialVersionUID = -5134899211627777168L;
 
-    // -----------------------------------------------------------主键-----------------------------------------------------------
+    // region 主键
+
     @Id
     @Column(name = "id", nullable = false, unique = true)
     private Long longId;
 
-    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    // endregion
+
+    // region 主属性字段
+
     @Column(name = "point_id", nullable = false)
     private Long pointLongId;
 
     @Column(name = "value", columnDefinition = "TEXT", nullable = false)
     private String value;
 
+    /**
+     * 数据发生时间（毫秒精度），与 {@link #happenedDateNanoOffset} 共同表达完整发生时刻。
+     */
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "happened_date", nullable = false)
     private Date happenedDate;
 
-    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
+    /**
+     * 相对 {@link #happenedDate} 起始的毫秒内纳秒偏移。
+     */
+    @Column(name = "happened_date_nano_offset", nullable = false)
+    private int happenedDateNanoOffset;
+
+    // endregion
+
+    // region 映射用属性区
+
     public HibernateLongIdKey getKey() {
         return Optional.ofNullable(longId).map(HibernateLongIdKey::new).orElse(null);
     }
@@ -48,7 +68,10 @@ public class HibernateBridgeHibernateNormalData implements Bean {
         this.pointLongId = Optional.ofNullable(idKey).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
-    // -----------------------------------------------------------常规属性区-----------------------------------------------------------
+    // endregion
+
+    // region 常规属性区
+
     public Long getLongId() {
         return longId;
     }
@@ -81,12 +104,23 @@ public class HibernateBridgeHibernateNormalData implements Bean {
         this.happenedDate = happenedDate;
     }
 
+    public int getHappenedDateNanoOffset() {
+        return happenedDateNanoOffset;
+    }
+
+    public void setHappenedDateNanoOffset(int happenedDateNanoOffset) {
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
+    }
+
+    // endregion
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
                 "longId = " + longId + ", " +
                 "pointLongId = " + pointLongId + ", " +
                 "value = " + value + ", " +
-                "happenedDate = " + happenedDate + ")";
+                "happenedDate = " + happenedDate + ", " +
+                "happenedDateNanoOffset = " + happenedDateNanoOffset + ")";
     }
 }

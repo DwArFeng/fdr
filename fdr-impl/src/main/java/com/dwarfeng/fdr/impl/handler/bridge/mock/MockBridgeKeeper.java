@@ -17,6 +17,8 @@ import java.util.List;
  */
 public abstract class MockBridgeKeeper<D extends Data> extends FullKeeper<D> {
 
+    private static final int NANOSECONDS_PER_MILLISECOND = 1000000;
+
     protected final MockBridgeConfig config;
     protected final MockBridgeDataValueGenerator dataValueGenerator;
 
@@ -104,7 +106,9 @@ public abstract class MockBridgeKeeper<D extends Data> extends FullKeeper<D> {
         }
 
         Object value = dataValueGenerator.nextValue(pointKey);
-        D result = generateData(pointKey, value, new Date());
+        Date date = new Date(System.currentTimeMillis());
+        int dateNanoOffset = (int) Math.floorMod(System.nanoTime(), NANOSECONDS_PER_MILLISECOND);
+        D result = generateData(pointKey, value, date, dateNanoOffset);
 
         if (latestDelay > 0) {
             anchorTimestamp += latestDelay;
@@ -141,7 +145,9 @@ public abstract class MockBridgeKeeper<D extends Data> extends FullKeeper<D> {
         List<D> result = new ArrayList<>();
         for (LongIdKey pointKey : pointKeys) {
             Object value = dataValueGenerator.nextValue(pointKey);
-            result.add(generateData(pointKey, value, new Date()));
+            Date date = new Date(System.currentTimeMillis());
+            int dateNanoOffset = (int) Math.floorMod(System.nanoTime(), NANOSECONDS_PER_MILLISECOND);
+            result.add(generateData(pointKey, value, date, dateNanoOffset));
         }
         if (latestDelay > 0) {
             anchorTimestamp += latestDelay * pointKeys.size();
@@ -162,7 +168,7 @@ public abstract class MockBridgeKeeper<D extends Data> extends FullKeeper<D> {
 
     protected abstract Logger getLogger();
 
-    protected abstract D generateData(LongIdKey pointKey, Object value, Date date);
+    protected abstract D generateData(LongIdKey pointKey, Object value, Date date, int dateNanoOffset);
 
     @Override
     public String toString() {

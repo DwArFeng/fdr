@@ -348,11 +348,14 @@ public abstract class ViewCommand<D extends Data> extends CliCommand {
             context.sendMessage("");
             context.sendMessage("序列信息: ");
             String sequenceFormat = "pointId: %1$s    startDate: %2$tY-%2$tm-%2$td %2$tH:%2$tM:%2$tS.%2$tL    " +
-                    "endDate: %3$tY-%3$tm-%3$td %3$tH:%3$tM:%3$tS.%3$tL";
+                    "startDateNanoOffset: %4$d    endDate: %3$tY-%3$tm-%3$td %3$tH:%3$tM:%3$tS.%3$tL    " +
+                    "endDateNanoOffset: %5$d";
             context.sendMessage(String.format(
                     sequenceFormat, sequence.getPointKey().getLongId(),
                     sequence.getStartDate(),
-                    sequence.getEndDate()
+                    sequence.getEndDate(),
+                    sequence.getStartDateNanoOffset(),
+                    sequence.getEndDateNanoOffset()
             ));
 
             List<QueryResult.Item> items = sequence.getItems();

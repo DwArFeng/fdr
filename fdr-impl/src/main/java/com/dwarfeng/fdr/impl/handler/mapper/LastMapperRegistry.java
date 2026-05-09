@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.fdr.sdk.handler.mapper.AbstractMapperRegistry;
 import com.dwarfeng.fdr.sdk.handler.mapper.AggregateMapper;
+import com.dwarfeng.fdr.sdk.util.MapperUtil;
 import com.dwarfeng.fdr.stack.exception.MapperException;
 import com.dwarfeng.fdr.stack.handler.Mapper;
 import com.dwarfeng.subgrade.stack.bean.Bean;
@@ -75,14 +76,19 @@ public class LastMapperRegistry extends AbstractMapperRegistry {
     public static class LastMapper extends AggregateMapper {
 
         @Override
-        protected Object doAggregate(MapParam mapParam, List<Item> items, Date startDate, Date endDate) {
+        protected Object doAggregate(
+                MapParam mapParam, List<Item> items,
+                Date startDate, int startDateNanoOffset, Date endDate, int endDateNanoOffset
+        ) {
             // 如果列表为空，则返回 VOID 值。
             if (items.isEmpty()) {
                 return returnOnEmptyItems(mapParam);
             }
 
             // 排序以及过滤数据。
-            items = MapperUtil.sortAndFilterItems(items, startDate, endDate, false);
+            items = MapperUtil.sortAndFilterItems(
+                    items, startDate, startDateNanoOffset, endDate, endDateNanoOffset, false
+            );
 
             // 如果列表为空，则返回 VOID 值，否则返回列表中的最后一个元素的值。
             if (items.isEmpty()) {

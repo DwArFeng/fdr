@@ -56,7 +56,8 @@ public class TrimMapperRegistry extends AbstractMapperRegistry {
 
     @Override
     public String provideDescription() {
-        return "映射器工作时会寻找序列中发生时间最早和最晚的数据，然后将这两个数据的发生时间作为序列的起始时间和结束时间,若使用 only_trim_start 配置项可以只裁剪序列的起始时间。";
+        return "映射器工作时会寻找序列中发生时间最早和最晚的数据，然后将这两个数据的发生时间作为序列的起始时间和结束时间，" +
+                "若使用 only_trim_start 配置项可以只裁剪序列的起始时间。";
     }
 
     @Override
@@ -71,7 +72,6 @@ public class TrimMapperRegistry extends AbstractMapperRegistry {
 
         @Override
         protected Sequence doOneToOneMap(MapParam mapParam, Sequence sequence) {
-
             // 获得配置。
             Config config = JSON.parseObject(mapParam.getParam(), Config.class);
 
@@ -79,22 +79,23 @@ public class TrimMapperRegistry extends AbstractMapperRegistry {
         }
 
         // 排序并截取序列。
-        private Sequence trimSequence(Sequence sequence, boolean only_trim_start) {
+        private Sequence trimSequence(Sequence sequence, boolean onlyTrimStart) {
             // 获取序列的起始时间与结束时间。
             List<Item> items = new ArrayList<>(sequence.getItems());
-            items.sort(CompareUtil.DATA_HAPPENED_DATE_ASC_COMPARATOR);
+            items.sort(CompareUtil.DATA_HAPPENED_INSTANT_ASC_COMPARATOR);
 
-            Date startDate = items.get(0).getHappenedDate();
-            Date endDate = items.get(items.size() - 1).getHappenedDate();
-
-            // 如果起始时间等于结束时间只取一个值即可。
-            if (only_trim_start) {
-
-                endDate = sequence.getEndDate();
-            }
+            Item firstItem = items.get(0);
+            Item lastItem = items.get(items.size() - 1);
+            Date startDate = firstItem.getHappenedDate();
+            int startDateNanoOffset = firstItem.getHappenedDateNanoOffset();
+            Date endDate = onlyTrimStart ? sequence.getEndDate() : lastItem.getHappenedDate();
+            int endDateNanoOffset = onlyTrimStart ?
+                    sequence.getEndDateNanoOffset() : lastItem.getHappenedDateNanoOffset();
 
             // 返回新的序列。
-            return new Sequence(sequence.getPointKey(), items, startDate, endDate);
+            return new Sequence(
+                    sequence.getPointKey(), items, startDate, startDateNanoOffset, endDate, endDateNanoOffset
+            );
         }
 
         @Override
@@ -109,8 +110,7 @@ public class TrimMapperRegistry extends AbstractMapperRegistry {
         private static final long serialVersionUID = -5896032545570585424L;
 
         @JSONField(name = "#only_trim_start", ordinal = 1, deserialize = false)
-        private String onlyTrimStartRem =
-                "当 onlyTrimStart 为 true 时只剪裁序列的起始时间，false 裁剪序列的起始时间和结束时间";
+        private String onlyTrimStartRem = "此值为 true 时只剪裁序列的起始时间，false 裁剪序列的起始时间和结束时间";
 
         @JSONField(name = "only_trim_start", ordinal = 2)
         private boolean onlyTrimStart = false;

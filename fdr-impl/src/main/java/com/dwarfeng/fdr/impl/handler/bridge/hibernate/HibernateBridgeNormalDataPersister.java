@@ -34,7 +34,8 @@ public class HibernateBridgeNormalDataPersister extends
                 null,
                 data.getPointKey(),
                 flatValue,
-                data.getHappenedDate()
+                data.getHappenedDate(),
+                data.getHappenedDateNanoOffset()
         );
     }
 
@@ -56,11 +57,7 @@ public class HibernateBridgeNormalDataPersister extends
     @Override
     protected NormalData reverseTransform(HibernateBridgeNormalData t) throws Exception {
         Object value = valueCodingHandler.decode(t.getValue());
-        return new NormalData(
-                t.getPointKey(),
-                value,
-                t.getHappenedDate()
-        );
+        return new NormalData(t.getPointKey(), value, t.getHappenedDate(), t.getHappenedDateNanoOffset());
     }
 
     @Override

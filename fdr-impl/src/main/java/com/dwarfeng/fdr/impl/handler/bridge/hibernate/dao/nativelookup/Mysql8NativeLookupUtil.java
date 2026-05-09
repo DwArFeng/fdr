@@ -62,22 +62,30 @@ public final class Mysql8NativeLookupUtil {
     }
 
     @SuppressWarnings("DuplicatedCode")
-    public static void happenedDateBetweenCloseClose(
-            StringBuilder sqlBuilder, String tableNameAlias, String happenedDateColumnName
+    public static void happenedMomentBetweenCloseClose(
+            StringBuilder sqlBuilder, String tableNameAlias,
+            String happenedDateColumnName, String happenedNanoColumnName
     ) {
-        sqlBuilder.append(" ");
+        sqlBuilder.append(" (");
         sqlBuilder.append(tableNameAlias);
         sqlBuilder.append(".");
         sqlBuilder.append(happenedDateColumnName);
-        sqlBuilder.append(" >= ? AND ");
+        sqlBuilder.append(" >= ?) AND ((");
         sqlBuilder.append(tableNameAlias);
         sqlBuilder.append(".");
         sqlBuilder.append(happenedDateColumnName);
-        sqlBuilder.append(" <= ?");
+        sqlBuilder.append(" < ?) OR (");
+        sqlBuilder.append(tableNameAlias);
+        sqlBuilder.append(".");
+        sqlBuilder.append(happenedDateColumnName);
+        sqlBuilder.append(" = ? AND ");
+        sqlBuilder.append(tableNameAlias);
+        sqlBuilder.append(".");
+        sqlBuilder.append(happenedNanoColumnName);
+        sqlBuilder.append(" = ?))");
     }
 
-    @SuppressWarnings("DuplicatedCode")
-    public static void happenedDateBetweenCloseOpen(
+    public static void happenedMomentBetweenCloseOpen(
             StringBuilder sqlBuilder, String tableNameAlias, String happenedDateColumnName
     ) {
         sqlBuilder.append(" ");
@@ -92,42 +100,77 @@ public final class Mysql8NativeLookupUtil {
     }
 
     @SuppressWarnings("DuplicatedCode")
-    public static void happenedDateBetweenOpenClose(
-            StringBuilder sqlBuilder, String tableNameAlias, String happenedDateColumnName
+    public static void happenedMomentBetweenOpenClose(
+            StringBuilder sqlBuilder, String tableNameAlias,
+            String happenedDateColumnName, String happenedNanoColumnName
     ) {
-        sqlBuilder.append(" ");
+        sqlBuilder.append(" ((");
         sqlBuilder.append(tableNameAlias);
         sqlBuilder.append(".");
         sqlBuilder.append(happenedDateColumnName);
-        sqlBuilder.append(" > ? AND ");
+        sqlBuilder.append(" > ?) OR (");
         sqlBuilder.append(tableNameAlias);
         sqlBuilder.append(".");
         sqlBuilder.append(happenedDateColumnName);
-        sqlBuilder.append(" <= ?");
+        sqlBuilder.append(" = ? AND ");
+        sqlBuilder.append(tableNameAlias);
+        sqlBuilder.append(".");
+        sqlBuilder.append(happenedNanoColumnName);
+        sqlBuilder.append(" > 0)) AND ((");
+        sqlBuilder.append(tableNameAlias);
+        sqlBuilder.append(".");
+        sqlBuilder.append(happenedDateColumnName);
+        sqlBuilder.append(" < ?) OR (");
+        sqlBuilder.append(tableNameAlias);
+        sqlBuilder.append(".");
+        sqlBuilder.append(happenedDateColumnName);
+        sqlBuilder.append(" = ? AND ");
+        sqlBuilder.append(tableNameAlias);
+        sqlBuilder.append(".");
+        sqlBuilder.append(happenedNanoColumnName);
+        sqlBuilder.append(" = ?))");
     }
 
     @SuppressWarnings("DuplicatedCode")
-    public static void happenedDateBetweenOpenOpen(
-            StringBuilder sqlBuilder, String tableNameAlias, String happenedDateColumnName
+    public static void happenedMomentBetweenOpenOpen(
+            StringBuilder sqlBuilder, String tableNameAlias,
+            String happenedDateColumnName, String happenedNanoColumnName
     ) {
-        sqlBuilder.append(" ");
+        sqlBuilder.append(" ((");
         sqlBuilder.append(tableNameAlias);
         sqlBuilder.append(".");
         sqlBuilder.append(happenedDateColumnName);
-        sqlBuilder.append(" > ? AND ");
+        sqlBuilder.append(" > ?) OR (");
+        sqlBuilder.append(tableNameAlias);
+        sqlBuilder.append(".");
+        sqlBuilder.append(happenedDateColumnName);
+        sqlBuilder.append(" = ? AND ");
+        sqlBuilder.append(tableNameAlias);
+        sqlBuilder.append(".");
+        sqlBuilder.append(happenedNanoColumnName);
+        sqlBuilder.append(" > 0)) AND ");
         sqlBuilder.append(tableNameAlias);
         sqlBuilder.append(".");
         sqlBuilder.append(happenedDateColumnName);
         sqlBuilder.append(" < ?");
     }
 
-    public static void orderByHappenedDateAsc(
-            StringBuilder sqlBuilder, String tableNameAlias, String happenedDateColumnName
+    public static void orderByHappenedMomentAsc(
+            StringBuilder sqlBuilder, String tableNameAlias,
+            String happenedDateColumnName, String happenedNanoColumnName, String idColumnName
     ) {
         sqlBuilder.append(" ORDER BY ");
         sqlBuilder.append(tableNameAlias);
         sqlBuilder.append(".");
         sqlBuilder.append(happenedDateColumnName);
+        sqlBuilder.append(" ASC, ");
+        sqlBuilder.append(tableNameAlias);
+        sqlBuilder.append(".");
+        sqlBuilder.append(happenedNanoColumnName);
+        sqlBuilder.append(" ASC, ");
+        sqlBuilder.append(tableNameAlias);
+        sqlBuilder.append(".");
+        sqlBuilder.append(idColumnName);
         sqlBuilder.append(" ASC");
     }
 

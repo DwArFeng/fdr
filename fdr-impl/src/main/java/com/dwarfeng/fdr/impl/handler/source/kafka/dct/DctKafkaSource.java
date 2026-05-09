@@ -88,7 +88,8 @@ public class DctKafkaSource extends AbstractSource {
                 RecordInfo recordInfo = new RecordInfo(
                         dctData.getPointKey(),
                         dctData.getValue(),
-                        dctData.getHappenedDate()
+                        dctData.getHappenedDate(),
+                        dctData.getHappenedDateNanoOffset()
                 );
                 context.record(recordInfo);
             } catch (RecordHandlerStoppedException e) {

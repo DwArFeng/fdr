@@ -2,6 +2,7 @@ package com.dwarfeng.fdr.impl.handler.mapper;
 
 import com.dwarfeng.fdr.sdk.handler.mapper.AbstractMapperRegistry;
 import com.dwarfeng.fdr.sdk.handler.mapper.AggregateMapper;
+import com.dwarfeng.fdr.sdk.util.MapperUtil;
 import com.dwarfeng.fdr.stack.exception.MapperException;
 import com.dwarfeng.fdr.stack.exception.MapperMakeException;
 import com.dwarfeng.fdr.stack.handler.Mapper;
@@ -67,9 +68,14 @@ public class CountMapperRegistry extends AbstractMapperRegistry {
     public static class CountMapper extends AggregateMapper {
 
         @Override
-        protected Object doAggregate(MapParam mapParam, List<Item> items, Date startDate, Date endDate) {
+        protected Object doAggregate(
+                MapParam mapParam, List<Item> items,
+                Date startDate, int startDateNanoOffset, Date endDate, int endDateNanoOffset
+        ) {
             // 排序以及过滤数据。
-            items = MapperUtil.sortAndFilterItems(items, startDate, endDate, false);
+            items = MapperUtil.sortAndFilterItems(
+                    items, startDate, startDateNanoOffset, endDate, endDateNanoOffset, false
+            );
 
             // 返回 items 的长度。
             return items.size();

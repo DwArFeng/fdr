@@ -98,6 +98,10 @@ public interface Washer {
     /**
      * 清洗信息。
      *
+     * <p>
+     * 在 3.0.0 版本中，新增了数据发生时间在毫秒内的纳秒偏移。
+     * 数据发生时间由 {@link #happenedDate} 和 {@link #happenedDateNanoOffset} 共同唯一确定。
+     *
      * @author DwArFeng
      * @since 2.5.0
      */
@@ -107,10 +111,23 @@ public interface Washer {
         private final Object value;
         private final Date happenedDate;
 
+        /**
+         * @since 3.0.0
+         */
+        private final int happenedDateNanoOffset;
+
         public WashInfo(LongIdKey pointKey, Object value, Date happenedDate) {
+            this(pointKey, value, happenedDate, 0);
+        }
+
+        /**
+         * @since 3.0.0
+         */
+        public WashInfo(LongIdKey pointKey, Object value, Date happenedDate, int happenedDateNanoOffset) {
             this.pointKey = pointKey;
             this.value = value;
             this.happenedDate = happenedDate;
+            this.happenedDateNanoOffset = happenedDateNanoOffset;
         }
 
         public LongIdKey getPointKey() {
@@ -125,12 +142,17 @@ public interface Washer {
             return happenedDate;
         }
 
+        public int getHappenedDateNanoOffset() {
+            return happenedDateNanoOffset;
+        }
+
         @Override
         public String toString() {
             return "WashInfo{" +
                     "pointKey=" + pointKey +
                     ", value=" + value +
                     ", happenedDate=" + happenedDate +
+                    ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                     '}';
         }
     }

@@ -32,8 +32,8 @@ public class MockBridgeNormalDataBridgeKeeper extends MockBridgeKeeper<NormalDat
     }
 
     @Override
-    protected NormalData generateData(LongIdKey pointKey, Object value, Date date) {
-        return new NormalData(pointKey, value, date);
+    protected NormalData generateData(LongIdKey pointKey, Object value, Date date, int dateNanoOffset) {
+        return new NormalData(pointKey, value, date, dateNanoOffset);
     }
 
     @Override

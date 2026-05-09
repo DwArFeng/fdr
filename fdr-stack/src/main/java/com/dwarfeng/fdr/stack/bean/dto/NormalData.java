@@ -16,24 +16,41 @@ import java.util.Date;
  * <p>
  * 该实体继承了 {@link Data} 接口。
  *
+ * <p>
+ * 在 3.0.0 版本中，新增了数据发生时间在毫秒内的纳秒偏移。
+ * 数据发生时间由 {@link #happenedDate} 和 {@link #happenedDateNanoOffset} 共同唯一确定。
+ *
  * @author DwArFeng
  * @since 2.0.0
  */
 public class NormalData implements Data, Dto {
 
-    private static final long serialVersionUID = -6694722564989291310L;
+    private static final long serialVersionUID = 3227747393478021761L;
 
     private LongIdKey pointKey;
     private Object value;
     private Date happenedDate;
 
+    /**
+     * @since 3.0.0
+     */
+    private int happenedDateNanoOffset;
+
     public NormalData() {
     }
 
     public NormalData(LongIdKey pointKey, Object value, Date happenedDate) {
+        this(pointKey, value, happenedDate, 0);
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public NormalData(LongIdKey pointKey, Object value, Date happenedDate, int happenedDateNanoOffset) {
         this.pointKey = pointKey;
         this.value = value;
         this.happenedDate = happenedDate;
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
     }
 
     @Nonnull
@@ -66,11 +83,21 @@ public class NormalData implements Data, Dto {
     }
 
     @Override
+    public int getHappenedDateNanoOffset() {
+        return happenedDateNanoOffset;
+    }
+
+    public void setHappenedDateNanoOffset(int happenedDateNanoOffset) {
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
+    }
+
+    @Override
     public String toString() {
         return "NormalData{" +
                 "pointKey=" + pointKey +
                 ", value=" + value +
                 ", happenedDate=" + happenedDate +
+                ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                 '}';
     }
 }

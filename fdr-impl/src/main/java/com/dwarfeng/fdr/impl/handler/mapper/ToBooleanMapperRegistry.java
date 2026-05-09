@@ -80,7 +80,6 @@ public class ToBooleanMapperRegistry extends AbstractMapperRegistry {
 
         @Override
         protected Sequence doOneToOneMap(MapParam mapParam, Sequence sequence) {
-
             // 获得配置。
             Config config = JSON.parseObject(mapParam.getParam(), Config.class);
 
@@ -91,24 +90,26 @@ public class ToBooleanMapperRegistry extends AbstractMapperRegistry {
             }
 
             // 返回映射后的序列。
-            return new Sequence(sequence.getPointKey(), items, sequence.getStartDate(), sequence.getEndDate());
+            return new Sequence(
+                    sequence.getPointKey(), items, sequence.getStartDate(), sequence.getStartDateNanoOffset(),
+                    sequence.getEndDate(), sequence.getEndDateNanoOffset()
+            );
         }
 
         // 处理具体的每条数据。
         private Item mapItem(Config config, Item item) {
-
             // 是否忽略大小写。
             boolean stringIgnoreCase = config.isStringIgnoreCase();
             boolean itemValue = false;
-            // 是否启用严格模式。
-            if (config.isStrict()) {
 
-                if (!(item.getValue() instanceof String) && !(item.getValue() instanceof Number) && !(item.getValue() instanceof Boolean)) {
+            // 如果启用严格模式。
+            if (config.isStrict()) {
+                boolean valueInvalid = !(item.getValue() instanceof String) && !(item.getValue() instanceof Number) &&
+                        !(item.getValue() instanceof Boolean);
+                if (valueInvalid) {
                     throw new IllegalStateException("严格模式：传入值格式不正确，请传入字符串、数值或者布尔");
                 }
-
                 if (item.getValue() instanceof String) {
-
                     if ((stringIgnoreCase && "true".equalsIgnoreCase((String) item.getValue()))
                             || (!stringIgnoreCase && "true".equals(item.getValue()))) {
                         itemValue = true;
@@ -117,17 +118,17 @@ public class ToBooleanMapperRegistry extends AbstractMapperRegistry {
                         throw new IllegalStateException("严格模式：字符串格式不正确，请输入 true 或者 false");
                     }
                 }
-
                 if (item.getValue() instanceof Number) {
-                    if (BigDecimal.ONE.compareTo(BigDecimal.valueOf(((Number) item.getValue()).doubleValue())) == 0) {
+                    BigDecimal valueBigDecimal = BigDecimal.valueOf(((Number) item.getValue()).doubleValue());
+                    if (BigDecimal.ONE.compareTo(valueBigDecimal) == 0) {
                         itemValue = true;
-                    } else if (BigDecimal.ZERO.compareTo(BigDecimal.valueOf(((Number) item.getValue()).doubleValue())) != 0) {
+                    } else if (BigDecimal.ZERO.compareTo(valueBigDecimal) != 0) {
                         throw new IllegalStateException("严格模式：数值格式不正确，请输入 1.0 或者 0.0");
                     }
                 }
-
-            } else {
-
+            }
+            // 如果不启用严格模式。
+            else {
                 if (item.getValue() instanceof String) {
                     if ((stringIgnoreCase && "true".equalsIgnoreCase((String) item.getValue()))
                             || (!stringIgnoreCase && "true".equals(item.getValue()))) {
@@ -140,15 +141,14 @@ public class ToBooleanMapperRegistry extends AbstractMapperRegistry {
                     }
                 }
             }
+
+            // 处理布尔类型的值。
             if (item.getValue() instanceof Boolean) {
                 itemValue = (Boolean) item.getValue();
             }
 
-            return new Item(
-                    item.getPointKey(),
-                    itemValue,
-                    item.getHappenedDate()
-            );
+            // 返回结果。
+            return new Item(item.getPointKey(), itemValue, item.getHappenedDate(), item.getHappenedDateNanoOffset());
         }
 
         @Override

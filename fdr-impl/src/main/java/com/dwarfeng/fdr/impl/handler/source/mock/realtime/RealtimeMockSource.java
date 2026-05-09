@@ -31,6 +31,8 @@ public class RealtimeMockSource extends AbstractSource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RealtimeMockSource.class);
 
+    private static final int NANOSECONDS_PER_MILLISECOND = 1000000;
+
     private final RealtimeMockSourceRandomGenerator randomGenerator;
     private final ThreadPoolTaskScheduler scheduler;
 
@@ -86,7 +88,9 @@ public class RealtimeMockSource extends AbstractSource {
 
     private final class RecordInfoGenerateTask implements Runnable {
 
-        private Long lastTimestamp = null;
+        private Long anchorTimestamp = null;
+        private Long anchorNanoTime = null;
+        private Long lastEpochNano = null;
 
         @Override
         public void run() {
@@ -98,20 +102,14 @@ public class RealtimeMockSource extends AbstractSource {
         }
 
         private void runTask() throws Exception {
-            if (Objects.isNull(lastTimestamp)) {
-                lastTimestamp = System.currentTimeMillis();
+            if (Objects.isNull(lastEpochNano)) {
+                anchorTimestamp = System.currentTimeMillis();
+                anchorNanoTime = System.nanoTime();
+                lastEpochNano = anchorTimestamp * NANOSECONDS_PER_MILLISECOND;
                 return;
             }
 
-            long currentTimestamp = System.currentTimeMillis();
-
-            List<Date> happendDateList = new ArrayList<>(dataSizePerPointPerSec);
-            for (int i = 0; i < dataSizePerPointPerSec; i++) {
-                Date happenedDate = new Date(
-                        lastTimestamp + (currentTimestamp - lastTimestamp) * i / dataSizePerPointPerSec
-                );
-                happendDateList.add(happenedDate);
-            }
+            long currentEpochNano = computeCurrentEpochNano();
             for (RealtimeMockSourceDataConfigItem dataConfigItem : dataConfigItems) {
                 String pointType = dataConfigItem.getPointType();
                 if (!methodMap.containsKey(pointType)) {
@@ -122,16 +120,26 @@ public class RealtimeMockSource extends AbstractSource {
                 LongIdKey pointKey = new LongIdKey(dataConfigItem.getPointId());
                 Method method = methodMap.get(pointType);
 
-                for (Date happenedDate : happendDateList) {
+                for (int i = 0; i < dataSizePerPointPerSec; i++) {
+                    long happenedEpochNano =
+                            lastEpochNano + (currentEpochNano - lastEpochNano) * i / dataSizePerPointPerSec;
+                    Date happenedDate = new Date(happenedEpochNano / NANOSECONDS_PER_MILLISECOND);
+                    int happenedDateNanoOffset = (int) (happenedEpochNano % NANOSECONDS_PER_MILLISECOND);
                     context.record(new RecordInfo(
                             pointKey,
                             method.invoke(randomGenerator),
-                            happenedDate
+                            happenedDate,
+                            happenedDateNanoOffset
                     ));
                 }
             }
 
-            lastTimestamp = currentTimestamp;
+            lastEpochNano = currentEpochNano;
+        }
+
+        private long computeCurrentEpochNano() {
+            long elapsedNano = System.nanoTime() - anchorNanoTime;
+            return anchorTimestamp * NANOSECONDS_PER_MILLISECOND + elapsedNano;
         }
     }
 

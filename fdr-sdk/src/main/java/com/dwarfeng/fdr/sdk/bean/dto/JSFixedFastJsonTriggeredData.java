@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 public class JSFixedFastJsonTriggeredData implements Dto {
 
-    private static final long serialVersionUID = -1754308960268944291L;
+    private static final long serialVersionUID = -2021402027991986209L;
 
     public static JSFixedFastJsonTriggeredData of(TriggeredData triggeredData) {
         if (Objects.isNull(triggeredData)) {
@@ -27,7 +27,23 @@ public class JSFixedFastJsonTriggeredData implements Dto {
                     JSFixedFastJsonLongIdKey.of(triggeredData.getTriggerKey()),
                     triggeredData.getValue(),
                     triggeredData.getMessage(),
-                    triggeredData.getHappenedDate()
+                    triggeredData.getHappenedDate(),
+                    triggeredData.getHappenedDateNanoOffset()
+            );
+        }
+    }
+
+    public static TriggeredData toStackBean(JSFixedFastJsonTriggeredData jsFixedFastTriggeredData) {
+        if (Objects.isNull(jsFixedFastTriggeredData)) {
+            return null;
+        } else {
+            return new TriggeredData(
+                    JSFixedFastJsonLongIdKey.toStackBean(jsFixedFastTriggeredData.getPointKey()),
+                    JSFixedFastJsonLongIdKey.toStackBean(jsFixedFastTriggeredData.getTriggerKey()),
+                    jsFixedFastTriggeredData.getValue(),
+                    jsFixedFastTriggeredData.getMessage(),
+                    jsFixedFastTriggeredData.getHappenedDate(),
+                    jsFixedFastTriggeredData.getHappenedDateNanoOffset()
             );
         }
     }
@@ -47,17 +63,29 @@ public class JSFixedFastJsonTriggeredData implements Dto {
     @JSONField(name = "happened_date", ordinal = 5)
     private Date happenedDate;
 
+    @JSONField(name = "happened_date_nano_offset", ordinal = 6)
+    private int happenedDateNanoOffset;
+
     public JSFixedFastJsonTriggeredData() {
     }
 
     public JSFixedFastJsonTriggeredData(
-            JSFixedFastJsonLongIdKey pointKey, JSFixedFastJsonLongIdKey triggerKey, Object value, String message, Date happenedDate
+            JSFixedFastJsonLongIdKey pointKey, JSFixedFastJsonLongIdKey triggerKey, Object value, String message,
+            Date happenedDate
+    ) {
+        this(pointKey, triggerKey, value, message, happenedDate, 0);
+    }
+
+    public JSFixedFastJsonTriggeredData(
+            JSFixedFastJsonLongIdKey pointKey, JSFixedFastJsonLongIdKey triggerKey, Object value, String message,
+            Date happenedDate, int happenedDateNanoOffset
     ) {
         this.pointKey = pointKey;
         this.triggerKey = triggerKey;
         this.value = value;
         this.message = message;
         this.happenedDate = happenedDate;
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
     }
 
     public JSFixedFastJsonLongIdKey getPointKey() {
@@ -100,6 +128,14 @@ public class JSFixedFastJsonTriggeredData implements Dto {
         this.happenedDate = happenedDate;
     }
 
+    public int getHappenedDateNanoOffset() {
+        return happenedDateNanoOffset;
+    }
+
+    public void setHappenedDateNanoOffset(int happenedDateNanoOffset) {
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
+    }
+
     @Override
     public String toString() {
         return "JSFixedFastJsonTriggeredData{" +
@@ -108,6 +144,7 @@ public class JSFixedFastJsonTriggeredData implements Dto {
                 ", value=" + value +
                 ", message='" + message + '\'' +
                 ", happenedDate=" + happenedDate +
+                ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                 '}';
     }
 }

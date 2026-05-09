@@ -1,9 +1,10 @@
 package com.dwarfeng.fdr.impl.handler.bridge.influxdb;
 
+import com.dwarfeng.dutil.basic.time.TimeUtil;
 import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.InfluxdbBridgeLookupResult;
 import com.dwarfeng.fdr.impl.handler.bridge.influxdb.handler.InfluxdbBridgeNormalDataHandler;
 import com.dwarfeng.fdr.impl.handler.bridge.influxdb.util.Constants;
-import com.dwarfeng.fdr.impl.handler.bridge.influxdb.util.DateUtil;
+import com.dwarfeng.fdr.sdk.util.DataUtil;
 import com.dwarfeng.fdr.stack.bean.dto.NormalData;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.influxdb.client.domain.WritePrecision;
@@ -11,7 +12,7 @@ import com.influxdb.client.write.Point;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -40,7 +41,7 @@ public class InfluxdbBridgeNormalDataPersister extends InfluxdbBridgePersister<N
             fieldMap.put(Constants.FIELD_NAME_VALUE, data.getValue());
         }
         point.addFields(fieldMap);
-        point.time(DateUtil.date2Instant(data.getHappenedDate()), WritePrecision.MS);
+        point.time(DataUtil.getHappenedInstant(data), WritePrecision.NS);
         return point;
     }
 
@@ -53,8 +54,10 @@ public class InfluxdbBridgeNormalDataPersister extends InfluxdbBridgePersister<N
         if (Objects.nonNull((filedValue = valueMap.get(Constants.FIELD_NAME_VALUE)))) {
             value = filedValue;
         }
-        Date happenedDate = DateUtil.instant2Date(item.getHappenedInstant());
-        return new NormalData(pointKey, value, happenedDate);
+        Instant happenedInstant = item.getHappenedInstant();
+        return new NormalData(
+                pointKey, value, TimeUtil.toDate(happenedInstant), TimeUtil.toNanoOffset(happenedInstant)
+        );
     }
 
     @Override

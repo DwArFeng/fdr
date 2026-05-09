@@ -393,6 +393,7 @@ public class RecordProcessor {
                 LOGGER.debug("记录数据信息: {}", recordInfo);
                 LongIdKey pointKey = recordInfo.getPointKey();
                 Date happenedDate = recordInfo.getHappenedDate();
+                int happenedDateNanoOffset = recordInfo.getHappenedDateNanoOffset();
                 Object rawValue = recordInfo.getValue();
 
                 // 获取 RecordLocalCache。
@@ -412,7 +413,9 @@ public class RecordProcessor {
 
                     Object currentValue = recordInfo.getValue();
                     LOGGER.debug("数据信息经过过滤前清洗, 原始数据点信息: {}", currentValue);
-                    Washer.WashInfo washInfo = new Washer.WashInfo(pointKey, currentValue, happenedDate);
+                    Washer.WashInfo washInfo = new Washer.WashInfo(
+                            pointKey, currentValue, happenedDate, happenedDateNanoOffset
+                    );
                     Washer.WashResult washResult = washer.wash(washInfo);
                     Object washedValue = Objects.isNull(washResult) ? null : washResult.getValue();
                     LOGGER.debug("数据信息经过过滤前清洗, 清洗数据点信息: {}", washedValue);
@@ -426,12 +429,15 @@ public class RecordProcessor {
                     LongIdKey filterKey = entry.getKey();
                     Filter filter = entry.getValue();
 
-                    Filter.TestInfo testInfo = new Filter.TestInfo(pointKey, value, happenedDate);
+                    Filter.TestInfo testInfo = new Filter.TestInfo(
+                            pointKey, value, happenedDate, happenedDateNanoOffset
+                    );
                     Filter.TestResult testResult = filter.test(testInfo);
 
                     if (testResult.isFiltered()) {
                         FilteredData filteredRecord = new FilteredData(
-                                pointKey, filterKey, value, testResult.getMessage(), happenedDate
+                                pointKey, filterKey, value, testResult.getMessage(), happenedDate,
+                                happenedDateNanoOffset
                         );
                         LOGGER.debug("数据信息未通过过滤, 过滤数据点信息: {}", filteredRecord);
 
@@ -442,7 +448,12 @@ public class RecordProcessor {
                             filteredPersistConsumeHandler.accept(filteredRecord);
                         }
                         // 追加记录记忆。
-                        appendRecordMemory(point, new RecordMemory(pointKey, happenedDate, rawValue, false, null));
+                        appendRecordMemory(
+                                point,
+                                new RecordMemory(
+                                        pointKey, happenedDate, happenedDateNanoOffset, rawValue, false, null
+                                )
+                        );
                         return;
                     }
                 }
@@ -453,7 +464,9 @@ public class RecordProcessor {
 
                     Object currentValue = recordInfo.getValue();
                     LOGGER.debug("数据信息经过过滤后清洗, 原始数据点信息: {}", currentValue);
-                    Washer.WashInfo washInfo = new Washer.WashInfo(pointKey, currentValue, happenedDate);
+                    Washer.WashInfo washInfo = new Washer.WashInfo(
+                            pointKey, currentValue, happenedDate, happenedDateNanoOffset
+                    );
                     Washer.WashResult washResult = washer.wash(washInfo);
                     Object washedValue = Objects.isNull(washResult) ? null : washResult.getValue();
                     LOGGER.debug("数据信息经过过滤后清洗, 清洗数据点信息: {}", washedValue);
@@ -468,12 +481,15 @@ public class RecordProcessor {
                     LongIdKey triggerKey = entry.getKey();
                     Trigger trigger = entry.getValue();
 
-                    Trigger.TestInfo testInfo = new Trigger.TestInfo(pointKey, value, happenedDate);
+                    Trigger.TestInfo testInfo = new Trigger.TestInfo(
+                            pointKey, value, happenedDate, happenedDateNanoOffset
+                    );
                     Trigger.TestResult testResult = trigger.test(testInfo);
 
                     if (testResult.isTriggered()) {
                         TriggeredData currentTriggeredData = new TriggeredData(
-                                pointKey, triggerKey, value, testResult.getMessage(), happenedDate
+                                pointKey, triggerKey, value, testResult.getMessage(), happenedDate,
+                                happenedDateNanoOffset
                         );
                         if (Objects.isNull(triggeredData)) {
                             triggeredData = currentTriggeredData;
@@ -492,7 +508,9 @@ public class RecordProcessor {
                 // 生成一般数据，根据数据点配置保持或持久一般数据。
                 {
                     Object value = recordInfo.getValue();
-                    NormalData normalData = new NormalData(pointKey, value, happenedDate);
+                    NormalData normalData = new NormalData(
+                            pointKey, value, happenedDate, happenedDateNanoOffset
+                    );
                     LOGGER.debug("记录一般数据: {}", normalData);
 
                     if (point.isNormalKeepEnabled()) {
@@ -502,7 +520,12 @@ public class RecordProcessor {
                         normalPersistConsumeHandler.accept(normalData);
                     }
                     // 追加记录记忆。
-                    appendRecordMemory(point, new RecordMemory(pointKey, happenedDate, rawValue, true, value));
+                    appendRecordMemory(
+                            point,
+                            new RecordMemory(
+                                    pointKey, happenedDate, happenedDateNanoOffset, rawValue, true, value
+                            )
+                    );
                 }
             } catch (Exception e) {
                 throw HandlerExceptionHelper.parse(e);

@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.bridge.influxdb;
 
+import com.dwarfeng.dutil.basic.time.TimeUtil;
 import com.dwarfeng.fdr.impl.handler.bridge.influxdb.bean.dto.*;
 import com.dwarfeng.fdr.impl.handler.bridge.influxdb.handler.InfluxdbBridgeDataHandler;
 import com.dwarfeng.fdr.impl.handler.bridge.influxdb.util.DateUtil;
@@ -15,6 +16,7 @@ import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.influxdb.client.write.Point;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -243,18 +245,26 @@ public abstract class InfluxdbBridgePersister<D extends Data> extends FullPersis
         List<QueryResult.Sequence> sequences = new ArrayList<>(influxdbBridgeSequences.size());
         for (InfluxdbBridgeQueryResult.InfluxdbBridgeSequence influxdbBridgeSequence : influxdbBridgeSequences) {
             LongIdKey pointKey = new LongIdKey(Long.parseLong(influxdbBridgeSequence.getMeasurement()));
-            startDate = DateUtil.instant2Date(influxdbBridgeSequence.getStartInstant());
-            endDate = DateUtil.instant2Date(influxdbBridgeSequence.getEndInstant());
+            Instant startInstant = influxdbBridgeSequence.getStartInstant();
+            Instant endInstant = influxdbBridgeSequence.getEndInstant();
+            startDate = TimeUtil.toDate(startInstant);
+            endDate = TimeUtil.toDate(endInstant);
 
-            List<InfluxdbBridgeQueryResult.InfluxdbBridgeItem> influxdbBridgeItems
-                    = influxdbBridgeSequence.getItems();
+            List<InfluxdbBridgeQueryResult.InfluxdbBridgeItem> influxdbBridgeItems = influxdbBridgeSequence.getItems();
             List<QueryResult.Item> items = new ArrayList<>(influxdbBridgeItems.size());
             for (InfluxdbBridgeQueryResult.InfluxdbBridgeItem influxdbBridgeItem : influxdbBridgeItems) {
-                Date happenedDate = DateUtil.instant2Date(influxdbBridgeItem.getHappenedInstant());
-                items.add(new QueryResult.Item(pointKey, influxdbBridgeItem.getValue(), happenedDate));
+                Instant happenedInstant = influxdbBridgeItem.getHappenedInstant();
+                items.add(new QueryResult.Item(
+                        pointKey, influxdbBridgeItem.getValue(),
+                        TimeUtil.toDate(happenedInstant), TimeUtil.toNanoOffset(happenedInstant)
+                ));
             }
 
-            sequences.add(new QueryResult.Sequence(pointKey, items, startDate, endDate));
+            sequences.add(new QueryResult.Sequence(
+                    pointKey, items,
+                    startDate, TimeUtil.toNanoOffset(startInstant),
+                    endDate, TimeUtil.toNanoOffset(endInstant)
+            ));
         }
         return new QueryResult(sequences);
     }

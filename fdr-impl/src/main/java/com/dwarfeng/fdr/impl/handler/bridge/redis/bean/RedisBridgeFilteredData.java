@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class RedisBridgeFilteredData implements Entity<LongIdKey> {
 
-    private static final long serialVersionUID = 5219385666770559243L;
+    private static final long serialVersionUID = 2228967634880608411L;
 
     private LongIdKey key;
     private LongIdKey filterKey;
@@ -21,17 +21,33 @@ public class RedisBridgeFilteredData implements Entity<LongIdKey> {
     private String message;
     private Date happenedDate;
 
+    /**
+     * @since 3.0.0
+     */
+    private int happenedDateNanoOffset;
+
     public RedisBridgeFilteredData() {
     }
 
     public RedisBridgeFilteredData(
             LongIdKey key, LongIdKey filterKey, String value, String message, Date happenedDate
     ) {
+        this(key, filterKey, value, message, happenedDate, 0);
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public RedisBridgeFilteredData(
+            LongIdKey key, LongIdKey filterKey, String value, String message, Date happenedDate,
+            int happenedDateNanoOffset
+    ) {
         this.key = key;
         this.filterKey = filterKey;
         this.value = value;
         this.message = message;
         this.happenedDate = happenedDate;
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
     }
 
     @Override
@@ -76,6 +92,14 @@ public class RedisBridgeFilteredData implements Entity<LongIdKey> {
         this.happenedDate = happenedDate;
     }
 
+    public int getHappenedDateNanoOffset() {
+        return happenedDateNanoOffset;
+    }
+
+    public void setHappenedDateNanoOffset(int happenedDateNanoOffset) {
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
+    }
+
     @Override
     public String toString() {
         return "RedisBridgeFilteredData{" +
@@ -84,6 +108,7 @@ public class RedisBridgeFilteredData implements Entity<LongIdKey> {
                 ", value='" + value + '\'' +
                 ", message='" + message + '\'' +
                 ", happenedDate=" + happenedDate +
+                ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                 '}';
     }
 }

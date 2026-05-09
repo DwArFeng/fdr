@@ -1,5 +1,9 @@
 package com.dwarfeng.fdr.sdk.handler.mapper;
 
+import com.dwarfeng.dutil.basic.time.TimeUtil;
+import com.dwarfeng.fdr.sdk.util.MapperUtil;
+
+import java.time.Instant;
 import java.util.*;
 
 /**
@@ -23,7 +27,7 @@ public abstract class AggregateMapper extends OneToOneMapper {
      * 空值对象。
      *
      * <p>
-     * 该对象用于 {@link #doAggregate(MapParam, List, Date, Date)} 方法的返回值；
+     * 该对象用于 {@link #doAggregate(MapParam, List, Date, int, Date, int)} 方法的返回值；
      * 如果执行聚合操作后，没有任何值，则返回该对象。
      *
      * <p>
@@ -35,24 +39,30 @@ public abstract class AggregateMapper extends OneToOneMapper {
     protected Sequence doOneToOneMap(MapParam mapParam, Sequence sequence) throws Exception {
         // 展开序列的参数。
         Date startDate = sequence.getStartDate();
+        int startDateNanoOffset = sequence.getStartDateNanoOffset();
         Date endDate = sequence.getEndDate();
+        int endDateNanoOffset = sequence.getEndDateNanoOffset();
 
         // 遍历数据表中的所有序列，对每个序列进行聚合运算。
         // 获取序列的数据条目列表。
         List<Item> items = sequence.getItems();
 
         // 调用聚合方法，获取聚合后的值。
-        Object value = doAggregate(mapParam, items, startDate, endDate);
+        Object value = doAggregate(
+                mapParam, items, startDate, startDateNanoOffset, endDate, endDateNanoOffset
+        );
 
         if (Objects.equals(value, VOID)) {
             // 如果聚合后的值为 VOID，则不构造新的数据条目。
             items = Collections.emptyList();
         } else {
-            // 构造新的数据条目，其中的发生时间为序列开始时间和结束时间的中间值，数据点主键为序列的数据点主键。
-            Item item = new Item(
-                    sequence.getPointKey(), value,
-                    new Date((startDate.getTime() + endDate.getTime()) / 2)
-            );
+            long startNanos = MapperUtil.toEpochNanos(startDate, startDateNanoOffset);
+            long endNanos = MapperUtil.toEpochNanos(endDate, endDateNanoOffset);
+            long midNanos = (startNanos + endNanos) / 2;
+            Instant midInstant = MapperUtil.instantFromEpochNanos(midNanos);
+            Date midDate = TimeUtil.toDate(midInstant);
+            int midDateNanoOffset = TimeUtil.toNanoOffset(midInstant);
+            Item item = new Item(sequence.getPointKey(), value, midDate, midDateNanoOffset);
 
             // 将新的数据条目添加到数据条目列表中。
             items = new ArrayList<>();
@@ -60,7 +70,9 @@ public abstract class AggregateMapper extends OneToOneMapper {
         }
 
         // 返回新的序列。
-        return new Sequence(sequence.getPointKey(), items, startDate, endDate);
+        return new Sequence(
+                sequence.getPointKey(), items, startDate, startDateNanoOffset, endDate, endDateNanoOffset
+        );
     }
 
     /**
@@ -79,14 +91,17 @@ public abstract class AggregateMapper extends OneToOneMapper {
      * <p>
      * 需要注意的是，参数 item 的数据的发生时间不保证在 startDate 和 endDate 之间，聚合操作需要根据实际情况进行处理。
      *
-     * @param mapParam  映射参数。
-     * @param items     数据条目列表。
-     * @param startDate 序列的开始时间。
-     * @param endDate   序列的结束时间。
+     * @param mapParam            映射参数。
+     * @param items               数据条目列表。
+     * @param startDate           序列开始时间的毫秒部分。
+     * @param startDateNanoOffset 序列开始时间在对应毫秒内的纳秒偏移。
+     * @param endDate             序列结束时间的毫秒部分。
+     * @param endDateNanoOffset   序列结束时间在对应毫秒内的纳秒偏移。
      * @return 聚合后的值。
      * @throws Exception 执行聚合操作时可能抛出的任何异常。
      */
     protected abstract Object doAggregate(
-            MapParam mapParam, List<Item> items, Date startDate, Date endDate
+            MapParam mapParam, List<Item> items,
+            Date startDate, int startDateNanoOffset, Date endDate, int endDateNanoOffset
     ) throws Exception;
 }

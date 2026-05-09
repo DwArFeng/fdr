@@ -4,6 +4,7 @@ import com.dwarfeng.fdr.impl.handler.bridge.hibernate.service.HibernateBridgeNor
 import com.dwarfeng.subgrade.sdk.hibernate.criteria.PresetCriteriaMaker;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +43,16 @@ public class HibernateBridgeNormalDataPresetCriteriaMaker implements PresetCrite
 
             detachedCriteria.add(Restrictions.eqOrIsNull("pointLongId", pointLongId));
             detachedCriteria.add(Restrictions.ge("happenedDate", startDate));
-            detachedCriteria.add(Restrictions.le("happenedDate", endDate));
+            detachedCriteria.add(Restrictions.or(
+                    Restrictions.lt("happenedDate", endDate),
+                    Restrictions.and(
+                            Restrictions.eq("happenedDate", endDate),
+                            Restrictions.eq("happenedDateNanoOffset", 0)
+                    )
+            ));
+            detachedCriteria.addOrder(Order.asc("happenedDate"));
+            detachedCriteria.addOrder(Order.asc("happenedDateNanoOffset"));
+            detachedCriteria.addOrder(Order.asc("longId"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
         }
@@ -58,6 +68,9 @@ public class HibernateBridgeNormalDataPresetCriteriaMaker implements PresetCrite
             detachedCriteria.add(Restrictions.eqOrIsNull("pointLongId", pointLongId));
             detachedCriteria.add(Restrictions.ge("happenedDate", startDate));
             detachedCriteria.add(Restrictions.lt("happenedDate", endDate));
+            detachedCriteria.addOrder(Order.asc("happenedDate"));
+            detachedCriteria.addOrder(Order.asc("happenedDateNanoOffset"));
+            detachedCriteria.addOrder(Order.asc("longId"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
         }
@@ -71,8 +84,23 @@ public class HibernateBridgeNormalDataPresetCriteriaMaker implements PresetCrite
             Date endDate = (Date) objects[2];
 
             detachedCriteria.add(Restrictions.eqOrIsNull("pointLongId", pointLongId));
-            detachedCriteria.add(Restrictions.gt("happenedDate", startDate));
-            detachedCriteria.add(Restrictions.le("happenedDate", endDate));
+            detachedCriteria.add(Restrictions.or(
+                    Restrictions.gt("happenedDate", startDate),
+                    Restrictions.and(
+                            Restrictions.eq("happenedDate", startDate),
+                            Restrictions.gt("happenedDateNanoOffset", 0)
+                    )
+            ));
+            detachedCriteria.add(Restrictions.or(
+                    Restrictions.lt("happenedDate", endDate),
+                    Restrictions.and(
+                            Restrictions.eq("happenedDate", endDate),
+                            Restrictions.eq("happenedDateNanoOffset", 0)
+                    )
+            ));
+            detachedCriteria.addOrder(Order.asc("happenedDate"));
+            detachedCriteria.addOrder(Order.asc("happenedDateNanoOffset"));
+            detachedCriteria.addOrder(Order.asc("longId"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
         }
@@ -86,8 +114,17 @@ public class HibernateBridgeNormalDataPresetCriteriaMaker implements PresetCrite
             Date endDate = (Date) objects[2];
 
             detachedCriteria.add(Restrictions.eqOrIsNull("pointLongId", pointLongId));
-            detachedCriteria.add(Restrictions.gt("happenedDate", startDate));
+            detachedCriteria.add(Restrictions.or(
+                    Restrictions.gt("happenedDate", startDate),
+                    Restrictions.and(
+                            Restrictions.eq("happenedDate", startDate),
+                            Restrictions.gt("happenedDateNanoOffset", 0)
+                    )
+            ));
             detachedCriteria.add(Restrictions.lt("happenedDate", endDate));
+            detachedCriteria.addOrder(Order.asc("happenedDate"));
+            detachedCriteria.addOrder(Order.asc("happenedDateNanoOffset"));
+            detachedCriteria.addOrder(Order.asc("longId"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
         }

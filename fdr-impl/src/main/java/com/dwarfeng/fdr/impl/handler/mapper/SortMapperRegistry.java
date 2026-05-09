@@ -15,7 +15,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -99,16 +98,16 @@ public class SortMapperRegistry extends AbstractMapperRegistry {
 
             // 遍历 sequences，对其中的数据条目进行排序。
             for (Sequence sequence : sequences) {
-                List<Item> items = new ArrayList<>(sequence.getItems());
+                List<Item> items = sequence.getItems();
 
                 // 对 items 进行排序。
                 Comparator<Data> dataComparator;
                 switch (config.getItemHappenedDateOrder()) {
                     case ORDER_ASC:
-                        dataComparator = CompareUtil.DATA_HAPPENED_DATE_ASC_COMPARATOR;
+                        dataComparator = CompareUtil.DATA_HAPPENED_INSTANT_ASC_COMPARATOR;
                         break;
                     case ORDER_DESC:
-                        dataComparator = CompareUtil.DATA_HAPPENED_DATE_DESC_COMPARATOR;
+                        dataComparator = CompareUtil.DATA_HAPPENED_INSTANT_DESC_COMPARATOR;
                         break;
                     default:
                         throw new IllegalArgumentException(

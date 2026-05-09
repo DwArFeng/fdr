@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
  */
 @Component
 public class HighPassMapperRegistry extends AbstractMapperRegistry {
+
     public static final String MAPPER_TYPE = "high_pass_mapper";
 
     private final ApplicationContext ctx;
@@ -97,7 +98,10 @@ public class HighPassMapperRegistry extends AbstractMapperRegistry {
             List<Item> items = doFilter(sequence, threshold, canEqual, invert);
 
             // 返回结果。
-            return new Sequence(sequence.getPointKey(), items, sequence.getStartDate(), sequence.getEndDate());
+            return new Sequence(
+                    sequence.getPointKey(), items, sequence.getStartDate(), sequence.getStartDateNanoOffset(),
+                    sequence.getEndDate(), sequence.getEndDateNanoOffset()
+            );
         }
 
         // 为了保证代码的可读性，此处代码不做简化。

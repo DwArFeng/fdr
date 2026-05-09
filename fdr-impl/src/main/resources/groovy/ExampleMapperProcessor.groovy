@@ -12,7 +12,7 @@ import static com.dwarfeng.fdr.stack.handler.Mapper.Item
  * @author Dwarfeng
  * @since 1.6.0
  */
-@SuppressWarnings('GrPackage')
+@SuppressWarnings(['GrPackage', 'unused'])
 class ExampleMapperProcessor implements GroovyMapperRegistry.Processor {
 
     @Override
@@ -38,7 +38,8 @@ class ExampleMapperProcessor implements GroovyMapperRegistry.Processor {
         // 返回新的序列。
         return new Mapper.Sequence(
                 sequence.getPointKey(), Collections.unmodifiableList(items),
-                sequence.getStartDate(), sequence.getEndDate()
+                sequence.getStartDate(), sequence.getStartDateNanoOffset(),
+                sequence.getEndDate(), sequence.getEndDateNanoOffset()
         )
     }
 }

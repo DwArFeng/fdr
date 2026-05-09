@@ -45,6 +45,11 @@ public class RedisBridgeTriggeredDataKeeper extends RedisBridgeKeeper<TriggeredD
     }
 
     @Override
+    protected int getHappenedDateNanoOffset(@Nonnull RedisBridgeTriggeredData entity) {
+        return entity.getHappenedDateNanoOffset();
+    }
+
+    @Override
     protected RedisBridgeTriggeredData transformData(@Nullable TriggeredData data) throws Exception {
         if (Objects.isNull(data)) {
             return null;
@@ -55,7 +60,8 @@ public class RedisBridgeTriggeredDataKeeper extends RedisBridgeKeeper<TriggeredD
                 data.getTriggerKey(),
                 flatValue,
                 data.getMessage(),
-                data.getHappenedDate()
+                data.getHappenedDate(),
+                data.getHappenedDateNanoOffset()
         );
     }
 
@@ -70,7 +76,8 @@ public class RedisBridgeTriggeredDataKeeper extends RedisBridgeKeeper<TriggeredD
                 data.getTriggerKey(),
                 value,
                 data.getMessage(),
-                data.getHappenedDate()
+                data.getHappenedDate(),
+                data.getHappenedDateNanoOffset()
         );
     }
 

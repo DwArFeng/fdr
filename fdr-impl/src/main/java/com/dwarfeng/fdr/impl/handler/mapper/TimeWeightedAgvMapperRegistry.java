@@ -1,7 +1,9 @@
 package com.dwarfeng.fdr.impl.handler.mapper;
 
+import com.dwarfeng.dutil.basic.time.TimeUtil;
 import com.dwarfeng.fdr.sdk.handler.mapper.AbstractMapperRegistry;
 import com.dwarfeng.fdr.sdk.handler.mapper.AggregateMapper;
+import com.dwarfeng.fdr.sdk.util.MapperUtil;
 import com.dwarfeng.fdr.stack.exception.MapperException;
 import com.dwarfeng.fdr.stack.exception.MapperMakeException;
 import com.dwarfeng.fdr.stack.handler.Mapper;
@@ -75,7 +77,10 @@ public class TimeWeightedAgvMapperRegistry extends AbstractMapperRegistry {
     public static class TimeWeightedAgvMapper extends AggregateMapper {
 
         @Override
-        protected Object doAggregate(MapParam mapParam, List<Item> items, Date startDate, Date endDate) {
+        protected Object doAggregate(
+                MapParam mapParam, List<Item> items,
+                Date startDate, int startDateNanoOffset, Date endDate, int endDateNanoOffset
+        ) {
             // 特殊情况判断结果。
             SpecialCaseAssertResult specialCaseAssertResult;
 
@@ -86,7 +91,9 @@ public class TimeWeightedAgvMapperRegistry extends AbstractMapperRegistry {
             }
 
             // 排序以及过滤数据。
-            items = MapperUtil.sortAndFilterItems(items, startDate, endDate, true);
+            items = MapperUtil.sortAndFilterItems(
+                    items, startDate, startDateNanoOffset, endDate, endDateNanoOffset, true
+            );
 
             // 再次判断特殊情况。
             specialCaseAssertResult = assertSpecialCase(items);
@@ -96,12 +103,25 @@ public class TimeWeightedAgvMapperRegistry extends AbstractMapperRegistry {
 
             // 如果第一个数据条目的发生时间小于 startDate，则将其发生时间设置为 startDate。
             Item oldItem;
-            if ((oldItem = items.get(0)).getHappenedDate().compareTo(startDate) < 0) {
-                items.set(0, new Item(oldItem.getPointKey(), oldItem.getValue(), startDate));
+            if (TimeUtil.compare(
+                    (oldItem = items.get(0)).getHappenedDate(), oldItem.getHappenedDateNanoOffset(),
+                    startDate, startDateNanoOffset
+            ) < 0) {
+                items.set(
+                        0,
+                        new Item(oldItem.getPointKey(), oldItem.getValue(), startDate, startDateNanoOffset)
+                );
             }
             // 如果最后一个数据条目的发生时间大于 endDate，则将其发生时间设置为 endDate。
-            if ((oldItem = items.get(items.size() - 1)).getHappenedDate().compareTo(endDate) > 0) {
-                items.set(items.size() - 1, new Item(oldItem.getPointKey(), oldItem.getValue(), endDate));
+            if (TimeUtil.compare(
+                    (oldItem = items.get(items.size() - 1)).getHappenedDate(),
+                    oldItem.getHappenedDateNanoOffset(),
+                    endDate, endDateNanoOffset
+            ) > 0) {
+                items.set(
+                        items.size() - 1,
+                        new Item(oldItem.getPointKey(), oldItem.getValue(), endDate, endDateNanoOffset)
+                );
             }
 
             // 定义总和变量。
@@ -117,14 +137,17 @@ public class TimeWeightedAgvMapperRegistry extends AbstractMapperRegistry {
                 double doubleValue = Optional.ofNullable(value).map(v -> ((Number) v).doubleValue()).orElse(0.0);
 
                 // 计算时间加权总和。
-                long duration = nextItem.getHappenedDate().getTime() - item.getHappenedDate().getTime();
-                sum += doubleValue * duration;
+                long durationNanos = MapperUtil.nanosAfter(item, nextItem);
+                sum += doubleValue * durationNanos;
             }
 
-            // 计算并返回加权平均值：加权总和 / 最后一个元素的时间戳 - 第一个元素的时间戳。
-            long firstTimestamp = items.get(0).getHappenedDate().getTime();
-            long lastTimestamp = items.get(items.size() - 1).getHappenedDate().getTime();
-            return sum / (lastTimestamp - firstTimestamp);
+            // 计算并返回加权平均值：加权总和 / 首尾时间间隔（纳秒）。
+            long totalNanos = MapperUtil.nanosAfter(items.get(0), items.get(items.size() - 1));
+            if (totalNanos <= 0) {
+                return Optional.ofNullable(items.get(0).getValue())
+                        .map(v -> ((Number) v).doubleValue()).orElse(0.0);
+            }
+            return sum / totalNanos;
         }
 
         private SpecialCaseAssertResult assertSpecialCase(List<Item> items) {

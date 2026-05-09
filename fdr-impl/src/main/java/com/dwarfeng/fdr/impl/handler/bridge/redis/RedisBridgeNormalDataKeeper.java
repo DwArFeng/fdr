@@ -45,6 +45,11 @@ public class RedisBridgeNormalDataKeeper extends RedisBridgeKeeper<NormalData, R
     }
 
     @Override
+    protected int getHappenedDateNanoOffset(@Nonnull RedisBridgeNormalData entity) {
+        return entity.getHappenedDateNanoOffset();
+    }
+
+    @Override
     protected RedisBridgeNormalData transformData(@Nullable NormalData data) throws Exception {
         if (Objects.isNull(data)) {
             return null;
@@ -53,7 +58,8 @@ public class RedisBridgeNormalDataKeeper extends RedisBridgeKeeper<NormalData, R
         return new RedisBridgeNormalData(
                 data.getPointKey(),
                 flatValue,
-                data.getHappenedDate()
+                data.getHappenedDate(),
+                data.getHappenedDateNanoOffset()
         );
     }
 
@@ -66,7 +72,8 @@ public class RedisBridgeNormalDataKeeper extends RedisBridgeKeeper<NormalData, R
         return new NormalData(
                 data.getKey(),
                 value,
-                data.getHappenedDate()
+                data.getHappenedDate(),
+                data.getHappenedDateNanoOffset()
         );
     }
 

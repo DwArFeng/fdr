@@ -36,7 +36,8 @@ public class HibernateBridgeFilteredDataPersister extends
                 data.getFilterKey(),
                 flatValue,
                 data.getMessage(),
-                data.getHappenedDate()
+                data.getHappenedDate(),
+                data.getHappenedDateNanoOffset()
         );
     }
 
@@ -59,11 +60,8 @@ public class HibernateBridgeFilteredDataPersister extends
     protected FilteredData reverseTransform(HibernateBridgeFilteredData t) throws Exception {
         Object value = valueCodingHandler.decode(t.getValue());
         return new FilteredData(
-                t.getPointKey(),
-                t.getFilterKey(),
-                value,
-                t.getMessage(),
-                t.getHappenedDate()
+                t.getPointKey(), t.getFilterKey(), value, t.getMessage(),
+                t.getHappenedDate(), t.getHappenedDateNanoOffset()
         );
     }
 

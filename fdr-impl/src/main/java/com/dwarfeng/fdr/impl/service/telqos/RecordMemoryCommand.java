@@ -169,6 +169,10 @@ public class RecordMemoryCommand extends CliCommand {
                         String.format("%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS.%1$tL", recordMemory.getHappenedDate())
         ));
         context.sendMessage(String.format(
+                "  happenedDateNanoOffset: %d",
+                recordMemory.getHappenedDateNanoOffset()
+        ));
+        context.sendMessage(String.format(
                 "  rawValueClass: %s", Objects.isNull(recordMemory.getRawValue()) ?
                         "null" : recordMemory.getRawValue().getClass().getCanonicalName()
         ));

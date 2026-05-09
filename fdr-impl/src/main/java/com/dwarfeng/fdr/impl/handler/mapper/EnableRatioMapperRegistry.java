@@ -5,6 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.fdr.sdk.handler.mapper.AbstractMapperRegistry;
 import com.dwarfeng.fdr.sdk.handler.mapper.AggregateMapper;
 import com.dwarfeng.fdr.sdk.util.CompareUtil;
+import com.dwarfeng.fdr.sdk.util.MapperUtil;
 import com.dwarfeng.fdr.stack.exception.MapperException;
 import com.dwarfeng.fdr.stack.exception.MapperMakeException;
 import com.dwarfeng.fdr.stack.handler.Mapper;
@@ -77,7 +78,10 @@ public class EnableRatioMapperRegistry extends AbstractMapperRegistry {
     public static class EnableRatioMapper extends AggregateMapper {
 
         @Override
-        protected Object doAggregate(MapParam mapParam, List<Item> items, Date startDate, Date endDate) {
+        protected Object doAggregate(
+                MapParam mapParam, List<Item> items,
+                Date startDate, int startDateNanoOffset, Date endDate, int endDateNanoOffset
+        ) {
 
             // 获得配置。
             Config config = JSON.parseObject(mapParam.getParam(), Config.class);
@@ -85,10 +89,7 @@ public class EnableRatioMapperRegistry extends AbstractMapperRegistry {
             boolean invert = config.isInvert();
 
             // 对数据点进行时间排序(正序)。
-            items.sort(CompareUtil.DATA_HAPPENED_DATE_ASC_COMPARATOR);
-
-            // 更新开始时间，去掉真空期。
-            startDate = items.get(0).getHappenedDate();
+            items.sort(CompareUtil.DATA_HAPPENED_INSTANT_ASC_COMPARATOR);
 
             // 判断中间存在不为 boolean 类型的数据抛出异常。
             for (Item item : items) {
@@ -98,25 +99,28 @@ public class EnableRatioMapperRegistry extends AbstractMapperRegistry {
             }
 
             // 计算占比。
-            return calRatioByItems(items, startDate, endDate, invert);
+            return calRatioByItems(items, endDate, endDateNanoOffset, invert);
         }
 
         /**
          * 计算占比
          *
-         * @param items     排完序的数据点数组
-         * @param startDate 序列开始时间
-         * @param endDate   序列结束时间
-         * @param invert    true 计算 false 的占比、false 计算 true 的占比
+         * @param items             排完序的数据点数组
+         * @param endDate           序列结束时间的毫秒部分。
+         * @param endDateNanoOffset 序列结束时间在对应毫秒内的纳秒偏移。
+         * @param invert            true 计算 false 的占比、false 计算 true 的占比
          * @return 获取占比
          */
-        private double calRatioByItems(List<Item> items, Date startDate, Date endDate, boolean invert) {
+        private double calRatioByItems(List<Item> items, Date endDate, int endDateNanoOffset, boolean invert) {
             // 符合时间。
             BigDecimal calTime = BigDecimal.ZERO;
             boolean calFlag = false;
 
-            BigDecimal startDateTime = BigDecimal.valueOf(startDate.getTime());
-            BigDecimal endDateTime = BigDecimal.valueOf(endDate.getTime());
+            Item first = items.get(0);
+            BigDecimal startDateTime = BigDecimal.valueOf(MapperUtil.toEpochNanos(
+                    first.getHappenedDate(), first.getHappenedDateNanoOffset()
+            ));
+            BigDecimal endDateTime = BigDecimal.valueOf(MapperUtil.toEpochNanos(endDate, endDateNanoOffset));
             // 总时间。
             BigDecimal allTime = endDateTime.subtract(startDateTime);
 
@@ -130,14 +134,18 @@ public class EnableRatioMapperRegistry extends AbstractMapperRegistry {
                         continue;
                     }
 
-                    preTime = BigDecimal.valueOf(item.getHappenedDate().getTime());
+                    preTime = BigDecimal.valueOf(MapperUtil.toEpochNanos(
+                            item.getHappenedDate(), item.getHappenedDateNanoOffset()
+                    ));
                     calFlag = true;
                 } else {
                     if (!calFlag) {
                         continue;
                     }
 
-                    calTime = calTime.add(BigDecimal.valueOf(item.getHappenedDate().getTime()).subtract(preTime));
+                    calTime = calTime.add(BigDecimal.valueOf(MapperUtil.toEpochNanos(
+                            item.getHappenedDate(), item.getHappenedDateNanoOffset()
+                    )).subtract(preTime));
                     calFlag = false;
                 }
             }

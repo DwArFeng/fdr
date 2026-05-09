@@ -82,8 +82,13 @@ public class LowPassCounterMapperRegistry extends AbstractMapperRegistry {
     public static class LowPassCounterMapper extends AggregateMapper {
 
         @Override
-        protected Object doAggregate(MapParam mapParam, List<Item> items, Date startDate, Date endDate) {
-            Sequence s = lowPass(mapParam, new Sequence(new LongIdKey(0L), items, startDate, endDate));
+        protected Object doAggregate(
+                MapParam mapParam, List<Item> items,
+                Date startDate, int startDateNanoOffset, Date endDate, int endDateNanoOffset
+        ) {
+            Sequence s = lowPass(mapParam, new Sequence(
+                    new LongIdKey(0L), items, startDate, startDateNanoOffset, endDate, endDateNanoOffset
+            ));
             return s.getItems().size();
         }
 
@@ -101,7 +106,10 @@ public class LowPassCounterMapperRegistry extends AbstractMapperRegistry {
             List<Item> items = doFilter(sequence, threshold, canEqual, invert);
 
             // 返回结果。
-            return new Sequence(sequence.getPointKey(), items, sequence.getStartDate(), sequence.getEndDate());
+            return new Sequence(
+                    sequence.getPointKey(), items, sequence.getStartDate(), sequence.getStartDateNanoOffset(),
+                    sequence.getEndDate(), sequence.getEndDateNanoOffset()
+            );
         }
 
         // 为了保证代码的可读性，此处代码不做简化。

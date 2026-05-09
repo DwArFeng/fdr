@@ -13,19 +13,32 @@ import java.util.Date;
  */
 public class RedisBridgeNormalData implements Entity<LongIdKey> {
 
-    private static final long serialVersionUID = -6401576547629299319L;
+    private static final long serialVersionUID = -2573052131048662818L;
 
     private LongIdKey key;
     private String value;
     private Date happenedDate;
 
+    /**
+     * @since 3.0.0
+     */
+    private int happenedDateNanoOffset;
+
     public RedisBridgeNormalData() {
     }
 
     public RedisBridgeNormalData(LongIdKey key, String value, Date happenedDate) {
+        this(key, value, happenedDate, 0);
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public RedisBridgeNormalData(LongIdKey key, String value, Date happenedDate, int happenedDateNanoOffset) {
         this.key = key;
         this.value = value;
         this.happenedDate = happenedDate;
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
     }
 
     @Override
@@ -54,12 +67,21 @@ public class RedisBridgeNormalData implements Entity<LongIdKey> {
         this.happenedDate = happenedDate;
     }
 
+    public int getHappenedDateNanoOffset() {
+        return happenedDateNanoOffset;
+    }
+
+    public void setHappenedDateNanoOffset(int happenedDateNanoOffset) {
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
+    }
+
     @Override
     public String toString() {
         return "RedisBridgeNormalData{" +
                 "key=" + key +
                 ", value='" + value + '\'' +
                 ", happenedDate=" + happenedDate +
+                ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                 '}';
     }
 }

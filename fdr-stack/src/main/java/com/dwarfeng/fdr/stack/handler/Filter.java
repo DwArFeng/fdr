@@ -83,6 +83,10 @@ public interface Filter {
     /**
      * 测试信息。
      *
+     * <p>
+     * 在 3.0.0 版本中，新增了数据发生时间在毫秒内的纳秒偏移。
+     * 数据发生时间由 {@link #happenedDate} 和 {@link #happenedDateNanoOffset} 共同唯一确定。
+     *
      * @author DwArFeng
      * @since 2.0.0
      */
@@ -92,10 +96,23 @@ public interface Filter {
         private final Object value;
         private final Date happenedDate;
 
+        /**
+         * @since 3.0.0
+         */
+        private final int happenedDateNanoOffset;
+
         public TestInfo(LongIdKey pointKey, Object value, Date happenedDate) {
+            this(pointKey, value, happenedDate, 0);
+        }
+
+        /**
+         * @since 3.0.0
+         */
+        public TestInfo(LongIdKey pointKey, Object value, Date happenedDate, int happenedDateNanoOffset) {
             this.pointKey = pointKey;
             this.value = value;
             this.happenedDate = happenedDate;
+            this.happenedDateNanoOffset = happenedDateNanoOffset;
         }
 
         public LongIdKey getPointKey() {
@@ -110,12 +127,17 @@ public interface Filter {
             return happenedDate;
         }
 
+        public int getHappenedDateNanoOffset() {
+            return happenedDateNanoOffset;
+        }
+
         @Override
         public String toString() {
             return "TestInfo{" +
                     "pointKey=" + pointKey +
                     ", value=" + value +
                     ", happenedDate=" + happenedDate +
+                    ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                     '}';
         }
     }

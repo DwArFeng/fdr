@@ -9,7 +9,12 @@ import java.util.Date;
  * 记录记忆。
  *
  * <p>
- * 该结构表示记录记忆中的单条记录，包含数据的点位主键、值、发生时间。
+ * 该结构表示记录记忆中的单条记录，包含数据的点位主键、值、发生时间，
+ * 以及发生时间在毫秒内的纳秒偏移。
+ *
+ * <p>
+ * 在 3.0.0 版本中，新增了数据发生时间在毫秒内的纳秒偏移。
+ * 数据发生时间由 {@link #happenedDate} 和 {@link #happenedDateNanoOffset} 共同唯一确定。
  *
  * @author DwArFeng
  * @since 2.5.0
@@ -25,6 +30,13 @@ public final class RecordMemory {
      * 数据发生时间。
      */
     private final Date happenedDate;
+
+    /**
+     * 数据发生时间在毫秒内的纳秒偏移。
+     *
+     * @since 3.0.0
+     */
+    private final int happenedDateNanoOffset;
 
     /**
      * 原始数据。
@@ -53,8 +65,19 @@ public final class RecordMemory {
     private final Object value;
 
     public RecordMemory(LongIdKey pointKey, Date happenedDate, Object rawValue, boolean passed, Object value) {
+        this(pointKey, happenedDate, 0, rawValue, passed, value);
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public RecordMemory(
+            LongIdKey pointKey, Date happenedDate, int happenedDateNanoOffset, Object rawValue, boolean passed,
+            Object value
+    ) {
         this.pointKey = pointKey;
         this.happenedDate = happenedDate;
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
         this.rawValue = rawValue;
         this.passed = passed;
         this.value = value;
@@ -66,6 +89,10 @@ public final class RecordMemory {
 
     public Date getHappenedDate() {
         return happenedDate;
+    }
+
+    public int getHappenedDateNanoOffset() {
+        return happenedDateNanoOffset;
     }
 
     public Object getRawValue() {
@@ -85,6 +112,7 @@ public final class RecordMemory {
         return "RecordMemory{" +
                 "pointKey=" + pointKey +
                 ", happenedDate=" + happenedDate +
+                ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                 ", rawValue=" + rawValue +
                 ", passed=" + passed +
                 ", value=" + value +

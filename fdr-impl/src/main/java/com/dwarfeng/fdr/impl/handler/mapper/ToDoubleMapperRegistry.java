@@ -87,20 +87,27 @@ public class ToDoubleMapperRegistry extends AbstractMapperRegistry {
             }
 
             // 返回映射后的序列。
-            return new Sequence(sequence.getPointKey(), items, sequence.getStartDate(), sequence.getEndDate());
+            return new Sequence(
+                    sequence.getPointKey(), items, sequence.getStartDate(), sequence.getStartDateNanoOffset(),
+                    sequence.getEndDate(), sequence.getEndDateNanoOffset()
+            );
         }
 
         private Item mapItem(Config config, Item item) {
             // 如果数据条目的值的类型是 Number，那么获得其双精度浮点数值。
             if (item.getValue() instanceof Number) {
-                return new Item(item.getPointKey(), ((Number) item.getValue()).doubleValue(), item.getHappenedDate());
+                return new Item(
+                        item.getPointKey(), ((Number) item.getValue()).doubleValue(), item.getHappenedDate(),
+                        item.getHappenedDateNanoOffset()
+                );
             }
 
             // 如果数据条目的值的类型是 String，那么尝试将其转换为双精度浮点数。
             if (item.getValue() instanceof String) {
                 try {
                     return new Item(
-                            item.getPointKey(), Double.parseDouble((String) item.getValue()), item.getHappenedDate()
+                            item.getPointKey(), Double.parseDouble((String) item.getValue()),
+                            item.getHappenedDate(), item.getHappenedDateNanoOffset()
                     );
                 } catch (Exception e) {
                     // 什么都不做。
@@ -112,16 +119,21 @@ public class ToDoubleMapperRegistry extends AbstractMapperRegistry {
                 return new Item(
                         item.getPointKey(),
                         (Boolean) item.getValue() ? config.getBooleanTrueValue() : config.getBooleanFalseValue(),
-                        item.getHappenedDate()
+                        item.getHappenedDate(), item.getHappenedDateNanoOffset()
                 );
             }
 
             // 对于其它的情况，可以进行策略配置，映射为默认值、或 null、或忽略该数据条目。
             switch (config.getOtherTypeStrategy()) {
                 case 0:
-                    return new Item(item.getPointKey(), config.getOtherTypeDefaultValue(), item.getHappenedDate());
+                    return new Item(
+                            item.getPointKey(), config.getOtherTypeDefaultValue(), item.getHappenedDate(),
+                            item.getHappenedDateNanoOffset()
+                    );
                 case 1:
-                    return new Item(item.getPointKey(), null, item.getHappenedDate());
+                    return new Item(
+                            item.getPointKey(), null, item.getHappenedDate(), item.getHappenedDateNanoOffset()
+                    );
                 case 2:
                     return null;
                 default:

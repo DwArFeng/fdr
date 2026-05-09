@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 public class FastJsonFilteredData implements Dto {
 
-    private static final long serialVersionUID = -4327156985482796275L;
+    private static final long serialVersionUID = -4914453121586106817L;
 
     public static FastJsonFilteredData of(FilteredData filteredData) {
         if (Objects.isNull(filteredData)) {
@@ -27,7 +27,8 @@ public class FastJsonFilteredData implements Dto {
                     FastJsonLongIdKey.of(filteredData.getFilterKey()),
                     filteredData.getValue(),
                     filteredData.getMessage(),
-                    filteredData.getHappenedDate()
+                    filteredData.getHappenedDate(),
+                    filteredData.getHappenedDateNanoOffset()
             );
         }
     }
@@ -41,7 +42,8 @@ public class FastJsonFilteredData implements Dto {
                     FastJsonLongIdKey.toStackBean(fastFilteredData.getFilterKey()),
                     fastFilteredData.getValue(),
                     fastFilteredData.getMessage(),
-                    fastFilteredData.getHappenedDate()
+                    fastFilteredData.getHappenedDate(),
+                    fastFilteredData.getHappenedDateNanoOffset()
             );
         }
     }
@@ -61,15 +63,28 @@ public class FastJsonFilteredData implements Dto {
     @JSONField(name = "happened_date", ordinal = 5)
     private Date happenedDate;
 
+    @JSONField(name = "happened_date_nano_offset", ordinal = 6)
+    private int happenedDateNanoOffset;
+
     public FastJsonFilteredData() {
     }
 
-    public FastJsonFilteredData(FastJsonLongIdKey pointKey, FastJsonLongIdKey filterKey, Object value, String message, Date happenedDate) {
+    public FastJsonFilteredData(
+            FastJsonLongIdKey pointKey, FastJsonLongIdKey filterKey, Object value, String message, Date happenedDate
+    ) {
+        this(pointKey, filterKey, value, message, happenedDate, 0);
+    }
+
+    public FastJsonFilteredData(
+            FastJsonLongIdKey pointKey, FastJsonLongIdKey filterKey, Object value, String message, Date happenedDate,
+            int happenedDateNanoOffset
+    ) {
         this.pointKey = pointKey;
         this.filterKey = filterKey;
         this.value = value;
         this.message = message;
         this.happenedDate = happenedDate;
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
     }
 
     public FastJsonLongIdKey getPointKey() {
@@ -112,6 +127,14 @@ public class FastJsonFilteredData implements Dto {
         this.happenedDate = happenedDate;
     }
 
+    public int getHappenedDateNanoOffset() {
+        return happenedDateNanoOffset;
+    }
+
+    public void setHappenedDateNanoOffset(int happenedDateNanoOffset) {
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
+    }
+
     @Override
     public String toString() {
         return "FastJsonFilteredData{" +
@@ -120,6 +143,7 @@ public class FastJsonFilteredData implements Dto {
                 ", value=" + value +
                 ", message='" + message + '\'' +
                 ", happenedDate=" + happenedDate +
+                ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                 '}';
     }
 }

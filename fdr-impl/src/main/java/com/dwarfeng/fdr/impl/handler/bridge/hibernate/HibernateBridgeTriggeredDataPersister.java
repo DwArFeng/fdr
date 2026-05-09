@@ -36,7 +36,8 @@ public class HibernateBridgeTriggeredDataPersister extends
                 data.getTriggerKey(),
                 flatValue,
                 data.getMessage(),
-                data.getHappenedDate()
+                data.getHappenedDate(),
+                data.getHappenedDateNanoOffset()
         );
     }
 
@@ -59,11 +60,8 @@ public class HibernateBridgeTriggeredDataPersister extends
     protected TriggeredData reverseTransform(HibernateBridgeTriggeredData t) throws Exception {
         Object value = valueCodingHandler.decode(t.getValue());
         return new TriggeredData(
-                t.getPointKey(),
-                t.getTriggerKey(),
-                value,
-                t.getMessage(),
-                t.getHappenedDate()
+                t.getPointKey(), t.getTriggerKey(), value, t.getMessage(),
+                t.getHappenedDate(), t.getHappenedDateNanoOffset()
         );
     }
 

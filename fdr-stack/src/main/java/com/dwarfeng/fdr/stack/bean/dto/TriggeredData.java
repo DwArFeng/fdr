@@ -16,12 +16,16 @@ import java.util.Date;
  * <p>
  * 该实体继承了 {@link Data} 接口。
  *
+ * <p>
+ * 在 3.0.0 版本中，新增了数据发生时间在毫秒内的纳秒偏移。
+ * 数据发生时间由 {@link #happenedDate} 和 {@link #happenedDateNanoOffset} 共同唯一确定。
+ *
  * @author DwArFeng
  * @since 2.0.0
  */
 public class TriggeredData implements Data, Dto {
 
-    private static final long serialVersionUID = -2535367965977677088L;
+    private static final long serialVersionUID = -757893840113876146L;
 
     private LongIdKey pointKey;
     private LongIdKey triggerKey;
@@ -29,17 +33,33 @@ public class TriggeredData implements Data, Dto {
     private String message;
     private Date happenedDate;
 
+    /**
+     * @since 3.0.0
+     */
+    private int happenedDateNanoOffset;
+
     public TriggeredData() {
     }
 
     public TriggeredData(
             LongIdKey pointKey, LongIdKey triggerKey, Object value, String message, Date happenedDate
     ) {
+        this(pointKey, triggerKey, value, message, happenedDate, 0);
+    }
+
+    /**
+     * @since 3.0.0
+     */
+    public TriggeredData(
+            LongIdKey pointKey, LongIdKey triggerKey, Object value, String message, Date happenedDate,
+            int happenedDateNanoOffset
+    ) {
         this.pointKey = pointKey;
         this.triggerKey = triggerKey;
         this.value = value;
         this.message = message;
         this.happenedDate = happenedDate;
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
     }
 
     @Nonnull
@@ -88,6 +108,15 @@ public class TriggeredData implements Data, Dto {
     }
 
     @Override
+    public int getHappenedDateNanoOffset() {
+        return happenedDateNanoOffset;
+    }
+
+    public void setHappenedDateNanoOffset(int happenedDateNanoOffset) {
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
+    }
+
+    @Override
     public String toString() {
         return "TriggeredData{" +
                 "pointKey=" + pointKey +
@@ -95,6 +124,7 @@ public class TriggeredData implements Data, Dto {
                 ", value=" + value +
                 ", message='" + message + '\'' +
                 ", happenedDate=" + happenedDate +
+                ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                 '}';
     }
 }

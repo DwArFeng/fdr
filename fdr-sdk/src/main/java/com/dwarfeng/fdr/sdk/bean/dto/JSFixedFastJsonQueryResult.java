@@ -67,7 +67,7 @@ public class JSFixedFastJsonQueryResult implements Dto {
      */
     public static class JSFixedFastJsonSequence implements Dto {
 
-        private static final long serialVersionUID = 1909468134860408683L;
+        private static final long serialVersionUID = 5287456081591604732L;
 
         public static JSFixedFastJsonSequence of(Sequence sequence) {
             if (Objects.isNull(sequence)) {
@@ -78,7 +78,9 @@ public class JSFixedFastJsonQueryResult implements Dto {
                                 f -> f.stream().map(JSFixedFastJsonItem::of).collect(Collectors.toList())
                         ).orElse(null),
                         sequence.getStartDate(),
-                        sequence.getEndDate()
+                        sequence.getStartDateNanoOffset(),
+                        sequence.getEndDate(),
+                        sequence.getEndDateNanoOffset()
                 );
             }
         }
@@ -89,16 +91,40 @@ public class JSFixedFastJsonQueryResult implements Dto {
         @JSONField(name = "start_date", ordinal = 2)
         private Date startDate;
 
-        @JSONField(name = "end_date", ordinal = 3)
+        /**
+         * @since 3.0.0
+         */
+        @JSONField(name = "start_date_nano_offset", ordinal = 3)
+        private int startDateNanoOffset;
+
+        @JSONField(name = "end_date", ordinal = 4)
         private Date endDate;
+
+        /**
+         * @since 3.0.0
+         */
+        @JSONField(name = "end_date_nano_offset", ordinal = 5)
+        private int endDateNanoOffset;
 
         public JSFixedFastJsonSequence() {
         }
 
         public JSFixedFastJsonSequence(List<JSFixedFastJsonItem> items, Date startDate, Date endDate) {
+            this(items, startDate, 0, endDate, 0);
+        }
+
+        /**
+         * @since 3.0.0
+         */
+        public JSFixedFastJsonSequence(
+                List<JSFixedFastJsonItem> items, Date startDate, int startDateNanoOffset,
+                Date endDate, int endDateNanoOffset
+        ) {
             this.items = items;
             this.startDate = startDate;
+            this.startDateNanoOffset = startDateNanoOffset;
             this.endDate = endDate;
+            this.endDateNanoOffset = endDateNanoOffset;
         }
 
         public List<JSFixedFastJsonItem> getItems() {
@@ -117,6 +143,20 @@ public class JSFixedFastJsonQueryResult implements Dto {
             this.startDate = startDate;
         }
 
+        /**
+         * @since 3.0.0
+         */
+        public int getStartDateNanoOffset() {
+            return startDateNanoOffset;
+        }
+
+        /**
+         * @since 3.0.0
+         */
+        public void setStartDateNanoOffset(int startDateNanoOffset) {
+            this.startDateNanoOffset = startDateNanoOffset;
+        }
+
         public Date getEndDate() {
             return endDate;
         }
@@ -125,12 +165,28 @@ public class JSFixedFastJsonQueryResult implements Dto {
             this.endDate = endDate;
         }
 
+        /**
+         * @since 3.0.0
+         */
+        public int getEndDateNanoOffset() {
+            return endDateNanoOffset;
+        }
+
+        /**
+         * @since 3.0.0
+         */
+        public void setEndDateNanoOffset(int endDateNanoOffset) {
+            this.endDateNanoOffset = endDateNanoOffset;
+        }
+
         @Override
         public String toString() {
             return "JSFixedFastJsonSequence{" +
                     "items=" + items +
                     ", startDate=" + startDate +
+                    ", startDateNanoOffset=" + startDateNanoOffset +
                     ", endDate=" + endDate +
+                    ", endDateNanoOffset=" + endDateNanoOffset +
                     '}';
         }
     }
@@ -143,7 +199,7 @@ public class JSFixedFastJsonQueryResult implements Dto {
      */
     public static class JSFixedFastJsonItem implements Dto {
 
-        private static final long serialVersionUID = 8907902077717925315L;
+        private static final long serialVersionUID = 5561249243224524300L;
 
         public static JSFixedFastJsonItem of(QueryResult.Item item) {
             if (Objects.isNull(item)) {
@@ -152,7 +208,21 @@ public class JSFixedFastJsonQueryResult implements Dto {
                 return new JSFixedFastJsonItem(
                         JSFixedFastJsonLongIdKey.of(item.getPointKey()),
                         item.getValue(),
-                        item.getHappenedDate()
+                        item.getHappenedDate(),
+                        item.getHappenedDateNanoOffset()
+                );
+            }
+        }
+
+        public static QueryResult.Item toStackBean(JSFixedFastJsonItem jsFixedFastItem) {
+            if (Objects.isNull(jsFixedFastItem)) {
+                return null;
+            } else {
+                return new QueryResult.Item(
+                        JSFixedFastJsonLongIdKey.toStackBean(jsFixedFastItem.getPointKey()),
+                        jsFixedFastItem.getValue(),
+                        jsFixedFastItem.getHappenedDate(),
+                        jsFixedFastItem.getHappenedDateNanoOffset()
                 );
             }
         }
@@ -166,13 +236,23 @@ public class JSFixedFastJsonQueryResult implements Dto {
         @JSONField(name = "happened_date", ordinal = 3)
         private Date happenedDate;
 
+        @JSONField(name = "happened_date_nano_offset", ordinal = 4)
+        private int happenedDateNanoOffset;
+
         public JSFixedFastJsonItem() {
         }
 
         public JSFixedFastJsonItem(JSFixedFastJsonLongIdKey pointKey, Object value, Date happenedDate) {
+            this(pointKey, value, happenedDate, 0);
+        }
+
+        public JSFixedFastJsonItem(
+                JSFixedFastJsonLongIdKey pointKey, Object value, Date happenedDate, int happenedDateNanoOffset
+        ) {
             this.pointKey = pointKey;
             this.value = value;
             this.happenedDate = happenedDate;
+            this.happenedDateNanoOffset = happenedDateNanoOffset;
         }
 
         public JSFixedFastJsonLongIdKey getPointKey() {
@@ -199,12 +279,21 @@ public class JSFixedFastJsonQueryResult implements Dto {
             this.happenedDate = happenedDate;
         }
 
+        public int getHappenedDateNanoOffset() {
+            return happenedDateNanoOffset;
+        }
+
+        public void setHappenedDateNanoOffset(int happenedDateNanoOffset) {
+            this.happenedDateNanoOffset = happenedDateNanoOffset;
+        }
+
         @Override
         public String toString() {
             return "JSFixedFastJsonItem{" +
                     "pointKey=" + pointKey +
                     ", value=" + value +
                     ", happenedDate=" + happenedDate +
+                    ", happenedDateNanoOffset=" + happenedDateNanoOffset +
                     '}';
         }
     }
