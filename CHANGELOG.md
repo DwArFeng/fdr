@@ -7,6 +7,7 @@
 - 更新 README.md。
 
 - Wiki 更新。
+  - docs/wiki/zh-CN/InstallToCentos.md。
   - docs/wiki/zh-CN/Introduction.md。
 
 - 增强数据时间精度支持。

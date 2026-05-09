@@ -28,7 +28,7 @@ mv fdr-node-${version} fdr
 
 ## 更改启停脚本
 
-请参考 [ShellScripts.md](./ShellScripts.md) 更改启停脚本。
+请参考 [ShellScripts.md](./ShellScripts.md) 或 [Batch Scripts](./BatchScripts.md) 更改启停脚本。
 
 ## 更改配置
 
@@ -97,3 +97,10 @@ tail -f /var/log/fdr/info.log
 ```shell
 sudo systemctl status fdr
 ```
+
+## 参阅
+
+- [Shell Scripts](./ShellScripts.md) - 脚本说明，详细说明了本项目的 Shell 脚本，即 `bin/` 目录下 `*.sh` 文件的用法。
+- [Batch Scripts](./BatchScripts.md) - 脚本说明，详细说明了本项目的 Batch 脚本，即 `bin/` 目录下 `*.bat` 文件的用法。
+- [Conf Directory](./ConfDirectory.md) - 配置目录说明，详细说明如何配置本项目，即 `conf/` 目录下的内容。
+- [Opt Directory](./OptDirectory.md) - 可选配置目录说明，详细介绍了本项目的可选配置，即 `opt/` 目录下的内容。
