@@ -4,6 +4,11 @@
 
 ### 功能构建
 
+- 更新 README.md。
+
+- Wiki 更新。
+  - docs/wiki/zh-CN/Introduction.md。
+
 - 增强数据时间精度支持。
   - 增加 `com.dwarfeng.fdr.stack.struct.RecordMemory.happenedDateNanoOffset` 字段。
   - 增加 `com.dwarfeng.fdr.stack.struct.Data` 中与 `happenedDateNanoOffset` 相关的访问约定。
