@@ -8,6 +8,7 @@
         http://dubbo.apache.org/schema/dubbo
         http://dubbo.apache.org/schema/dubbo/dubbo.xsd"
 >
+
     <!-- region 基础配置 -->
 
     <dubbo:application name="fdr-impl-test">
