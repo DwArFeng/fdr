@@ -4,6 +4,10 @@
 
 ### 功能构建
 
+- 为部分数据源添加安全轮询机制。
+  - com.dwarfeng.fdr.impl.handler.source.mock.historical.HistoricalMockSource。
+  - com.dwarfeng.fdr.impl.handler.source.mock.realtime.RealtimeMockSource。
+
 - 依赖升级。
   - 升级 `subgrade` 依赖版本为 `1.8.3.a` 以应用其新功能。
 

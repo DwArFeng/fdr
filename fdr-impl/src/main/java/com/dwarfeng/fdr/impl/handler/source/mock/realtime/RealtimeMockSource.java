@@ -7,7 +7,9 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.scheduling.support.PeriodicTrigger;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -38,6 +40,10 @@ public class RealtimeMockSource extends AbstractSource {
 
     @Value("${source.mock.realtime.data_size_per_point_per_sec}")
     private int dataSizePerPointPerSec;
+    @Value("${source.mock.realtime.misfire_threshold}")
+    private long misfireThreshold;
+    @Value("${source.mock.realtime.misfire_postpone}")
+    private long misfirePostpone;
     @Value("${source.mock.realtime.data_config}")
     private String dataConfig;
 
@@ -74,7 +80,10 @@ public class RealtimeMockSource extends AbstractSource {
         if (Objects.nonNull(taskFuture)) {
             return;
         }
-        taskFuture = scheduler.scheduleAtFixedRate(new RecordInfoGenerateTask(), 1000);
+        PeriodicTrigger delegateTrigger = new PeriodicTrigger(1000);
+        delegateTrigger.setFixedRate(true);
+        Trigger safeTrigger = new RealtimeMockSourceSafeTrigger(delegateTrigger, misfireThreshold, misfirePostpone);
+        taskFuture = scheduler.schedule(new RecordInfoGenerateTask(), safeTrigger);
     }
 
     @Override
@@ -149,6 +158,8 @@ public class RealtimeMockSource extends AbstractSource {
                 "randomGenerator=" + randomGenerator +
                 ", scheduler=" + scheduler +
                 ", dataSizePerPointPerSec=" + dataSizePerPointPerSec +
+                ", misfireThreshold=" + misfireThreshold +
+                ", misfirePostpone=" + misfirePostpone +
                 ", dataConfig='" + dataConfig + '\'' +
                 ", dataConfigItems=" + dataConfigItems +
                 ", methodMap=" + methodMap +

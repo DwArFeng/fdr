@@ -7,7 +7,9 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.scheduling.support.PeriodicTrigger;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -55,6 +57,10 @@ public class HistoricalMockSource extends AbstractSource {
     private long happenedDateIncrement;
     @Value("${source.mock.historical.happened_date_nano_offset_increment}")
     private int happenedDateNanoOffsetIncrement;
+    @Value("${source.mock.historical.misfire_threshold}")
+    private long misfireThreshold;
+    @Value("${source.mock.historical.misfire_postpone}")
+    private long misfirePostpone;
     @Value("${source.mock.historical.data_config}")
     private String dataConfig;
 
@@ -101,7 +107,10 @@ public class HistoricalMockSource extends AbstractSource {
         if (Objects.nonNull(taskFuture)) {
             return;
         }
-        taskFuture = scheduler.scheduleAtFixedRate(new RecordInfoGenerateTask(), 1000);
+        PeriodicTrigger delegateTrigger = new PeriodicTrigger(1000);
+        delegateTrigger.setFixedRate(true);
+        Trigger safeTrigger = new HistoricalMockSourceSafeTrigger(delegateTrigger, misfireThreshold, misfirePostpone);
+        taskFuture = scheduler.schedule(new RecordInfoGenerateTask(), safeTrigger);
     }
 
     @Override
@@ -190,6 +199,8 @@ public class HistoricalMockSource extends AbstractSource {
                 ", endDateNanoOffset=" + endDateNanoOffset +
                 ", happenedDateIncrement=" + happenedDateIncrement +
                 ", happenedDateNanoOffsetIncrement=" + happenedDateNanoOffsetIncrement +
+                ", misfireThreshold=" + misfireThreshold +
+                ", misfirePostpone=" + misfirePostpone +
                 ", dataConfig='" + dataConfig + '\'' +
                 ", anchorTimestamp=" + anchorTimestamp +
                 ", anchorTimestampNanoOffset=" + anchorTimestampNanoOffset +
