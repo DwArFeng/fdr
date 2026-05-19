@@ -202,6 +202,7 @@ FDR 同样读取 `RecordInfo.getValue()`，
 
 ## 参阅
 
+- [Filter](./Filter.md) - 过滤器，详细说明了本项目的过滤器机制。
 - [Opt Directory](./OptDirectory.md) - 可选配置目录说明，详细介绍了本项目的可选配置，即 `opt/` 目录下的内容。
 - [Record Memory](./RecordMemory.md) - 记录记忆，说明记录记忆的结构、工作机制与运维要点。
 - [Telqos Commands](./TelqosCommands.md) - Telqos 命令，详细说明了本项目的 Telqos 命令。
