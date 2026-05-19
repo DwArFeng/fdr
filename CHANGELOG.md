@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 优化 `influxdb` 桥接器。
+  - 增加 `InfluxdbBridgeBaseConfiguration` 中的配置项，使得更多的配置项可通过配置文件进行调整。
+
 - 为部分数据源添加安全轮询机制。
   - com.dwarfeng.fdr.impl.handler.source.mock.historical.HistoricalMockSource。
   - com.dwarfeng.fdr.impl.handler.source.mock.realtime.RealtimeMockSource。
