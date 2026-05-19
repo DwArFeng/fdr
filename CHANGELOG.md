@@ -5,6 +5,7 @@
 ### 功能构建
 
 - Wiki 更新。
+  - docs/wiki/zh-CN/ConfDirectory.md。
   - docs/wiki/zh-CN/Washer.md。
 
 - 优化 `influxdb` 桥接器。
