@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- Wiki 更新。
+  - docs/wiki/zh-CN/Washer.md。
+
 - 优化 `influxdb` 桥接器。
   - 增加 `InfluxdbBridgeBaseConfiguration` 中的配置项，使得更多的配置项可通过配置文件进行调整。
 

@@ -2,9 +2,8 @@
 
 ## 说明
 
-清洗器是一种用于清洗数据的工具，它可以对数据进行一些预处理，例如去除空行、去除重复行、去除空格、去除特殊字符等。
-
-清洗器的核心方法是将记录信息的值转换为另一个值。例如，将字符串转换为小写，将字符串转换为数字，将字符串转换为日期等。
+清洗器用于在记录链路中对单条数据的值（`Object`）进行转换或校验，并将结果写回 `RecordInfo`。
+典型用途包括类型转换、脚本清洗，以及与过滤器配合标记不合法数据等。
 
 清洗器是数据处理流程中的一个环节，整个流程如下：
 
@@ -15,71 +14,194 @@
 过滤前清洗器通常用于数据检查，过滤后清洗器通常用于数据修正。
 通过 `WasherInfo#setPreFilter(boolean)` 方法可以设置清洗器的类型。
 
+## WasherInfo
+
+`WasherInfo` 描述某个点位上的一条清洗器配置，关键字段如下：
+
+| 字段          | 说明                                  |
+|-------------|-------------------------------------|
+| `key`       | 清洗器信息主键。                            |
+| `pointKey`  | 所属点位主键。                             |
+| `index`     | 同点位内的执行顺序，数值越小越先执行。                 |
+| `enabled`   | 是否启用；仅 `enabled=true` 的配置参与记录链路。    |
+| `preFilter` | 是否为过滤前清洗器；`true` 为过滤前，`false` 为过滤后。 |
+| `type`      | 清洗器类型标识，由具体实现注册。                    |
+| `param`     | 清洗器参数，通常为 JSON 字符串。                 |
+| `remark`    | 备注。                                 |
+
+启用清洗器按 `index` 升序加载，并分别归入过滤前或过滤后清洗器映射。
+
 ## 接口
 
-清洗器 `Washer` 是一个接口，有如下方法：
+清洗器 `Washer` 是一个接口，主要方法如下：
 
-| 方法签名                                                  | 说明   |
-|-------------------------------------------------------|------|
-| `Object wash(Object rawValue) throws WasherException` | 清洗数据 |
+| 方法签名                                                              | 说明                        |
+|-------------------------------------------------------------------|---------------------------|
+| `void init(Context context)`                                      | 构建后初始化，保存上下文。             |
+| `WashResult wash(WashInfo washInfo) throws WasherException`       | 清洗数据，当前推荐使用。              |
+| `@Deprecated Object wash(Object rawValue) throws WasherException` | 已废弃，请改用 `wash(WashInfo)`。 |
 
 具体方法的说明请参阅接口的 JavaDoc。
+
+### WashInfo
+
+`WashInfo` 封装一次清洗所需的输入信息，结构如下：
+
+```java
+public final class WashInfo {
+
+    private final LongIdKey pointKey;
+    private final Object value;
+    private final Date happenedDate;
+    private final int happenedDateNanoOffset;
+
+    public WashInfo(
+            LongIdKey pointKey, Object value, Date happenedDate, int happenedDateNanoOffset
+    ) {
+        this.pointKey = pointKey;
+        this.value = value;
+        this.happenedDate = happenedDate;
+        this.happenedDateNanoOffset = happenedDateNanoOffset;
+    }
+
+    // getter 省略
+}
+```
+
+| 字段                       | 说明                                          |
+|--------------------------|---------------------------------------------|
+| `pointKey`               | 点位主键。                                       |
+| `value`                  | 待清洗的值。                                      |
+| `happenedDate`           | 数据发生时间。                                     |
+| `happenedDateNanoOffset` | 毫秒内纳秒偏移（3.0.0 起）；与 `happenedDate` 共同确定发生时刻。 |
+
+### WashResult
+
+`WashResult` 封装清洗结果，结构如下：
+
+```java
+public final class WashResult {
+
+    private final Object value;
+
+    public static WashResult of(Object value) {
+        return new WashResult(value);
+    }
+
+    public WashResult(Object value) {
+        this.value = value;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+}
+```
+
+记录链路在 `washResult` 为 `null` 时，会将 `RecordInfo` 的值写为 `null`。
+
+### Context
+
+`Context` 为清洗器提供运行时上下文，主要方法如下：
+
+| 方法签名                                                        | 说明           |
+|-------------------------------------------------------------|--------------|
+| `List<RecordMemory> lookupRecordMemory(LongIdKey pointKey)` | 查询指定点位的记录记忆。 |
+
+返回列表按时间从新到旧排列，索引 `0` 对应最新记录。调用者应只读使用返回结果，不应修改列表内容。
 
 ## 清洗器的生命周期
 
 ### 初始化
 
-当一个 `RecordInfo` 对象被逻辑侧消费者处理时，逻辑侧消费者会根据 `RecordInfo.getPointKey` 方法获取到该记录信息的点键。
-数据点键对应的是 FDR 配置的数据点信息，一个数据点与多个清洗器信息、过滤器信息和触发器信息关联。
+当一个 `RecordInfo` 对象被逻辑侧消费者处理时，消费者会根据 `RecordInfo.getPointKey()` 获取点位主键。
+点位对应 FDR 配置的数据点信息，一个数据点可关联多条清洗器信息、过滤器信息和触发器信息。
 
-对于大部分情况，一个数据点关联的清洗器、过滤器和触发器会以记录上下文的形式被存放在 `RecordLocalCacheHandler` 中。
-一旦 `RecordLocalCacheHandler` 中不存在该记录上下文，则 `RecordLocalCacheHandler`
-会查询数据点关联的具体的清洗器信息、过滤器信息和触发器信息，并依据这些信息生成对应的清洗器、过滤器和触发器。
+在大部分情况下，一个数据点关联的清洗器、过滤器和触发器会以 `RecordLocalCache` 的形式，缓存在 `RecordLocalCacheHandler` 中。
+若缓存不存在，`RecordLocalCacheHandler` 会查询该点位已启用的清洗器、过滤器、触发器信息，并生成对应实例。
 
-| 信息实体        | 生成的对象   | 生成处理器          |
-|-------------|---------|----------------|
-| WasherInfo  | Washer  | WasherHandler  |
-| FilterInfo  | Filter  | FilterHandler  |
-| TriggerInfo | Trigger | TriggerHandler |
+| 信息实体          | 生成的对象     | 生成处理器            |
+|---------------|-----------|------------------|
+| `WasherInfo`  | `Washer`  | `WasherHandler`  |
+| `FilterInfo`  | `Filter`  | `FilterHandler`  |
+| `TriggerInfo` | `Trigger` | `TriggerHandler` |
 
-对于清洗器而言，`WasherHandler` 会根据 `WasherInfo` 中的 `type` 和 `param` 字段，生成对应的清洗器。
+对于清洗器，`WasherHandler` 会根据 `WasherInfo` 的 `type` 和 `param` 字段生成实例。
+`WasherHandlerImpl` 在 `make` 成功后会调用 `washer.init(washerContext)`，
+注入的上下文可通过 `lookupRecordMemory` 查询记录记忆，详见 [Record Memory](./RecordMemory.md)。
+
+生成的 `RecordLocalCache` 包含 `preFilterWasherMap`、`filterMap`、`postFilterWasherMap` 与 `triggerMap`，
+记录链路由 `RecordProcessor` 消费 `RecordInfo` 时按此结构执行。
 
 ### 销毁
 
-`RecordLocalCacheHandler` 维护了一个记录上下文的缓存，一个数据点对应的清洗器、过滤器和触发器均被存储在该上下文中。
+`RecordLocalCacheHandler` 维护记录本地缓存，其中保存各点位的 `RecordLocalCache`（含清洗器、过滤器、触发器实例）。
 
-在大部分情况下，被缓存的记录上下文会一直被保存在 `RecordLocalCacheHandler` 中，`RecordLocalCacheHandler`
-中的缓存没有过期时间。除非调用 `RecordLocalCacheHandler.remove` 方法或 `RecordLocalCacheHandler.clear` 方法，
-否则缓存中的记录上下文不会被销毁。
+在大部分情况下，缓存没有过期时间。
+除非调用 `RecordLocalCacheHandler.remove` 或 `RecordLocalCacheHandler.clear()`，否则记录上下文不会被销毁。
 
-`RecordLocalCacheHandler.clear` 会通过 FDR 的重置机制按照预设的逻辑进行调用，届时，
-`RecordLocalCacheHandler` 中的缓存会被清空，所有的记录上下文会被销毁。清洗器的销毁会随着记录上下文的销毁而销毁。
+记录功能重置（`ResetProcessor.resetRecord`）会调用 `RecordLocalCacheHandler.clear()`，
+同时调用 `recordMemoryHandler.clear()` 清空记录记忆。
+此时所有 `RecordLocalCache` 被释放，清洗器实例随之销毁。
 
 ## 工作机制
 
+### 记录链路顺序
+
+单条 `RecordInfo` 在记录链路中的处理顺序如下：
+
+1. 过滤前清洗器（`preFilter=true`，按 `index` 升序）。
+2. 过滤器（任一过滤器判定为被过滤则终止一般数据路径）。
+3. 过滤后清洗器（`preFilter=false`，按 `index` 升序）。
+4. 触发器。
+
 ### 过滤前清洗器
 
-过滤前清洗器会在数据被过滤之前执行，FDR 会调用 `RecordInfo.getValue` 方法，获取记录信息的值。
-按照过滤器前清洗器预设的顺序依次调用 `Washer.wash` 方法，对记录信息的值进行清洗。前一个清洗器的输出会作为后一个清洗器的输入。
+过滤前清洗器在数据被过滤之前执行。
+FDR 读取 `RecordInfo.getValue()`，按顺序调用各清洗器的 `wash(WashInfo)`，并将输出写回 `RecordInfo`。
+前一个清洗器的输出作为后一个清洗器的输入。
 
-过滤前清洗器与过滤后清洗器最大的区别在于：过滤前清洗器处理的数据有可能是无效的，
-因此过滤器前清洗器在一定程度上需要对数据进行检查。一般情况下，推荐使用过滤前清洗器与过滤器配合使用，可以参照以下流程：
+调用方式示例如下：
 
-1. 过滤前清洗器对数据进行清洗，如在清洗过程中发现数据不合法，则返回一个特殊的对象用于告知过滤器，
-   FDR 的 sdk 模块提供了这种特殊对象：`Constants.DATA_VALUE_ILLEGAL`。
-2. 过滤器对数据进行过滤，只要数据对象不是 `Constants.DATA_VALUE_ILLEGAL`，则通过过滤，否则不通过过滤。
+```java
+public class WasherUsageExample {
 
-*当前置清洗器认定数据不合法时，应该按照上文返回可用于识别的特殊对象，而不应该抛出异常。*
+    private void washPreFilter(
+            Washer washer, LongIdKey pointKey, RecordInfo recordInfo
+    ) throws WasherException {
+        Washer.WashInfo washInfo = new Washer.WashInfo(
+                pointKey,
+                recordInfo.getValue(),
+                recordInfo.getHappenedDate(),
+                recordInfo.getHappenedDateNanoOffset()
+        );
+        Washer.WashResult washResult = washer.wash(washInfo);
+        Object washedValue = washResult == null ? null : washResult.getValue();
+        recordInfo.setValue(washedValue);
+    }
+}
+```
+
+过滤前清洗器处理的数据可能无效，因此常与过滤器配合使用，推荐流程如下：
+
+1. 过滤前清洗器发现数据不合法时，返回 `null`，或 SDK 提供的特殊值
+   `com.dwarfeng.fdr.sdk.util.Constants#DATA_VALUE_ILLEGAL`。
+2. 配置 `data_value_illegal_filter` 等过滤器识别上述特殊值并拒绝该数据。
+
+*当前置清洗器认定数据不合法时，应返回可识别的特殊值，而不应为此抛出异常。*
+
+若因无法调用外部服务等原因无法完成清洗流程，应抛出 `WasherException`，由框架按记录失败流程处理。
 
 ### 过滤后清洗器
 
-过滤后清洗器会在数据被过滤之后执行。
+过滤后清洗器在数据被过滤之后执行。
+FDR 同样读取 `RecordInfo.getValue()`，
+按照过滤后清洗器预设的顺序（`preFilter=false`，按 `index` 升序）依次调用 `wash(WashInfo)` 并写回结果。
 
-FDR 会调用 `RecordInfo.getValue` 方法，获取记录信息的值。
-按照过滤器前清洗器预设的顺序依次调用 `Washer.wash` 方法，对记录信息的值进行清洗。前一个清洗器的输出会作为后一个清洗器的输入。
-
-与过滤前清洗器不同的是，由于前方的过滤器会过滤掉所有的非法数据，因此，后置清洗器不需要对数据进行检查。
+与过滤前清洗器不同的是，非法数据通常已被过滤器剔除，后置清洗器侧重对已通过过滤的数据做修正。
 
 ## 参阅
 
-待补充
+- [Opt Directory](./OptDirectory.md) - 可选配置目录说明，详细介绍了本项目的可选配置，即 `opt/` 目录下的内容。
+- [Record Memory](./RecordMemory.md) - 记录记忆，说明记录记忆的结构、工作机制与运维要点。
+- [Telqos Commands](./TelqosCommands.md) - Telqos 命令，详细说明了本项目的 Telqos 命令。
