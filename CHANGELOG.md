@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 优化部分指令的文案。
+  - com.dwarfeng.fdr.impl.service.telqos.SupportCommand。
+
 - `fdr-impl` 子模块添加单元测试。
   - com.dwarfeng.fdr.impl.service.EnabledWasherInfoLookupServiceImplTest。
 

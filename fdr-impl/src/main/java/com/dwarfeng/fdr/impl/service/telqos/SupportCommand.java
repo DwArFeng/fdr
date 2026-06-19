@@ -86,19 +86,19 @@ public class SupportCommand extends CliCommand {
             switch (pair.getLeft()) {
                 case COMMAND_OPTION_RESET_FILTER:
                     supportQosService.resetFilter();
-                    context.sendMessage("重置过滤器支持成功。");
+                    context.sendMessage("重置过滤器支持成功");
                     break;
                 case COMMAND_OPTION_RESET_WASHER:
                     supportQosService.resetWasher();
-                    context.sendMessage("重置清洗器支持成功。");
+                    context.sendMessage("重置清洗器支持成功");
                     break;
                 case COMMAND_OPTION_RESET_TRIGGER:
                     supportQosService.resetTrigger();
-                    context.sendMessage("重置触发器支持成功。");
+                    context.sendMessage("重置触发器支持成功");
                     break;
                 case COMMAND_OPTION_RESET_MAPPER:
                     supportQosService.resetMapper();
-                    context.sendMessage("重置映射器成功。");
+                    context.sendMessage("重置映射器支持成功");
                     break;
             }
         } catch (Exception e) {
