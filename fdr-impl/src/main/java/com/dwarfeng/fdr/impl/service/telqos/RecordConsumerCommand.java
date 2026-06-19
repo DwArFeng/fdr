@@ -19,6 +19,16 @@ import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 
+/**
+ * 记录侧消费者操作指令。
+ *
+ * <p>
+ * 该指令用于操作和查看记录侧的消费者，包括查看消费者状态、设置消费者参数、列出所有消费者类型和消费者名称等功能。
+ * 支持按消费者类型和名称进行过滤。
+ *
+ * @author DwArFeng
+ * @since 1.8.0
+ */
 @TelqosCommand
 public class RecordConsumerCommand extends CliCommand {
 

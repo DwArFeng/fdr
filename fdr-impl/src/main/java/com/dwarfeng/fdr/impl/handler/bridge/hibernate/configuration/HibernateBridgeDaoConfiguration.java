@@ -34,11 +34,14 @@ public class HibernateBridgeDaoConfiguration {
     private final HibernateTemplate hibernateTemplate;
 
     private final HibernateBridgeNormalDataPresetCriteriaMaker hibernateBridgeNormalDataPresetCriteriaMaker;
-    private final List<DialectNativeLookup<HibernateBridgeNormalData>> hibernateBridgeNormalDataDialectNativeLookups;
+    private final List<DialectNativeLookup<HibernateBridgeNormalData>>
+            hibernateBridgeNormalDataDialectNativeLookups;
     private final HibernateBridgeFilteredDataPresetCriteriaMaker hibernateBridgeFilteredDataPresetCriteriaMaker;
-    private final List<DialectNativeLookup<HibernateBridgeFilteredData>> hibernateBridgeFilteredDataDialectNativeLookups;
+    private final List<DialectNativeLookup<HibernateBridgeFilteredData>>
+            hibernateBridgeFilteredDataDialectNativeLookups;
     private final HibernateBridgeTriggeredDataPresetCriteriaMaker hibernateBridgeTriggeredDataPresetCriteriaMaker;
-    private final List<DialectNativeLookup<HibernateBridgeTriggeredData>> hibernateBridgeTriggeredDataDialectNativeLookups;
+    private final List<DialectNativeLookup<HibernateBridgeTriggeredData>>
+            hibernateBridgeTriggeredDataDialectNativeLookups;
 
     @Value("${bridge.hibernate.use_project_config}")
     private boolean useProjectConfig;

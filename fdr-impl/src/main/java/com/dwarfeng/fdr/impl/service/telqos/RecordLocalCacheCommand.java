@@ -21,6 +21,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * 数据记录本地缓存操作指令。
+ *
+ * <p>
+ * 该指令用于查看和清理记录功能的本地缓存，包括查看指定数据点的详细信息以及清除整个本地缓存等操作。
+ *
+ * @author DwArFeng
+ * @since 1.8.0
+ */
 @TelqosCommand
 public class RecordLocalCacheCommand extends CliCommand {
 

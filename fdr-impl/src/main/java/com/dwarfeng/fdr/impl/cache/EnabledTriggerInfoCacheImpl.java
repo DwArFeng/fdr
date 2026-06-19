@@ -72,14 +72,16 @@ public class EnabledTriggerInfoCacheImpl implements EnabledTriggerInfoCache {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void leftPush(LongIdKey key, @SkipRecord Collection<TriggerInfo> entities, long timeout) throws CacheException {
+    public void leftPush(LongIdKey key, @SkipRecord Collection<TriggerInfo> entities, long timeout)
+            throws CacheException {
         delegate.leftPush(key, entities, timeout);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void rightPush(LongIdKey key, @SkipRecord Collection<TriggerInfo> entities, long timeout) throws CacheException {
+    public void rightPush(LongIdKey key, @SkipRecord Collection<TriggerInfo> entities, long timeout)
+            throws CacheException {
         delegate.rightPush(key, entities, timeout);
     }
 

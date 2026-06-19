@@ -26,8 +26,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 观察指令。
+ * 观察指令基类。
  *
+ * <p>
+ * 该抽象类为各种数据查询指令提供基础实现，包括查询最新数据、按 ID 查询、原生查询和通用查询等功能。
+ * 支持通过 JSON 参数进行灵活的查询配置。
+ *
+ * @param <D> 数据类型，必须是 {@link Data} 的子类
  * @author DwArFeng
  * @since 2.0.0
  */

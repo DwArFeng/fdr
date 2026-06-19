@@ -13,6 +13,15 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 重置处理器控制指令。
+ *
+ * <p>
+ * 该指令用于查看、启动、停止重置处理器，以及执行记录功能和映射功能的重置操作。
+ *
+ * @author DwArFeng
+ * @since 1.11.0
+ */
 @TelqosCommand
 public class ResetCommand extends CliCommand {
 

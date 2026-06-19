@@ -19,6 +19,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ScheduledFuture;
 
+/**
+ * 逻辑侧消费者操作指令。
+ *
+ * <p>
+ * 该指令用于操作和查看逻辑侧的消费者（即记录者），包括查看消费者状态、设置消费者参数等功能。支持持续输出消费者状态。
+ *
+ * @author DwArFeng
+ * @since 1.8.1
+ */
 @TelqosCommand
 public class LogicConsumerCommand extends CliCommand {
 

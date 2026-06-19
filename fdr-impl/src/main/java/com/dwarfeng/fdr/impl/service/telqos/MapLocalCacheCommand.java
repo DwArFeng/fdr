@@ -14,6 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * 映射查询本地缓存操作指令。
+ *
+ * <p>
+ * 该指令用于查看和清理映射查询功能的本地缓存，包括查看指定映射类型的映射器以及清除整个本地缓存等操作。
+ *
+ * @author DwArFeng
+ * @since 1.9.0
+ */
 @TelqosCommand
 public class MapLocalCacheCommand extends CliCommand {
 

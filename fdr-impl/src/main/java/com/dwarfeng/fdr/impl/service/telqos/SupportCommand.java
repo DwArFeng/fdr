@@ -12,6 +12,15 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 支持操作指令。
+ *
+ * <p>
+ * 该指令用于重置各种支持类，包括过滤器支持、清洗器支持、触发器支持和映射器支持。
+ *
+ * @author DwArFeng
+ * @since 2.3.0
+ */
 @TelqosCommand
 public class SupportCommand extends CliCommand {
 

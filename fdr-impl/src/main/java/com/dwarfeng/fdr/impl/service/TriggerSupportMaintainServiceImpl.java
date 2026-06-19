@@ -238,7 +238,8 @@ public class TriggerSupportMaintainServiceImpl implements TriggerSupportMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PagedData<TriggerSupport> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
+    public PagedData<TriggerSupport> lookup(String preset, Object[] objs, PagingInfo pagingInfo)
+            throws ServiceException {
         return presetLookupService.lookup(preset, objs, pagingInfo);
     }
 
@@ -254,7 +255,8 @@ public class TriggerSupportMaintainServiceImpl implements TriggerSupportMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<TriggerSupport> lookupAsList(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
+    public List<TriggerSupport> lookupAsList(String preset, Object[] objs, PagingInfo pagingInfo)
+            throws ServiceException {
         return presetLookupService.lookupAsList(preset, objs, pagingInfo);
     }
 

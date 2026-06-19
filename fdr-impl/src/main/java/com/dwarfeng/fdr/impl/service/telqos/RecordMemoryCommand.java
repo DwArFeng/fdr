@@ -19,7 +19,10 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 记录记忆指令。
+ * 记录记忆查询与清理指令。
+ *
+ * <p>
+ * 该指令用于查询和管理记录记忆数据，包括查看指定点位的记录记忆、移除指定点位的记录记忆以及清除所有记录记忆等操作。
  *
  * @author DwArFeng
  * @since 2.5.0

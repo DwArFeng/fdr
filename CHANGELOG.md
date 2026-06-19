@@ -4,6 +4,30 @@
 
 ### 功能构建
 
+- `fdr-impl` 子模块类优化注释、文档注释格式、代码换行格式。
+  - com.dwarfeng.fdr.impl.cache.EnabledFilterInfoCacheImpl。
+  - com.dwarfeng.fdr.impl.cache.EnabledTriggerInfoCacheImpl。
+  - com.dwarfeng.fdr.impl.cache.EnabledWasherInfoCacheImpl。
+  - com.dwarfeng.fdr.impl.handler.bridge.hibernate.configuration.HibernateBridgeDaoConfiguration。
+  - com.dwarfeng.fdr.impl.service.AbstractViewService。
+  - com.dwarfeng.fdr.impl.service.FilterSupportMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.MapperSupportMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.TriggerSupportMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.WasherSupportMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.telqos.FilteredViewCommand。
+  - com.dwarfeng.fdr.impl.service.telqos.LogicConsumerCommand。
+  - com.dwarfeng.fdr.impl.service.telqos.MapLocalCacheCommand。
+  - com.dwarfeng.fdr.impl.service.telqos.NormalViewCommand。
+  - com.dwarfeng.fdr.impl.service.telqos.RecordCommand。
+  - com.dwarfeng.fdr.impl.service.telqos.RecordConsumerCommand。
+  - com.dwarfeng.fdr.impl.service.telqos.RecordLocalCacheCommand。
+  - com.dwarfeng.fdr.impl.service.telqos.RecordMemoryCommand。
+  - com.dwarfeng.fdr.impl.service.telqos.ResetCommand。
+  - com.dwarfeng.fdr.impl.service.telqos.SourceCommand。
+  - com.dwarfeng.fdr.impl.service.telqos.SupportCommand。
+  - com.dwarfeng.fdr.impl.service.telqos.TriggeredViewCommand。
+  - com.dwarfeng.fdr.impl.service.telqos.ViewCommand。
+
 - 优化文件格式。
   - 优化 `assembly.xml` 文件的格式。
 

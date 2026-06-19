@@ -12,6 +12,15 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 记录功能控制指令。
+ *
+ * <p>
+ * 该指令用于控制记录功能的上线和下线，以及查询记录功能的当前状态。
+ *
+ * @author DwArFeng
+ * @since 1.8.0
+ */
 @TelqosCommand
 public class RecordCommand extends CliCommand {
 

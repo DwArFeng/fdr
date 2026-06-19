@@ -13,6 +13,15 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 数据源查看指令。
+ *
+ * <p>
+ * 该指令用于查看当前系统中已加载的所有数据源。
+ *
+ * @author DwArFeng
+ * @since 2.3.0
+ */
 @TelqosCommand
 public class SourceCommand extends CliCommand {
 

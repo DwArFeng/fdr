@@ -156,7 +156,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
     @BehaviorAnalyse
     @SkipRecord
     @Override
-    public CompletableFuture<List<LookupResult<D>>> lookupAsync(@SkipRecord List<LookupInfo> lookupInfos) throws ServiceException {
+    public CompletableFuture<List<LookupResult<D>>> lookupAsync(@SkipRecord List<LookupInfo> lookupInfos)
+            throws ServiceException {
         try {
             return viewHandler.lookupAsync(lookupInfos);
         } catch (Exception e) {
@@ -201,7 +202,8 @@ public abstract class AbstractViewService<D extends Data> implements ViewService
     @BehaviorAnalyse
     @SkipRecord
     @Override
-    public CompletableFuture<List<QueryResult>> queryAsync(@SkipRecord List<QueryInfo> queryInfos) throws ServiceException {
+    public CompletableFuture<List<QueryResult>> queryAsync(@SkipRecord List<QueryInfo> queryInfos)
+            throws ServiceException {
         try {
             return viewHandler.queryAsync(queryInfos);
         } catch (Exception e) {

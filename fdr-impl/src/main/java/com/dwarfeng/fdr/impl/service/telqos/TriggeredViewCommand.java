@@ -9,6 +9,16 @@ import com.dwarfeng.springtelqos.stack.exception.TelqosException;
 
 import java.util.Objects;
 
+/**
+ * 被触发数据查看指令。
+ *
+ * <p>
+ * 该指令继承自 {@link ViewCommand}，用于查询和显示被触发数据（{@link TriggeredData}）。
+ * 支持查询最新数据、按 ID 查询、原生查询和通用查询等操作。
+ *
+ * @author DwArFeng
+ * @since 2.0.0
+ */
 @TelqosCommand
 public class TriggeredViewCommand extends ViewCommand<TriggeredData> {
 
