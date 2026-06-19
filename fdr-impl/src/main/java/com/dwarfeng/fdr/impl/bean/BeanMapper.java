@@ -103,5 +103,19 @@ public interface BeanMapper {
     @InheritInverseConfiguration
     WasherSupport washerSupportFromHibernate(HibernateWasherSupport hibernateWasherSupport);
 
+    @Mapping(target = "modifiedDatamark", ignore = true)
+    @Mapping(target = "createdDatamark", ignore = true)
+    @Mapping(target = "longId", ignore = true)
+    HibernateFetcherInfo fetcherInfoToHibernate(FetcherInfo fetcherInfo);
+
+    @InheritInverseConfiguration
+    FetcherInfo fetcherInfoFromHibernate(HibernateFetcherInfo hibernateFetcherInfo);
+
+    @Mapping(target = "stringId", ignore = true)
+    HibernateFetcherSupport fetcherSupportToHibernate(FetcherSupport fetcherSupport);
+
+    @InheritInverseConfiguration
+    FetcherSupport fetcherSupportFromHibernate(HibernateFetcherSupport hibernateFetcherSupport);
+
     // endregion
 }

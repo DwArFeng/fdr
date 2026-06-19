@@ -16,4 +16,12 @@
             resource-charset="${datamark.point.resource_charset}"
             update-allowed="${datamark.point.update_allowed}"
     />
+
+    <!-- Fetcher 数据标识。 -->
+    <datamark:handler
+            handler-name="fetcherDatamarkHandler"
+            resource-url="${datamark.fetcher.resource_url}"
+            resource-charset="${datamark.fetcher.resource_charset}"
+            update-allowed="${datamark.fetcher.update_allowed}"
+    />
 </beans>

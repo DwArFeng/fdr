@@ -131,6 +131,26 @@ public interface BeanMapper {
     @InheritInverseConfiguration
     WasherInfo washerInfoFromWebInput(WebInputWasherInfo webInputWasherInfo);
 
+    FastJsonFetcherInfo fetcherInfoToFastJson(FetcherInfo fetcherInfo);
+
+    @InheritInverseConfiguration
+    FetcherInfo fetcherInfoFromFastJson(FastJsonFetcherInfo fastJsonFetcherInfo);
+
+    FastJsonFetcherSupport fetcherSupportToFastJson(FetcherSupport fetcherSupport);
+
+    @InheritInverseConfiguration
+    FetcherSupport fetcherSupportFromFastJson(FastJsonFetcherSupport fastJsonFetcherSupport);
+
+    JSFixedFastJsonFetcherInfo fetcherInfoToJSFixedFastJson(FetcherInfo fetcherInfo);
+
+    @InheritInverseConfiguration
+    FetcherInfo fetcherInfoFromJSFixedFastJson(JSFixedFastJsonFetcherInfo jSFixedFastJsonFetcherInfo);
+
+    WebInputFetcherInfo fetcherInfoToWebInput(FetcherInfo fetcherInfo);
+
+    @InheritInverseConfiguration
+    FetcherInfo fetcherInfoFromWebInput(WebInputFetcherInfo webInputFetcherInfo);
+
     // endregion
 
     // region Fdr DTO

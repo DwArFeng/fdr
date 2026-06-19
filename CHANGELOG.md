@@ -4,6 +4,13 @@
 
 ### 功能构建
 
+- 新增使能实体查询服务。
+  - com.dwarfeng.fdr.stack.service.EnabledFetcherInfoLookupService。
+
+- 建立实体以及维护服务，并通过单元测试。
+  - com.dwarfeng.fdr.stack.bean.entity.FetcherInfo。
+  - com.dwarfeng.fdr.stack.bean.entity.FetcherSupport。
+
 - 优化项目的关闭流程。
   - 引入 ShutdownProcessor，集中处理关闭调度。
 

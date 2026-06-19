@@ -6,6 +6,7 @@ import com.dwarfeng.fdr.stack.bean.entity.*;
 import com.dwarfeng.subgrade.impl.bean.MapStructBeanTransformer;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.impl.cache.RedisKeyListCache;
+import com.dwarfeng.subgrade.impl.cache.RedisListCache;
 import com.dwarfeng.subgrade.sdk.redis.formatter.LongIdStringKeyFormatter;
 import com.dwarfeng.subgrade.sdk.redis.formatter.StringIdStringKeyFormatter;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -43,6 +44,12 @@ public class CacheConfiguration {
     private String washerSupportPrefix;
     @Value("${cache.prefix.list.enabled_washer_info}")
     private String enabledWasherInfoPrefix;
+    @Value("${cache.prefix.entity.fetcher_info}")
+    private String fetcherInfoPrefix;
+    @Value("${cache.prefix.entity.fetcher_support}")
+    private String fetcherSupportPrefix;
+    @Value("${cache.prefix.list.enabled_fetcher_info}")
+    private String enabledFetcherInfoPrefix;
 
     public CacheConfiguration(
             @Qualifier("redisTemplate") RedisTemplate<String, ?> template
@@ -158,6 +165,37 @@ public class CacheConfiguration {
                 (RedisTemplate<String, FastJsonWasherInfo>) template,
                 new LongIdStringKeyFormatter(enabledWasherInfoPrefix),
                 new MapStructBeanTransformer<>(WasherInfo.class, FastJsonWasherInfo.class, BeanMapper.class)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<LongIdKey, FetcherInfo, FastJsonFetcherInfo> fetcherInfoRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonFetcherInfo>) template,
+                new LongIdStringKeyFormatter(fetcherInfoPrefix),
+                new MapStructBeanTransformer<>(FetcherInfo.class, FastJsonFetcherInfo.class, BeanMapper.class)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<StringIdKey, FetcherSupport, FastJsonFetcherSupport>
+    fetcherSupportRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonFetcherSupport>) template,
+                new StringIdStringKeyFormatter(fetcherSupportPrefix),
+                new MapStructBeanTransformer<>(FetcherSupport.class, FastJsonFetcherSupport.class, BeanMapper.class)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisListCache<FetcherInfo, FastJsonFetcherInfo> fetcherInfoEnabledRedisListCache() {
+        return new RedisListCache<>(
+                enabledFetcherInfoPrefix,
+                (RedisTemplate<String, FastJsonFetcherInfo>) template,
+                new MapStructBeanTransformer<>(FetcherInfo.class, FastJsonFetcherInfo.class, BeanMapper.class)
         );
     }
 }

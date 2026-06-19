@@ -32,6 +32,8 @@ public class DaoConfiguration {
     private final MapperSupportPresetCriteriaMaker mapperSupportPresetCriteriaMaker;
     private final WasherInfoPresetCriteriaMaker washerInfoPresetCriteriaMaker;
     private final WasherSupportPresetCriteriaMaker washerSupportPresetCriteriaMaker;
+    private final FetcherInfoPresetCriteriaMaker fetcherInfoPresetCriteriaMaker;
+    private final FetcherSupportPresetCriteriaMaker fetcherSupportPresetCriteriaMaker;
 
     @Value("${hibernate.jdbc.batch_size}")
     private int batchSize;
@@ -45,7 +47,9 @@ public class DaoConfiguration {
             TriggerSupportPresetCriteriaMaker triggerSupportPresetCriteriaMaker,
             MapperSupportPresetCriteriaMaker mapperSupportPresetCriteriaMaker,
             WasherInfoPresetCriteriaMaker washerInfoPresetCriteriaMaker,
-            WasherSupportPresetCriteriaMaker washerSupportPresetCriteriaMaker
+            WasherSupportPresetCriteriaMaker washerSupportPresetCriteriaMaker,
+            FetcherInfoPresetCriteriaMaker fetcherInfoPresetCriteriaMaker,
+            FetcherSupportPresetCriteriaMaker fetcherSupportPresetCriteriaMaker
     ) {
         this.template = template;
         this.filterInfoPresetCriteriaMaker = filterInfoPresetCriteriaMaker;
@@ -56,6 +60,8 @@ public class DaoConfiguration {
         this.mapperSupportPresetCriteriaMaker = mapperSupportPresetCriteriaMaker;
         this.washerInfoPresetCriteriaMaker = washerInfoPresetCriteriaMaker;
         this.washerSupportPresetCriteriaMaker = washerSupportPresetCriteriaMaker;
+        this.fetcherInfoPresetCriteriaMaker = fetcherInfoPresetCriteriaMaker;
+        this.fetcherSupportPresetCriteriaMaker = fetcherSupportPresetCriteriaMaker;
     }
 
     @Bean
@@ -326,6 +332,74 @@ public class DaoConfiguration {
                 ),
                 HibernateWasherSupport.class,
                 washerSupportPresetCriteriaMaker
+        );
+    }
+
+    @Bean
+    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, FetcherInfo, HibernateFetcherInfo>
+    fetcherInfoHibernateBatchBaseDao() {
+        return new HibernateBatchBaseDao<>(
+                template,
+                new MapStructBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, BeanMapper.class),
+                new MapStructBeanTransformer<>(FetcherInfo.class, HibernateFetcherInfo.class, BeanMapper.class),
+                HibernateFetcherInfo.class,
+                new DefaultDeletionMod<>(),
+                batchSize
+        );
+    }
+
+    @Bean
+    public HibernatePresetLookupDao<FetcherInfo, HibernateFetcherInfo> fetcherInfoHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
+                template,
+                new MapStructBeanTransformer<>(FetcherInfo.class, HibernateFetcherInfo.class, BeanMapper.class),
+                HibernateFetcherInfo.class,
+                fetcherInfoPresetCriteriaMaker
+        );
+    }
+
+    @Bean
+    public HibernateEntireLookupDao<FetcherInfo, HibernateFetcherInfo> fetcherInfoHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                template,
+                new MapStructBeanTransformer<>(FetcherInfo.class, HibernateFetcherInfo.class, BeanMapper.class),
+                HibernateFetcherInfo.class
+        );
+    }
+
+    @Bean
+    public HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, FetcherSupport, HibernateFetcherSupport>
+    fetcherSupportHibernateBatchBaseDao() {
+        return new HibernateBatchBaseDao<>(
+                template,
+                new MapStructBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, BeanMapper.class),
+                new MapStructBeanTransformer<>(
+                        FetcherSupport.class, HibernateFetcherSupport.class, BeanMapper.class
+                ),
+                HibernateFetcherSupport.class
+        );
+    }
+
+    @Bean
+    public HibernateEntireLookupDao<FetcherSupport, HibernateFetcherSupport> fetcherSupportHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                template,
+                new MapStructBeanTransformer<>(
+                        FetcherSupport.class, HibernateFetcherSupport.class, BeanMapper.class
+                ),
+                HibernateFetcherSupport.class
+        );
+    }
+
+    @Bean
+    public HibernatePresetLookupDao<FetcherSupport, HibernateFetcherSupport> fetcherSupportHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
+                template,
+                new MapStructBeanTransformer<>(
+                        FetcherSupport.class, HibernateFetcherSupport.class, BeanMapper.class
+                ),
+                HibernateFetcherSupport.class,
+                fetcherSupportPresetCriteriaMaker
         );
     }
 }

@@ -105,6 +105,21 @@
             ref="recordServiceImpl"
             group="${dubbo.provider.group}"
     />
+    <dubbo:service
+            interface="com.dwarfeng.fdr.stack.service.FetcherInfoMaintainService"
+            ref="fetcherInfoMaintainServiceImpl"
+            group="${dubbo.provider.group}"
+    />
+    <dubbo:service
+            interface="com.dwarfeng.fdr.stack.service.FetcherSupportMaintainService"
+            ref="fetcherSupportMaintainServiceImpl"
+            group="${dubbo.provider.group}"
+    />
+    <dubbo:service
+            interface="com.dwarfeng.fdr.stack.service.EnabledFetcherInfoLookupService"
+            ref="enabledFetcherInfoLookupServiceImpl"
+            group="${dubbo.provider.group}"
+    />
 
     <!-- endregion -->
 
