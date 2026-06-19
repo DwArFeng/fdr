@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- `fdr-impl` 子模块添加单元测试。
+  - com.dwarfeng.fdr.impl.service.EnabledWasherInfoLookupServiceImplTest。
+
 - `fdr-impl` 子模块类优化注释、文档注释格式、代码换行格式。
   - com.dwarfeng.fdr.impl.cache.EnabledFilterInfoCacheImpl。
   - com.dwarfeng.fdr.impl.cache.EnabledTriggerInfoCacheImpl。
