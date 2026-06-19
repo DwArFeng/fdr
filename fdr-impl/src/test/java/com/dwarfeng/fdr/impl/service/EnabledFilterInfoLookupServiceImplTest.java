@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
-public class EnabledTestInfoLookupServiceImplTest {
+public class EnabledFilterInfoLookupServiceImplTest {
 
     @Autowired
     private PointMaintainService pointMaintainService;

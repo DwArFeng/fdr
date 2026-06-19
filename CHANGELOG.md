@@ -33,7 +33,8 @@
 
 ### Bug 修复
 
-- (无)
+- `fdr-impl` 子模块修改错误的单元测试类名。
+  - com.dwarfeng.fdr.impl.service.EnabledFilterInfoLookupServiceImplTest。
 
 ### 功能移除
 
