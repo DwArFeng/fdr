@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 优化项目的关闭流程。
+  - 引入 ShutdownProcessor，集中处理关闭调度。
+
 - 优化部分 `properties` 文件中的注释。
   - src/main/resources/fdr/launcher.properties。
 

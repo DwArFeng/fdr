@@ -10,7 +10,6 @@ import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PreDestroy;
 import java.util.List;
 
 @Service
@@ -29,11 +28,6 @@ public class ResetQosServiceImpl implements ResetQosService {
         this.resetterHandler = resetterHandler;
         this.resetHandler = resetHandler;
         this.sem = sem;
-    }
-
-    @PreDestroy
-    public void dispose() throws Exception {
-        resetHandler.stop();
     }
 
     @Override

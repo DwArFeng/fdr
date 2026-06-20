@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
@@ -76,11 +75,6 @@ public class RecordQosServiceImpl implements RecordQosService {
         consumeHandlerMap.put(ConsumerId.PERSIST_FILTERED, filteredPersistConsumeHandler);
         consumeHandlerMap.put(ConsumerId.KEEP_TRIGGERED, triggeredKeepConsumeHandler);
         consumeHandlerMap.put(ConsumerId.PERSIST_TRIGGERED, triggeredPersistConsumeHandler);
-    }
-
-    @PreDestroy
-    public void dispose() throws Exception {
-        recordHandler.stop();
     }
 
     @Override
