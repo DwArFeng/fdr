@@ -19,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
@@ -42,7 +41,6 @@ public class RecordProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RecordProcessor.class);
 
-    private final SourceHandler sourceHandler;
     private final ConsumeHandler<NormalData> normalKeepConsumeHandler;
     private final ConsumeHandler<NormalData> normalPersistConsumeHandler;
     private final ConsumeHandler<FilteredData> filteredKeepConsumeHandler;
@@ -69,8 +67,6 @@ public class RecordProcessor {
     ScheduledFuture<?> capacityCheckFuture = null;
 
     public RecordProcessor(
-            // 使用懒加载，以避免循环依赖。
-            @Lazy SourceHandler sourceHandler,
             @Qualifier("normalKeepConsumeHandler")
             ConsumeHandler<NormalData> normalKeepConsumeHandler,
             @Qualifier("normalPersistConsumeHandler")
@@ -88,7 +84,6 @@ public class RecordProcessor {
             Consumer consumer,
             ConsumeBuffer consumeBuffer
     ) {
-        this.sourceHandler = sourceHandler;
         this.normalKeepConsumeHandler = normalKeepConsumeHandler;
         this.normalPersistConsumeHandler = normalPersistConsumeHandler;
         this.filteredKeepConsumeHandler = filteredKeepConsumeHandler;
@@ -248,12 +243,6 @@ public class RecordProcessor {
             } catch (InterruptedException ignored) {
             }
 
-            LOGGER.info("数据源上线...");
-            List<Source> sources = sourceHandler.all();
-            for (Source source : sources) {
-                source.online();
-            }
-
             startFlag = true;
         } finally {
             lock.unlock();
@@ -266,12 +255,6 @@ public class RecordProcessor {
         try {
             if (!startFlag) {
                 return;
-            }
-
-            LOGGER.info("数据源下线...");
-            List<Source> sources = sourceHandler.all();
-            for (Source source : sources) {
-                source.offline();
             }
 
             try {
