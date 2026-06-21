@@ -4,6 +4,10 @@
 
 ### 功能构建
 
+- 实现预设抓取器。
+  - com.dwarfeng.fdr.impl.handler.fetcher.mock.hf.MockHfFetcherRegistry。
+  - com.dwarfeng.fdr.impl.handler.fetcher.mock.lf.MockLfFetcherRegistry。
+
 - 实现核心机制。
   - 抓取机制。
 

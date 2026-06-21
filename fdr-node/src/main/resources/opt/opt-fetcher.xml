@@ -9,4 +9,14 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
+
+    <!-- 加载 MockHfFetcher。 -->
+    <!--
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.fetcher.mock.hf"/>
+    -->
+
+    <!-- 加载 MockLfFetcher。 -->
+    <!--
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.fetcher.mock.lf"/>
+    -->
 </beans>
