@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 优化部分 `properties` 文件中的注释。
+  - src/main/resources/fdr/launcher.properties。
+
 - 优化部分指令的文案。
   - com.dwarfeng.fdr.impl.service.telqos.SupportCommand。
 
