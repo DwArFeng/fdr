@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.impl.handler;
 
+import com.dwarfeng.fdr.stack.handler.FetchHandler;
 import com.dwarfeng.fdr.stack.handler.RecordHandler;
 import com.dwarfeng.fdr.stack.handler.ResetHandler;
 import org.slf4j.Logger;
@@ -22,10 +23,16 @@ public class ShutdownProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShutdownProcessor.class);
 
+    private final FetchHandler fetchHandler;
     private final RecordHandler recordHandler;
     private final ResetHandler resetHandler;
 
-    public ShutdownProcessor(RecordHandler recordHandler, ResetHandler resetHandler) {
+    public ShutdownProcessor(
+            FetchHandler fetchHandler,
+            RecordHandler recordHandler,
+            ResetHandler resetHandler
+    ) {
+        this.fetchHandler = fetchHandler;
         this.recordHandler = recordHandler;
         this.resetHandler = resetHandler;
     }
@@ -33,6 +40,8 @@ public class ShutdownProcessor {
     @PreDestroy
     public void dispose() {
         try {
+            LOGGER.info("执行关闭调度: 停止抓取功能...");
+            fetchHandler.stop();
             LOGGER.info("执行关闭调度: 停止记录功能...");
             recordHandler.stop();
             LOGGER.info("执行关闭调度: 停止重置功能...");

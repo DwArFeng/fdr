@@ -85,6 +85,17 @@ public class ResetHandlerImpl implements ResetHandler {
         }
     }
 
+    @BehaviorAnalyse
+    @Override
+    public void resetFetch() throws HandlerException {
+        lock.lock();
+        try {
+            resetProcessor.resetFetch();
+        } finally {
+            lock.unlock();
+        }
+    }
+
     @Component
     public static class ResetWorker implements Worker {
 

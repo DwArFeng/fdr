@@ -56,4 +56,13 @@ public class SupportQosServiceImpl implements SupportQosService {
             throw ServiceExceptionHelper.logParse("重置映射器时发生异常", LogLevel.WARN, e, sem);
         }
     }
+
+    @Override
+    public void resetFetcher() throws ServiceException {
+        try {
+            supportHandler.resetFetcher();
+        } catch (HandlerException e) {
+            throw ServiceExceptionHelper.logParse("重置抓取器时发生异常", LogLevel.WARN, e, sem);
+        }
+    }
 }

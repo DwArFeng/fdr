@@ -141,6 +141,13 @@ public class LogPusher extends AbstractPusher {
         logData(title, message);
     }
 
+    @Override
+    public void fetchReset() throws HandlerException {
+        String title = "抓取功能重置:";
+        String message = StringUtils.EMPTY;
+        logData(title, message);
+    }
+
     private void logData(String title, String message) throws HandlerException {
         String logLevel = this.logLevel.toUpperCase();
         switch (logLevel) {

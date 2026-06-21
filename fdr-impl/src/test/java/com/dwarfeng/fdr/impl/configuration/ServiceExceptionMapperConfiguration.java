@@ -51,6 +51,12 @@ public class ServiceExceptionMapperConfiguration {
         destination.put(QueryException.class, ServiceExceptionCodes.QUERY_FAILED);
         destination.put(KeeperNotSupportedException.class, ServiceExceptionCodes.KEEPER_NOT_SUPPORTED);
         destination.put(PersisterNotSupportedException.class, ServiceExceptionCodes.PERSISTER_NOT_SUPPORTED);
+        destination.put(FetcherNotExistsException.class, ServiceExceptionCodes.FETCHER_NOT_EXISTS);
+        destination.put(FetcherException.class, ServiceExceptionCodes.FETCHER_FAILED);
+        destination.put(FetcherExecutionException.class, ServiceExceptionCodes.FETCHER_EXECUTION_FAILED);
+        destination.put(FetcherMakeException.class, ServiceExceptionCodes.FETCHER_MAKE_FAILED);
+        destination.put(FetcherSessionException.class, ServiceExceptionCodes.FETCHER_SESSION_FAILED);
+        destination.put(UnsupportedFetcherTypeException.class, ServiceExceptionCodes.FETCHER_TYPE_UNSUPPORTED);
         return new MapServiceExceptionMapper(destination, com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes.UNDEFINED);
     }
 }

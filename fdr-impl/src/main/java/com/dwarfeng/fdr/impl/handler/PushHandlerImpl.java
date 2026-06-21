@@ -103,4 +103,9 @@ public class PushHandlerImpl implements PushHandler {
     public void mapReset() throws HandlerException {
         pusher.mapReset();
     }
+
+    @Override
+    public void fetchReset() throws HandlerException {
+        pusher.fetchReset();
+    }
 }

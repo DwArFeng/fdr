@@ -1,6 +1,7 @@
 package com.dwarfeng.fdr.node.launcher;
 
 import com.dwarfeng.fdr.node.handler.LauncherSettingHandler;
+import com.dwarfeng.fdr.stack.service.FetchQosService;
 import com.dwarfeng.fdr.stack.service.RecordQosService;
 import com.dwarfeng.fdr.stack.service.ResetQosService;
 import com.dwarfeng.fdr.stack.service.SupportQosService;
@@ -41,8 +42,14 @@ public class Launcher {
             // 根据启动器设置处理器的设置，选择性重置清洗器。
             mayResetWasher(ctx);
 
-            // 根据启动器设置处理器的设置，选择性开启记录服务。
+            // 根据启动器设置处理器的设置，选择性重置抓取器。
+            mayResetFetcher(ctx);
+
+            // 根据启动器设置处理器的设置，选择性地开启记录服务。
             mayStartRecord(ctx);
+
+            // 根据启动器设置处理器的设置，选择性地开启抓取服务。
+            mayStartFetch(ctx);
 
             // 根据启动器设置处理器的设置，选择性开启重置服务。
             mayStartReset(ctx);
@@ -125,6 +132,28 @@ public class Launcher {
         }
     }
 
+    /**
+     * @since 3.1.0
+     */
+    private static void mayResetFetcher(ApplicationContext ctx) {
+        // 获取启动器设置处理器，用于获取启动器设置，并按照设置选择性执行功能。
+        LauncherSettingHandler launcherSettingHandler = ctx.getBean(LauncherSettingHandler.class);
+
+        // 如果不重置抓取器，则返回。
+        if (!launcherSettingHandler.isResetFetcherSupport()) {
+            return;
+        }
+
+        // 重置抓取器支持。
+        LOGGER.info("重置抓取器支持...");
+        SupportQosService supportQosService = ctx.getBean(SupportQosService.class);
+        try {
+            supportQosService.resetFetcher();
+        } catch (ServiceException e) {
+            LOGGER.warn("抓取器支持重置失败，异常信息如下", e);
+        }
+    }
+
     private static void mayStartRecord(ApplicationContext ctx) {
         // 获取启动器设置处理器，用于获取启动器设置，并按照设置选择性执行功能。
         LauncherSettingHandler launcherSettingHandler = ctx.getBean(LauncherSettingHandler.class);
@@ -156,6 +185,44 @@ public class Launcher {
                         }
                     },
                     new Date(System.currentTimeMillis() + startRecordDelay)
+            );
+        }
+    }
+
+    /**
+     * @since 3.1.0
+     */
+    private static void mayStartFetch(ApplicationContext ctx) {
+        // 获取启动器设置处理器，用于获取启动器设置，并按照设置选择性执行功能。
+        LauncherSettingHandler launcherSettingHandler = ctx.getBean(LauncherSettingHandler.class);
+
+        // 获取程序中的 ThreadPoolTaskScheduler，用于处理计划任务。
+        ThreadPoolTaskScheduler scheduler = ctx.getBean(ThreadPoolTaskScheduler.class);
+
+        // 处理抓取处理器的启动选项。
+        FetchQosService fetchQosService = ctx.getBean(FetchQosService.class);
+
+        // 判断是否开启抓取服务。
+        long startFetchDelay = launcherSettingHandler.getStartFetchDelay();
+        if (startFetchDelay == 0) {
+            LOGGER.info("立即启动抓取服务...");
+            try {
+                fetchQosService.start();
+            } catch (ServiceException e) {
+                LOGGER.error("无法启动抓取服务，异常原因如下", e);
+            }
+        } else if (startFetchDelay > 0) {
+            LOGGER.info("{} 毫秒后启动抓取服务...", startFetchDelay);
+            scheduler.schedule(
+                    () -> {
+                        LOGGER.info("启动抓取服务...");
+                        try {
+                            fetchQosService.start();
+                        } catch (ServiceException e) {
+                            LOGGER.error("无法启动抓取服务，异常原因如下", e);
+                        }
+                    },
+                    new Date(System.currentTimeMillis() + startFetchDelay)
             );
         }
     }

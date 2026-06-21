@@ -56,5 +56,13 @@ public interface Resetter {
          * @throws Exception 执行重置时抛出的任何异常。
          */
         void resetMap() throws Exception;
+
+        /**
+         * 重置抓取功能。
+         *
+         * @throws Exception 执行重置时抛出的任何异常。
+         * @since 3.1.0
+         */
+        void resetFetch() throws Exception;
     }
 }

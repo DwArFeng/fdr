@@ -28,12 +28,14 @@ public class SupportCommand extends CliCommand {
     private static final String COMMAND_OPTION_RESET_WASHER = "reset-washer";
     private static final String COMMAND_OPTION_RESET_TRIGGER = "reset-trigger";
     private static final String COMMAND_OPTION_RESET_MAPPER = "reset-mapper";
+    private static final String COMMAND_OPTION_RESET_FETCHER = "reset-fetcher";
 
     private static final String[] COMMAND_OPTION_ARRAY = new String[]{
             COMMAND_OPTION_RESET_FILTER,
             COMMAND_OPTION_RESET_WASHER,
             COMMAND_OPTION_RESET_TRIGGER,
-            COMMAND_OPTION_RESET_MAPPER
+            COMMAND_OPTION_RESET_MAPPER,
+            COMMAND_OPTION_RESET_FETCHER
     };
 
     private static final String IDENTITY = "support";
@@ -47,12 +49,15 @@ public class SupportCommand extends CliCommand {
             CommandUtil.concatOptionPrefix(COMMAND_OPTION_RESET_TRIGGER);
     private static final String CMD_LINE_SYNTAX_RESET_MAPPER = IDENTITY + " " +
             CommandUtil.concatOptionPrefix(COMMAND_OPTION_RESET_MAPPER);
+    private static final String CMD_LINE_SYNTAX_RESET_FETCHER = IDENTITY + " " +
+            CommandUtil.concatOptionPrefix(COMMAND_OPTION_RESET_FETCHER);
 
     private static final String[] CMD_LINE_ARRAY = new String[]{
             CMD_LINE_SYNTAX_RESET_FILTER,
             CMD_LINE_SYNTAX_RESET_WASHER,
             CMD_LINE_SYNTAX_RESET_TRIGGER,
-            CMD_LINE_SYNTAX_RESET_MAPPER
+            CMD_LINE_SYNTAX_RESET_MAPPER,
+            CMD_LINE_SYNTAX_RESET_FETCHER
     };
 
     private static final String CMD_LINE_SYNTAX = CommandUtil.syntax(CMD_LINE_ARRAY);
@@ -71,6 +76,7 @@ public class SupportCommand extends CliCommand {
         list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_WASHER).desc("重置清洗器支持").build());
         list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_TRIGGER).desc("重置触发器支持").build());
         list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_MAPPER).desc("重置映射器支持").build());
+        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_FETCHER).desc("重置抓取器支持").build());
         return list;
     }
 
@@ -99,6 +105,10 @@ public class SupportCommand extends CliCommand {
                 case COMMAND_OPTION_RESET_MAPPER:
                     supportQosService.resetMapper();
                     context.sendMessage("重置映射器支持成功");
+                    break;
+                case COMMAND_OPTION_RESET_FETCHER:
+                    supportQosService.resetFetcher();
+                    context.sendMessage("重置抓取器支持成功");
                     break;
             }
         } catch (Exception e) {

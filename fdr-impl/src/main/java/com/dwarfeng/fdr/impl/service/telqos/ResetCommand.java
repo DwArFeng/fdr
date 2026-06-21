@@ -31,6 +31,7 @@ public class ResetCommand extends CliCommand {
     private static final String COMMAND_OPTION_STATUS = "status";
     private static final String COMMAND_OPTION_RESET_RECORD = "reset-record";
     private static final String COMMAND_OPTION_RESET_MAP = "reset-map";
+    private static final String COMMAND_OPTION_RESET_FETCH = "reset-fetch";
 
     private static final String[] COMMAND_OPTION_ARRAY = new String[]{
             COMMAND_OPTION_LOOKUP,
@@ -38,7 +39,8 @@ public class ResetCommand extends CliCommand {
             COMMAND_OPTION_STOP,
             COMMAND_OPTION_STATUS,
             COMMAND_OPTION_RESET_RECORD,
-            COMMAND_OPTION_RESET_MAP
+            COMMAND_OPTION_RESET_MAP,
+            COMMAND_OPTION_RESET_FETCH
     };
 
     private static final String IDENTITY = "reset";
@@ -54,6 +56,8 @@ public class ResetCommand extends CliCommand {
             CommandUtil.concatOptionPrefix(COMMAND_OPTION_STATUS);
     private static final String CMD_LINE_SYNTAX_RESET_RECORD = IDENTITY + " " +
             CommandUtil.concatOptionPrefix(COMMAND_OPTION_RESET_RECORD);
+    private static final String CMD_LINE_SYNTAX_RESET_FETCH = IDENTITY + " " +
+            CommandUtil.concatOptionPrefix(COMMAND_OPTION_RESET_FETCH);
     private static final String CMD_LINE_SYNTAX_RESET_MAP = IDENTITY + " " +
             CommandUtil.concatOptionPrefix(COMMAND_OPTION_RESET_MAP);
 
@@ -63,6 +67,7 @@ public class ResetCommand extends CliCommand {
             CMD_LINE_SYNTAX_STOP,
             CMD_LINE_SYNTAX_STATUS,
             CMD_LINE_SYNTAX_RESET_RECORD,
+            CMD_LINE_SYNTAX_RESET_FETCH,
             CMD_LINE_SYNTAX_RESET_MAP
     };
 
@@ -84,6 +89,7 @@ public class ResetCommand extends CliCommand {
         list.add(Option.builder().longOpt(COMMAND_OPTION_STATUS).desc("查看重置处理器状态").build());
         list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_RECORD).desc("执行重置记录功能操作").build());
         list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_MAP).desc("执行重置映射功能操作").build());
+        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_FETCH).desc("执行重置抓取功能操作").build());
         return list;
     }
 
@@ -117,6 +123,10 @@ public class ResetCommand extends CliCommand {
                     break;
                 case COMMAND_OPTION_RESET_MAP:
                     resetQosService.resetMap();
+                    context.sendMessage("重置成功!");
+                    break;
+                case COMMAND_OPTION_RESET_FETCH:
+                    resetQosService.resetFetch();
                     context.sendMessage("重置成功!");
                     break;
             }

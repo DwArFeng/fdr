@@ -24,4 +24,12 @@ public interface ResetHandler extends StartableHandler {
      * @throws HandlerException 处理器异常。
      */
     void resetMap() throws HandlerException;
+
+    /**
+     * 重置抓取功能。
+     *
+     * @throws HandlerException 处理器异常。
+     * @since 3.1.0
+     */
+    void resetFetch() throws HandlerException;
 }

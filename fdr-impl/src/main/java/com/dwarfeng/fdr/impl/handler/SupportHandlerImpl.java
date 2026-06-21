@@ -1,18 +1,13 @@
 package com.dwarfeng.fdr.impl.handler;
 
+import com.dwarfeng.fdr.sdk.handler.*;
 import com.dwarfeng.fdr.sdk.handler.FilterSupporter;
 import com.dwarfeng.fdr.sdk.handler.MapperSupporter;
 import com.dwarfeng.fdr.sdk.handler.TriggerSupporter;
 import com.dwarfeng.fdr.sdk.handler.WasherSupporter;
-import com.dwarfeng.fdr.stack.bean.entity.FilterSupport;
-import com.dwarfeng.fdr.stack.bean.entity.MapperSupport;
-import com.dwarfeng.fdr.stack.bean.entity.TriggerSupport;
-import com.dwarfeng.fdr.stack.bean.entity.WasherSupport;
+import com.dwarfeng.fdr.stack.bean.entity.*;
 import com.dwarfeng.fdr.stack.handler.SupportHandler;
-import com.dwarfeng.fdr.stack.service.FilterSupportMaintainService;
-import com.dwarfeng.fdr.stack.service.MapperSupportMaintainService;
-import com.dwarfeng.fdr.stack.service.TriggerSupportMaintainService;
-import com.dwarfeng.fdr.stack.service.WasherSupportMaintainService;
+import com.dwarfeng.fdr.stack.service.*;
 import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
@@ -31,30 +26,36 @@ public class SupportHandlerImpl implements SupportHandler {
     private final WasherSupportMaintainService washerSupportMaintainService;
     private final TriggerSupportMaintainService triggerSupportMaintainService;
     private final MapperSupportMaintainService mapperSupportMaintainService;
+    private final FetcherSupportMaintainService fetcherSupportMaintainService;
 
     private final List<FilterSupporter> filterSupporters;
     private final List<WasherSupporter> washerSupporters;
     private final List<TriggerSupporter> triggerSupporters;
     private final List<MapperSupporter> mapperSupporters;
+    private final List<FetcherSupporter> fetcherSupporters;
 
     public SupportHandlerImpl(
             FilterSupportMaintainService filterSupportMaintainService,
             WasherSupportMaintainService washerSupportMaintainService,
             TriggerSupportMaintainService triggerSupportMaintainService,
             MapperSupportMaintainService mapperSupportMaintainService,
+            FetcherSupportMaintainService fetcherSupportMaintainService,
             List<FilterSupporter> filterSupporters,
             List<WasherSupporter> washerSupporters,
             List<TriggerSupporter> triggerSupporters,
-            List<MapperSupporter> mapperSupporters
+            List<MapperSupporter> mapperSupporters,
+            List<FetcherSupporter> fetcherSupporters
     ) {
         this.filterSupportMaintainService = filterSupportMaintainService;
         this.washerSupportMaintainService = washerSupportMaintainService;
         this.triggerSupportMaintainService = triggerSupportMaintainService;
         this.mapperSupportMaintainService = mapperSupportMaintainService;
+        this.fetcherSupportMaintainService = fetcherSupportMaintainService;
         this.filterSupporters = Optional.ofNullable(filterSupporters).orElse(Collections.emptyList());
         this.washerSupporters = Optional.ofNullable(washerSupporters).orElse(Collections.emptyList());
         this.triggerSupporters = Optional.ofNullable(triggerSupporters).orElse(Collections.emptyList());
         this.mapperSupporters = Optional.ofNullable(mapperSupporters).orElse(Collections.emptyList());
+        this.fetcherSupporters = Optional.ofNullable(fetcherSupporters).orElse(Collections.emptyList());
     }
 
     @Override
@@ -156,4 +157,30 @@ public class SupportHandlerImpl implements SupportHandler {
         ).collect(Collectors.toList());
         mapperSupportMaintainService.batchInsert(mapperSupports);
     }
+
+    @Override
+    @BehaviorAnalyse
+    public void resetFetcher() throws HandlerException {
+        try {
+            doResetFetcher();
+        } catch (Exception e) {
+            throw HandlerExceptionHelper.parse(e);
+        }
+    }
+
+    private void doResetFetcher() throws Exception {
+        List<StringIdKey> fetcherKeys = fetcherSupportMaintainService.lookupAsList().stream()
+                .map(FetcherSupport::getKey).collect(Collectors.toList());
+        fetcherSupportMaintainService.batchDelete(fetcherKeys);
+        List<FetcherSupport> fetcherSupports = fetcherSupporters.stream().map(
+                supporter -> new FetcherSupport(
+                        new StringIdKey(supporter.provideType()),
+                        supporter.provideLabel(),
+                        supporter.provideDescription(),
+                        supporter.provideExampleParam()
+                )
+        ).collect(Collectors.toList());
+        fetcherSupportMaintainService.batchInsert(fetcherSupports);
+    }
+
 }

@@ -58,6 +58,8 @@ public class NativeKafkaPusher extends AbstractPusher {
     private String recordResetTopic;
     @Value("${pusher.kafka.native.topic.map_reset}")
     private String mapResetTopic;
+    @Value("${pusher.kafka.native.topic.fetch_reset}")
+    private String fetchResetTopic;
 
     public NativeKafkaPusher(
             @Qualifier("nativeKafkaPusher.kafkaTemplate") KafkaTemplate<String, String> kafkaTemplate
@@ -155,6 +157,12 @@ public class NativeKafkaPusher extends AbstractPusher {
         kafkaTemplate.send(mapResetTopic, StringUtils.EMPTY);
     }
 
+    @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
+    @Override
+    public void fetchReset() {
+        kafkaTemplate.send(fetchResetTopic, StringUtils.EMPTY);
+    }
+
     @Override
     public String toString() {
         return "NativeKafkaPusher{" +
@@ -167,6 +175,7 @@ public class NativeKafkaPusher extends AbstractPusher {
                 ", triggeredRecordedTopic='" + triggeredRecordedTopic + '\'' +
                 ", recordResetTopic='" + recordResetTopic + '\'' +
                 ", mapResetTopic='" + mapResetTopic + '\'' +
+                ", fetchResetTopic='" + fetchResetTopic + '\'' +
                 '}';
     }
 

@@ -49,5 +49,10 @@ public class ResetterHandlerImpl implements ResetterHandler {
         public void resetMap() throws Exception {
             resetProcessor.resetMap();
         }
+
+        @Override
+        public void resetFetch() throws Exception {
+            resetProcessor.resetFetch();
+        }
     }
 }

@@ -103,6 +103,11 @@ public abstract class PusherAdapter extends AbstractPusher {
     public void mapReset() throws HandlerException {
     }
 
+    @SuppressWarnings("RedundantThrows")
+    @Override
+    public void fetchReset() throws HandlerException {
+    }
+
     @Override
     public String toString() {
         return "PusherAdapter{" +

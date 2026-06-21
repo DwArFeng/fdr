@@ -57,4 +57,12 @@ public interface ResetQosService extends Service {
      * @throws ServiceException 服务异常。
      */
     void resetMap() throws ServiceException;
+
+    /**
+     * 重置抓取功能。
+     *
+     * @throws ServiceException 服务异常。
+     * @since 3.1.0
+     */
+    void resetFetch() throws ServiceException;
 }

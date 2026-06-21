@@ -15,8 +15,12 @@ public class LauncherSettingHandler implements Handler {
     private boolean resetMapperSupport;
     @Value("${launcher.reset_washer_support}")
     private boolean resetWasherSupport;
+    @Value("${launcher.reset_fetcher_support}")
+    private boolean resetFetcherSupport;
     @Value("${launcher.start_record_delay}")
     private long startRecordDelay;
+    @Value("${launcher.start_fetch_delay}")
+    private long startFetchDelay;
     @Value("${launcher.start_reset_delay}")
     private long startResetDelay;
 
@@ -52,12 +56,28 @@ public class LauncherSettingHandler implements Handler {
         this.resetWasherSupport = resetWasherSupport;
     }
 
+    public boolean isResetFetcherSupport() {
+        return resetFetcherSupport;
+    }
+
+    public void setResetFetcherSupport(boolean resetFetcherSupport) {
+        this.resetFetcherSupport = resetFetcherSupport;
+    }
+
     public long getStartRecordDelay() {
         return startRecordDelay;
     }
 
     public void setStartRecordDelay(long startRecordDelay) {
         this.startRecordDelay = startRecordDelay;
+    }
+
+    public long getStartFetchDelay() {
+        return startFetchDelay;
+    }
+
+    public void setStartFetchDelay(long startFetchDelay) {
+        this.startFetchDelay = startFetchDelay;
     }
 
     public long getStartResetDelay() {
@@ -75,7 +95,9 @@ public class LauncherSettingHandler implements Handler {
                 ", resetTriggerSupport=" + resetTriggerSupport +
                 ", resetMapperSupport=" + resetMapperSupport +
                 ", resetWasherSupport=" + resetWasherSupport +
+                ", resetFetcherSupport=" + resetFetcherSupport +
                 ", startRecordDelay=" + startRecordDelay +
+                ", startFetchDelay=" + startFetchDelay +
                 ", startResetDelay=" + startResetDelay +
                 '}';
     }

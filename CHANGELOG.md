@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 实现核心机制。
+  - 抓取机制。
+
 - 新增使能实体查询服务。
   - com.dwarfeng.fdr.stack.service.EnabledFetcherInfoLookupService。
 

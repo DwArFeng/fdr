@@ -38,4 +38,11 @@ public interface SupportQosService extends Service {
      * @throws ServiceException 服务异常。
      */
     void resetMapper() throws ServiceException;
+
+    /**
+     * 重置抓取器。
+     *
+     * @throws ServiceException 服务异常。
+     */
+    void resetFetcher() throws ServiceException;
 }

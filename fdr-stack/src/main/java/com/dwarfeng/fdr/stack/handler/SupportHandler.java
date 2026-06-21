@@ -38,4 +38,11 @@ public interface SupportHandler extends Handler {
      * @throws HandlerException 处理器异常。
      */
     void resetMapper() throws HandlerException;
+
+    /**
+     * 重置抓取器。
+     *
+     * @throws HandlerException 处理器异常。
+     */
+    void resetFetcher() throws HandlerException;
 }

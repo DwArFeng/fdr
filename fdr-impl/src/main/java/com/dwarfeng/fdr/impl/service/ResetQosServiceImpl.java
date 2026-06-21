@@ -83,4 +83,13 @@ public class ResetQosServiceImpl implements ResetQosService {
             throw ServiceExceptionHelper.logParse("重置映射功能时发生异常", LogLevel.WARN, e, sem);
         }
     }
+
+    @Override
+    public void resetFetch() throws ServiceException {
+        try {
+            resetHandler.resetFetch();
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logParse("重置抓取功能时发生异常", LogLevel.WARN, e, sem);
+        }
+    }
 }

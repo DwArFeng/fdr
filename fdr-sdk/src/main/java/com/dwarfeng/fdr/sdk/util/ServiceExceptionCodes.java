@@ -80,6 +80,18 @@ public final class ServiceExceptionCodes {
             new ServiceException.Code(offset(100), "keeper not supported");
     public static final ServiceException.Code PERSISTER_NOT_SUPPORTED =
             new ServiceException.Code(offset(110), "persister not supported");
+    public static final ServiceException.Code FETCHER_NOT_EXISTS =
+            new ServiceException.Code(offset(120), "fetcher not exists");
+    public static final ServiceException.Code FETCHER_FAILED =
+            new ServiceException.Code(offset(130), "fetcher failed");
+    public static final ServiceException.Code FETCHER_EXECUTION_FAILED =
+            new ServiceException.Code(offset(131), "fetcher execution failed");
+    public static final ServiceException.Code FETCHER_MAKE_FAILED =
+            new ServiceException.Code(offset(132), "fetcher make failed");
+    public static final ServiceException.Code FETCHER_SESSION_FAILED =
+            new ServiceException.Code(offset(133), "fetcher session failed");
+    public static final ServiceException.Code FETCHER_TYPE_UNSUPPORTED =
+            new ServiceException.Code(offset(134), "fetcher type unsupported");
 
     private static int offset(int i) {
         return EXCEPTION_CODE_OFFSET + i;
@@ -138,6 +150,12 @@ public final class ServiceExceptionCodes {
         QUERY_FAILED.setCode(offset(90));
         KEEPER_NOT_SUPPORTED.setCode(offset(100));
         PERSISTER_NOT_SUPPORTED.setCode(offset(110));
+        FETCHER_NOT_EXISTS.setCode(offset(120));
+        FETCHER_FAILED.setCode(offset(130));
+        FETCHER_EXECUTION_FAILED.setCode(offset(131));
+        FETCHER_MAKE_FAILED.setCode(offset(132));
+        FETCHER_SESSION_FAILED.setCode(offset(133));
+        FETCHER_TYPE_UNSUPPORTED.setCode(offset(134));
     }
 
     private ServiceExceptionCodes() {

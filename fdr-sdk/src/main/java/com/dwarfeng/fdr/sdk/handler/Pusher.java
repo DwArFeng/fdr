@@ -132,4 +132,12 @@ public interface Pusher {
      * @throws HandlerException 处理器异常。
      */
     void mapReset() throws HandlerException;
+
+    /**
+     * 抓取功能重置时执行的广播操作。
+     *
+     * @throws HandlerException 处理器异常。
+     * @since 3.1.0
+     */
+    void fetchReset() throws HandlerException;
 }

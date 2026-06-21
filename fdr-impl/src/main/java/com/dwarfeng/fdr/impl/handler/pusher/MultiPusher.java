@@ -203,6 +203,17 @@ public class MultiPusher extends AbstractPusher {
     }
 
     @Override
+    public void fetchReset() {
+        for (Pusher delegate : delegates) {
+            try {
+                delegate.fetchReset();
+            } catch (Exception e) {
+                LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
+            }
+        }
+    }
+
+    @Override
     public String toString() {
         return "MultiPusher{" +
                 "delegateTypes='" + delegateTypes + '\'' +
