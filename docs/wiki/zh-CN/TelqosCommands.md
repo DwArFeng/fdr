@@ -2,28 +2,30 @@
 
 ## 命令列表
 
-FDR 2.x 版本提供的 Telqos 命令如下所示：
+FDR 提供的 Telqos 命令如下所示：
 
-| 命令                       | 说明         | 可用版本    |
-|--------------------------|------------|---------|
-| [lc](#lc-命令)             | 列出指令       | 2.0.0.a |
-| [man](#man-命令)           | 显示指令的详细信息  | 2.0.0.a |
-| [memory](#memory-命令)     | 内存监视       | 2.0.0.a |
-| [shutdown](#shutdown-命令) | 关闭/重启程序    | 2.0.0.a |
-| [quit](#quit-命令)         | 退出         | 2.0.0.a |
-| [dubbo](#dubbo-命令)       | 分布式服务上线/下线 | 2.0.0.a |
-| [nv](#nv-命令)             | 一般查看指令     | 2.0.0.a |
-| [fv](#fv-命令)             | 被过滤查看指令    | 2.0.0.a |
-| [tv](#tv-命令)             | 被触发查看指令    | 2.0.0.a |
-| [lcsu](#lcsu-命令)         | 逻辑侧消费者操作   | 2.0.0.a |
-| [rcsu](#rcsu-命令)         | 记录侧消费者操作   | 2.0.0.a |
-| [rlc](#rlc-命令)           | 数据记录本地缓存操作 | 2.0.0.a |
-| [rmem](#rmem-命令)         | 记录记忆查询与清理  | 2.5.0.a |
-| [mlc](#mlc-命令)           | 映射查询本地缓存操作 | 2.0.0.a |
-| [record](#record-命令)     | 记录功能上线/下线  | 2.0.0.a |
-| [reset](#reset-命令)       | 重置处理器操作/查看 | 2.0.0.a |
-| [source](#source-命令)     | 重置处理器操作/查看 | 2.3.0.a |
-| [support](#support-命令)   | 支持操作       | 2.3.0.a |
+| 命令                       | 说明         | 可用版本  |
+|--------------------------|------------|-------|
+| [lc](#lc-命令)             | 列出指令       | 2.0.0 |
+| [man](#man-命令)           | 显示指令的详细信息  | 2.0.0 |
+| [memory](#memory-命令)     | 内存监视       | 2.0.0 |
+| [shutdown](#shutdown-命令) | 关闭/重启程序    | 2.0.0 |
+| [quit](#quit-命令)         | 退出         | 2.0.0 |
+| [dubbo](#dubbo-命令)       | 分布式服务上线/下线 | 2.0.0 |
+| [nv](#nv-命令)             | 一般查看指令     | 2.0.0 |
+| [fv](#fv-命令)             | 被过滤查看指令    | 2.0.0 |
+| [tv](#tv-命令)             | 被触发查看指令    | 2.0.0 |
+| [lcsu](#lcsu-命令)         | 逻辑侧消费者操作   | 1.8.1 |
+| [rcsu](#rcsu-命令)         | 记录侧消费者操作   | 1.8.0 |
+| [rlc](#rlc-命令)           | 数据记录本地缓存操作 | 1.8.0 |
+| [rmem](#rmem-命令)         | 记录记忆查询与清理  | 2.5.0 |
+| [mlc](#mlc-命令)           | 映射查询本地缓存操作 | 1.9.0 |
+| [record](#record-命令)     | 记录功能上线/下线  | 1.8.0 |
+| [fetch](#fetch-命令)       | 抓取处理器操作/查看 | 3.1.0 |
+| [flc](#flc-命令)           | 抓取器本地缓存操作  | 3.1.0 |
+| [fs](#fs-命令)             | 抓取会话操作     | 3.1.0 |
+| [reset](#reset-命令)       | 重置处理器操作/查看 | 1.11.0 |
+| [support](#support-命令)   | 支持操作       | 2.3.0 |
 
 鉴于所有指令都可以实际操作验证，因此本为对于较长的输出将予以省略，省略的部分将会使用 `etc...` 进行标注。
 
@@ -550,14 +552,24 @@ OK
 ### 语法
 
 ```text
-usage: record -online
+usage: record -status
+record -online
 record -offline
 记录功能上线/下线
  -offline   下线服务
  -online    上线服务
+ -status    查看记录功能当前状态
 ```
 
 ### 示例
+
+#### 查看记录功能状态
+
+```text
+record -status
+记录功能当前状态: 上线
+OK
+```
 
 #### 记录功能上线
 
@@ -575,6 +587,121 @@ record -offline
 OK
 ```
 
+## fetch 命令
+
+抓取处理器查看与操作。
+
+用于查看抓取处理器状态，以及启动或停止抓取处理器。
+
+### 语法
+
+```text
+usage: fetch -status
+fetch -start
+fetch -stop
+抓取处理器操作/查看
+ -start    启动抓取处理器
+ -status   查看抓取处理器状态
+ -stop     停止抓取处理器
+```
+
+### 示例
+
+#### 查看抓取处理器状态
+
+```text
+fetch -status
+抓取功能当前状态: 运行中
+OK
+```
+
+#### 启动抓取处理器
+
+```text
+fetch -start
+抓取功能已启动!
+OK
+```
+
+#### 停止抓取处理器
+
+```text
+fetch -stop
+抓取功能已停止!
+OK
+```
+
+## flc 命令
+
+抓取器本地缓存操作。
+
+用于查看指定抓取器，以及清除抓取器本地缓存。
+
+### 语法
+
+```text
+usage: flc -l fetcher-info-id
+flc -c
+抓取器本地缓存操作
+ -c         清除抓取器本地缓存
+ -l <arg>   查询抓取器
+```
+
+### 示例
+
+#### 查询抓取器
+
+```text
+flc -l 1
+fetcherInfo: FetcherInfo{key=LongIdKey{longId=1}, enabled=true, type='mock.hf', etc...
+fetcher: MockHfFetcher{ctx=org.springframework.context.support.ClassPathXmlApplicationContext@626c44e7, etc...
+OK
+```
+
+#### 清除抓取器本地缓存
+
+```text
+flc -c
+本地缓存已清除
+OK
+```
+
+## fs 命令
+
+抓取会话操作。
+
+用于查看指定抓取会话，以及关闭并清除抓取会话。
+
+### 语法
+
+```text
+usage: fs -l fetcher-info-id
+fs -cnc
+抓取会话操作
+ -cnc       关闭并清除抓取会话
+ -l <arg>   查询抓取会话
+```
+
+### 示例
+
+#### 查询抓取会话
+
+```text
+fs -l 1
+fetcherInfo: FetcherInfo{key=LongIdKey{longId=1}, enabled=true, type='mock.hf', etc...
+fetcher: MockHfFetcher{ctx=org.springframework.context.support.ClassPathXmlApplicationContext@626c44e7, etc...
+fetcherSession: MockHfFetcherSession{ctx=org.springframework.context.support.ClassPathXmlApplicationContext@626c44e7, etc...
+OK
+```
+
+#### 关闭并清除抓取会话
+
+```text
+fs -cnc
+本地缓存已清除
+OK
+```
+
 ## reset 命令
 
 重置处理器查看与操作。
@@ -589,9 +716,11 @@ reset -start
 reset -stop
 reset -status
 reset --reset-record
+reset --reset-fetch
 reset --reset-map
 重置处理器操作/查看
     --l              查看重置处理器
+    --reset-fetch    执行重置抓取功能操作
     --reset-map      执行重置映射功能操作
     --reset-record   执行重置记录功能操作
     --start          启动重置处理器
@@ -599,17 +728,24 @@ reset --reset-map
     --stop           停止重置处理器
 ```
 
-`reset --reset-record` 指令重置记录功能，会执行以下操作：
+`reset --reset-fetch` 指令重置抓取功能，会执行以下操作：
 
-1. 停止记录处理器。
-2. 清空记录本地缓存处理器。
-3. 启动记录处理器。
+1. 停止抓取处理器。
+2. 清空抓取器本地缓存处理器。
+3. 关闭并清除抓取会话处理器。
+4. 启动抓取处理器。
 
 此方法会消耗一定的时间，尤其是在逻辑侧消费者或记录侧消费者积压数据较多的情况下。
 
 `reset --reset-map` 指令重置映射功能，会执行以下操作：
 
 1. 清空映射本地缓存处理器。
+
+`reset --reset-record` 指令重置记录功能，会执行以下操作：
+
+1. 停止记录处理器。
+2. 清空记录本地缓存处理器。
+3. 启动记录处理器。
 
 ### 示例
 
@@ -645,6 +781,14 @@ reset -stop
 OK
 ```
 
+#### 重置抓取功能
+
+```text
+reset --reset-fetch
+重置成功!
+OK
+```
+
 #### 重置记录功能
 
 ```text
@@ -661,28 +805,6 @@ reset --reset-map
 OK
 ```
 
-## source 命令
-
-查看数据源。
-
-查看当前生效的数据源。
-
-### 语法
-
-```text
-usage: source -l
-数据源查看
-    --l   查看数据源
-```
-
-### 示例
-
-```text
-source -l
-01. DctiKafkaSource{registry=org.springframework.kafka.config.KafkaListenerEndpointRegistry@etc...
-OK
-```
-
 ## support 命令
 
 支持操作。
@@ -692,12 +814,13 @@ OK
 ### 语法
 
 ```text
-man support
 usage: support --reset-filter
 support --reset-washer
 support --reset-trigger
 support --reset-mapper
+support --reset-fetcher
 支持操作
+    --reset-fetcher   重置抓取器支持
     --reset-filter    重置过滤器支持
     --reset-mapper    重置映射器支持
     --reset-trigger   重置触发器支持
@@ -706,11 +829,19 @@ support --reset-mapper
 
 ### 示例
 
+#### 重置抓取器支持
+
+```text
+support --reset-fetcher
+重置抓取器支持成功
+OK
+```
+
 #### 重置过滤器支持
 
 ```text
 support --reset-filter
-重置过滤器支持成功。
+重置过滤器支持成功
 OK
 ```
 
@@ -718,7 +849,7 @@ OK
 
 ```text
 support --reset-mapper
-重置映射器成功。
+重置映射器支持成功
 OK
 ```
 
@@ -726,7 +857,7 @@ OK
 
 ```text
 support --reset-trigger
-重置触发器支持成功。
+重置触发器支持成功
 OK
 ```
 
@@ -734,6 +865,6 @@ OK
 
 ```text
 support --reset-washer
-重置清洗器支持成功。
+重置清洗器支持成功
 OK
 ```

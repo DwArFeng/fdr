@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- Wiki 更新。
+  - docs/wiki/zh-CN/TelqosCommands.md。
+
 - 实现预设抓取器。
   - com.dwarfeng.fdr.impl.handler.fetcher.kafka.dct.DctKafkaFetcherRegistry。
   - com.dwarfeng.fdr.impl.handler.fetcher.kafka.dcti.DctiKafkaFetcherRegistry。
