@@ -31,7 +31,6 @@ conf
 │      query.properties
 │      record.properties
 │      reset.properties
-│      source.properties
 │
 ├─logging
 │      README.md
@@ -156,6 +155,9 @@ data_source.min_idle=0
 #
 #---------------------------------Point----------------------------------------
 # etc...
+#
+#---------------------------------Fetcher--------------------------------------
+# etc...
 ```
 
 ## dubbo 目录
@@ -198,7 +200,6 @@ dubbo.consumer.snowflake.group=
 | query.properties      | 查询服务配置文件                     |
 | record.properties     | 记录服务配置文件                     |
 | reset.properties      | 重置服务配置文件                     |
-| source.properties     | 数据源配置文件                      |
 
 ### background.properties
 
@@ -557,44 +558,6 @@ resetter.cron.cron=0 0 1 * * *
 
 在项目第一次启动之前，您需要修改 `opt/opt-resetter.xml`，决定项目中需要使用哪些重置器。您只需要修改使用的重置器的配置。
 
-### source.properties
-
-数据源配置文件，核心配置之一。
-
-```properties
-###################################################
-#                    kafka.dct                    #
-###################################################
-# 引导服务器集群。
-source.kafka.dct.bootstrap_servers=your-ip1:9092,your-ip2:9092,your-ip3:9092
-# etc...
-#
-###################################################
-#                    kafka.dcti                   #
-###################################################
-# 引导服务器集群。
-source.kafka.dcti.bootstrap_servers=your-ip1:9092,your-ip2:9092,your-ip3:9092
-# etc...
-#
-###################################################
-#                  mock.realtime                  #
-###################################################
-# Mock 实时数据源的随机种子。
-source.mock.realtime.random_seed=0
-# etc...
-#
-###################################################
-#                 mock.historical                 #
-###################################################
-# Mock 历史数据源的随机种子。
-source.mock.historical.random_seed=0
-# etc...
-```
-
-您不必对所有的配置项进行配置。
-
-在项目第一次启动之前，您需要修改 `opt/opt-source.xml`，决定项目中需要使用哪些数据源。您只需要修改使用的数据源的配置。
-
 ## logging 目录
 
 | 文件名                      | 说明                     |
@@ -603,6 +566,10 @@ source.mock.historical.random_seed=0
 | settings.xml             | 日志配置的配置文件              |
 | settings-ref-linux.xml   | Linux 系统中日志配置的配置参考文件   |
 | settings-ref-windows.xml | Windows 系统中日志配置的配置参考文件 |
+
+### README.md
+
+日志配置目录的说明文件。该文件说明了 `settings.xml` 与 `settings-ref-*.xml` 的区别，同时提供了一些配置经验。
 
 ### settings.xml
 
@@ -649,6 +616,14 @@ source.mock.historical.random_seed=0
 
 - 如果服务运行一天产生的日志超过了配置上限，可上调 `rolling_file.rollover.max` 参数。
 - 如果存在等保需求，日志至少需要保留 6 个月，需要调整 `rolling_file.rollover.delete_age` 参数至 `200D`。
+
+### settings-ref-linux.xml
+
+Linux 系统中的日志配置参考文件。相对于默认的 `settings.xml`，该参考文件将滚动日志目录配置为 `/var/log/fdr`。
+
+### settings-ref-windows.xml
+
+Windows 系统中的日志配置参考文件。相对于默认的 `settings.xml`，该参考文件将控制台输出文本的编码配置为 `GBK`。
 
 ## redis 目录
 

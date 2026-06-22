@@ -5,6 +5,7 @@
 ### 功能构建
 
 - Wiki 更新。
+  - docs/wiki/zh-CN/ConfDirectory.md。
   - docs/wiki/zh-CN/TelqosCommands.md。
 
 - 实现预设抓取器。
