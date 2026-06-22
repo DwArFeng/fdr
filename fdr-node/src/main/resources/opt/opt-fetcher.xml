@@ -29,4 +29,14 @@
     <!--
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.fetcher.simulate.wave"/>
     -->
+
+    <!-- 加载 DctKafkaFetcher。 -->
+    <!--
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.fetcher.kafka.dct"/>
+    -->
+
+    <!-- 加载 DctiKafkaFetcher。 -->
+    <!--
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.fetcher.kafka.dcti"/>
+    -->
 </beans>
