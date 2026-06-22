@@ -68,6 +68,10 @@
 
 ### 功能移除
 
+- Wiki 移除。
+  - docs/wiki/zh-CN/PresetSourceImplements.md。
+  - docs/wiki/zh-CN/Source.md。
+
 - 移除核心机制。
   - 数据源机制。
 
