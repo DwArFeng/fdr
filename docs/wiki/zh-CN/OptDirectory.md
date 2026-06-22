@@ -7,11 +7,13 @@
 ```text
 opt
 ├─ opt-bridge.xml
+├─ opt-fetcher.xml
+├─ opt-fetcher-kafka-dct.xml
+├─ opt-fetcher-kafka-dcti.xml
 ├─ opt-filter.xml
 ├─ opt-mapper.xml
 ├─ opt-pusher.xml
 ├─ opt-resetter.xml
-├─ opt-source.xml
 ├─ opt-trigger.xml
 └─ opt-washer.xml
 ```
@@ -64,6 +66,239 @@ opt
     <!-- 加载 MultiBridge -->
     <!--
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.bridge.multi"/>
+    -->
+</beans>
+```
+
+## opt-fetcher.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress SpringFacetInspection, XmlUnusedNamespaceDeclaration -->
+<beans
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.springframework.org/schema/beans"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd"
+>
+
+    <!-- 加载 MockHfFetcher。 -->
+    <!--
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.fetcher.mock.hf"/>
+    -->
+
+    <!-- 加载 MockLfFetcher。 -->
+    <!--
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.fetcher.mock.lf"/>
+    -->
+
+    <!-- 加载 SimulateAwgFetcher。 -->
+    <!--
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.fetcher.simulate.awg"/>
+    -->
+
+    <!-- 加载 SimulateWaveFetcher。 -->
+    <!--
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.fetcher.simulate.wave"/>
+    -->
+
+    <!-- 加载 DctKafkaFetcher。 -->
+    <!--
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.fetcher.kafka.dct"/>
+    -->
+
+    <!-- 加载 DctiKafkaFetcher。 -->
+    <!--
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.fetcher.kafka.dcti"/>
+    -->
+</beans>
+```
+
+## opt-fetcher-kafka-dct.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress SpringFacetInspection, XmlUnusedNamespaceDeclaration -->
+<beans
+        xmlns:util="http://www.springframework.org/schema/util"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.springframework.org/schema/beans"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd"
+>
+
+    <!--
+            本配置文件为 DctKafkaFetcher 提供必要的 ConsumerFactory、KafkaListenerContainerFactory、
+            DataCodingHandler 等 bean。
+            如果需要使用 DctKafkaFetcher，请取消下方注释，并按照实际情况对下方参数进行配置。
+
+            可以在下方的参数中直接赋值，也可以使用 value placeholder 进行占位，
+            并将真正的配置值以 properties 文件的形式放在 confext 目录中。
+
+            如需要连接多个 Kafka 集群，应该将 ConsumerFactory、KafkaListenerContainerFactory 与 DataCodingHandler
+            bean 定义复制多份，分配不同的 id，为 ApplicationContext 提供多个 bean。
+
+            对于 Kafka 组件，FetcherInfo.param 中只需引用 KafkaListenerContainerFactory 的 bean 名称、topic 与 listener_id；
+            ConsumerFactory 仅作为 XML 内部基础设施 bean，不出现在 FetcherInfo.param JSON 中。
+
+            DataCodingHandler 相关 bean 说明：
+            DataCodingHandler 用于将 Kafka 消息解码为 dct 协议数据，默认支持的值类型包括：
+            Boolean、Byte、Short、Integer、Long、Float、Double、BigDecimal、BigInteger、Character、String。
+            可以通过调整 dctKafkaFetcherValueCodecs 列表中的 bean 定义来调整支持的值类型。
+
+            ConsumerFactory 参数说明：
+            bootstrapServers:
+              引导服务器集群。
+            sessionTimeoutMs:
+              会话的超时限制: 如果 consumer 在这段时间内没有发送心跳信息，一次 rebalance 将会产生。
+              该值必须在 [group.min.session.timeout.ms, group.max.session.timeout.ms] 范围内，默认: 10000。
+            autoOffsetReset:
+              新的 group 加入 topic 时，从什么位置开始消费。
+            maxPollRecords:
+              监听器的最大拉取数据量。当拉取到的数据量达到这个值时，会立即返回，不会等待 poll_timeout。
+            maxPollIntervalMs:
+              监听器的最大拉取间隔。如果当前时间距离监听器上一次拉取数据的时间超过了这个值，一次 rebalance 将会产生。
+
+            KafkaListenerContainerFactory 参数说明：
+            consumerFactory:
+              引用上方定义的 ConsumerFactory bean。
+            concurrency:
+              监听器启用的消费者的线程数。
+              每一个线程都会启动一个 KafkaConsumer，每个 KafkaConsumer 都会占用一个 partition。
+              程序分布式部署时，所有节点的线程数之和应该小于等于 topic 的 partition 数。
+              该值大于 topic partition 数时可能导致消费者线程空闲或 rebalance 问题。
+            pollTimeout:
+              监听器调用 KafkaConsumer.poll(Duration) 方法的超时时间，如果超过这个时间还没有拉取到数据，则返回空列表。
+    -->
+    <!--
+    <bean
+            id="dctKafkaFetcherConsumerFactory"
+            class="com.dwarfeng.fdr.impl.handler.fetcher.kafka.dct.DctKafkaFetcherUtil"
+            factory-method="newConsumerFactory"
+    >
+        <constructor-arg name="bootstrapServers" value="your-ip1:9092,your-ip2:9092,your-ip3:9092"/>
+        <constructor-arg name="sessionTimeoutMs" value="10000"/>
+        <constructor-arg name="autoOffsetReset" value="latest"/>
+        <constructor-arg name="maxPollRecords" value="100"/>
+        <constructor-arg name="maxPollIntervalMs" value="300000"/>
+    </bean>
+    <bean
+            id="dctKafkaFetcherKafkaListenerContainerFactory"
+            class="com.dwarfeng.fdr.impl.handler.fetcher.kafka.dct.DctKafkaFetcherUtil"
+            factory-method="newKafkaListenerContainerFactory"
+    >
+        <constructor-arg name="consumerFactory" ref="dctKafkaFetcherConsumerFactory"/>
+        <constructor-arg name="concurrency" value="2"/>
+        <constructor-arg name="pollTimeout" value="3000"/>
+    </bean>
+    <util:list id="dctKafkaFetcherValueCodecs">
+        <bean id="dctKafkaFetcherBooleanValueCodec" class="com.dwarfeng.dct.handler.vc.BooleanValueCodec"/>
+        <bean id="dctKafkaFetcherByteValueCodec" class="com.dwarfeng.dct.handler.vc.ByteValueCodec"/>
+        <bean id="dctKafkaFetcherShortValueCodec" class="com.dwarfeng.dct.handler.vc.ShortValueCodec"/>
+        <bean id="dctKafkaFetcherIntegerValueCodec" class="com.dwarfeng.dct.handler.vc.IntegerValueCodec"/>
+        <bean id="dctKafkaFetcherLongValueCodec" class="com.dwarfeng.dct.handler.vc.LongValueCodec"/>
+        <bean id="dctKafkaFetcherFloatValueCodec" class="com.dwarfeng.dct.handler.vc.FloatValueCodec"/>
+        <bean id="dctKafkaFetcherDoubleValueCodec" class="com.dwarfeng.dct.handler.vc.DoubleValueCodec"/>
+        <bean id="dctKafkaFetcherBigDecimalValueCodec" class="com.dwarfeng.dct.handler.vc.BigDecimalValueCodec"/>
+        <bean id="dctKafkaFetcherBigIntegerValueCodec" class="com.dwarfeng.dct.handler.vc.BigIntegerValueCodec"/>
+        <bean id="dctKafkaFetcherCharacterValueCodec" class="com.dwarfeng.dct.handler.vc.CharacterValueCodec"/>
+        <bean id="dctKafkaFetcherStringValueCodec" class="com.dwarfeng.dct.handler.vc.StringValueCodec"/>
+    </util:list>
+    <bean
+            id="dctKafkaFetcherValueCodingHandler"
+            class="com.dwarfeng.fdr.impl.handler.fetcher.kafka.dct.DctKafkaFetcherUtil"
+            factory-method="newValueCodingHandler"
+    >
+        <constructor-arg name="valueCodecs" ref="dctKafkaFetcherValueCodecs"/>
+    </bean>
+    <bean id="dctKafkaFetcherFlatDataCodec" class="com.dwarfeng.dct.handler.fdc.FastJsonFlatDataCodec"/>
+    <bean
+            id="dctKafkaFetcherDataCodingHandler"
+            class="com.dwarfeng.fdr.impl.handler.fetcher.kafka.dct.DctKafkaFetcherUtil"
+            factory-method="newDataCodingHandler"
+    >
+        <constructor-arg name="flatDataCodec" ref="dctKafkaFetcherFlatDataCodec"/>
+        <constructor-arg name="valueCodingHandler" ref="dctKafkaFetcherValueCodingHandler"/>
+    </bean>
+    -->
+</beans>
+```
+
+## opt-fetcher-kafka-dcti.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress SpringFacetInspection, XmlUnusedNamespaceDeclaration -->
+<beans
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.springframework.org/schema/beans"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd"
+>
+
+    <!--
+            本配置文件为 DctiKafkaFetcher 提供必要的 ConsumerFactory、KafkaListenerContainerFactory 等 bean。
+            如果需要使用 DctiKafkaFetcher，请取消下方注释，并按照实际情况对下方参数进行配置。
+
+            可以在下方的参数中直接赋值，也可以使用 value placeholder 进行占位，
+            并将真正的配置值以 properties 文件的形式放在 confext 目录中。
+
+            如需要连接多个 Kafka 集群，应该将 ConsumerFactory 与 KafkaListenerContainerFactory bean 定义复制多份，
+            分配不同的 id，为 ApplicationContext 提供多个 bean。
+
+            对于 Kafka 组件，FetcherInfo.param 中只需引用 KafkaListenerContainerFactory 的 bean 名称、topic 与 listener_id；
+            ConsumerFactory 仅作为 XML 内部基础设施 bean，不出现在 FetcherInfo.param JSON 中。
+
+            ConsumerFactory 参数说明：
+            bootstrapServers:
+              引导服务器集群。
+            sessionTimeoutMs:
+              会话的超时限制: 如果 consumer 在这段时间内没有发送心跳信息，一次 rebalance 将会产生。
+              该值必须在 [group.min.session.timeout.ms, group.max.session.timeout.ms] 范围内，默认: 10000。
+            autoOffsetReset:
+              新的 group 加入 topic 时，从什么位置开始消费。
+            maxPollRecords:
+              监听器的最大拉取数据量。当拉取到的数据量达到这个值时，会立即返回，不会等待 poll_timeout。
+            maxPollIntervalMs:
+              监听器的最大拉取间隔。如果当前时间距离监听器上一次拉取数据的时间超过了这个值，一次 rebalance 将会产生。
+
+            KafkaListenerContainerFactory 参数说明：
+            consumerFactory:
+              引用上方定义的 ConsumerFactory bean。
+            concurrency:
+              监听器启用的消费者的线程数。
+              每一个线程都会启动一个 KafkaConsumer，每个 KafkaConsumer 都会占用一个 partition。
+              程序分布式部署时，所有节点的线程数之和应该小于等于 topic 的 partition 数。
+              该值大于 topic partition 数时可能导致消费者线程空闲或 rebalance 问题。
+            pollTimeout:
+              监听器调用 KafkaConsumer.poll(Duration) 方法的超时时间，如果超过这个时间还没有拉取到数据，则返回空列表。
+    -->
+    <!--
+    <bean
+            id="dctiKafkaFetcherConsumerFactory"
+            class="com.dwarfeng.fdr.impl.handler.fetcher.kafka.dcti.DctiKafkaFetcherUtil"
+            factory-method="newConsumerFactory"
+    >
+        <constructor-arg name="bootstrapServers" value="your-ip1:9092,your-ip2:9092,your-ip3:9092"/>
+        <constructor-arg name="sessionTimeoutMs" value="10000"/>
+        <constructor-arg name="autoOffsetReset" value="latest"/>
+        <constructor-arg name="maxPollRecords" value="100"/>
+        <constructor-arg name="maxPollIntervalMs" value="300000"/>
+    </bean>
+    <bean
+            id="dctiKafkaFetcherKafkaListenerContainerFactory"
+            class="com.dwarfeng.fdr.impl.handler.fetcher.kafka.dcti.DctiKafkaFetcherUtil"
+            factory-method="newKafkaListenerContainerFactory"
+    >
+        <constructor-arg name="consumerFactory" ref="dctiKafkaFetcherConsumerFactory"/>
+        <constructor-arg name="concurrency" value="2"/>
+        <constructor-arg name="pollTimeout" value="3000"/>
+    </bean>
     -->
 </beans>
 ```
@@ -140,6 +375,13 @@ opt
                 type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.ValueTypeFilterRegistry"
         />
         -->
+
+        <!-- 加载 DeadbandFilter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.filter.DeadbandFilterRegistry"
+        />
+        -->
     </context:component-scan>
 </beans>
 ```
@@ -197,9 +439,17 @@ opt
         -->
 
         <!-- 加载 IdentifyMapper -->
+        <!-- 该映射器由于命名规范性问题，已经被废弃，请使用下方 IdentityMapper 代替 -->
         <!--
         <context:include-filter
                 type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.IdentifyMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 IdentityMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.IdentityMapperRegistry"
         />
         -->
 
@@ -242,6 +492,69 @@ opt
         <!--
         <context:include-filter
                 type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.MergeMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 TrimMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.TrimMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 ToBooleanMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.ToBooleanMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 EnableRatioMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.EnableRatioMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 HighPassMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.HighPassMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 LowPassMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.LowPassMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 HighPassCounterMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.HighPassCounterMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 LowPassCounterMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.LowPassCounterMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 HighPassExistenceMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.HighPassExistenceMapperRegistry"
+        />
+        -->
+
+        <!-- 加载 LowPassExistenceMapper -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.mapper.LowPassExistenceMapperRegistry"
         />
         -->
     </context:component-scan>
@@ -365,43 +678,6 @@ opt
 </beans>
 ```
 
-## opt-source.xml
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!--suppress SpringFacetInspection, XmlUnusedNamespaceDeclaration -->
-<beans
-        xmlns:context="http://www.springframework.org/schema/context"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns="http://www.springframework.org/schema/beans"
-        xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd"
->
-
-    <!-- 加载 RealtimeMockSource -->
-    <!--
-    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.source.mock.realtime"/>
-    -->
-
-    <!-- 加载 HistoricalMockSource -->
-    <!--
-    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.source.mock.historical"/>
-    -->
-
-    <!-- 加载 DctKafkaSource -->
-    <!--
-    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.source.kafka.dct"/>
-    -->
-
-    <!-- 加载 DctiKafkaSource -->
-    <!--
-    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.source.kafka.dcti"/>
-    -->
-</beans>
-```
-
 ## opt-trigger.xml
 
 ```xml
@@ -489,9 +765,17 @@ opt
         -->
 
         <!-- 加载 IdentifyWasher -->
+        <!-- 该清洗器由于命名规范性问题，已经被废弃，请使用下方 IdentityMapper 代替 -->
         <!--
         <context:include-filter
                 type="assignable" expression="com.dwarfeng.fdr.impl.handler.washer.IdentifyWasherRegistry"
+        />
+        -->
+
+        <!-- 加载 IdentityWasher -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.fdr.impl.handler.washer.IdentityWasherRegistry"
         />
         -->
 
