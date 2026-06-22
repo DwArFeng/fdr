@@ -5,6 +5,8 @@
 ### 功能构建
 
 - 实现预设抓取器。
+  - com.dwarfeng.fdr.impl.handler.fetcher.simulate.awg.SimulateAwgFetcherRegistry。
+  - com.dwarfeng.fdr.impl.handler.fetcher.simulate.wave.SimulateWaveFetcherRegistry。
   - com.dwarfeng.fdr.impl.handler.fetcher.mock.hf.MockHfFetcherRegistry。
   - com.dwarfeng.fdr.impl.handler.fetcher.mock.lf.MockLfFetcherRegistry。
 

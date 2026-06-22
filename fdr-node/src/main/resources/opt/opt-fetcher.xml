@@ -19,4 +19,14 @@
     <!--
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.fetcher.mock.lf"/>
     -->
+
+    <!-- 加载 SimulateAwgFetcher。 -->
+    <!--
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.fetcher.simulate.awg"/>
+    -->
+
+    <!-- 加载 SimulateWaveFetcher。 -->
+    <!--
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.fetcher.simulate.wave"/>
+    -->
 </beans>
