@@ -4,6 +4,10 @@
 
 ### 功能构建
 
+- Wiki 编写。
+  - docs/wiki/zh-CN/Fetcher.md。
+  - docs/wiki/zh-CN/PresetFetcherImplements.md。
+
 - Wiki 更新。
   - docs/wiki/zh-CN/OptDirectory.md。
   - docs/wiki/zh-CN/ConfDirectory.md。

@@ -41,9 +41,12 @@
 - [Conduct Stress Test for Record](./ConductStressTestForRecord.md) - 进行数据采集压力测试。
 - [Generate Same Sample Data in Multiple Bridge](./GenerateSameSampleDataInMultipleBridge.md) -
   在多个桥接器生成相同的样本数据。
+- [Preset Fetcher Implements](./PresetFetcherImplements.md) - 预设抓取器实现，详细说明了本项目内置的所有抓取器。
 
 ## 机制
 
+- [Fetcher](./Fetcher.md) - 抓取器，详细说明了本项目的抓取器机制。
+- [Preset Fetcher Implements](./PresetFetcherImplements.md) - 预设抓取器实现，详细说明了本项目内置的所有抓取器。
 - [Washer](./Washer.md) - 清洗器，详细说明了本项目的清洗器机制。
 - [Filter](./Filter.md) - 过滤器，详细说明了本项目的过滤器机制。
 - [Bridge](./Bridge.md) - 桥接器，详细说明了本项目的桥接器机制。
