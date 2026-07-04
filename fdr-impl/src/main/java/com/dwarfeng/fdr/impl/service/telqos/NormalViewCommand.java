@@ -3,9 +3,8 @@ package com.dwarfeng.fdr.impl.service.telqos;
 import com.dwarfeng.fdr.stack.bean.dto.NormalData;
 import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
 import com.dwarfeng.fdr.stack.service.NormalViewQosService;
-import com.dwarfeng.springtelqos.node.config.TelqosCommand;
-import com.dwarfeng.springtelqos.stack.command.Context;
-import com.dwarfeng.springtelqos.stack.exception.TelqosException;
+import com.dwarfeng.springtelqos.sdk.configuration.TelqosCommand;
+import com.dwarfeng.springtelqos.stack.command.CommandExecutor;
 
 import java.util.Objects;
 
@@ -22,22 +21,33 @@ import java.util.Objects;
 @TelqosCommand
 public class NormalViewCommand extends ViewCommand<NormalData> {
 
+    @SuppressWarnings({"SpellCheckingInspection", "GrazieInspectionRunner", "RedundantSuppression"})
+    private static final String IDENTITY = "nv";
+
     public NormalViewCommand(NormalViewQosService normalWatchQosService) {
-        super("nv", "一般查看指令", normalWatchQosService);
+        super(IDENTITY, normalWatchQosService);
     }
 
     @Override
-    protected void printLatestData(int i, int endIndex, NormalData data, Context context) throws Exception {
+    protected String provideCommandDescription() {
+        return "一般查看指令";
+    }
+
+    @Override
+    protected void printLatestData(int i, int endIndex, NormalData data, CommandExecutor.Context context)
+            throws Exception {
         printNormalData(i, endIndex, data, context);
     }
 
     @Override
-    protected void printLookupData(int i, int endIndex, NormalData data, Context context) throws Exception {
+    protected void printLookupData(int i, int endIndex, NormalData data, CommandExecutor.Context context)
+            throws Exception {
         printNormalData(i, endIndex, data, context);
     }
 
     @SuppressWarnings("DuplicatedCode")
-    private void printNormalData(int i, int endIndex, NormalData data, Context context) throws TelqosException {
+    private void printNormalData(int i, int endIndex, NormalData data, CommandExecutor.Context context)
+            throws Exception {
         context.sendMessage(String.format(
                 "索引: %d/%d",
                 i, endIndex
@@ -71,7 +81,8 @@ public class NormalViewCommand extends ViewCommand<NormalData> {
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    protected void printQueryData(int i, int endIndex, QueryResult.Item item, Context context) throws Exception {
+    protected void printQueryData(int i, int endIndex, QueryResult.Item item, CommandExecutor.Context context)
+            throws Exception {
         context.sendMessage(String.format(
                 "索引: %d/%d",
                 i, endIndex

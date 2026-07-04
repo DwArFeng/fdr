@@ -1,8 +1,5 @@
 package com.dwarfeng.fdr.impl.handler.fetcher.kafka.dct;
 
-import com.dwarfeng.dct.handler.*;
-import com.dwarfeng.dct.struct.DataCodingConfig;
-import com.dwarfeng.dct.struct.ValueCodingConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
@@ -15,9 +12,7 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.listener.ContainerProperties;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 基于 dwarfeng-dct 协议的 Kafka 抓取器工具类。
@@ -85,46 +80,6 @@ public final class DctKafkaFetcherUtil {
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
         LOGGER.debug("Kafka 侦听容器工厂配置完成");
         return factory;
-    }
-
-    /**
-     * 创建值编码处理器。
-     *
-     * @param valueCodecs 值编解码器列表。
-     * @return 值编码处理器。
-     */
-    public static ValueCodingHandler newValueCodingHandler(List<ValueCodec> valueCodecs) {
-        LOGGER.debug("生成 ValueCodingHandler...");
-        ValueCodingConfig config = new ValueCodingConfig.Builder()
-                .addCodecs(valueCodecs)
-                .addPreCacheClasses(
-                        valueCodecs.stream().map(ValueCodec::getTargetClass).collect(Collectors.toList())
-                )
-                .addPreCachePrefixes(
-                        valueCodecs.stream().map(ValueCodec::getValuePrefix).collect(Collectors.toList())
-                )
-                .build();
-        LOGGER.debug("ValueCodingHandler 生成完成");
-        return new ValueCodingHandlerImpl(config);
-    }
-
-    /**
-     * 创建数据编码处理器。
-     *
-     * @param flatDataCodec      扁平数据编解码器。
-     * @param valueCodingHandler 值编码处理器。
-     * @return 数据编码处理器。
-     */
-    public static DataCodingHandler newDataCodingHandler(
-            FlatDataCodec flatDataCodec, ValueCodingHandler valueCodingHandler
-    ) {
-        LOGGER.debug("生成 DataCodingHandler...");
-        DataCodingConfig config = new DataCodingConfig.Builder()
-                .setFlatDataCodec(flatDataCodec)
-                .setValueCodingHandler(valueCodingHandler)
-                .build();
-        LOGGER.debug("DataCodingHandler 生成完成");
-        return new DataCodingHandlerImpl(config);
     }
 
     private DctKafkaFetcherUtil() {

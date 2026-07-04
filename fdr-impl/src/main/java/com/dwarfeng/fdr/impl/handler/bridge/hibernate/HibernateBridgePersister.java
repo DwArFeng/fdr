@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate;
 
-import com.dwarfeng.dct.handler.ValueCodingHandler;
+import com.dwarfeng.dct.stack.handler.ValueCodingHandler;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.service.HibernateBridgeMaintainService;
 import com.dwarfeng.fdr.sdk.handler.bridge.FullPersister;
 import com.dwarfeng.fdr.sdk.util.ViewUtil;

@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.bridge.redis;
 
-import com.dwarfeng.dct.handler.ValueCodingHandler;
+import com.dwarfeng.dct.stack.handler.ValueCodingHandler;
 import com.dwarfeng.fdr.impl.handler.bridge.redis.bean.RedisBridgeNormalData;
 import com.dwarfeng.fdr.impl.handler.bridge.redis.service.RedisBridgeNormalDataMaintainService;
 import com.dwarfeng.fdr.stack.bean.dto.NormalData;

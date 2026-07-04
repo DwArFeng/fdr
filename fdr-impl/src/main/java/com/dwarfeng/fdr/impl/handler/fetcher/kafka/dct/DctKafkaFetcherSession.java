@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.fetcher.kafka.dct;
 
-import com.dwarfeng.dct.handler.DataCodingHandler;
+import com.dwarfeng.dct.stack.handler.DataCodingHandler;
 import com.dwarfeng.fdr.sdk.handler.fetcher.AbstractFetcherSession;
 import com.dwarfeng.fdr.stack.bean.dto.RecordInfo;
 import com.dwarfeng.fdr.stack.exception.RecordHandlerStoppedException;
@@ -95,7 +95,7 @@ public class DctKafkaFetcherSession extends AbstractFetcherSession {
         for (ConsumerRecord<String, String> consumerRecord : consumerRecords) {
             String message = consumerRecord.value();
             try {
-                com.dwarfeng.dct.struct.Data dctData = dataCodingHandler.decode(message);
+                com.dwarfeng.dct.stack.struct.Data dctData = dataCodingHandler.decode(message);
                 RecordInfo recordInfo = new RecordInfo(
                         dctData.getPointKey(),
                         dctData.getValue(),

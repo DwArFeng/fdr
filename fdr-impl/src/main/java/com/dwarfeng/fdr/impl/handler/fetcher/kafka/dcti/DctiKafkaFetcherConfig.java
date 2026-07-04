@@ -11,7 +11,7 @@ import com.dwarfeng.subgrade.stack.bean.Bean;
  */
 public class DctiKafkaFetcherConfig implements Bean {
 
-    private static final long serialVersionUID = -1601343822986854489L;
+    private static final long serialVersionUID = 4438152286556288269L;
 
     @JSONField(name = "#kafka_listener_container_factory_bean_name", ordinal = 1, deserialize = false)
     private String kafkaListenerContainerFactoryBeanNameRem = "KafkaListenerContainerFactory 的 Spring Bean 名称。";
@@ -31,15 +31,23 @@ public class DctiKafkaFetcherConfig implements Bean {
     @JSONField(name = "listener_id", ordinal = 6)
     private String listenerId;
 
+    @JSONField(name = "#dcti_handler_bean_name", ordinal = 7, deserialize = false)
+    private String dctiHandlerBeanNameRem = "DctiHandler 的 Spring Bean 名称，用于解码 dcti 协议消息。";
+
+    @JSONField(name = "dcti_handler_bean_name", ordinal = 8)
+    private String dctiHandlerBeanName;
+
     public DctiKafkaFetcherConfig() {
     }
 
     public DctiKafkaFetcherConfig(
-            String kafkaListenerContainerFactoryBeanName, String topic, String listenerId
+            String kafkaListenerContainerFactoryBeanName, String topic, String listenerId,
+            String dctiHandlerBeanName
     ) {
         this.kafkaListenerContainerFactoryBeanName = kafkaListenerContainerFactoryBeanName;
         this.topic = topic;
         this.listenerId = listenerId;
+        this.dctiHandlerBeanName = dctiHandlerBeanName;
     }
 
     public String getKafkaListenerContainerFactoryBeanNameRem() {
@@ -90,6 +98,22 @@ public class DctiKafkaFetcherConfig implements Bean {
         this.listenerId = listenerId;
     }
 
+    public String getDctiHandlerBeanNameRem() {
+        return dctiHandlerBeanNameRem;
+    }
+
+    public void setDctiHandlerBeanNameRem(String dctiHandlerBeanNameRem) {
+        this.dctiHandlerBeanNameRem = dctiHandlerBeanNameRem;
+    }
+
+    public String getDctiHandlerBeanName() {
+        return dctiHandlerBeanName;
+    }
+
+    public void setDctiHandlerBeanName(String dctiHandlerBeanName) {
+        this.dctiHandlerBeanName = dctiHandlerBeanName;
+    }
+
     @Override
     public String toString() {
         return "DctiKafkaFetcherConfig{" +
@@ -99,6 +123,8 @@ public class DctiKafkaFetcherConfig implements Bean {
                 ", topic='" + topic + '\'' +
                 ", listenerIdRem='" + listenerIdRem + '\'' +
                 ", listenerId='" + listenerId + '\'' +
+                ", dctiHandlerBeanNameRem='" + dctiHandlerBeanNameRem + '\'' +
+                ", dctiHandlerBeanName='" + dctiHandlerBeanName + '\'' +
                 '}';
     }
 }

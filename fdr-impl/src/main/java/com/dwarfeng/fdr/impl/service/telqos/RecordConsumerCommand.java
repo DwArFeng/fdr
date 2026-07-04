@@ -3,11 +3,11 @@ package com.dwarfeng.fdr.impl.service.telqos;
 import com.dwarfeng.fdr.stack.service.RecordQosService;
 import com.dwarfeng.fdr.stack.service.RecordQosService.ConsumerId;
 import com.dwarfeng.fdr.stack.service.RecordQosService.ConsumerStatus;
-import com.dwarfeng.springtelqos.node.config.TelqosCommand;
 import com.dwarfeng.springtelqos.sdk.command.CliCommand;
-import com.dwarfeng.springtelqos.stack.command.Context;
-import com.dwarfeng.springtelqos.stack.exception.TelqosException;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import com.dwarfeng.springtelqos.sdk.configuration.TelqosCommand;
+import com.dwarfeng.springtelqos.sdk.util.CliCommandUtil;
+import com.dwarfeng.springtelqos.stack.command.CommandDescriptor;
+import com.dwarfeng.springtelqos.stack.command.CommandExecutor;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.lang3.tuple.Pair;
@@ -34,6 +34,11 @@ public class RecordConsumerCommand extends CliCommand {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RecordConsumerCommand.class);
 
+    @SuppressWarnings({"SpellCheckingInspection", "GrazieInspectionRunner", "RedundantSuppression"})
+    private static final String IDENTITY = "rcsu";
+
+    // region 指令选项
+
     private static final String COMMAND_OPTION_L = "l";
     private static final String COMMAND_OPTION_S = "s";
     private static final String COMMAND_OPTION_LC = "lc";
@@ -46,29 +51,9 @@ public class RecordConsumerCommand extends CliCommand {
             COMMAND_OPTION_LN
     };
 
-    private static final String COMMAND_OPTION_H = "h";
+    private static final String COMMAND_SUB_OPTION_H = "h";
 
-    private static final String IDENTITY = "rcsu";
-    private static final String DESCRIPTION = "记录侧消费者操作";
-    private static final String CMD_LINE_SYNTAX_L = IDENTITY + " " +
-            CommandUtil.concatOptionPrefix(COMMAND_OPTION_L) + " [-c classes] [-n names] [" +
-            CommandUtil.concatOptionPrefix(COMMAND_OPTION_H) + "]";
-    private static final String CMD_LINE_SYNTAX_S = IDENTITY + " " +
-            CommandUtil.concatOptionPrefix(COMMAND_OPTION_S) +
-            " [-c classes] [-n names] [-b val] [-a val] [-m val] [-t val]";
-    private static final String CMD_LINE_SYNTAX_LC = IDENTITY + " " +
-            CommandUtil.concatOptionPrefix(COMMAND_OPTION_LC);
-    private static final String CMD_LINE_SYNTAX_LN = IDENTITY + " " +
-            CommandUtil.concatOptionPrefix(COMMAND_OPTION_LN);
-
-    private static final String[] CMD_LINE_ARRAY = new String[]{
-            CMD_LINE_SYNTAX_L,
-            CMD_LINE_SYNTAX_S,
-            CMD_LINE_SYNTAX_LC,
-            CMD_LINE_SYNTAX_LN
-    };
-
-    private static final String CMD_LINE_SYNTAX = CommandUtil.syntax(CMD_LINE_ARRAY);
+    // endregion
 
     private final RecordQosService recordQosService;
 
@@ -78,17 +63,40 @@ public class RecordConsumerCommand extends CliCommand {
             RecordQosService recordQosService,
             ThreadPoolTaskScheduler scheduler
     ) {
-        super(IDENTITY, DESCRIPTION, CMD_LINE_SYNTAX);
+        super(IDENTITY);
         this.recordQosService = recordQosService;
         this.scheduler = scheduler;
     }
 
+    @Override
+    protected DescriptionProvider provideDescriptionProvider() {
+        return context -> "记录侧消费者操作";
+    }
+
+    @Override
+    protected CliSyntaxProvider provideCliSyntaxProvider() {
+        return this::cliSyntaxProvider;
+    }
+
+    private String cliSyntaxProvider(CommandDescriptor.Context context) throws Exception {
+        String identity = context.getRuntimeIdentity();
+        String[] patterns = new String[]{
+                identity + " " + CliCommandUtil.concatOptionPrefix(COMMAND_OPTION_L) + " [-c classes] [-n names] [" +
+                        CliCommandUtil.concatOptionPrefix(COMMAND_SUB_OPTION_H) + "]",
+                identity + " " + CliCommandUtil.concatOptionPrefix(COMMAND_OPTION_S) +
+                        " [-c classes] [-n names] [-b val] [-a val] [-m val] [-t val]",
+                identity + " " + CliCommandUtil.concatOptionPrefix(COMMAND_OPTION_LC),
+                identity + " " + CliCommandUtil.concatOptionPrefix(COMMAND_OPTION_LN)
+        };
+        return CliCommandUtil.cliSyntax(patterns);
+    }
+
     @SuppressWarnings("DuplicatedCode")
     @Override
-    protected List<Option> buildOptions() {
+    protected List<Option> provideOptions() {
         List<Option> list = new ArrayList<>();
         list.add(Option.builder(COMMAND_OPTION_L).optionalArg(true).hasArg(false).desc("查看消费者状态").build());
-        list.add(Option.builder(COMMAND_OPTION_H).desc("持续输出").build());
+        list.add(Option.builder(COMMAND_SUB_OPTION_H).desc("持续输出").build());
         list.add(Option.builder(COMMAND_OPTION_S).optionalArg(true).hasArg(false).desc("设置消费者参数").build());
         list.add(Option.builder(COMMAND_OPTION_LC).longOpt("list-classes").optionalArg(true).hasArg(false)
                 .desc("列出所有消费者类型").build());
@@ -108,38 +116,36 @@ public class RecordConsumerCommand extends CliCommand {
     }
 
     @Override
-    protected void executeWithCmd(Context context, CommandLine cmd) throws TelqosException {
-        try {
-            Pair<String, Integer> pair = CommandUtil.analyseCommand(cmd, COMMAND_OPTION_ARRAY);
-            if (pair.getRight() != 1) {
-                context.sendMessage(CommandUtil.optionMismatchMessage(COMMAND_OPTION_ARRAY));
-                context.sendMessage(CMD_LINE_SYNTAX);
-                return;
-            }
-            switch (pair.getLeft()) {
-                case COMMAND_OPTION_L:
-                    handleL(context, cmd);
-                    break;
-                case COMMAND_OPTION_S:
-                    handleS(context, cmd);
-                    break;
-                case COMMAND_OPTION_LC:
-                    handleLc(context);
-                    break;
-                case COMMAND_OPTION_LN:
-                    handleLn(context);
-                    break;
-            }
-        } catch (Exception e) {
-            throw new TelqosException(e);
+    protected void executeWithCmd(CommandExecutor.Context context, CommandLine cmd) throws Exception {
+        Pair<String, Integer> pair = CliCommandUtil.analyseCommand(cmd, COMMAND_OPTION_ARRAY);
+        if (pair.getRight() != 1) {
+            context.sendMessage(CliCommandUtil.optionMismatchMessage(COMMAND_OPTION_ARRAY));
+            context.sendMessage(context.getCommandManual(context.getRuntimeIdentity()));
+            return;
+        }
+        switch (pair.getLeft()) {
+            case COMMAND_OPTION_L:
+                handleL(context, cmd);
+                break;
+            case COMMAND_OPTION_S:
+                handleS(context, cmd);
+                break;
+            case COMMAND_OPTION_LC:
+                handleLc(context);
+                break;
+            case COMMAND_OPTION_LN:
+                handleLn(context);
+                break;
+            default:
+                throw new IllegalStateException("不应该执行到此处, 请联系开发人员");
         }
     }
 
-    private void handleL(Context context, CommandLine cmd) throws Exception {
+    private void handleL(CommandExecutor.Context context, CommandLine cmd) throws Exception {
         List<ConsumerId> consumerIds = parserConsumerIds(cmd);
 
-        // 如果命令行中包含 COMMAND_OPTION_H 选项，则持续输出。
-        if (cmd.hasOption(COMMAND_OPTION_H)) {
+        // 如果命令行中包含 COMMAND_SUB_OPTION_H 选项，则持续输出。
+        if (cmd.hasOption(COMMAND_SUB_OPTION_H)) {
             ScheduledFuture<?> future = scheduler.scheduleWithFixedDelay(
                     () -> {
                         try {
@@ -163,7 +169,7 @@ public class RecordConsumerCommand extends CliCommand {
         }
     }
 
-    private void handleS(Context context, CommandLine cmd) throws Exception {
+    private void handleS(CommandExecutor.Context context, CommandLine cmd) throws Exception {
         List<ConsumerId> consumerIds = parserConsumerIds(cmd);
         Integer newBufferSize = null;
         Integer newBatchSize = null;
@@ -176,7 +182,9 @@ public class RecordConsumerCommand extends CliCommand {
             if (cmd.hasOption("t")) newThread = Integer.parseInt(cmd.getOptionValue("t"));
         } catch (Exception e) {
             LOGGER.warn("解析命令选项时发生异常，异常信息如下", e);
-            context.sendMessage("命令行格式错误，正确的格式为: " + CMD_LINE_SYNTAX_S);
+            context.sendMessage("命令行格式错误，正确的格式为: " + context.getRuntimeIdentity() + " " +
+                    CliCommandUtil.concatOptionPrefix(COMMAND_OPTION_S) +
+                    " [-c classes] [-n names] [-b val] [-a val] [-m val] [-t val]");
             context.sendMessage("请留意选项 b,a,m,t 后接参数的类型应该是数字 ");
             return;
         }
@@ -211,8 +219,7 @@ public class RecordConsumerCommand extends CliCommand {
         ).collect(Collectors.toList());
     }
 
-    private void printConsumerStatus(Context context, List<ConsumerId> consumerIds)
-            throws ServiceException, TelqosException {
+    private void printConsumerStatus(CommandExecutor.Context context, List<ConsumerId> consumerIds) throws Exception {
         int index = 0;
         for (ConsumerId consumerId : consumerIds) {
             ConsumerStatus consumerStatus = recordQosService.getConsumerStatus(consumerId);
@@ -235,12 +242,12 @@ public class RecordConsumerCommand extends CliCommand {
         }
     }
 
-    private void handleLc(Context context) throws Exception {
+    private void handleLc(CommandExecutor.Context context) throws Exception {
         context.sendMessage(String.format("%-4d %-12s %s", 1, "keep", "保持类消费者"));
         context.sendMessage(String.format("%-4d %-12s %s", 2, "persist", "持久类消费者"));
     }
 
-    private void handleLn(Context context) throws Exception {
+    private void handleLn(CommandExecutor.Context context) throws Exception {
         context.sendMessage(String.format("%-4d %-12s %s", 1, "normal", "一般数据消费者"));
         context.sendMessage(String.format("%-4d %-12s %s", 2, "filtered", "被过滤数据消费者"));
         context.sendMessage(String.format("%-4d %-12s %s", 3, "triggered", "被触发数据消费者"));

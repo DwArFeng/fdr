@@ -3,9 +3,8 @@ package com.dwarfeng.fdr.impl.service.telqos;
 import com.dwarfeng.fdr.stack.bean.dto.FilteredData;
 import com.dwarfeng.fdr.stack.bean.dto.QueryResult;
 import com.dwarfeng.fdr.stack.service.FilteredViewQosService;
-import com.dwarfeng.springtelqos.node.config.TelqosCommand;
-import com.dwarfeng.springtelqos.stack.command.Context;
-import com.dwarfeng.springtelqos.stack.exception.TelqosException;
+import com.dwarfeng.springtelqos.sdk.configuration.TelqosCommand;
+import com.dwarfeng.springtelqos.stack.command.CommandExecutor;
 
 import java.util.Objects;
 
@@ -22,22 +21,33 @@ import java.util.Objects;
 @TelqosCommand
 public class FilteredViewCommand extends ViewCommand<FilteredData> {
 
+    @SuppressWarnings({"SpellCheckingInspection", "GrazieInspectionRunner", "RedundantSuppression"})
+    private static final String IDENTITY = "fv";
+
     public FilteredViewCommand(FilteredViewQosService filteredWatchQosService) {
-        super("fv", "被过滤查看指令", filteredWatchQosService);
+        super(IDENTITY, filteredWatchQosService);
     }
 
     @Override
-    protected void printLatestData(int i, int endIndex, FilteredData data, Context context) throws Exception {
+    protected String provideCommandDescription() {
+        return "被过滤查看指令";
+    }
+
+    @Override
+    protected void printLatestData(int i, int endIndex, FilteredData data, CommandExecutor.Context context)
+            throws Exception {
         printFilteredData(i, endIndex, data, context);
     }
 
     @Override
-    protected void printLookupData(int i, int endIndex, FilteredData data, Context context) throws Exception {
+    protected void printLookupData(int i, int endIndex, FilteredData data, CommandExecutor.Context context)
+            throws Exception {
         printFilteredData(i, endIndex, data, context);
     }
 
     @SuppressWarnings("DuplicatedCode")
-    private void printFilteredData(int i, int endIndex, FilteredData data, Context context) throws TelqosException {
+    private void printFilteredData(int i, int endIndex, FilteredData data, CommandExecutor.Context context)
+            throws Exception {
         context.sendMessage(String.format(
                 "索引: %d/%d",
                 i, endIndex
@@ -79,7 +89,8 @@ public class FilteredViewCommand extends ViewCommand<FilteredData> {
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    protected void printQueryData(int i, int endIndex, QueryResult.Item item, Context context) throws Exception {
+    protected void printQueryData(int i, int endIndex, QueryResult.Item item, CommandExecutor.Context context)
+            throws Exception {
         context.sendMessage(String.format(
                 "索引: %d/%d",
                 i, endIndex

@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.fetcher.kafka.dct;
 
 import com.alibaba.fastjson.JSON;
-import com.dwarfeng.dct.handler.DataCodingHandler;
+import com.dwarfeng.dct.stack.handler.DataCodingHandler;
 import com.dwarfeng.fdr.sdk.handler.fetcher.AbstractFetcherRegistry;
 import com.dwarfeng.fdr.stack.exception.FetcherException;
 import com.dwarfeng.fdr.stack.exception.FetcherMakeException;

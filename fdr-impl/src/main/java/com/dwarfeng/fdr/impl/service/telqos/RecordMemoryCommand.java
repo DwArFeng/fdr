@@ -2,10 +2,11 @@ package com.dwarfeng.fdr.impl.service.telqos;
 
 import com.dwarfeng.fdr.stack.service.RecordMemoryQosService;
 import com.dwarfeng.fdr.stack.struct.RecordMemory;
-import com.dwarfeng.springtelqos.node.config.TelqosCommand;
 import com.dwarfeng.springtelqos.sdk.command.CliCommand;
-import com.dwarfeng.springtelqos.stack.command.Context;
-import com.dwarfeng.springtelqos.stack.exception.TelqosException;
+import com.dwarfeng.springtelqos.sdk.configuration.TelqosCommand;
+import com.dwarfeng.springtelqos.sdk.util.CliCommandUtil;
+import com.dwarfeng.springtelqos.stack.command.CommandDescriptor;
+import com.dwarfeng.springtelqos.stack.command.CommandExecutor;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -32,6 +33,11 @@ public class RecordMemoryCommand extends CliCommand {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RecordMemoryCommand.class);
 
+    @SuppressWarnings({"SpellCheckingInspection", "GrazieInspectionRunner", "RedundantSuppression"})
+    private static final String IDENTITY = "rmem";
+
+    // region 指令选项
+
     private static final String COMMAND_OPTION_LOOKUP = "l";
     private static final String COMMAND_OPTION_REMOVE = "r";
     private static final String COMMAND_OPTION_CLEAR = "c";
@@ -42,34 +48,37 @@ public class RecordMemoryCommand extends CliCommand {
             COMMAND_OPTION_CLEAR
     };
 
-    @SuppressWarnings({"SpellCheckingInspection", "GrazieInspectionRunner", "RedundantSuppression"})
-    private static final String IDENTITY = "rmem";
-    private static final String DESCRIPTION = "记录记忆查询与清理";
-
-    private static final String CMD_LINE_SYNTAX_LOOKUP = IDENTITY + " " +
-            CommandUtil.concatOptionPrefix(COMMAND_OPTION_LOOKUP) + " point-id";
-    private static final String CMD_LINE_SYNTAX_CLEAR = IDENTITY + " " +
-            CommandUtil.concatOptionPrefix(COMMAND_OPTION_REMOVE) + " point-id";
-    private static final String CMD_LINE_SYNTAX_CLEAR_ALL = IDENTITY + " " +
-            CommandUtil.concatOptionPrefix(COMMAND_OPTION_CLEAR);
-
-    private static final String[] CMD_LINE_ARRAY = new String[]{
-            CMD_LINE_SYNTAX_LOOKUP,
-            CMD_LINE_SYNTAX_CLEAR,
-            CMD_LINE_SYNTAX_CLEAR_ALL
-    };
-
-    private static final String CMD_LINE_SYNTAX = CommandUtil.syntax(CMD_LINE_ARRAY);
+    // endregion
 
     private final RecordMemoryQosService recordMemoryQosService;
 
     public RecordMemoryCommand(RecordMemoryQosService recordMemoryQosService) {
-        super(IDENTITY, DESCRIPTION, CMD_LINE_SYNTAX);
+        super(IDENTITY);
         this.recordMemoryQosService = recordMemoryQosService;
     }
 
     @Override
-    protected List<Option> buildOptions() {
+    protected DescriptionProvider provideDescriptionProvider() {
+        return context -> "记录记忆查询与清理";
+    }
+
+    @Override
+    protected CliSyntaxProvider provideCliSyntaxProvider() {
+        return this::cliSyntaxProvider;
+    }
+
+    private String cliSyntaxProvider(CommandDescriptor.Context context) throws Exception {
+        String identity = context.getRuntimeIdentity();
+        String[] patterns = new String[]{
+                identity + " " + CliCommandUtil.concatOptionPrefix(COMMAND_OPTION_LOOKUP) + " point-id",
+                identity + " " + CliCommandUtil.concatOptionPrefix(COMMAND_OPTION_REMOVE) + " point-id",
+                identity + " " + CliCommandUtil.concatOptionPrefix(COMMAND_OPTION_CLEAR)
+        };
+        return CliCommandUtil.cliSyntax(patterns);
+    }
+
+    @Override
+    protected List<Option> provideOptions() {
         List<Option> list = new ArrayList<>();
         list.add(
                 Option.builder(COMMAND_OPTION_LOOKUP).optionalArg(true).hasArg(true).type(Number.class)
@@ -79,50 +88,50 @@ public class RecordMemoryCommand extends CliCommand {
                 Option.builder(COMMAND_OPTION_REMOVE).optionalArg(true).hasArg(true).type(Number.class)
                         .argName("point-id").desc("移除指定的点位对应的记录记忆").build()
         );
-        list.add(Option.builder(COMMAND_OPTION_CLEAR).hasArg(false).desc("清除记录记忆").build());
+        list.add(Option.builder(COMMAND_OPTION_CLEAR).optionalArg(true).hasArg(false).desc("清除记录记忆").build());
         return list;
     }
 
     @Override
-    protected void executeWithCmd(Context context, CommandLine cmd) throws TelqosException {
-        try {
-            Pair<String, Integer> pair = CommandUtil.analyseCommand(cmd, COMMAND_OPTION_ARRAY);
-            if (pair.getRight() != 1) {
-                context.sendMessage(CommandUtil.optionMismatchMessage(COMMAND_OPTION_ARRAY));
-                context.sendMessage(CMD_LINE_SYNTAX);
-                return;
-            }
-            switch (pair.getLeft()) {
-                case COMMAND_OPTION_LOOKUP:
-                    handleLookup(context, cmd);
-                    break;
-                case COMMAND_OPTION_REMOVE:
-                    handleRemove(context, cmd);
-                    break;
-                case COMMAND_OPTION_CLEAR:
-                    handleClear(context);
-                    break;
-            }
-        } catch (Exception e) {
-            throw new TelqosException(e);
+    protected void executeWithCmd(CommandExecutor.Context context, CommandLine cmd) throws Exception {
+        Pair<String, Integer> pair = CliCommandUtil.analyseCommand(cmd, COMMAND_OPTION_ARRAY);
+        if (pair.getRight() != 1) {
+            context.sendMessage(CliCommandUtil.optionMismatchMessage(COMMAND_OPTION_ARRAY));
+            context.sendMessage(context.getCommandManual(context.getRuntimeIdentity()));
+            return;
+        }
+        switch (pair.getLeft()) {
+            case COMMAND_OPTION_LOOKUP:
+                handleLookup(context, cmd);
+                break;
+            case COMMAND_OPTION_REMOVE:
+                handleRemove(context, cmd);
+                break;
+            case COMMAND_OPTION_CLEAR:
+                handleClear(context);
+                break;
+            default:
+                throw new IllegalStateException("不应该执行到此处, 请联系开发人员");
         }
     }
 
     /**
      * 处理查询命令。
      */
-    private void handleLookup(Context context, CommandLine cmd) throws Exception {
+    private void handleLookup(CommandExecutor.Context context, CommandLine cmd) throws Exception {
         Number pointIdNumber;
         try {
             pointIdNumber = (Number) cmd.getParsedOptionValue(COMMAND_OPTION_LOOKUP);
         } catch (ParseException e) {
             LOGGER.warn("解析命令选项时发生异常，异常信息如下", e);
-            context.sendMessage("命令行格式错误，正确的格式为: " + CMD_LINE_SYNTAX_LOOKUP);
+            context.sendMessage("命令行格式错误，正确的格式为: " + context.getRuntimeIdentity() + " " +
+                    CliCommandUtil.concatOptionPrefix(COMMAND_OPTION_LOOKUP) + " point-id");
             context.sendMessage("请留意选项 l 后接参数的类型应该是数字");
             return;
         }
         if (pointIdNumber == null) {
-            context.sendMessage("命令行格式错误，正确的格式为: " + CMD_LINE_SYNTAX_LOOKUP);
+            context.sendMessage("命令行格式错误，正确的格式为: " + context.getRuntimeIdentity() + " " +
+                    CliCommandUtil.concatOptionPrefix(COMMAND_OPTION_LOOKUP) + " point-id");
             context.sendMessage("请留意选项 l 后接参数的类型应该是数字");
             return;
         }
@@ -134,8 +143,9 @@ public class RecordMemoryCommand extends CliCommand {
             return;
         }
         while (true) {
-            CommandUtil.CropResult cropResult = CommandUtil.cropData(
-                    context, recordMemories, "记录记忆总数: " + recordMemories.size(), "输入 q 退出查询"
+            CliCommandUtil.CropResult cropResult = CliCommandUtil.cropData(
+                    context, recordMemories, "记录记忆总数: " + recordMemories.size(),
+                    command -> "输入 q 退出查询"
             );
             if (cropResult.isExitFlag()) {
                 break;
@@ -151,7 +161,9 @@ public class RecordMemoryCommand extends CliCommand {
     /**
      * 打印单条记录记忆数据。
      */
-    private void printRecordMemory(int i, int endIndex, RecordMemory recordMemory, Context context) throws Exception {
+    private void printRecordMemory(
+            int i, int endIndex, RecordMemory recordMemory, CommandExecutor.Context context
+    ) throws Exception {
         context.sendMessage(String.format(
                 "索引: %d/%d",
                 i, endIndex
@@ -192,18 +204,20 @@ public class RecordMemoryCommand extends CliCommand {
     /**
      * 处理按点位清理命令。
      */
-    private void handleRemove(Context context, CommandLine cmd) throws Exception {
+    private void handleRemove(CommandExecutor.Context context, CommandLine cmd) throws Exception {
         Number pointIdNumber;
         try {
             pointIdNumber = (Number) cmd.getParsedOptionValue(COMMAND_OPTION_REMOVE);
         } catch (ParseException e) {
             LOGGER.warn("解析命令选项时发生异常，异常信息如下", e);
-            context.sendMessage("命令行格式错误，正确的格式为: " + CMD_LINE_SYNTAX_CLEAR);
+            context.sendMessage("命令行格式错误，正确的格式为: " + context.getRuntimeIdentity() + " " +
+                    CliCommandUtil.concatOptionPrefix(COMMAND_OPTION_CLEAR));
             context.sendMessage("请留意选项 c 后接参数的类型应该是数字");
             return;
         }
         if (pointIdNumber == null) {
-            context.sendMessage("命令行格式错误，正确的格式为: " + CMD_LINE_SYNTAX_CLEAR);
+            context.sendMessage("命令行格式错误，正确的格式为: " + context.getRuntimeIdentity() + " " +
+                    CliCommandUtil.concatOptionPrefix(COMMAND_OPTION_CLEAR));
             context.sendMessage("请留意选项 c 后接参数的类型应该是数字");
             return;
         }
@@ -215,7 +229,7 @@ public class RecordMemoryCommand extends CliCommand {
     /**
      * 处理全量清理命令。
      */
-    private void handleClear(Context context) throws Exception {
+    private void handleClear(CommandExecutor.Context context) throws Exception {
         recordMemoryQosService.clear();
         context.sendMessage("记录记忆已清除");
     }

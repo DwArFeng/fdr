@@ -1,10 +1,11 @@
 package com.dwarfeng.fdr.impl.service.telqos;
 
 import com.dwarfeng.fdr.stack.service.SupportQosService;
-import com.dwarfeng.springtelqos.node.config.TelqosCommand;
 import com.dwarfeng.springtelqos.sdk.command.CliCommand;
-import com.dwarfeng.springtelqos.stack.command.Context;
-import com.dwarfeng.springtelqos.stack.exception.TelqosException;
+import com.dwarfeng.springtelqos.sdk.configuration.TelqosCommand;
+import com.dwarfeng.springtelqos.sdk.util.CliCommandUtil;
+import com.dwarfeng.springtelqos.stack.command.CommandDescriptor;
+import com.dwarfeng.springtelqos.stack.command.CommandExecutor;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.lang3.tuple.Pair;
@@ -24,6 +25,11 @@ import java.util.List;
 @TelqosCommand
 public class SupportCommand extends CliCommand {
 
+    @SuppressWarnings({"SpellCheckingInspection", "GrazieInspectionRunner", "RedundantSuppression"})
+    private static final String IDENTITY = "support";
+
+    // region 指令选项
+
     private static final String COMMAND_OPTION_RESET_FILTER = "reset-filter";
     private static final String COMMAND_OPTION_RESET_WASHER = "reset-washer";
     private static final String COMMAND_OPTION_RESET_TRIGGER = "reset-trigger";
@@ -38,81 +44,84 @@ public class SupportCommand extends CliCommand {
             COMMAND_OPTION_RESET_FETCHER
     };
 
-    private static final String IDENTITY = "support";
-    private static final String DESCRIPTION = "支持操作";
-
-    private static final String CMD_LINE_SYNTAX_RESET_FILTER = IDENTITY + " " +
-            CommandUtil.concatOptionPrefix(COMMAND_OPTION_RESET_FILTER);
-    private static final String CMD_LINE_SYNTAX_RESET_WASHER = IDENTITY + " " +
-            CommandUtil.concatOptionPrefix(COMMAND_OPTION_RESET_WASHER);
-    private static final String CMD_LINE_SYNTAX_RESET_TRIGGER = IDENTITY + " " +
-            CommandUtil.concatOptionPrefix(COMMAND_OPTION_RESET_TRIGGER);
-    private static final String CMD_LINE_SYNTAX_RESET_MAPPER = IDENTITY + " " +
-            CommandUtil.concatOptionPrefix(COMMAND_OPTION_RESET_MAPPER);
-    private static final String CMD_LINE_SYNTAX_RESET_FETCHER = IDENTITY + " " +
-            CommandUtil.concatOptionPrefix(COMMAND_OPTION_RESET_FETCHER);
-
-    private static final String[] CMD_LINE_ARRAY = new String[]{
-            CMD_LINE_SYNTAX_RESET_FILTER,
-            CMD_LINE_SYNTAX_RESET_WASHER,
-            CMD_LINE_SYNTAX_RESET_TRIGGER,
-            CMD_LINE_SYNTAX_RESET_MAPPER,
-            CMD_LINE_SYNTAX_RESET_FETCHER
-    };
-
-    private static final String CMD_LINE_SYNTAX = CommandUtil.syntax(CMD_LINE_ARRAY);
+    // endregion
 
     private final SupportQosService supportQosService;
 
     public SupportCommand(SupportQosService supportQosService) {
-        super(IDENTITY, DESCRIPTION, CMD_LINE_SYNTAX);
+        super(IDENTITY);
         this.supportQosService = supportQosService;
     }
 
     @Override
-    protected List<Option> buildOptions() {
+    protected DescriptionProvider provideDescriptionProvider() {
+        return context -> "支持操作";
+    }
+
+    @Override
+    protected CliSyntaxProvider provideCliSyntaxProvider() {
+        return this::cliSyntaxProvider;
+    }
+
+    private String cliSyntaxProvider(CommandDescriptor.Context context) throws Exception {
+        String identity = context.getRuntimeIdentity();
+        String[] patterns = new String[]{
+                identity + " " + CliCommandUtil.concatOptionPrefix(COMMAND_OPTION_RESET_FILTER),
+                identity + " " + CliCommandUtil.concatOptionPrefix(COMMAND_OPTION_RESET_WASHER),
+                identity + " " + CliCommandUtil.concatOptionPrefix(COMMAND_OPTION_RESET_TRIGGER),
+                identity + " " + CliCommandUtil.concatOptionPrefix(COMMAND_OPTION_RESET_MAPPER),
+                identity + " " + CliCommandUtil.concatOptionPrefix(COMMAND_OPTION_RESET_FETCHER)
+        };
+        return CliCommandUtil.cliSyntax(patterns);
+    }
+
+    @Override
+    protected List<Option> provideOptions() {
         List<Option> list = new ArrayList<>();
-        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_FILTER).desc("重置过滤器支持").build());
-        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_WASHER).desc("重置清洗器支持").build());
-        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_TRIGGER).desc("重置触发器支持").build());
-        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_MAPPER).desc("重置映射器支持").build());
-        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_FETCHER).desc("重置抓取器支持").build());
+        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_FILTER).optionalArg(true).hasArg(false)
+                .desc("重置过滤器支持").build());
+        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_WASHER).optionalArg(true).hasArg(false)
+                .desc("重置清洗器支持").build());
+        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_TRIGGER).optionalArg(true).hasArg(false)
+                .desc("重置触发器支持").build());
+        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_MAPPER).optionalArg(true).hasArg(false)
+                .desc("重置映射器支持").build());
+        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_FETCHER).optionalArg(true).hasArg(false)
+                .desc("重置抓取器支持").build());
         return list;
     }
 
     @Override
-    protected void executeWithCmd(Context context, CommandLine cmd) throws TelqosException {
-        try {
-            Pair<String, Integer> pair = CommandUtil.analyseCommand(cmd, COMMAND_OPTION_ARRAY);
-            if (pair.getRight() != 1) {
-                context.sendMessage(CommandUtil.optionMismatchMessage(COMMAND_OPTION_ARRAY));
-                context.sendMessage(CMD_LINE_SYNTAX);
-                return;
-            }
-            switch (pair.getLeft()) {
-                case COMMAND_OPTION_RESET_FILTER:
-                    supportQosService.resetFilter();
-                    context.sendMessage("重置过滤器支持成功");
-                    break;
-                case COMMAND_OPTION_RESET_WASHER:
-                    supportQosService.resetWasher();
-                    context.sendMessage("重置清洗器支持成功");
-                    break;
-                case COMMAND_OPTION_RESET_TRIGGER:
-                    supportQosService.resetTrigger();
-                    context.sendMessage("重置触发器支持成功");
-                    break;
-                case COMMAND_OPTION_RESET_MAPPER:
-                    supportQosService.resetMapper();
-                    context.sendMessage("重置映射器支持成功");
-                    break;
-                case COMMAND_OPTION_RESET_FETCHER:
-                    supportQosService.resetFetcher();
-                    context.sendMessage("重置抓取器支持成功");
-                    break;
-            }
-        } catch (Exception e) {
-            throw new TelqosException(e);
+    protected void executeWithCmd(CommandExecutor.Context context, CommandLine cmd) throws Exception {
+        Pair<String, Integer> pair = CliCommandUtil.analyseCommand(cmd, COMMAND_OPTION_ARRAY);
+        if (pair.getRight() != 1) {
+            context.sendMessage(CliCommandUtil.optionMismatchMessage(COMMAND_OPTION_ARRAY));
+            context.sendMessage(context.getCommandManual(context.getRuntimeIdentity()));
+            return;
+        }
+        switch (pair.getLeft()) {
+            case COMMAND_OPTION_RESET_FILTER:
+                supportQosService.resetFilter();
+                context.sendMessage("重置过滤器支持成功");
+                break;
+            case COMMAND_OPTION_RESET_WASHER:
+                supportQosService.resetWasher();
+                context.sendMessage("重置清洗器支持成功");
+                break;
+            case COMMAND_OPTION_RESET_TRIGGER:
+                supportQosService.resetTrigger();
+                context.sendMessage("重置触发器支持成功");
+                break;
+            case COMMAND_OPTION_RESET_MAPPER:
+                supportQosService.resetMapper();
+                context.sendMessage("重置映射器支持成功");
+                break;
+            case COMMAND_OPTION_RESET_FETCHER:
+                supportQosService.resetFetcher();
+                context.sendMessage("重置抓取器支持成功");
+                break;
+            default:
+                throw new IllegalStateException("不应该执行到此处, 请联系开发人员");
         }
     }
 }

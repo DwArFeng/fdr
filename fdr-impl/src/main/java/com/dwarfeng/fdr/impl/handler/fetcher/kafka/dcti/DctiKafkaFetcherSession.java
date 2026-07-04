@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.fetcher.kafka.dcti;
 
-import com.dwarfeng.dcti.sdk.util.DataInfoUtil;
 import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
+import com.dwarfeng.dcti.stack.handler.DctiHandler;
 import com.dwarfeng.fdr.sdk.handler.fetcher.AbstractFetcherSession;
 import com.dwarfeng.fdr.stack.bean.dto.RecordInfo;
 import com.dwarfeng.fdr.stack.exception.RecordHandlerStoppedException;
@@ -38,6 +38,8 @@ public class DctiKafkaFetcherSession extends AbstractFetcherSession {
 
     private final DctiKafkaFetcherConfig config;
 
+    private DctiHandler dctiHandler;
+
     private ConcurrentMessageListenerContainer<String, String> listenerContainer;
 
     public DctiKafkaFetcherSession(ApplicationContext ctx, DctiKafkaFetcherConfig config) {
@@ -49,6 +51,7 @@ public class DctiKafkaFetcherSession extends AbstractFetcherSession {
     @Override
     protected void doOpenSession() {
         LOGGER.info("dcti kafka 抓取器会话打开, listenerId={}, topic={}...", config.getListenerId(), config.getTopic());
+        dctiHandler = ctx.getBean(config.getDctiHandlerBeanName(), DctiHandler.class);
         @SuppressWarnings("unchecked")
         KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> containerFactory =
                 ctx.getBean(config.getKafkaListenerContainerFactoryBeanName(), KafkaListenerContainerFactory.class);
@@ -83,6 +86,7 @@ public class DctiKafkaFetcherSession extends AbstractFetcherSession {
         LOGGER.info("dcti kafka 抓取器会话关闭, listenerId={}, topic={}...", config.getListenerId(), config.getTopic());
         listenerContainer.stop();
         listenerContainer = null;
+        dctiHandler = null;
     }
 
     private void handleConsumerRecordsPolled(
@@ -93,7 +97,7 @@ public class DctiKafkaFetcherSession extends AbstractFetcherSession {
         for (ConsumerRecord<String, String> consumerRecord : consumerRecords) {
             String message = consumerRecord.value();
             try {
-                DataInfo dataInfo = DataInfoUtil.fromMessage(message);
+                DataInfo dataInfo = dctiHandler.fromMessage(message);
                 RecordInfo recordInfo = new RecordInfo(
                         new LongIdKey(dataInfo.getPointLongId()),
                         dataInfo.getValue(),
@@ -121,6 +125,7 @@ public class DctiKafkaFetcherSession extends AbstractFetcherSession {
         return "DctiKafkaFetcherSession{" +
                 "ctx=" + ctx +
                 ", config=" + config +
+                ", dctiHandler=" + dctiHandler +
                 ", listenerContainer=" + listenerContainer +
                 ", context=" + context +
                 '}';

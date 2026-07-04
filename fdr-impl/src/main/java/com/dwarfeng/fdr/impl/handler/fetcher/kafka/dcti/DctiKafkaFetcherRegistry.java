@@ -1,6 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.fetcher.kafka.dcti;
 
 import com.alibaba.fastjson.JSON;
+import com.dwarfeng.dcti.stack.handler.DctiHandler;
 import com.dwarfeng.fdr.sdk.handler.fetcher.AbstractFetcherRegistry;
 import com.dwarfeng.fdr.stack.exception.FetcherException;
 import com.dwarfeng.fdr.stack.exception.FetcherMakeException;
@@ -43,7 +44,8 @@ public class DctiKafkaFetcherRegistry extends AbstractFetcherRegistry {
     @Override
     public String provideExampleParam() {
         DctiKafkaFetcherConfig config = new DctiKafkaFetcherConfig(
-                "dctiKafkaFetcherKafkaListenerContainerFactory", "fdr.dcti", "fdr.fetcher.kafka.dcti"
+                "dctiKafkaFetcherKafkaListenerContainerFactory", "fdr.dcti", "fdr.fetcher.kafka.dcti",
+                "dctiKafkaFetcherDctiHandler"
         );
         return JSON.toJSONString(config, true);
     }
@@ -69,7 +71,9 @@ public class DctiKafkaFetcherRegistry extends AbstractFetcherRegistry {
                 config.getKafkaListenerContainerFactoryBeanName());
         validateNonEmptyString("topic", config.getTopic());
         validateNonEmptyString("listener_id", config.getListenerId());
+        validateNonEmptyString("dcti_handler_bean_name", config.getDctiHandlerBeanName());
         validateKafkaListenerContainerFactoryBean(config.getKafkaListenerContainerFactoryBeanName());
+        validateDctiHandlerBean(config.getDctiHandlerBeanName());
     }
 
     private void validateNonEmptyString(String fieldName, String value) throws FetcherMakeException {
@@ -88,6 +92,20 @@ public class DctiKafkaFetcherRegistry extends AbstractFetcherRegistry {
         } catch (Exception e) {
             throw new FetcherMakeException(
                     "字段 kafka_listener_container_factory_bean_name 对应的 bean 类型不匹配: " + beanName, e
+            );
+        }
+    }
+
+    private void validateDctiHandlerBean(String beanName) throws FetcherMakeException {
+        try {
+            ctx.getBean(beanName, DctiHandler.class);
+        } catch (NoSuchBeanDefinitionException e) {
+            throw new FetcherMakeException(
+                    "字段 dcti_handler_bean_name 对应的 bean 不存在: " + beanName, e
+            );
+        } catch (Exception e) {
+            throw new FetcherMakeException(
+                    "字段 dcti_handler_bean_name 对应的 bean 类型不匹配: " + beanName, e
             );
         }
     }

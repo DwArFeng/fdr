@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--suppress SpringFacetInspection, XmlUnusedNamespaceDeclaration -->
+<!--suppress SpringFacetInspection, XmlUnusedNamespaceDeclaration, SpringXmlModelInspection -->
 <beans
+        xmlns:dcti="http://dwarfeng.com/schema/dcti"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="http://www.springframework.org/schema/beans"
         xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd"
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://dwarfeng.com/schema/dcti
+        http://dwarfeng.com/schema/dcti/dcti.xsd"
 >
 
     <!--
-            本配置文件为 DctiKafkaFetcher 提供必要的 ConsumerFactory、KafkaListenerContainerFactory 等 bean。
+            本配置文件为 DctiKafkaFetcher 提供必要的 ConsumerFactory、KafkaListenerContainerFactory、
+            DctiHandler 等 bean。
             如果需要使用 DctiKafkaFetcher，请取消下方注释，并按照实际情况对下方参数进行配置。
 
             可以在下方的参数中直接赋值，也可以使用 value placeholder 进行占位，
             并将真正的配置值以 properties 文件的形式放在 confext 目录中。
 
-            如需要连接多个 Kafka 集群，应该将 ConsumerFactory 与 KafkaListenerContainerFactory bean 定义复制多份，
-            分配不同的 id，为 ApplicationContext 提供多个 bean。
+            如需要连接多个 Kafka 集群，应该将 ConsumerFactory、KafkaListenerContainerFactory 与 DctiHandler
+            bean 定义复制多份，分配不同的 id，为 ApplicationContext 提供多个 bean。
 
-            对于 Kafka 组件，FetcherInfo.param 中只需引用 KafkaListenerContainerFactory 的 bean 名称、topic 与 listener_id；
+            对于 Kafka 组件，FetcherInfo.param 中需引用 KafkaListenerContainerFactory 的 bean 名称、topic、
+            listener_id 与 dcti_handler_bean_name；
             ConsumerFactory 仅作为 XML 内部基础设施 bean，不出现在 FetcherInfo.param JSON 中。
+
+            DctiHandler 相关 bean 说明：
+            DctiHandler 用于将 Kafka 消息解码为 dcti 协议数据，通过 dcti XSD 命名空间装配。
 
             ConsumerFactory 参数说明：
             bootstrapServers:
@@ -65,5 +73,6 @@
         <constructor-arg name="concurrency" value="2"/>
         <constructor-arg name="pollTimeout" value="3000"/>
     </bean>
+    <dcti:handler handler-name="dctiKafkaFetcherDctiHandler"/>
     -->
 </beans>
