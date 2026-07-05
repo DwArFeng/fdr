@@ -13,16 +13,37 @@ public class ExceptionCodeOffsetConfiguration {
     private int exceptionCodeOffset;
     @Value("${fdr.exception_code_offset.subgrade}")
     private int subgradeExceptionCodeOffset;
-    @Value("${fdr.exception_code_offset.snowflake}")
-    private int snowflakeExceptionCodeOffset;
+    @Value("${fdr.exception_code_offset.spring_telqos}")
+    private int springTelqosExceptionCodeOffset;
+    @Value("${fdr.exception_code_offset.spring_terminator}")
+    private int springTerminatorExceptionCodeOffset;
     @Value("${fdr.exception_code_offset.dwarfeng_datamark}")
     private int dwarfengDatamarkExceptionCodeOffset;
+    @Value("${fdr.exception_code_offset.dcti}")
+    private int dctiExceptionCodeOffset;
+    @Value("${fdr.exception_code_offset.dwarfeng_dct}")
+    private int dwarfengDctExceptionCodeOffset;
 
     @PostConstruct
     public void init() {
         ServiceExceptionCodes.setExceptionCodeOffset(exceptionCodeOffset);
-        com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes.setExceptionCodeOffset(subgradeExceptionCodeOffset);
-        com.dwarfeng.sfds.sdk.util.ServiceExceptionCodes.setExceptionCodeOffset(snowflakeExceptionCodeOffset);
-        com.dwarfeng.datamark.sdk.util.ServiceExceptionCodes.setExceptionCodeOffset(dwarfengDatamarkExceptionCodeOffset);
+        com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes.setExceptionCodeOffset(
+                subgradeExceptionCodeOffset
+        );
+        com.dwarfeng.springtelqos.sdk.util.ServiceExceptionCodes.setExceptionCodeOffset(
+                springTelqosExceptionCodeOffset
+        );
+        com.dwarfeng.springterminator.sdk.util.ServiceExceptionCodes.setExceptionCodeOffset(
+                springTerminatorExceptionCodeOffset
+        );
+        com.dwarfeng.datamark.sdk.util.ServiceExceptionCodes.setExceptionCodeOffset(
+                dwarfengDatamarkExceptionCodeOffset
+        );
+        com.dwarfeng.dcti.sdk.util.ServiceExceptionCodes.setExceptionCodeOffset(
+                dctiExceptionCodeOffset
+        );
+        com.dwarfeng.dct.sdk.util.ServiceExceptionCodes.setExceptionCodeOffset(
+                dwarfengDctExceptionCodeOffset
+        );
     }
 }
