@@ -2,15 +2,15 @@ package com.dwarfeng.fdr.impl.service;
 
 import com.dwarfeng.fdr.stack.bean.entity.WasherSupport;
 import com.dwarfeng.fdr.stack.service.WasherSupportMaintainService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
-import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
+import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,14 +19,14 @@ import java.util.List;
 @Service
 public class WasherSupportMaintainServiceImpl implements WasherSupportMaintainService {
 
-    private final GeneralBatchCrudService<StringIdKey, WasherSupport> crudService;
-    private final DaoOnlyEntireLookupService<WasherSupport> entireLookupService;
-    private final DaoOnlyPresetLookupService<WasherSupport> presetLookupService;
+    private final BatchCrudService<StringIdKey, WasherSupport> crudService;
+    private final EntireLookupService<WasherSupport> entireLookupService;
+    private final PresetLookupService<WasherSupport> presetLookupService;
 
     public WasherSupportMaintainServiceImpl(
-            GeneralBatchCrudService<StringIdKey, WasherSupport> crudService,
-            DaoOnlyEntireLookupService<WasherSupport> entireLookupService,
-            DaoOnlyPresetLookupService<WasherSupport> presetLookupService
+            BatchCrudService<StringIdKey, WasherSupport> crudService,
+            EntireLookupService<WasherSupport> entireLookupService,
+            PresetLookupService<WasherSupport> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;

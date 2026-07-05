@@ -1,12 +1,11 @@
 package com.dwarfeng.fdr.impl.cache;
 
-import com.dwarfeng.fdr.sdk.bean.entity.FastJsonFetcherInfo;
 import com.dwarfeng.fdr.stack.bean.entity.FetcherInfo;
 import com.dwarfeng.fdr.stack.cache.FetcherInfoCache;
-import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.cache.BatchBaseCache;
 import com.dwarfeng.subgrade.stack.exception.CacheException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +15,11 @@ import java.util.List;
 @Repository
 public class FetcherInfoCacheImpl implements FetcherInfoCache {
 
-    private final RedisBatchBaseCache<LongIdKey, FetcherInfo, FastJsonFetcherInfo> batchBaseCache;
+    private final BatchBaseCache<LongIdKey, FetcherInfo> batchBaseCache;
 
-    public FetcherInfoCacheImpl(RedisBatchBaseCache<LongIdKey, FetcherInfo, FastJsonFetcherInfo> batchBaseCache) {
+    public FetcherInfoCacheImpl(
+            BatchBaseCache<LongIdKey, FetcherInfo> batchBaseCache
+    ) {
         this.batchBaseCache = batchBaseCache;
     }
 

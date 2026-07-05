@@ -4,6 +4,54 @@
 
 ### 功能构建
 
+- 部分代理类实现中的字段类型提升为对应的接口，与具体实现解耦。
+  - com.dwarfeng.fdr.impl.cache.EnabledFetcherInfoCacheImpl。
+  - com.dwarfeng.fdr.impl.cache.EnabledFilterInfoCacheImpl。
+  - com.dwarfeng.fdr.impl.cache.EnabledTriggerInfoCacheImpl。
+  - com.dwarfeng.fdr.impl.cache.EnabledWasherInfoCacheImpl。
+  - com.dwarfeng.fdr.impl.cache.FetcherInfoCacheImpl。
+  - com.dwarfeng.fdr.impl.cache.FetcherSupportCacheImpl。
+  - com.dwarfeng.fdr.impl.cache.FilterInfoCacheImpl。
+  - com.dwarfeng.fdr.impl.cache.FilterSupportCacheImpl。
+  - com.dwarfeng.fdr.impl.cache.MapperSupportCacheImpl。
+  - com.dwarfeng.fdr.impl.cache.PointCacheImpl。
+  - com.dwarfeng.fdr.impl.cache.TriggerInfoCacheImpl。
+  - com.dwarfeng.fdr.impl.cache.TriggerSupportCacheImpl。
+  - com.dwarfeng.fdr.impl.cache.WasherInfoCacheImpl。
+  - com.dwarfeng.fdr.impl.cache.WasherSupportCacheImpl。
+  - com.dwarfeng.fdr.impl.dao.FetcherInfoDaoImpl。
+  - com.dwarfeng.fdr.impl.dao.FetcherSupportDaoImpl。
+  - com.dwarfeng.fdr.impl.dao.FilterInfoDaoImpl。
+  - com.dwarfeng.fdr.impl.dao.FilterSupportDaoImpl。
+  - com.dwarfeng.fdr.impl.dao.MapperSupportDaoImpl。
+  - com.dwarfeng.fdr.impl.dao.PointDaoImpl。
+  - com.dwarfeng.fdr.impl.dao.TriggerInfoDaoImpl。
+  - com.dwarfeng.fdr.impl.dao.TriggerSupportDaoImpl。
+  - com.dwarfeng.fdr.impl.dao.WasherInfoDaoImpl。
+  - com.dwarfeng.fdr.impl.dao.WasherSupportDaoImpl。
+  - com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao.HibernateBridgeFilteredDataDaoImpl。
+  - com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao.HibernateBridgeNormalDataDaoImpl。
+  - com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao.HibernateBridgeTriggeredDataDaoImpl。
+  - com.dwarfeng.fdr.impl.handler.bridge.hibernate.service.HibernateBridgeFilteredDataMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.handler.bridge.hibernate.service.HibernateBridgeNormalDataMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.handler.bridge.hibernate.service.HibernateBridgeTriggeredDataMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.handler.bridge.redis.dao.RedisBridgeFilteredDataDaoImpl。
+  - com.dwarfeng.fdr.impl.handler.bridge.redis.dao.RedisBridgeNormalDataDaoImpl。
+  - com.dwarfeng.fdr.impl.handler.bridge.redis.dao.RedisBridgeTriggeredDataDaoImpl。
+  - com.dwarfeng.fdr.impl.handler.bridge.redis.service.RedisBridgeFilteredDataMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.handler.bridge.redis.service.RedisBridgeNormalDataMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.handler.bridge.redis.service.RedisBridgeTriggeredDataMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.FetcherInfoMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.FetcherSupportMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.FilterInfoMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.FilterSupportMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.MapperSupportMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.PointMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.TriggerInfoMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.TriggerSupportMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.WasherInfoMaintainServiceImpl。
+  - com.dwarfeng.fdr.impl.service.WasherSupportMaintainServiceImpl。
+
 - 优化项目的异常处理机制。
   - `fdr-sdk` 子模块新增 `ServiceExceptionHelper` 工具类，统一维护项目自身的异常映射关系。
   - `fdr-impl` 子模块 `ServiceExceptionMapperConfiguration` 配置类的异常映射处理逻辑优化。

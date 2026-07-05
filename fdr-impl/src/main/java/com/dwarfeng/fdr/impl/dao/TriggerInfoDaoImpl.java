@@ -1,16 +1,14 @@
 package com.dwarfeng.fdr.impl.dao;
 
-import com.dwarfeng.fdr.impl.bean.entity.HibernateTriggerInfo;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.dao.TriggerInfoDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
-import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
+import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 import com.dwarfeng.subgrade.stack.exception.DaoException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,14 +18,14 @@ import java.util.List;
 @Repository
 public class TriggerInfoDaoImpl implements TriggerInfoDao {
 
-    private final HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, TriggerInfo, HibernateTriggerInfo> batchBaseDao;
-    private final HibernateEntireLookupDao<TriggerInfo, HibernateTriggerInfo> entireLookupDao;
-    private final HibernatePresetLookupDao<TriggerInfo, HibernateTriggerInfo> presetLookupDao;
+    private final BatchBaseDao<LongIdKey, TriggerInfo> batchBaseDao;
+    private final EntireLookupDao<TriggerInfo> entireLookupDao;
+    private final PresetLookupDao<TriggerInfo> presetLookupDao;
 
     public TriggerInfoDaoImpl(
-            HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, TriggerInfo, HibernateTriggerInfo> batchBaseDao,
-            HibernateEntireLookupDao<TriggerInfo, HibernateTriggerInfo> entireLookupDao,
-            HibernatePresetLookupDao<TriggerInfo, HibernateTriggerInfo> presetLookupDao
+            BatchBaseDao<LongIdKey, TriggerInfo> batchBaseDao,
+            EntireLookupDao<TriggerInfo> entireLookupDao,
+            PresetLookupDao<TriggerInfo> presetLookupDao
     ) {
         this.batchBaseDao = batchBaseDao;
         this.entireLookupDao = entireLookupDao;

@@ -1,16 +1,16 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate.service;
 
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeFilteredData;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyBatchCrudService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyBatchWriteService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
+import com.dwarfeng.subgrade.stack.service.BatchWriteService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
+import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,16 +19,16 @@ import java.util.List;
 @Component
 public class HibernateBridgeFilteredDataMaintainServiceImpl implements HibernateBridgeFilteredDataMaintainService {
 
-    private final DaoOnlyBatchCrudService<LongIdKey, HibernateBridgeFilteredData> batchCrudService;
-    private final DaoOnlyEntireLookupService<HibernateBridgeFilteredData> entireLookupService;
-    private final DaoOnlyPresetLookupService<HibernateBridgeFilteredData> presetLookupService;
-    private final DaoOnlyBatchWriteService<LongIdKey, HibernateBridgeFilteredData> batchWriteService;
+    private final BatchCrudService<LongIdKey, HibernateBridgeFilteredData> batchCrudService;
+    private final EntireLookupService<HibernateBridgeFilteredData> entireLookupService;
+    private final PresetLookupService<HibernateBridgeFilteredData> presetLookupService;
+    private final BatchWriteService<HibernateBridgeFilteredData> batchWriteService;
 
     public HibernateBridgeFilteredDataMaintainServiceImpl(
-            DaoOnlyBatchCrudService<LongIdKey, HibernateBridgeFilteredData> batchCrudService,
-            DaoOnlyEntireLookupService<HibernateBridgeFilteredData> entireLookupService,
-            DaoOnlyPresetLookupService<HibernateBridgeFilteredData> presetLookupService,
-            DaoOnlyBatchWriteService<LongIdKey, HibernateBridgeFilteredData> batchWriteService
+            BatchCrudService<LongIdKey, HibernateBridgeFilteredData> batchCrudService,
+            EntireLookupService<HibernateBridgeFilteredData> entireLookupService,
+            PresetLookupService<HibernateBridgeFilteredData> presetLookupService,
+            BatchWriteService<HibernateBridgeFilteredData> batchWriteService
     ) {
         this.batchCrudService = batchCrudService;
         this.entireLookupService = entireLookupService;

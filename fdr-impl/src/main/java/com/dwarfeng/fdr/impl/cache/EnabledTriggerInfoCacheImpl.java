@@ -1,13 +1,12 @@
 package com.dwarfeng.fdr.impl.cache;
 
-import com.dwarfeng.fdr.sdk.bean.entity.FastJsonTriggerInfo;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.cache.EnabledTriggerInfoCache;
-import com.dwarfeng.subgrade.impl.cache.RedisKeyListCache;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.cache.KeyListCache;
 import com.dwarfeng.subgrade.stack.exception.CacheException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,24 +17,26 @@ import java.util.List;
 @Repository
 public class EnabledTriggerInfoCacheImpl implements EnabledTriggerInfoCache {
 
-    private final RedisKeyListCache<LongIdKey, TriggerInfo, FastJsonTriggerInfo> delegate;
+    private final KeyListCache<LongIdKey, TriggerInfo> keyListCache;
 
-    public EnabledTriggerInfoCacheImpl(RedisKeyListCache<LongIdKey, TriggerInfo, FastJsonTriggerInfo> delegate) {
-        this.delegate = delegate;
+    public EnabledTriggerInfoCacheImpl(
+            KeyListCache<LongIdKey, TriggerInfo> keyListCache
+    ) {
+        this.keyListCache = keyListCache;
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean exists(LongIdKey key) throws CacheException {
-        return delegate.exists(key);
+        return keyListCache.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public int size(LongIdKey key) throws CacheException {
-        return delegate.size(key);
+        return keyListCache.size(key);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class EnabledTriggerInfoCacheImpl implements EnabledTriggerInfoCache {
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<TriggerInfo> get(LongIdKey key) throws CacheException {
-        return delegate.get(key);
+        return keyListCache.get(key);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class EnabledTriggerInfoCacheImpl implements EnabledTriggerInfoCache {
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<TriggerInfo> get(LongIdKey key, int beginIndex, int maxEntity) throws CacheException {
-        return delegate.get(key, beginIndex, maxEntity);
+        return keyListCache.get(key, beginIndex, maxEntity);
     }
 
     @Override
@@ -59,14 +60,14 @@ public class EnabledTriggerInfoCacheImpl implements EnabledTriggerInfoCache {
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<TriggerInfo> get(LongIdKey key, PagingInfo pagingInfo) throws CacheException {
-        return delegate.get(key, pagingInfo);
+        return keyListCache.get(key, pagingInfo);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void set(LongIdKey key, @SkipRecord Collection<TriggerInfo> entities, long timeout) throws CacheException {
-        delegate.set(key, entities, timeout);
+        keyListCache.set(key, entities, timeout);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class EnabledTriggerInfoCacheImpl implements EnabledTriggerInfoCache {
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void leftPush(LongIdKey key, @SkipRecord Collection<TriggerInfo> entities, long timeout)
             throws CacheException {
-        delegate.leftPush(key, entities, timeout);
+        keyListCache.leftPush(key, entities, timeout);
     }
 
     @Override
@@ -82,20 +83,20 @@ public class EnabledTriggerInfoCacheImpl implements EnabledTriggerInfoCache {
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void rightPush(LongIdKey key, @SkipRecord Collection<TriggerInfo> entities, long timeout)
             throws CacheException {
-        delegate.rightPush(key, entities, timeout);
+        keyListCache.rightPush(key, entities, timeout);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void delete(LongIdKey key) throws CacheException {
-        delegate.delete(key);
+        keyListCache.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void clear() throws CacheException {
-        delegate.clear();
+        keyListCache.clear();
     }
 }

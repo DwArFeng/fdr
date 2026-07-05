@@ -1,15 +1,13 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao;
 
-import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeHibernateNormalData;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeNormalData;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchWriteDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.BatchWriteDao;
+import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
 import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 import com.dwarfeng.subgrade.stack.exception.DaoException;
 import org.springframework.stereotype.Repository;
@@ -20,19 +18,16 @@ import java.util.List;
 @Repository
 public class HibernateBridgeNormalDataDaoImpl implements HibernateBridgeNormalDataDao {
 
-    private final HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, HibernateBridgeNormalData,
-            HibernateBridgeHibernateNormalData> batchBaseDao;
-    private final HibernateEntireLookupDao<HibernateBridgeNormalData, HibernateBridgeHibernateNormalData>
-            entireLookupDao;
+    private final BatchBaseDao<LongIdKey, HibernateBridgeNormalData> batchBaseDao;
+    private final EntireLookupDao<HibernateBridgeNormalData> entireLookupDao;
     private final PresetLookupDao<HibernateBridgeNormalData> presetLookupDao;
-    private final HibernateBatchWriteDao<HibernateBridgeNormalData, HibernateBridgeHibernateNormalData> batchWriteDao;
+    private final BatchWriteDao<HibernateBridgeNormalData> batchWriteDao;
 
     public HibernateBridgeNormalDataDaoImpl(
-            HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, HibernateBridgeNormalData,
-                    HibernateBridgeHibernateNormalData> batchBaseDao,
-            HibernateEntireLookupDao<HibernateBridgeNormalData, HibernateBridgeHibernateNormalData> entireLookupDao,
+            BatchBaseDao<LongIdKey, HibernateBridgeNormalData> batchBaseDao,
+            EntireLookupDao<HibernateBridgeNormalData> entireLookupDao,
             PresetLookupDao<HibernateBridgeNormalData> presetLookupDao,
-            HibernateBatchWriteDao<HibernateBridgeNormalData, HibernateBridgeHibernateNormalData> batchWriteDao
+            BatchWriteDao<HibernateBridgeNormalData> batchWriteDao
     ) {
         this.batchBaseDao = batchBaseDao;
         this.entireLookupDao = entireLookupDao;

@@ -1,16 +1,14 @@
 package com.dwarfeng.fdr.impl.dao;
 
-import com.dwarfeng.fdr.impl.bean.entity.HibernateTriggerSupport;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerSupport;
 import com.dwarfeng.fdr.stack.dao.TriggerSupportDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
-import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
+import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 import com.dwarfeng.subgrade.stack.exception.DaoException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,16 +18,14 @@ import java.util.List;
 @Repository
 public class TriggerSupportDaoImpl implements TriggerSupportDao {
 
-    private final HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, TriggerSupport, HibernateTriggerSupport>
-            batchBaseDao;
-    private final HibernateEntireLookupDao<TriggerSupport, HibernateTriggerSupport> entireLookupDao;
-    private final HibernatePresetLookupDao<TriggerSupport, HibernateTriggerSupport> presetLookupDao;
+    private final BatchBaseDao<StringIdKey, TriggerSupport> batchBaseDao;
+    private final EntireLookupDao<TriggerSupport> entireLookupDao;
+    private final PresetLookupDao<TriggerSupport> presetLookupDao;
 
     public TriggerSupportDaoImpl(
-            HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, TriggerSupport, HibernateTriggerSupport>
-                    batchBaseDao,
-            HibernateEntireLookupDao<TriggerSupport, HibernateTriggerSupport> entireLookupDao,
-            HibernatePresetLookupDao<TriggerSupport, HibernateTriggerSupport> presetLookupDao
+            BatchBaseDao<StringIdKey, TriggerSupport> batchBaseDao,
+            EntireLookupDao<TriggerSupport> entireLookupDao,
+            PresetLookupDao<TriggerSupport> presetLookupDao
     ) {
         this.batchBaseDao = batchBaseDao;
         this.entireLookupDao = entireLookupDao;

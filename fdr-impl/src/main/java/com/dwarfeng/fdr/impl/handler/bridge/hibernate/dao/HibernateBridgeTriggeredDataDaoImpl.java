@@ -1,15 +1,13 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao;
 
-import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeHibernateTriggeredData;
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeTriggeredData;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchWriteDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.BatchWriteDao;
+import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
 import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 import com.dwarfeng.subgrade.stack.exception.DaoException;
 import org.springframework.stereotype.Repository;
@@ -20,21 +18,16 @@ import java.util.List;
 @Repository
 public class HibernateBridgeTriggeredDataDaoImpl implements HibernateBridgeTriggeredDataDao {
 
-    private final HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, HibernateBridgeTriggeredData,
-            HibernateBridgeHibernateTriggeredData> batchBaseDao;
-    private final HibernateEntireLookupDao<HibernateBridgeTriggeredData, HibernateBridgeHibernateTriggeredData>
-            entireLookupDao;
+    private final BatchBaseDao<LongIdKey, HibernateBridgeTriggeredData> batchBaseDao;
+    private final EntireLookupDao<HibernateBridgeTriggeredData> entireLookupDao;
     private final PresetLookupDao<HibernateBridgeTriggeredData> presetLookupDao;
-    private final HibernateBatchWriteDao<HibernateBridgeTriggeredData, HibernateBridgeHibernateTriggeredData>
-            batchWriteDao;
+    private final BatchWriteDao<HibernateBridgeTriggeredData> batchWriteDao;
 
     public HibernateBridgeTriggeredDataDaoImpl(
-            HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, HibernateBridgeTriggeredData,
-                    HibernateBridgeHibernateTriggeredData> batchBaseDao,
-            HibernateEntireLookupDao<HibernateBridgeTriggeredData, HibernateBridgeHibernateTriggeredData>
-                    entireLookupDao,
+            BatchBaseDao<LongIdKey, HibernateBridgeTriggeredData> batchBaseDao,
+            EntireLookupDao<HibernateBridgeTriggeredData> entireLookupDao,
             PresetLookupDao<HibernateBridgeTriggeredData> presetLookupDao,
-            HibernateBatchWriteDao<HibernateBridgeTriggeredData, HibernateBridgeHibernateTriggeredData> batchWriteDao
+            BatchWriteDao<HibernateBridgeTriggeredData> batchWriteDao
     ) {
         this.batchBaseDao = batchBaseDao;
         this.entireLookupDao = entireLookupDao;

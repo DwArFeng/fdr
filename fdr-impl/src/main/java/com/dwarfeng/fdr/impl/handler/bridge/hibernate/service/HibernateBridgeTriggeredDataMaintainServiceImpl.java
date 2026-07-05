@@ -1,16 +1,16 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate.service;
 
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeTriggeredData;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyBatchCrudService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyBatchWriteService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
+import com.dwarfeng.subgrade.stack.service.BatchWriteService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
+import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,16 +19,16 @@ import java.util.List;
 @Component
 public class HibernateBridgeTriggeredDataMaintainServiceImpl implements HibernateBridgeTriggeredDataMaintainService {
 
-    private final DaoOnlyBatchCrudService<LongIdKey, HibernateBridgeTriggeredData> batchCrudService;
-    private final DaoOnlyEntireLookupService<HibernateBridgeTriggeredData> entireLookupService;
-    private final DaoOnlyPresetLookupService<HibernateBridgeTriggeredData> presetLookupService;
-    private final DaoOnlyBatchWriteService<LongIdKey, HibernateBridgeTriggeredData> batchWriteService;
+    private final BatchCrudService<LongIdKey, HibernateBridgeTriggeredData> batchCrudService;
+    private final EntireLookupService<HibernateBridgeTriggeredData> entireLookupService;
+    private final PresetLookupService<HibernateBridgeTriggeredData> presetLookupService;
+    private final BatchWriteService<HibernateBridgeTriggeredData> batchWriteService;
 
     public HibernateBridgeTriggeredDataMaintainServiceImpl(
-            DaoOnlyBatchCrudService<LongIdKey, HibernateBridgeTriggeredData> batchCrudService,
-            DaoOnlyEntireLookupService<HibernateBridgeTriggeredData> entireLookupService,
-            DaoOnlyPresetLookupService<HibernateBridgeTriggeredData> presetLookupService,
-            DaoOnlyBatchWriteService<LongIdKey, HibernateBridgeTriggeredData> batchWriteService
+            BatchCrudService<LongIdKey, HibernateBridgeTriggeredData> batchCrudService,
+            EntireLookupService<HibernateBridgeTriggeredData> entireLookupService,
+            PresetLookupService<HibernateBridgeTriggeredData> presetLookupService,
+            BatchWriteService<HibernateBridgeTriggeredData> batchWriteService
     ) {
         this.batchCrudService = batchCrudService;
         this.entireLookupService = entireLookupService;

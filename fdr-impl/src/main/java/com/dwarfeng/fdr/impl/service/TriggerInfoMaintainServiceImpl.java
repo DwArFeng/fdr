@@ -2,15 +2,15 @@ package com.dwarfeng.fdr.impl.service;
 
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.service.TriggerInfoMaintainService;
-import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
+import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,14 +19,14 @@ import java.util.List;
 @Service
 public class TriggerInfoMaintainServiceImpl implements TriggerInfoMaintainService {
 
-    private final CustomBatchCrudService<LongIdKey, TriggerInfo> crudService;
-    private final DaoOnlyEntireLookupService<TriggerInfo> entireLookupService;
-    private final DaoOnlyPresetLookupService<TriggerInfo> presetLookupService;
+    private final BatchCrudService<LongIdKey, TriggerInfo> crudService;
+    private final EntireLookupService<TriggerInfo> entireLookupService;
+    private final PresetLookupService<TriggerInfo> presetLookupService;
 
     public TriggerInfoMaintainServiceImpl(
-            CustomBatchCrudService<LongIdKey, TriggerInfo> crudService,
-            DaoOnlyEntireLookupService<TriggerInfo> entireLookupService,
-            DaoOnlyPresetLookupService<TriggerInfo> presetLookupService
+            BatchCrudService<LongIdKey, TriggerInfo> crudService,
+            EntireLookupService<TriggerInfo> entireLookupService,
+            PresetLookupService<TriggerInfo> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;

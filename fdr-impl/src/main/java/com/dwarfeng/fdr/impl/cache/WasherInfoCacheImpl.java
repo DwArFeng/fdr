@@ -1,12 +1,11 @@
 package com.dwarfeng.fdr.impl.cache;
 
-import com.dwarfeng.fdr.sdk.bean.entity.FastJsonWasherInfo;
 import com.dwarfeng.fdr.stack.bean.entity.WasherInfo;
 import com.dwarfeng.fdr.stack.cache.WasherInfoCache;
-import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.cache.BatchBaseCache;
 import com.dwarfeng.subgrade.stack.exception.CacheException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +15,11 @@ import java.util.List;
 @Repository
 public class WasherInfoCacheImpl implements WasherInfoCache {
 
-    private final RedisBatchBaseCache<LongIdKey, WasherInfo, FastJsonWasherInfo> batchBaseCache;
+    private final BatchBaseCache<LongIdKey, WasherInfo> batchBaseCache;
 
-    public WasherInfoCacheImpl(RedisBatchBaseCache<LongIdKey, WasherInfo, FastJsonWasherInfo> batchBaseCache) {
+    public WasherInfoCacheImpl(
+            BatchBaseCache<LongIdKey, WasherInfo> batchBaseCache
+    ) {
         this.batchBaseCache = batchBaseCache;
     }
 

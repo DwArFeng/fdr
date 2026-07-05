@@ -1,15 +1,13 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate.dao;
 
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeFilteredData;
-import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeHibernateFilteredData;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchWriteDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.BatchWriteDao;
+import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
 import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 import com.dwarfeng.subgrade.stack.exception.DaoException;
 import org.springframework.stereotype.Repository;
@@ -20,21 +18,16 @@ import java.util.List;
 @Repository
 public class HibernateBridgeFilteredDataDaoImpl implements HibernateBridgeFilteredDataDao {
 
-    private final HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, HibernateBridgeFilteredData,
-            HibernateBridgeHibernateFilteredData> batchBaseDao;
-    private final HibernateEntireLookupDao<HibernateBridgeFilteredData, HibernateBridgeHibernateFilteredData>
-            entireLookupDao;
+    private final BatchBaseDao<LongIdKey, HibernateBridgeFilteredData> batchBaseDao;
+    private final EntireLookupDao<HibernateBridgeFilteredData> entireLookupDao;
     private final PresetLookupDao<HibernateBridgeFilteredData> presetLookupDao;
-    private final HibernateBatchWriteDao<HibernateBridgeFilteredData, HibernateBridgeHibernateFilteredData>
-            batchWriteDao;
+    private final BatchWriteDao<HibernateBridgeFilteredData> batchWriteDao;
 
     public HibernateBridgeFilteredDataDaoImpl(
-            HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, HibernateBridgeFilteredData,
-                    HibernateBridgeHibernateFilteredData> batchBaseDao,
-            HibernateEntireLookupDao<HibernateBridgeFilteredData, HibernateBridgeHibernateFilteredData>
-                    entireLookupDao,
+            BatchBaseDao<LongIdKey, HibernateBridgeFilteredData> batchBaseDao,
+            EntireLookupDao<HibernateBridgeFilteredData> entireLookupDao,
             PresetLookupDao<HibernateBridgeFilteredData> presetLookupDao,
-            HibernateBatchWriteDao<HibernateBridgeFilteredData, HibernateBridgeHibernateFilteredData> batchWriteDao
+            BatchWriteDao<HibernateBridgeFilteredData> batchWriteDao
     ) {
         this.batchBaseDao = batchBaseDao;
         this.entireLookupDao = entireLookupDao;

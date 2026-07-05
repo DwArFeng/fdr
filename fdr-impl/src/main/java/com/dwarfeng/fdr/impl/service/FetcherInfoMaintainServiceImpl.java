@@ -2,15 +2,15 @@ package com.dwarfeng.fdr.impl.service;
 
 import com.dwarfeng.fdr.stack.bean.entity.FetcherInfo;
 import com.dwarfeng.fdr.stack.service.FetcherInfoMaintainService;
-import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
+import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,14 +19,14 @@ import java.util.List;
 @Service
 public class FetcherInfoMaintainServiceImpl implements FetcherInfoMaintainService {
 
-    private final CustomBatchCrudService<LongIdKey, FetcherInfo> crudService;
-    private final DaoOnlyEntireLookupService<FetcherInfo> entireLookupService;
-    private final DaoOnlyPresetLookupService<FetcherInfo> presetLookupService;
+    private final BatchCrudService<LongIdKey, FetcherInfo> crudService;
+    private final EntireLookupService<FetcherInfo> entireLookupService;
+    private final PresetLookupService<FetcherInfo> presetLookupService;
 
     public FetcherInfoMaintainServiceImpl(
-            CustomBatchCrudService<LongIdKey, FetcherInfo> crudService,
-            DaoOnlyEntireLookupService<FetcherInfo> entireLookupService,
-            DaoOnlyPresetLookupService<FetcherInfo> presetLookupService
+            BatchCrudService<LongIdKey, FetcherInfo> crudService,
+            EntireLookupService<FetcherInfo> entireLookupService,
+            PresetLookupService<FetcherInfo> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;

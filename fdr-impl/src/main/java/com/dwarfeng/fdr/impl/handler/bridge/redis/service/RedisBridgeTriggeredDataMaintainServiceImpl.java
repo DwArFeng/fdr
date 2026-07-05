@@ -1,11 +1,11 @@
 package com.dwarfeng.fdr.impl.handler.bridge.redis.service;
 
 import com.dwarfeng.fdr.impl.handler.bridge.redis.bean.RedisBridgeTriggeredData;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyBatchCrudService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,10 +13,10 @@ import java.util.List;
 @Service
 public class RedisBridgeTriggeredDataMaintainServiceImpl implements RedisBridgeTriggeredDataMaintainService {
 
-    private final DaoOnlyBatchCrudService<LongIdKey, RedisBridgeTriggeredData> batchCrudService;
+    private final BatchCrudService<LongIdKey, RedisBridgeTriggeredData> batchCrudService;
 
     public RedisBridgeTriggeredDataMaintainServiceImpl(
-            DaoOnlyBatchCrudService<LongIdKey, RedisBridgeTriggeredData> batchCrudService
+            BatchCrudService<LongIdKey, RedisBridgeTriggeredData> batchCrudService
     ) {
         this.batchCrudService = batchCrudService;
     }

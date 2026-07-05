@@ -1,11 +1,10 @@
 package com.dwarfeng.fdr.impl.handler.bridge.redis.dao;
 
-import com.dwarfeng.fdr.impl.handler.bridge.redis.bean.RedisBridgeFastJsonNormalData;
 import com.dwarfeng.fdr.impl.handler.bridge.redis.bean.RedisBridgeNormalData;
-import com.dwarfeng.subgrade.impl.dao.RedisBatchBaseDao;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
 import com.dwarfeng.subgrade.stack.exception.DaoException;
 import org.springframework.stereotype.Repository;
 
@@ -14,10 +13,10 @@ import java.util.List;
 @Repository
 public class RedisBridgeNormalDataDaoImpl implements RedisBridgeNormalDataDao {
 
-    private final RedisBatchBaseDao<LongIdKey, RedisBridgeNormalData, RedisBridgeFastJsonNormalData> batchBaseDao;
+    private final BatchBaseDao<LongIdKey, RedisBridgeNormalData> batchBaseDao;
 
     public RedisBridgeNormalDataDaoImpl(
-            RedisBatchBaseDao<LongIdKey, RedisBridgeNormalData, RedisBridgeFastJsonNormalData> batchBaseDao
+            BatchBaseDao<LongIdKey, RedisBridgeNormalData> batchBaseDao
     ) {
         this.batchBaseDao = batchBaseDao;
     }

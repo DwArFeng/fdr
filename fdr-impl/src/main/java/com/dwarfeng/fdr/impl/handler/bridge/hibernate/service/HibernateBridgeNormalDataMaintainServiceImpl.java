@@ -1,16 +1,16 @@
 package com.dwarfeng.fdr.impl.handler.bridge.hibernate.service;
 
 import com.dwarfeng.fdr.impl.handler.bridge.hibernate.bean.HibernateBridgeNormalData;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyBatchCrudService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyBatchWriteService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
+import com.dwarfeng.subgrade.stack.service.BatchWriteService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
+import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,16 +19,16 @@ import java.util.List;
 @Component
 public class HibernateBridgeNormalDataMaintainServiceImpl implements HibernateBridgeNormalDataMaintainService {
 
-    private final DaoOnlyBatchCrudService<LongIdKey, HibernateBridgeNormalData> batchCrudService;
-    private final DaoOnlyEntireLookupService<HibernateBridgeNormalData> entireLookupService;
-    private final DaoOnlyPresetLookupService<HibernateBridgeNormalData> presetLookupService;
-    private final DaoOnlyBatchWriteService<LongIdKey, HibernateBridgeNormalData> batchWriteService;
+    private final BatchCrudService<LongIdKey, HibernateBridgeNormalData> batchCrudService;
+    private final EntireLookupService<HibernateBridgeNormalData> entireLookupService;
+    private final PresetLookupService<HibernateBridgeNormalData> presetLookupService;
+    private final BatchWriteService<HibernateBridgeNormalData> batchWriteService;
 
     public HibernateBridgeNormalDataMaintainServiceImpl(
-            DaoOnlyBatchCrudService<LongIdKey, HibernateBridgeNormalData> batchCrudService,
-            DaoOnlyEntireLookupService<HibernateBridgeNormalData> entireLookupService,
-            DaoOnlyPresetLookupService<HibernateBridgeNormalData> presetLookupService,
-            DaoOnlyBatchWriteService<LongIdKey, HibernateBridgeNormalData> batchWriteService
+            BatchCrudService<LongIdKey, HibernateBridgeNormalData> batchCrudService,
+            EntireLookupService<HibernateBridgeNormalData> entireLookupService,
+            PresetLookupService<HibernateBridgeNormalData> presetLookupService,
+            BatchWriteService<HibernateBridgeNormalData> batchWriteService
     ) {
         this.batchCrudService = batchCrudService;
         this.entireLookupService = entireLookupService;

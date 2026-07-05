@@ -1,16 +1,14 @@
 package com.dwarfeng.fdr.impl.dao;
 
-import com.dwarfeng.fdr.impl.bean.entity.HibernateWasherSupport;
 import com.dwarfeng.fdr.stack.bean.entity.WasherSupport;
 import com.dwarfeng.fdr.stack.dao.WasherSupportDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
-import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
+import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 import com.dwarfeng.subgrade.stack.exception.DaoException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,16 +18,14 @@ import java.util.List;
 @Repository
 public class WasherSupportDaoImpl implements WasherSupportDao {
 
-    private final HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, WasherSupport, HibernateWasherSupport>
-            batchBaseDao;
-    private final HibernateEntireLookupDao<WasherSupport, HibernateWasherSupport> entireLookupDao;
-    private final HibernatePresetLookupDao<WasherSupport, HibernateWasherSupport> presetLookupDao;
+    private final BatchBaseDao<StringIdKey, WasherSupport> batchBaseDao;
+    private final EntireLookupDao<WasherSupport> entireLookupDao;
+    private final PresetLookupDao<WasherSupport> presetLookupDao;
 
     public WasherSupportDaoImpl(
-            HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, WasherSupport, HibernateWasherSupport>
-                    batchBaseDao,
-            HibernateEntireLookupDao<WasherSupport, HibernateWasherSupport> entireLookupDao,
-            HibernatePresetLookupDao<WasherSupport, HibernateWasherSupport> presetLookupDao
+            BatchBaseDao<StringIdKey, WasherSupport> batchBaseDao,
+            EntireLookupDao<WasherSupport> entireLookupDao,
+            PresetLookupDao<WasherSupport> presetLookupDao
     ) {
         this.batchBaseDao = batchBaseDao;
         this.entireLookupDao = entireLookupDao;
