@@ -27,7 +27,10 @@ opt
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<!--suppress SpringFacetInspection, XmlUnusedNamespaceDeclaration -->
+<!-- 以下注释用于抑制 idea 中 .md 的警告，实际并无错误，在使用时可以连同本注释一起删除。 -->
+<!--suppress SpringXmlModelInspection -->
+<!--suppress SpringFacetInspection -->
+<!--suppress XmlUnusedNamespaceDeclaration -->
 <beans
         xmlns:context="http://www.springframework.org/schema/context"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -74,7 +77,10 @@ opt
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<!--suppress SpringFacetInspection, XmlUnusedNamespaceDeclaration -->
+<!-- 以下注释用于抑制 idea 中 .md 的警告，实际并无错误，在使用时可以连同本注释一起删除。 -->
+<!--suppress SpringXmlModelInspection -->
+<!--suppress SpringFacetInspection -->
+<!--suppress XmlUnusedNamespaceDeclaration -->
 <beans
         xmlns:context="http://www.springframework.org/schema/context"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -121,15 +127,18 @@ opt
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<!--suppress SpringFacetInspection, XmlUnusedNamespaceDeclaration -->
+<!-- 以下注释用于抑制 idea 中 .md 的警告，实际并无错误，在使用时可以连同本注释一起删除。 -->
+<!--suppress SpringXmlModelInspection -->
+<!--suppress SpringFacetInspection -->
+<!--suppress XmlUnusedNamespaceDeclaration -->
 <beans
-        xmlns:util="http://www.springframework.org/schema/util"
+        xmlns:dct="http://dwarfeng.com/schema/dwarfeng-dct"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="http://www.springframework.org/schema/beans"
         xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/util
-        http://www.springframework.org/schema/util/spring-util.xsd"
+        http://dwarfeng.com/schema/dwarfeng-dct
+        http://dwarfeng.com/schema/dwarfeng-dct/dwarfeng-dct.xsd"
 >
 
     <!--
@@ -143,13 +152,15 @@ opt
             如需要连接多个 Kafka 集群，应该将 ConsumerFactory、KafkaListenerContainerFactory 与 DataCodingHandler
             bean 定义复制多份，分配不同的 id，为 ApplicationContext 提供多个 bean。
 
-            对于 Kafka 组件，FetcherInfo.param 中只需引用 KafkaListenerContainerFactory 的 bean 名称、topic 与 listener_id；
+            对于 Kafka 组件，FetcherInfo.param 中需引用 KafkaListenerContainerFactory 的 bean 名称、topic、
+            listener_id 与 data_coding_handler_bean_name；
             ConsumerFactory 仅作为 XML 内部基础设施 bean，不出现在 FetcherInfo.param JSON 中。
 
             DataCodingHandler 相关 bean 说明：
-            DataCodingHandler 用于将 Kafka 消息解码为 dct 协议数据，默认支持的值类型包括：
-            Boolean、Byte、Short、Integer、Long、Float、Double、BigDecimal、BigInteger、Character、String。
-            可以通过调整 dctKafkaFetcherValueCodecs 列表中的 bean 定义来调整支持的值类型。
+            DataCodingHandler 用于将 Kafka 消息解码为 dct 协议数据，通过 dwarfeng-dct XSD 命名空间装配。
+            默认通过 package-scan 加载 com.dwarfeng.dct.impl.handler.vc 包下的值编解码器，
+            支持的值类型包括 Boolean、Byte、Short、Integer、Long、Float、Double、BigDecimal、BigInteger、
+            Character、String 等。可以通过调整 value-coding-config 中的 package-scan 来调整支持的值类型。
 
             ConsumerFactory 参数说明：
             bootstrapServers:
@@ -196,35 +207,25 @@ opt
         <constructor-arg name="concurrency" value="2"/>
         <constructor-arg name="pollTimeout" value="3000"/>
     </bean>
-    <util:list id="dctKafkaFetcherValueCodecs">
-        <bean id="dctKafkaFetcherBooleanValueCodec" class="com.dwarfeng.dct.handler.vc.BooleanValueCodec"/>
-        <bean id="dctKafkaFetcherByteValueCodec" class="com.dwarfeng.dct.handler.vc.ByteValueCodec"/>
-        <bean id="dctKafkaFetcherShortValueCodec" class="com.dwarfeng.dct.handler.vc.ShortValueCodec"/>
-        <bean id="dctKafkaFetcherIntegerValueCodec" class="com.dwarfeng.dct.handler.vc.IntegerValueCodec"/>
-        <bean id="dctKafkaFetcherLongValueCodec" class="com.dwarfeng.dct.handler.vc.LongValueCodec"/>
-        <bean id="dctKafkaFetcherFloatValueCodec" class="com.dwarfeng.dct.handler.vc.FloatValueCodec"/>
-        <bean id="dctKafkaFetcherDoubleValueCodec" class="com.dwarfeng.dct.handler.vc.DoubleValueCodec"/>
-        <bean id="dctKafkaFetcherBigDecimalValueCodec" class="com.dwarfeng.dct.handler.vc.BigDecimalValueCodec"/>
-        <bean id="dctKafkaFetcherBigIntegerValueCodec" class="com.dwarfeng.dct.handler.vc.BigIntegerValueCodec"/>
-        <bean id="dctKafkaFetcherCharacterValueCodec" class="com.dwarfeng.dct.handler.vc.CharacterValueCodec"/>
-        <bean id="dctKafkaFetcherStringValueCodec" class="com.dwarfeng.dct.handler.vc.StringValueCodec"/>
-    </util:list>
-    <bean
-            id="dctKafkaFetcherValueCodingHandler"
-            class="com.dwarfeng.fdr.impl.handler.fetcher.kafka.dct.DctKafkaFetcherUtil"
-            factory-method="newValueCodingHandler"
-    >
-        <constructor-arg name="valueCodecs" ref="dctKafkaFetcherValueCodecs"/>
-    </bean>
-    <bean id="dctKafkaFetcherFlatDataCodec" class="com.dwarfeng.dct.handler.fdc.FastJsonFlatDataCodec"/>
-    <bean
-            id="dctKafkaFetcherDataCodingHandler"
-            class="com.dwarfeng.fdr.impl.handler.fetcher.kafka.dct.DctKafkaFetcherUtil"
-            factory-method="newDataCodingHandler"
-    >
-        <constructor-arg name="flatDataCodec" ref="dctKafkaFetcherFlatDataCodec"/>
-        <constructor-arg name="valueCodingHandler" ref="dctKafkaFetcherValueCodingHandler"/>
-    </bean>
+    <bean id="dctKafkaFetcherFlatDataCodec" class="com.dwarfeng.dct.impl.handler.fdc.FastJsonFlatDataCodec"/>
+    <dct:value-coding-config config-name="dctKafkaFetcherValueCodingConfig">
+        <dct:value-codec>
+            <dct:value-codec-impl package-scan="com.dwarfeng.dct.impl.handler.vc"/>
+        </dct:value-codec>
+    </dct:value-coding-config>
+    <dct:value-coding-handler
+            handler-name="dctKafkaFetcherValueCodingHandler"
+            config-ref="dctKafkaFetcherValueCodingConfig"
+    />
+    <dct:data-coding-config
+            config-name="dctKafkaFetcherDataCodingConfig"
+            flat-data-codec-ref="dctKafkaFetcherFlatDataCodec"
+            value-coding-handler-ref="dctKafkaFetcherValueCodingHandler"
+    />
+    <dct:data-coding-handler
+            handler-name="dctKafkaFetcherDataCodingHandler"
+            config-ref="dctKafkaFetcherDataCodingConfig"
+    />
     -->
 </beans>
 ```
@@ -233,26 +234,37 @@ opt
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<!--suppress SpringFacetInspection, XmlUnusedNamespaceDeclaration -->
+<!-- 以下注释用于抑制 idea 中 .md 的警告，实际并无错误，在使用时可以连同本注释一起删除。 -->
+<!--suppress SpringXmlModelInspection -->
+<!--suppress SpringFacetInspection -->
+<!--suppress XmlUnusedNamespaceDeclaration -->
 <beans
+        xmlns:dcti="http://dwarfeng.com/schema/dcti"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="http://www.springframework.org/schema/beans"
         xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd"
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://dwarfeng.com/schema/dcti
+        http://dwarfeng.com/schema/dcti/dcti.xsd"
 >
 
     <!--
-            本配置文件为 DctiKafkaFetcher 提供必要的 ConsumerFactory、KafkaListenerContainerFactory 等 bean。
+            本配置文件为 DctiKafkaFetcher 提供必要的 ConsumerFactory、KafkaListenerContainerFactory、
+            DctiHandler 等 bean。
             如果需要使用 DctiKafkaFetcher，请取消下方注释，并按照实际情况对下方参数进行配置。
 
             可以在下方的参数中直接赋值，也可以使用 value placeholder 进行占位，
             并将真正的配置值以 properties 文件的形式放在 confext 目录中。
 
-            如需要连接多个 Kafka 集群，应该将 ConsumerFactory 与 KafkaListenerContainerFactory bean 定义复制多份，
-            分配不同的 id，为 ApplicationContext 提供多个 bean。
+            如需要连接多个 Kafka 集群，应该将 ConsumerFactory、KafkaListenerContainerFactory 与 DctiHandler
+            bean 定义复制多份，分配不同的 id，为 ApplicationContext 提供多个 bean。
 
-            对于 Kafka 组件，FetcherInfo.param 中只需引用 KafkaListenerContainerFactory 的 bean 名称、topic 与 listener_id；
+            对于 Kafka 组件，FetcherInfo.param 中需引用 KafkaListenerContainerFactory 的 bean 名称、topic、
+            listener_id 与 dcti_handler_bean_name；
             ConsumerFactory 仅作为 XML 内部基础设施 bean，不出现在 FetcherInfo.param JSON 中。
+
+            DctiHandler 相关 bean 说明：
+            DctiHandler 用于将 Kafka 消息解码为 dcti 协议数据，通过 dcti XSD 命名空间装配。
 
             ConsumerFactory 参数说明：
             bootstrapServers:
@@ -299,6 +311,7 @@ opt
         <constructor-arg name="concurrency" value="2"/>
         <constructor-arg name="pollTimeout" value="3000"/>
     </bean>
+    <dcti:handler handler-name="dctiKafkaFetcherDctiHandler"/>
     -->
 </beans>
 ```
@@ -307,7 +320,10 @@ opt
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 以下注释用于抑制 idea 中 .md 的警告，实际并无错误，在使用时可以连同本注释一起删除。 -->
+<!--suppress SpringXmlModelInspection -->
 <!--suppress SpringFacetInspection -->
+<!--suppress XmlUnusedNamespaceDeclaration -->
 <beans
         xmlns:context="http://www.springframework.org/schema/context"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -318,7 +334,7 @@ opt
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
 
-    <!--扫描 handler 的实现包。 -->
+    <!-- 扫描 handler 的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.filter" use-default-filters="false">
         <!-- 加载 GroovyFilter -->
         <!--
@@ -390,6 +406,8 @@ opt
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 以下注释用于抑制 idea 中 .md 的警告，实际并无错误，在使用时可以连同本注释一起删除。 -->
+<!--suppress SpringXmlModelInspection -->
 <!--suppress SpringFacetInspection -->
 <beans
         xmlns:context="http://www.springframework.org/schema/context"
@@ -401,7 +419,7 @@ opt
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
 
-    <!--扫描 handler 的实现包。 -->
+    <!-- 扫描 handler 的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.mapper" use-default-filters="false">
         <!-- 加载 AlignMapper -->
         <!--
@@ -565,6 +583,8 @@ opt
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 以下注释用于抑制 idea 中 .md 的警告，实际并无错误，在使用时可以连同本注释一起删除。 -->
+<!--suppress SpringXmlModelInspection -->
 <!--suppress SpringFacetInspection -->
 <beans
         xmlns:context="http://www.springframework.org/schema/context"
@@ -576,7 +596,7 @@ opt
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
 
-    <!--扫描 handler 的实现包。 -->
+    <!-- 扫描 handler 的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.pusher" use-default-filters="false">
         <!-- 加载 DctiKafkaPusher -->
         <!--
@@ -627,7 +647,10 @@ opt
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 以下注释用于抑制 idea 中 .md 的警告，实际并无错误，在使用时可以连同本注释一起删除。 -->
+<!--suppress SpringXmlModelInspection -->
 <!--suppress SpringFacetInspection -->
+<!--suppress XmlUnusedNamespaceDeclaration -->
 <beans
         xmlns:context="http://www.springframework.org/schema/context"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -682,7 +705,10 @@ opt
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 以下注释用于抑制 idea 中 .md 的警告，实际并无错误，在使用时可以连同本注释一起删除。 -->
+<!--suppress SpringXmlModelInspection -->
 <!--suppress SpringFacetInspection -->
+<!--suppress XmlUnusedNamespaceDeclaration -->
 <beans
         xmlns:context="http://www.springframework.org/schema/context"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -693,7 +719,7 @@ opt
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
 
-    <!--扫描 handler 的实现包。 -->
+    <!-- 扫描 handler 的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.trigger" use-default-filters="false">
         <!-- 加载 BooleanTrigger -->
         <!--
@@ -744,7 +770,10 @@ opt
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 以下注释用于抑制 idea 中 .md 的警告，实际并无错误，在使用时可以连同本注释一起删除。 -->
+<!--suppress SpringXmlModelInspection -->
 <!--suppress SpringFacetInspection -->
+<!--suppress XmlUnusedNamespaceDeclaration -->
 <beans
         xmlns:context="http://www.springframework.org/schema/context"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -755,7 +784,7 @@ opt
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
 
-    <!--扫描 handler 的实现包。 -->
+    <!-- 扫描 handler 的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.washer" use-default-filters="false">
         <!-- 加载 GroovyWasher -->
         <!--
