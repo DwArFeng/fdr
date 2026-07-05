@@ -72,36 +72,36 @@ buildNumber.properties
 ## Logger Files
 #################
 /fdr-impl/logs/
-/fdr-node/logs/
+/fdr-node/fdr-node-all-he/logs/
 
 #################
 ## Configuration Files
 #################
 /fdr-impl/conf/
-/fdr-node/conf/
+/fdr-node/fdr-node-all-he/conf/
 
 #################
 ## Libext Files
 #################
-/fdr-node/libext/
+/fdr-node/fdr-node-all-he/libext/
 
 #################
 ## Opt Files
 #################
-/fdr-node/opt/
+/fdr-node/fdr-node-all-he/opt/
 
 #################
 ## Optext Files
 #################
-/fdr-node/optext/
+/fdr-node/fdr-node-all-he/optext/
 
 #################
 ## Confext Files
 #################
-/fdr-node/confext/
+/fdr-node/fdr-node-all-he/confext/
 
 #################
 ## Temp Files
 #################
 /fdr-impl/temp/
-/fdr-node/temp/
+/fdr-node/fdr-node-all-he/temp/

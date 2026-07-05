@@ -566,6 +566,16 @@
                 <artifactId>fdr-node</artifactId>
                 <version>4.0.0.a-SNAPSHOT</version>
             </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>fdr-node-all-he</artifactId>
+                <version>4.0.0.a-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>fdr-distribute</artifactId>
+                <version>4.0.0.a-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -611,5 +621,6 @@
         <module>fdr-impl</module>
         <module>fdr-sdk</module>
         <module>fdr-node</module>
+        <module>fdr-distribute</module>
     </modules>
 </project>
