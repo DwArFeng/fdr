@@ -18,14 +18,14 @@
 
 ## 解压软件包
 
-软件包的名称格式为 `fdr-node-${version}-release.tar.gz`，其中 `${version}` 为软件包的版本号。
+软件包的名称格式为 `fdr-all-he-${version}-release.tar.gz`，其中 `${version}` 为软件包的版本号。
 
 使用工具软件，将软件包上传至服务器 `/usr/local` 目录下，解压软件包。
 
 ```shell
 cd /usr/local
-tar -zxvf fdr-node-${version}-release.tar.gz
-mv fdr-node-${version}-release fdr
+tar -zxvf fdr-all-he-${version}-release.tar.gz
+mv fdr-all-he-${version}-release/fdr-all-he-${version} fdr
 ```
 
 ## 数据库初始化
@@ -34,6 +34,8 @@ mv fdr-node-${version}-release fdr
 
 ```sql
 create database if not exists fdr;
+
+use fdr;
 
 create table if not exists tbl_point
 (
@@ -44,7 +46,6 @@ create table if not exists tbl_point
     name                      varchar(50)  not null,
     normal_keep_enabled       bit          null,
     normal_persist_enabled    bit          null,
-    record_memory_size        int          not null,
     remark                    varchar(100) null,
     triggered_keep_enabled    bit          null,
     triggered_persist_enabled bit          null,
@@ -58,20 +59,35 @@ create table if not exists tbl_point
     reserved_integer_bravo    int          null,
     reserved_boolean_alpha    bit          null,
     reserved_boolean_bravo    bit          null,
-    reserved_date_alpha       datetime     null,
-    reserved_date_bravo       datetime     null,
-    created_datamark          varchar(255) null,
-    modified_datamark         varchar(255) null
+    reserved_date_alpha       datetime(6)  null,
+    reserved_date_bravo       datetime(6)  null,
+    created_datamark          varchar(100) null,
+    modified_datamark         varchar(100) null,
+    record_memory_size        int          not null
+);
+
+create table if not exists tbl_fetcher_info
+(
+    id                bigint       not null
+        primary key,
+    created_datamark  varchar(100) null,
+    enabled           bit          not null,
+    modified_datamark varchar(100) null,
+    param             text         null,
+    remark            varchar(100) null,
+    type              varchar(50)  null
 );
 
 INSERT INTO fdr.tbl_point (id, filtered_keep_enabled, filtered_persist_enabled, name, normal_keep_enabled,
-                           normal_persist_enabled, record_memory_size, remark, triggered_keep_enabled,
-                           triggered_persist_enabled)
-VALUES (1, false, false, '测试点位.1', false, true, 1000, '测试点位.1', false, false);
-INSERT INTO fdr.tbl_point (id, filtered_keep_enabled, filtered_persist_enabled, name, normal_keep_enabled,
-                           normal_persist_enabled, record_memory_size, remark, triggered_keep_enabled,
-                           triggered_persist_enabled)
-VALUES (2, true, true, '测试点位.2', true, true, 1000, '测试点位.2', true, true);
+                           normal_persist_enabled, remark, triggered_keep_enabled, triggered_persist_enabled,
+                           created_datamark, modified_datamark, record_memory_size)
+VALUES (1, false, false, '测试点位.1', true, true, '测试点位.1', false, false,
+        'fdr-node', 'fdr-node', 1000);
+
+INSERT INTO fdr.tbl_fetcher_info (id, created_datamark, enabled, modified_datamark, param, remark, type)
+VALUES (1, 'fdr-node', true, 'fdr-node',
+        '{"point_key":{"long_id":1},"poll_type":"fixed_rate","poll_setting":"1000","generator_type":"double","random_seed":null,"fetch_before_delay":0,"fetch_after_delay":0}',
+        'QuickStart MockLF 抓取器', 'mock.lf');
 ```
 
 ## 最小化配置
@@ -81,41 +97,41 @@ VALUES (2, true, true, '测试点位.2', true, true, 1000, '测试点位.2', tru
 `conf/curator/connection.properties` 文件中配置 curator 连接信息。
 
 ```properties
-curator.connect.connect_string=your-host-here:2181
+com.dwarfeng.fdr.curator.connect.connect_string=your-host-here:2181
 ```
 
 `conf/database/connection.properties` 文件中配置数据库连接信息。
 
 ```properties
-jdbc.url=jdbc:mysql://your-host-here:3306/fdr?serverTimezone=Asia/Shanghai&autoReconnect=true
-jdbc.username=root
-jdbc.password=your-password-here
+com.dwarfeng.fdr.jdbc.url=jdbc:mysql://your-host-here:3306/fdr?serverTimezone=Asia/Shanghai&autoReconnect=true
+com.dwarfeng.fdr.jdbc.username=root
+com.dwarfeng.fdr.jdbc.password=your-password-here
 ```
 
 `conf/dubbo/connection.properties` 文件中配置 dubbo 连接信息。
 
 ```properties
-dubbo.registry.zookeeper.address=zookeeper://your-host-here:2181
+com.dwarfeng.fdr.dubbo.registry.zookeeper.address=zookeeper://your-host-here:2181
 ```
 
 `conf/fdr/bridge.properties` 文件中配置桥接器信息。发布包中的默认桥接器配置为 `mock`，
 如需按照本文验证 MySQL 历史数据与 Redis 实时数据，需要将相关配置项修改为如下内容。
 
 ```properties
-keep.normal_data.type=redis
-persist.normal_data.type=hibernate
-keep.filtered_data.type=drain
-persist.filtered_data.type=drain
-keep.triggered_data.type=drain
-persist.triggered_data.type=drain
+com.dwarfeng.fdr.keep.normal_data.type=redis
+com.dwarfeng.fdr.persist.normal_data.type=hibernate
+com.dwarfeng.fdr.keep.filtered_data.type=drain
+com.dwarfeng.fdr.persist.filtered_data.type=drain
+com.dwarfeng.fdr.keep.triggered_data.type=drain
+com.dwarfeng.fdr.persist.triggered_data.type=drain
 ```
 
 `conf/redis/connection.properties` 文件中配置 redis 连接信息。
 
 ```properties
-redis.host=your-host-here
-redis.port=6379
-redis.password=your-password-here
+com.dwarfeng.fdr.redis.hostName=your-host-here
+com.dwarfeng.fdr.redis.port=6379
+com.dwarfeng.fdr.redis.password=your-password-here
 ```
 
 ## 修改可选配置
@@ -127,7 +143,8 @@ redis.password=your-password-here
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<!--suppress SpringFacetInspection, XmlUnusedNamespaceDeclaration -->
+<!-- 以下注释用于抑制 idea 中 .md 的警告，实际并无错误，在使用时可以连同本注释一起删除。 -->
+<!--suppress SpringXmlModelInspection -->
 <beans
         xmlns:context="http://www.springframework.org/schema/context"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -149,12 +166,13 @@ redis.password=your-password-here
 </beans>
 ```
 
-`opt/opt-source.xml` 数据源可选配置。
-发布包中的数据源扩展默认以注释形式提供，如需使用 Mock 实时数据源，需要取消下列组件扫描配置的注释。
+`opt/opt-fetcher.xml` 抓取器可选配置。
+发布包中的抓取器扩展默认以注释形式提供，如需按照本文使用 MockLF 抓取器生成模拟数据，需要取消下列组件扫描配置的注释。
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<!--suppress SpringFacetInspection, XmlUnusedNamespaceDeclaration -->
+<!-- 以下注释用于抑制 idea 中 .md 的警告，实际并无错误，在使用时可以连同本注释一起删除。 -->
+<!--suppress SpringXmlModelInspection -->
 <beans
         xmlns:context="http://www.springframework.org/schema/context"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -165,8 +183,8 @@ redis.password=your-password-here
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
 
-    <!-- 加载 RealtimeMockSource -->
-    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.source.mock.realtime"/>
+    <!-- 加载 MockLfFetcher。 -->
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.fetcher.mock.lf"/>
 </beans>
 ```
 
@@ -178,8 +196,8 @@ redis.password=your-password-here
 sh  bin/fdr-start.sh
 ```
 
-1. 观察数据库，数据库将会自动生成 `tbl_hibernate_bridge_normal_data` 表，表中有历史数据。
-2. 观察 Redis，Redis 将会自动生成 `dbkey.normal_data` Hash 表，表中有实时数据。
+1. 观察数据库，程序会在 `tbl_hibernate_bridge_normal_data` 表中写入 MockLF 抓取器生成的历史数据。
+2. 观察 Redis，程序会在 `dbkey.normal_data` Hash 表中写入 MockLF 抓取器生成的实时数据。
 
 ## 停止程序
 
