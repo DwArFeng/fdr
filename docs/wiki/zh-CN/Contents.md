@@ -53,6 +53,8 @@
 - [Preset Bridge Implements](./PresetBridgeImplements.md) - 预设桥接器实现，详细说明了本项目内置的所有桥接器。
 - [Mapper](./Mapper.md) - 映射器，详细说明了本项目的映射器机制。
 - [Preset Mapper Implements](./PresetMapperImplements.md) - 预设映射器实现，详细说明了本项目内置的所有映射器。
+- [Resetter](./Resetter.md) - 重置器，详细说明了本项目的重置器机制。
+- [Preset Resetter Implements](./PresetResetterImplements.md) - 预设重置器实现，详细说明了本项目内置的所有重置器。
 - [Record Memory](./RecordMemory.md) - 记录记忆，说明记录记忆的结构、工作机制与运维要点。
 
 ## 维护与调试

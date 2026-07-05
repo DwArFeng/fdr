@@ -4,6 +4,10 @@
 
 ### 功能构建
 
+- Wiki 编写。
+  - docs/wiki/zh-CN/Resetter.md。
+  - docs/wiki/zh-CN/PresetResetterImplements.md。
+
 - Wiki 更新。
   - docs/wiki/zh-CN/TelqosCommands.md。
   - docs/wiki/zh-CN/QuickStart.md。
