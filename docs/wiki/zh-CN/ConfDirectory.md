@@ -63,17 +63,17 @@ Curator 连接配置。
 
 ```properties
 # 连接字符，即 zookeeper 地址。
-curator.connect.connect_string=your-host-here:2181
+com.dwarfeng.fdr.curator.connect.connect_string=your-host-here:2181
 # 会话超时时间。
-curator.connect.session_timeout=60000
+com.dwarfeng.fdr.curator.connect.session_timeout=60000
 # 连接超时时间。
-curator.connect.connection_timeout=15000
+com.dwarfeng.fdr.curator.connect.connection_timeout=15000
 # 第一次重试时的间隔时间，每重试一次，间隔时间都会指数增加，直到最大的间隔时间。
-curator.retry_policy.base_sleep_time=1000
+com.dwarfeng.fdr.curator.retry_policy.base_sleep_time=1000
 # 最大重试次数。
-curator.retry_policy.max_retries=10
+com.dwarfeng.fdr.curator.retry_policy.max_retries=10
 # 单次重试最大的间隔时间。
-curator.retry_policy.max_sleep=60000
+com.dwarfeng.fdr.curator.retry_policy.max_sleep=60000
 ```
 
 Curator 连接配置文件，包括 Zookeeper 连接地址，超时时间，重试策略。
@@ -84,11 +84,11 @@ Curator 互斥锁路径。
 
 ```properties
 # 常规点位保持消费者的分布式锁存的路径。
-curator.inter_process_mutex.keep_consumer.normal=/fdr/keep_consumer/normal/inter_process_mutex
+com.dwarfeng.fdr.curator.inter_process_mutex.keep_consumer.normal=/fdr/keep_consumer/normal/inter_process_mutex
 # 被过滤点位保持消费者的分布式锁存的路径。
-curator.inter_process_mutex.keep_consumer.filtered=/fdr/keep_consumer/filtered/inter_process_mutex
+com.dwarfeng.fdr.curator.inter_process_mutex.keep_consumer.filtered=/fdr/keep_consumer/filtered/inter_process_mutex
 # 被触发点位保持消费者的分布式锁存的路径。
-curator.inter_process_mutex.keep_consumer.triggered=/fdr/keep_consumer/triggered/inter_process_mutex
+com.dwarfeng.fdr.curator.inter_process_mutex.keep_consumer.triggered=/fdr/keep_consumer/triggered/inter_process_mutex
 ```
 
 如果您在本机上部署了多个项目，每个项目中都使用本服务，那么需要为每个项目配置不同的互斥锁路径，以避免项目之间不必要的互斥。
@@ -105,11 +105,11 @@ curator.inter_process_mutex.keep_consumer.triggered=/fdr/keep_consumer/triggered
 数据库连接配置文件，除了标准的数据库配置四要素之外，还包括 Hibernate 的方言配置。
 
 ```properties
-jdbc.driver=com.mysql.cj.jdbc.Driver
-jdbc.url=jdbc:mysql://your-host-here:3306/fdr?serverTimezone=Asia/Shanghai&autoReconnect=true
-jdbc.username=root
-jdbc.password=your-password-here
-hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+com.dwarfeng.fdr.jdbc.driver=com.mysql.cj.jdbc.Driver
+com.dwarfeng.fdr.jdbc.url=jdbc:mysql://your-host-here:3306/fdr?serverTimezone=Asia/Shanghai&autoReconnect=true
+com.dwarfeng.fdr.jdbc.username=root
+com.dwarfeng.fdr.jdbc.password=your-password-here
+com.dwarfeng.fdr.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 ```
 
 ### performance.properties
@@ -118,13 +118,13 @@ hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 
 ```properties
 # 数据库的批量写入量，设置激进的值以提高数据库的写入效率。
-hibernate.jdbc.batch_size=100
+com.dwarfeng.fdr.hibernate.jdbc.batch_size=100
 # 数据库的批量抓取量，设置激进的值以提高数据库的读取效率。
-hibernate.jdbc.fetch_size=50
+com.dwarfeng.fdr.hibernate.jdbc.fetch_size=50
 # 连接池最大活动连接数量
-data_source.max_active=20
+com.dwarfeng.fdr.data_source.max_active=20
 # 连接池最小空闲连接数量
-data_source.min_idle=0
+com.dwarfeng.fdr.data_source.min_idle=0
 ```
 
 ## datamark 目录
@@ -147,11 +147,11 @@ data_source.min_idle=0
 ```properties
 #---------------------------------配置说明----------------------------------------
 # 数据标记资源的 URL，格式参考 Spring 资源路径。
-# datamark.xxx.resource_url=classpath:datamark/default.storage
+# com.dwarfeng.fdr.datamark.xxx.resource_url=classpath:datamark/default.storage
 # 数据标记资源的字符集。
-# datamark.xxx.resource_charset=UTF-8
+# com.dwarfeng.fdr.datamark.xxx.resource_charset=UTF-8
 # 数据标记服务是否允许更新。
-# datamark.xxx.update_allowed=true
+# com.dwarfeng.fdr.datamark.xxx.update_allowed=true
 #
 #---------------------------------Point----------------------------------------
 # etc...
@@ -171,20 +171,21 @@ data_source.min_idle=0
 Dubbo 连接配置文件。
 
 ```properties
-dubbo.registry.zookeeper.address=zookeeper://your-host-here:2181
-dubbo.registry.zookeeper.timeout=3000
-dubbo.protocol.dubbo.port=20000
-dubbo.protocol.dubbo.host=your-host-here
-dubbo.provider.group=
-dubbo.consumer.snowflake.group=
+com.dwarfeng.fdr.dubbo.registry.zookeeper.address=zookeeper://your-host-here:2181
+com.dwarfeng.fdr.dubbo.registry.zookeeper.timeout=3000
+com.dwarfeng.fdr.dubbo.protocol.dubbo.port=20000
+com.dwarfeng.fdr.dubbo.protocol.dubbo.host=your-host-here
+com.dwarfeng.fdr.dubbo.provider.group=
+com.dwarfeng.fdr.dubbo.consumer.snowflake.group=
 ```
 
-其中，`dubbo.registry.zookeeper.address` 需要配置为 ZooKeeper 的地址，
-`dubbo.protocol.dubbo.host` 需要配置为本机的 IP 地址。
+其中，`com.dwarfeng.fdr.dubbo.registry.zookeeper.address` 需要配置为 ZooKeeper 的地址，
+`com.dwarfeng.fdr.dubbo.protocol.dubbo.host` 需要配置为本机的 IP 地址。
 
-如果您需要在本机启动多个 FDR 实例，那么需要为每个实例配置不同的 `dubbo.protocol.dubbo.port`。
+如果您需要在本机启动多个 FDR 实例，那么需要为每个实例配置不同的 `com.dwarfeng.fdr.dubbo.protocol.dubbo.port`。
 
-如果您在本机上部署了多个项目，每个项目中都使用了 FDR，那么需要为每个项目配置不同的 `dubbo.provider.group`，
+如果您在本机上部署了多个项目，每个项目中都使用了 FDR，那么需要为每个项目配置不同的
+`com.dwarfeng.fdr.dubbo.provider.group`，
 以避免微服务错误的调用。
 
 ## fdr 目录
@@ -207,13 +208,13 @@ dubbo.consumer.snowflake.group=
 
 ```properties
 # 任务执行器的线程池数量范围。
-executor.pool_size=50-75
+com.dwarfeng.fdr.executor.pool_size=50-75
 # 任务执行器的队列容量。
-executor.queue_capacity=100
+com.dwarfeng.fdr.executor.queue_capacity=100
 # 任务执行器的保活时间（秒）。
-executor.keep_alive=120
+com.dwarfeng.fdr.executor.keep_alive=120
 # 计划执行器的线程池数量范围。
-scheduler.pool_size=10
+com.dwarfeng.fdr.scheduler.pool_size=10
 ```
 
 ### bridge.properties
@@ -237,12 +238,12 @@ scheduler.pool_size=10
 # 可以为一般数据、被过滤数据、被触发数据分别指定保持器类型。
 # 对于一个具体的项目，很可能只需要一种保持器。此时如果希望程序加载时只加载这一种保持器，可以通过编辑
 # opt/opt-bridge.xml 文件实现。
-keep.normal_data.type=mock
-persist.normal_data.type=mock
-keep.filtered_data.type=mock
-persist.filtered_data.type=mock
-keep.triggered_data.type=mock
-persist.triggered_data.type=mock
+com.dwarfeng.fdr.keep.normal_data.type=mock
+com.dwarfeng.fdr.persist.normal_data.type=mock
+com.dwarfeng.fdr.keep.filtered_data.type=mock
+com.dwarfeng.fdr.persist.filtered_data.type=mock
+com.dwarfeng.fdr.keep.triggered_data.type=mock
+com.dwarfeng.fdr.persist.triggered_data.type=mock
 #
 ###################################################
 #                      drain                      #
@@ -253,28 +254,28 @@ persist.triggered_data.type=mock
 #                      mock                       #
 ###################################################
 # Mock 桥接器的随机种子。
-bridge.mock.random_seed=0
+com.dwarfeng.fdr.bridge.mock.random_seed=0
 # etc...
 #
 ###################################################
 #                    hibernate                    #
 ###################################################
 # 是否使用项目本身的 hibernate 配置。
-bridge.hibernate.use_project_config=true
+com.dwarfeng.fdr.bridge.hibernate.use_project_config=true
 # etc...
 #
 ###################################################
 #                      redis                      #
 ###################################################
 # 是否使用项目本身的 redis 配置。
-bridge.redis.use_project_config=true
+com.dwarfeng.fdr.bridge.redis.use_project_config=true
 # etc...
 #
 ###################################################
 #                    influxdb                     #
 ###################################################
 # influxdb 的 URL。
-bridge.influxdb.url=http://your-host-here:8086
+com.dwarfeng.fdr.bridge.influxdb.url=http://your-host-here:8086
 # etc...
 #
 ###################################################
@@ -288,7 +289,7 @@ bridge.influxdb.url=http://your-host-here:8086
 #   2. 第一个代理类型为首选代理类型。
 # ------------------------------
 # 一般数据保持器的代理列表。
-bridge.multi.delegates.keep.normal_data=xxx1,xxx2,xxx3
+com.dwarfeng.fdr.bridge.multi.delegates.keep.normal_data=xxx1,xxx2,xxx3
 # etc...
 ```
 
@@ -306,27 +307,27 @@ bridge.multi.delegates.keep.normal_data=xxx1,xxx2,xxx3
 ```properties
 #---------------------------------报警配置----------------------------------------
 # 当消费者中的待消费元素超过缓存上限指定比例后，向日志中输入警告信息。
-consume.threshold.warn=0.8
+com.dwarfeng.fdr.consume.threshold.warn=0.8
 #---------------------------------配置说明----------------------------------------
 # 消费者线程数：线程数越大，处理的能力越强，服务器负荷越重。
-# consume.xxx.consumer_thread=1
+# com.dwarfeng.fdr.consume.xxx.consumer_thread=1
 #
 # 缓存大小：缓存越大抗波动能力越强，数据实时性越低。
 # 当缓存被占满时，会导致消费者阻塞。
 # 数据占满缓存这一现象是需要尽力避免的，程序将在缓存占用量超过指定值的时候发出警报示。
-# consume.xxx.buffer_size=1000
+# com.dwarfeng.fdr.consume.xxx.buffer_size=1000
 #
 # 批处理个数：缓存的数量到达批处理个数之前，数据不会被消费，消费线程阻塞；到达批处理个数之后，这批数据将被立刻消费。
 # 部分桥接器批处理数据时具有速度加成（如数据库的批量插入），
 # 在这种情况下，批处理个数越多，平均每个元素消费速度越快，但由于积攒批量所需的时间变长，数据实时性降低。
 # 该值小于等于 0 时意味着禁用批处理功能，只要缓存中有数据就立刻消费，数据实时性最高，但服务器负荷也最高。
-# consume.xxx.batch_size=100
+# com.dwarfeng.fdr.consume.xxx.batch_size=100
 #
 # 最大空闲时间：为了防止数据生产速度过慢时，数据在缓存中长期等待这种现象的发生，
 # 可以设置一个最大空闲时间，当缓存中数据的等待时间超过这个值时，即使数据量没有达到批处理个数，也立刻将这些数据消费掉。
 # 该值的单位是毫秒，数值越低，数据实时性越高，服务器负荷越高。
 # 该值小于等于 0 时意味着禁用最大空闲时间检查，在最坏的情况下，此种设置会导致少于批处理个数的元素无限期的在缓存中等待。
-# consume.xxx.max_idle_time=1000
+# com.dwarfeng.fdr.consume.xxx.max_idle_time=1000
 #
 #---------------------------------一般数据保持消费者----------------------------------------
 # etc...
@@ -358,13 +359,19 @@ ServiceException 的异常代码的偏移量配置。
 
 ```properties
 # fdr 工程自身的异常代号偏移量。
-fdr.exception_code_offset=5000
+com.dwarfeng.fdr.fdr.exception_code_offset=1000
 # fdr 工程中 subgrade 的异常代号偏移量。
-fdr.exception_code_offset.subgrade=0
-# fdr 工程中 snowflake 的异常代号偏移量。
-fdr.exception_code_offset.snowflake=1500
+com.dwarfeng.fdr.fdr.exception_code_offset.subgrade=0
+# fdr 工程中 spring-telqos 的异常代号偏移量。
+com.dwarfeng.fdr.fdr.exception_code_offset.spring_telqos=2000
+# fdr 工程中 spring-terminator 的异常代号偏移量。
+com.dwarfeng.fdr.fdr.exception_code_offset.spring_terminator=3000
 # fdr 工程中 dwarfeng-datamark 的异常代号偏移量。
-fdr.exception_code_offset.dwarfeng_datamark=2000
+com.dwarfeng.fdr.fdr.exception_code_offset.dwarfeng_datamark=4000
+# fdr 工程中 dcti 的异常代号偏移量。
+com.dwarfeng.fdr.fdr.exception_code_offset.dcti=5000
+# fdr 工程中 dwarfeng-dct 的异常代号偏移量。
+com.dwarfeng.fdr.fdr.exception_code_offset.dwarfeng_dct=6000
 ```
 
 Subgrade 框架中，会将微服务抛出的异常映射为 `ServiceException`，每个 `ServiceException` 都有一个异常代码，
@@ -379,28 +386,28 @@ Subgrade 框架中，会将微服务抛出的异常映射为 `ServiceException`�
 
 ```properties
 # 程序启动完成后，是否重置过滤器支持。
-launcher.reset_filter_support=true
+com.dwarfeng.fdr.launcher.reset_filter_support=true
 #
 # 程序启动完成后，是否重置触发器支持。
-launcher.reset_trigger_support=true
+com.dwarfeng.fdr.launcher.reset_trigger_support=true
 #
 # 程序启动完成后，是否重置映射器支持。
-launcher.reset_mapper_support=true
+com.dwarfeng.fdr.launcher.reset_mapper_support=true
 #
 # 程序启动完成后，是否重置清洗器支持。
-launcher.reset_washer_support=true
+com.dwarfeng.fdr.launcher.reset_washer_support=true
 #
 # 程序启动完成后，开启记录的延时时间。
 # 有些数据源以及推送器在启动后可能会需要一些时间进行自身的初始化，调整该参数以妥善的处理这些数据源和推送器。
 # 该参数等于 0，意味着启动后立即开启记录服务。
 # 该参数小于 0，意味着程序不主动开启记录服务，需要手动开启。
-launcher.start_record_delay=3000
+com.dwarfeng.fdr.launcher.start_record_delay=3000
 #
 # 程序启动完成后，启动重置的延时时间。
 # 有些数据仓库以及重置器在启动后可能会需要一些时间进行自身的初始化，调整该参数以妥善的处理这些数据源和推送器。
 # 该参数等于 0，意味着启动后立即启动重置服务。
 # 该参数小于 0，意味着程序不主动启动重置服务，需要手动启动。
-launcher.start_reset_delay=30000
+com.dwarfeng.fdr.launcher.start_reset_delay=30000
 ```
 
 该配置文件决定了服务被运行后，哪些功能将会自动被执行。
@@ -426,9 +433,8 @@ launcher.start_reset_delay=30000
 #   log: 将消息输出到日志中的推送器。
 #
 # 对于一个具体的项目，很可能只用一个推送器。此时如果希望程序加载时只加载一个推送器，可以通过编辑
-# opt/opt-push.xml 文件实现。
-# 可以通过编辑 application-context-scan.xml 实现。
-pusher.type=drain
+# opt/opt-pusher.xml 文件实现。
+com.dwarfeng.fdr.pusher.type=drain
 #
 ###################################################
 #                      drain                      #
@@ -439,20 +445,20 @@ pusher.type=drain
 #                      multi                      #
 ###################################################
 # 代理的推送器，推送器之间以逗号分隔。
-pusher.multi.delegate_types=kafka.native
+com.dwarfeng.fdr.pusher.multi.delegate_types=kafka.native
 #
 ###################################################
 #                   kafka.native                  #
 ###################################################
 # 引导服务器集群。
-pusher.kafka.native.bootstrap_servers=your ip here like ip1:9092,ip2:9092,ip3:9092
+com.dwarfeng.fdr.pusher.kafka.native.bootstrap_servers=your ip here like ip1:9092,ip2:9092,ip3:9092
 # etc...
 #
 ###################################################
 #                       log                       #
 ###################################################
 # 记录日志的等级，由低到高依次是 TRACE, DEBUG, INFO, WARN, ERROR。
-pusher.log.log_level=INFO
+com.dwarfeng.fdr.pusher.log.log_level=INFO
 ```
 
 您不必对所有的配置项进行配置。
@@ -473,21 +479,21 @@ pusher.log.log_level=INFO
 # 对于每一个 period，使用分页控制数据的最大量，避免一个查看方法执行时间过长。
 #
 # 查询时每一个 period 的最大跨度。
-# query.xxx.max_period_span=86400000
+# com.dwarfeng.fdr.query.xxx.max_period_span=86400000
 # 查询时每一页的最大数据量。
-# query.xxx.max_page_size=1000
+# com.dwarfeng.fdr.query.xxx.max_page_size=1000
 #
 #-------------------------------------------一般查询参数配置说明-------------------------------------------
-query.normal.max_period_span=86400000
-query.normal.max_page_size=1000
+com.dwarfeng.fdr.query.normal.max_period_span=86400000
+com.dwarfeng.fdr.query.normal.max_page_size=1000
 #
 #------------------------------------------被过滤查询参数配置说明-------------------------------------------
-query.filtered.max_period_span=86400000
-query.filtered.max_page_size=1000
+com.dwarfeng.fdr.query.filtered.max_period_span=86400000
+com.dwarfeng.fdr.query.filtered.max_page_size=1000
 #
 #------------------------------------------被触发查询参数配置说明-------------------------------------------
-query.triggered.max_period_span=86400000
-query.triggered.max_page_size=1000
+com.dwarfeng.fdr.query.triggered.max_period_span=86400000
+com.dwarfeng.fdr.query.triggered.max_page_size=1000
 ```
 
 本配置中的参数可以优化查询时的性能，避免服务请求持久器时一次性请求过多数据导致的性能问题。
@@ -502,17 +508,17 @@ query.triggered.max_page_size=1000
 ```properties
 #---------------------------------报警配置----------------------------------------
 # 当记录者中的待消费元素超过缓存上限指定比例后，向日志中输入警告信息。
-record.threshold.warn=0.8
+com.dwarfeng.fdr.record.threshold.warn=0.8
 #---------------------------------配置说明----------------------------------------
 # 记录者线程数：线程数越大，处理的能力越强，服务器负荷越重。
-# record.consumer_thread=1
+# com.dwarfeng.fdr.record.consumer_thread=1
 # 缓存大小：缓存越大抗波动能力越强，数据实时性越低。
 # 当缓存被占满时，会导致记录者阻塞。
 # 数据占满缓存这一现象是需要尽力避免的，程序将在缓存占用量超过指定值的时候发出警报，并在缓存被占满的时候发出 ERROR 提示。
-# record.buffer_size=1000
+# com.dwarfeng.fdr.record.buffer_size=1000
 #
-record.consumer_thread=1
-record.buffer_size=1000
+com.dwarfeng.fdr.record.consumer_thread=1
+com.dwarfeng.fdr.record.buffer_size=1000
 ```
 
 本配置中的参数直接决定了记录服务的性能，您需要根据您的实际情况进行调整。
@@ -528,30 +534,30 @@ record.buffer_size=1000
 ###################################################
 #                      never                      #
 ###################################################
-# Never 推送器没有任何配置。
+# Never 重置器没有任何配置。
 #
 ###################################################
 #                   fixed_delay                   #
 ###################################################
 # 重置的间隔。
-resetter.fixed_delay.delay=43200000
+com.dwarfeng.fdr.resetter.fixed_delay.delay=43200000
 #
 ###################################################
 #                   fixed_rate                    #
 ###################################################
 # 重置的间隔。
-resetter.fixed_rate.rate=43200000
+com.dwarfeng.fdr.resetter.fixed_rate.rate=43200000
 #
 ###################################################
 #                      cron                       #
 ###################################################
 # 执行重置的 CRON 表达式。
-resetter.cron.cron=0 0 1 * * *
+com.dwarfeng.fdr.resetter.cron.cron=0 0 1 * * *
 #
 ###################################################
 #                      dubbo                      #
 ###################################################
-# Dubbo 推送器没有任何配置。
+# Dubbo 重置器没有任何配置。
 ```
 
 您不必对所有的配置项进行配置。
@@ -639,11 +645,11 @@ Redis 连接配置文件。
 
 ```properties
 # ip 地址。
-redis.hostName=your-host-here
+com.dwarfeng.fdr.redis.hostName=your-host-here
 # 端口号。
-redis.port=6379
+com.dwarfeng.fdr.redis.port=6379
 # 如果有密码。
-redis.password=your-password-here
+com.dwarfeng.fdr.redis.password=your-password-here
 # etc...
 ```
 
@@ -656,13 +662,13 @@ Redis 前缀配置文件。
 #  缓存时实体的键的格式
 #------------------------------------------------------------------------------------
 # 数据点对象的主键格式。
-cache.prefix.entity.point=entity.point.
+com.dwarfeng.fdr.cache.prefix.entity.point=com.dwarfeng.fdr.entity.point.
 # etc...
 #------------------------------------------------------------------------------------
 #  缓存时列表的键的格式
 #------------------------------------------------------------------------------------
 # 数据点对象对应的有效过滤器信息列表的主键格式。
-cache.prefix.list.enabled_filter_info=list.enabled_filter_info.
+com.dwarfeng.fdr.cache.prefix.list.enabled_filter_info=com.dwarfeng.fdr.list.enabled_filter_info.
 # etc...
 ```
 
@@ -674,7 +680,7 @@ Redis 利用该配置文件，为缓存的主键添加前缀，以示区分。
 
 ```properties
 # 数据点对象的主键格式。
-cache.prefix.entity.point=fdr.entity.point.
+com.dwarfeng.fdr.cache.prefix.entity.point=fdr.entity.point.
 # etc...
 ```
 
@@ -687,13 +693,13 @@ Redis 缓存的超时配置文件。
 #  实体缓存时的超时时间
 #------------------------------------------------------------------------------------
 # 数据点对象缓存的超时时间。
-cache.timeout.entity.point=3600000
+com.dwarfeng.fdr.cache.timeout.entity.point=3600000
 # etc...
 #------------------------------------------------------------------------------------
 #  键值列表缓存时的超时时间
 #------------------------------------------------------------------------------------
 # 使能过滤器信息的超时时间。
-cache.timeout.key_list.enabled_filter_info=3600000
+com.dwarfeng.fdr.cache.timeout.key_list.enabled_filter_info=3600000
 # etc...
 ```
 
@@ -711,18 +717,20 @@ Telqos 连接配置文件。
 
 ```properties
 # Telnet 端口。
-telqos.port=23
+com.dwarfeng.fdr.telqos.port=23
 # 字符集。
-telqos.charset=UTF-8
+com.dwarfeng.fdr.telqos.charset=UTF-8
 # 白名单表达式。
-telqos.whitelist_regex=
+com.dwarfeng.fdr.telqos.whitelist_regex=
 # 黑名单表达式。
-telqos.blacklist_regex=
+com.dwarfeng.fdr.telqos.blacklist_regex=
 ```
 
-如果您的项目中有多个包含 Telqos 模块的服务，您应该修改 `telqos.port` 的值，以避免端口冲突。
+如果您的项目中有多个包含 Telqos 模块的服务，您应该修改 `com.dwarfeng.fdr.telqos.port` 的值，以避免端口冲突。
 
-请根据操作系统的默认字符集，修改 `telqos.charset` 的值，以避免乱码。一般情况下，Windows 系统的默认字符集为 `GBK`，
+请根据操作系统的默认字符集，修改 `com.dwarfeng.fdr.telqos.charset` 的值，以避免乱码。一般情况下，Windows 系统的默认字符集为
+`GBK`，
 Linux 系统的默认字符集为 `UTF-8`。
 
-如果您希望限制 Telqos 的使用范围，您可以修改 `telqos.whitelist_regex` 和 `telqos.blacklist_regex` 的值。
+如果您希望限制 Telqos 的使用范围，您可以修改 `com.dwarfeng.fdr.telqos.whitelist_regex` 和
+`com.dwarfeng.fdr.telqos.blacklist_regex` 的值。
