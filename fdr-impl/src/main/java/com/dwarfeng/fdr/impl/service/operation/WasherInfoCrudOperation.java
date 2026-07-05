@@ -23,7 +23,7 @@ public class WasherInfoCrudOperation implements BatchCrudOperation<LongIdKey, Wa
 
     private final EnabledWasherInfoCache enabledWasherInfoCache;
 
-    @Value("${cache.timeout.entity.washer_info}")
+    @Value("${com.dwarfeng.fdr.cache.timeout.entity.washer_info}")
     private long washerInfoTimeout;
 
     public WasherInfoCrudOperation(

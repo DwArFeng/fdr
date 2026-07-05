@@ -33,7 +33,7 @@ public class EnabledFetcherInfoLookupServiceImpl implements EnabledFetcherInfoLo
     private final EnabledFetcherInfoCache cache;
     private final ServiceExceptionMapper sem;
 
-    @Value("${cache.timeout.key_list.enabled_fetcher_info}")
+    @Value("${com.dwarfeng.fdr.cache.timeout.key_list.enabled_fetcher_info}")
     private long timeout;
 
     public EnabledFetcherInfoLookupServiceImpl(

@@ -14,9 +14,9 @@ public class InfluxdbBridgeBaseConfiguration {
 
     private final ThreadPoolTaskExecutor executor;
 
-    @Value("${bridge.influxdb.url}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.url}")
     private String url;
-    @Value("${bridge.influxdb.token}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.token}")
     private String token;
 
     /**
@@ -24,7 +24,7 @@ public class InfluxdbBridgeBaseConfiguration {
      *
      * @since 3.0.1
      */
-    @Value("${bridge.influxdb.write.batch_size}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.write.batch_size}")
     private int writeBatchSize;
 
     /**
@@ -32,7 +32,7 @@ public class InfluxdbBridgeBaseConfiguration {
      *
      * @since 3.0.1
      */
-    @Value("${bridge.influxdb.write.flush_interval_ms}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.write.flush_interval_ms}")
     private int writeFlushIntervalMs;
 
     /**
@@ -40,7 +40,7 @@ public class InfluxdbBridgeBaseConfiguration {
      *
      * @since 3.0.1
      */
-    @Value("${bridge.influxdb.write.jitter_interval_ms}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.write.jitter_interval_ms}")
     private int writeJitterIntervalMs;
 
     /**
@@ -48,7 +48,7 @@ public class InfluxdbBridgeBaseConfiguration {
      *
      * @since 3.0.1
      */
-    @Value("${bridge.influxdb.write.retry_interval_ms}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.write.retry_interval_ms}")
     private int writeRetryIntervalMs;
 
     /**
@@ -56,7 +56,7 @@ public class InfluxdbBridgeBaseConfiguration {
      *
      * @since 3.0.1
      */
-    @Value("${bridge.influxdb.write.max_retries}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.write.max_retries}")
     private int writeMaxRetries;
 
     /**
@@ -64,7 +64,7 @@ public class InfluxdbBridgeBaseConfiguration {
      *
      * @since 3.0.1
      */
-    @Value("${bridge.influxdb.write.max_retry_delay_ms}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.write.max_retry_delay_ms}")
     private int writeMaxRetryDelayMs;
 
     /**
@@ -72,7 +72,7 @@ public class InfluxdbBridgeBaseConfiguration {
      *
      * @since 3.0.1
      */
-    @Value("${bridge.influxdb.write.max_retry_time_ms}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.write.max_retry_time_ms}")
     private int writeMaxRetryTimeMs;
 
     /**
@@ -80,7 +80,7 @@ public class InfluxdbBridgeBaseConfiguration {
      *
      * @since 3.0.1
      */
-    @Value("${bridge.influxdb.write.exponential_base}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.write.exponential_base}")
     private int writeExponentialBase;
 
     /**
@@ -88,7 +88,7 @@ public class InfluxdbBridgeBaseConfiguration {
      *
      * @since 3.0.1
      */
-    @Value("${bridge.influxdb.write.buffer_limit}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.write.buffer_limit}")
     private int writeBufferLimit;
 
     /**
@@ -96,7 +96,7 @@ public class InfluxdbBridgeBaseConfiguration {
      *
      * @since 3.0.1
      */
-    @Value("${bridge.influxdb.write.backpressure_overflow_strategy}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.write.backpressure_overflow_strategy}")
     private String writeBackpressureOverflowStrategy;
 
     public InfluxdbBridgeBaseConfiguration(ThreadPoolTaskExecutor executor) {

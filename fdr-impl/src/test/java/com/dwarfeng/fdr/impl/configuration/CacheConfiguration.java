@@ -22,33 +22,33 @@ public class CacheConfiguration {
 
     private final RedisTemplate<String, ?> template;
 
-    @Value("${cache.prefix.entity.filter_info}")
+    @Value("${com.dwarfeng.fdr.cache.prefix.entity.filter_info}")
     private String filterInfoPrefix;
-    @Value("${cache.prefix.entity.point}")
+    @Value("${com.dwarfeng.fdr.cache.prefix.entity.point}")
     private String pointPrefix;
-    @Value("${cache.prefix.entity.trigger_info}")
+    @Value("${com.dwarfeng.fdr.cache.prefix.entity.trigger_info}")
     private String triggerInfoPrefix;
-    @Value("${cache.prefix.entity.filter_support}")
+    @Value("${com.dwarfeng.fdr.cache.prefix.entity.filter_support}")
     private String filterSupportPrefix;
-    @Value("${cache.prefix.entity.trigger_support}")
+    @Value("${com.dwarfeng.fdr.cache.prefix.entity.trigger_support}")
     private String triggerSupportPrefix;
-    @Value("${cache.prefix.list.enabled_filter_info}")
+    @Value("${com.dwarfeng.fdr.cache.prefix.list.enabled_filter_info}")
     private String enabledFilterInfoPrefix;
-    @Value("${cache.prefix.list.enabled_trigger_info}")
+    @Value("${com.dwarfeng.fdr.cache.prefix.list.enabled_trigger_info}")
     private String enabledTriggerInfoPrefix;
-    @Value("${cache.prefix.entity.mapper_support}")
+    @Value("${com.dwarfeng.fdr.cache.prefix.entity.mapper_support}")
     private String mapperSupportPrefix;
-    @Value("${cache.prefix.entity.washer_info}")
+    @Value("${com.dwarfeng.fdr.cache.prefix.entity.washer_info}")
     private String washerInfoPrefix;
-    @Value("${cache.prefix.entity.washer_support}")
+    @Value("${com.dwarfeng.fdr.cache.prefix.entity.washer_support}")
     private String washerSupportPrefix;
-    @Value("${cache.prefix.list.enabled_washer_info}")
+    @Value("${com.dwarfeng.fdr.cache.prefix.list.enabled_washer_info}")
     private String enabledWasherInfoPrefix;
-    @Value("${cache.prefix.entity.fetcher_info}")
+    @Value("${com.dwarfeng.fdr.cache.prefix.entity.fetcher_info}")
     private String fetcherInfoPrefix;
-    @Value("${cache.prefix.entity.fetcher_support}")
+    @Value("${com.dwarfeng.fdr.cache.prefix.entity.fetcher_support}")
     private String fetcherSupportPrefix;
-    @Value("${cache.prefix.list.enabled_fetcher_info}")
+    @Value("${com.dwarfeng.fdr.cache.prefix.list.enabled_fetcher_info}")
     private String enabledFetcherInfoPrefix;
 
     public CacheConfiguration(

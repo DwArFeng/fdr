@@ -21,7 +21,7 @@ public class FilteredDataMultiBridgeKeeper extends MultiBridgeKeeper<FilteredDat
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FilteredDataMultiBridgeKeeper.class);
 
-    @Value("${bridge.multi.delegates.keep.filtered_data}")
+    @Value("${com.dwarfeng.fdr.bridge.multi.delegates.keep.filtered_data}")
     private String filteredDataKeepDelegateConfig;
 
     protected FilteredDataMultiBridgeKeeper(

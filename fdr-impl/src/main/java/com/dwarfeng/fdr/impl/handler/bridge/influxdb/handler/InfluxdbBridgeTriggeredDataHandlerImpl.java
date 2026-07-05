@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 public class InfluxdbBridgeTriggeredDataHandlerImpl extends AbstractInfluxdbBridgeDataHandler implements
         InfluxdbBridgeTriggeredDataHandler {
 
-    @Value("${bridge.influxdb.bucket.triggered_data}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.bucket.triggered_data}")
     private String bucket;
 
-    @Value("${bridge.influxdb.organization}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.organization}")
     private String organization;
 
     public InfluxdbBridgeTriggeredDataHandlerImpl(

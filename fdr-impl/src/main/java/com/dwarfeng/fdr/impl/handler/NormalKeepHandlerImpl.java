@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 public class NormalKeepHandlerImpl extends AbstractKeepHandler<NormalData> implements NormalKeepHandler {
 
-    @Value("${keep.normal_data.type}")
+    @Value("${com.dwarfeng.fdr.keep.normal_data.type}")
     private String type;
 
     public NormalKeepHandlerImpl(List<Bridge> bridges) {

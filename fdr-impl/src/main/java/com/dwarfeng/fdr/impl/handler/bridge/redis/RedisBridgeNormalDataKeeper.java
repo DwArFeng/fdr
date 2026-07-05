@@ -29,7 +29,7 @@ public class RedisBridgeNormalDataKeeper extends RedisBridgeKeeper<NormalData, R
     public RedisBridgeNormalDataKeeper(
             RedisBridgeNormalDataMaintainService service,
             @Qualifier("redisBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler,
-            @Value("${bridge.redis.earlier_override.normal_data}") boolean allowEarlierDataOverride
+            @Value("${com.dwarfeng.fdr.bridge.redis.earlier_override.normal_data}") boolean allowEarlierDataOverride
     ) {
         super(service, valueCodingHandler, allowEarlierDataOverride);
     }

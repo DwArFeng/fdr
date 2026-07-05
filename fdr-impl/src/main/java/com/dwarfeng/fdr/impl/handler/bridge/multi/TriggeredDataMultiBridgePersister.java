@@ -21,7 +21,7 @@ public class TriggeredDataMultiBridgePersister extends MultiBridgePersister<Trig
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TriggeredDataMultiBridgePersister.class);
 
-    @Value("${bridge.multi.delegates.persist.triggered_data}")
+    @Value("${com.dwarfeng.fdr.bridge.multi.delegates.persist.triggered_data}")
     private String triggeredDataPersistDelegateConfig;
 
     protected TriggeredDataMultiBridgePersister(

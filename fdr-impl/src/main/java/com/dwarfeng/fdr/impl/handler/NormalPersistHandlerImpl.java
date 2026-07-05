@@ -13,7 +13,7 @@ import java.util.List;
 public class NormalPersistHandlerImpl extends AbstractPersistHandler<NormalData>
         implements NormalPersistHandler {
 
-    @Value("${persist.normal_data.type}")
+    @Value("${com.dwarfeng.fdr.persist.normal_data.type}")
     private String type;
 
     public NormalPersistHandlerImpl(List<Bridge> bridges) {

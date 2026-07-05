@@ -24,7 +24,7 @@ public class EnabledFilterInfoLookupServiceImpl implements EnabledFilterInfoLook
     private final EnabledFilterInfoCache cache;
     private final ServiceExceptionMapper sem;
 
-    @Value("${cache.timeout.key_list.enabled_filter_info}")
+    @Value("${com.dwarfeng.fdr.cache.timeout.key_list.enabled_filter_info}")
     private long timeout;
 
     public EnabledFilterInfoLookupServiceImpl(

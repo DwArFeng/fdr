@@ -35,7 +35,7 @@ public class DaoConfiguration {
     private final FetcherInfoPresetCriteriaMaker fetcherInfoPresetCriteriaMaker;
     private final FetcherSupportPresetCriteriaMaker fetcherSupportPresetCriteriaMaker;
 
-    @Value("${hibernate.jdbc.batch_size}")
+    @Value("${com.dwarfeng.fdr.hibernate.jdbc.batch_size}")
     private int batchSize;
 
     public DaoConfiguration(

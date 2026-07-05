@@ -29,7 +29,7 @@ public class RedisBridgeFilteredDataKeeper extends RedisBridgeKeeper<FilteredDat
     public RedisBridgeFilteredDataKeeper(
             RedisBridgeFilteredDataMaintainService service,
             @Qualifier("redisBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler,
-            @Value("${bridge.redis.earlier_override.filtered_data}") boolean allowEarlierDataOverride
+            @Value("${com.dwarfeng.fdr.bridge.redis.earlier_override.filtered_data}") boolean allowEarlierDataOverride
     ) {
         super(service, valueCodingHandler, allowEarlierDataOverride);
     }

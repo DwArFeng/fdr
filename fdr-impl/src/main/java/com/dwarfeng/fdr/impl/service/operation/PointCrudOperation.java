@@ -43,7 +43,7 @@ public class PointCrudOperation implements BatchCrudOperation<LongIdKey, Point> 
 
     private final EnabledWasherInfoCache enabledWasherInfoCache;
 
-    @Value("${cache.timeout.entity.point}")
+    @Value("${com.dwarfeng.fdr.cache.timeout.entity.point}")
     private long pointTimeout;
 
     public PointCrudOperation(

@@ -12,16 +12,16 @@
     <!-- Point 数据标识。 -->
     <datamark:handler
             handler-name="pointDatamarkHandler"
-            resource-url="${datamark.point.resource_url}"
-            resource-charset="${datamark.point.resource_charset}"
-            update-allowed="${datamark.point.update_allowed}"
+            resource-url="${com.dwarfeng.fdr.datamark.point.resource_url}"
+            resource-charset="${com.dwarfeng.fdr.datamark.point.resource_charset}"
+            update-allowed="${com.dwarfeng.fdr.datamark.point.update_allowed}"
     />
 
     <!-- Fetcher 数据标识。 -->
     <datamark:handler
             handler-name="fetcherDatamarkHandler"
-            resource-url="${datamark.fetcher.resource_url}"
-            resource-charset="${datamark.fetcher.resource_charset}"
-            update-allowed="${datamark.fetcher.update_allowed}"
+            resource-url="${com.dwarfeng.fdr.datamark.fetcher.resource_url}"
+            resource-charset="${com.dwarfeng.fdr.datamark.fetcher.resource_charset}"
+            update-allowed="${com.dwarfeng.fdr.datamark.fetcher.update_allowed}"
     />
 </beans>

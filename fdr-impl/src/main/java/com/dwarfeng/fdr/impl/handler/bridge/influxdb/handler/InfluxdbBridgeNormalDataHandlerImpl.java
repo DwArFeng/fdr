@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 public class InfluxdbBridgeNormalDataHandlerImpl extends AbstractInfluxdbBridgeDataHandler implements
         InfluxdbBridgeNormalDataHandler {
 
-    @Value("${bridge.influxdb.bucket.normal_data}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.bucket.normal_data}")
     private String bucket;
 
-    @Value("${bridge.influxdb.organization}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.organization}")
     private String organization;
 
     public InfluxdbBridgeNormalDataHandlerImpl(

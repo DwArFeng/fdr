@@ -13,7 +13,7 @@ import java.util.List;
 public class TriggeredPersistHandlerImpl extends AbstractPersistHandler<TriggeredData>
         implements TriggeredPersistHandler {
 
-    @Value("${persist.triggered_data.type}")
+    @Value("${com.dwarfeng.fdr.persist.triggered_data.type}")
     private String type;
 
     public TriggeredPersistHandlerImpl(List<Bridge> bridges) {

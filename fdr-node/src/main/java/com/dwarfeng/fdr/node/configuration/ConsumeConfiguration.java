@@ -36,68 +36,68 @@ public class ConsumeConfiguration {
     private final ThreadPoolTaskExecutor executor;
     private final ThreadPoolTaskScheduler scheduler;
 
-    @Value("${consume.threshold.warn}")
+    @Value("${com.dwarfeng.fdr.consume.threshold.warn}")
     private double warnThreshold;
 
-    @Value("${consume.normal_keep.consumer_thread}")
+    @Value("${com.dwarfeng.fdr.consume.normal_keep.consumer_thread}")
     private int normalKeepConsumerThread;
-    @Value("${consume.normal_keep.buffer_size}")
+    @Value("${com.dwarfeng.fdr.consume.normal_keep.buffer_size}")
     private int normalKeepBufferSize;
-    @Value("${consume.normal_keep.batch_size}")
+    @Value("${com.dwarfeng.fdr.consume.normal_keep.batch_size}")
     private int normalKeepBatchSize;
-    @Value("${consume.normal_keep.max_idle_time}")
+    @Value("${com.dwarfeng.fdr.consume.normal_keep.max_idle_time}")
     private long normalKeepMaxIdleTime;
 
-    @Value("${consume.normal_persist.consumer_thread}")
+    @Value("${com.dwarfeng.fdr.consume.normal_persist.consumer_thread}")
     private int normalPersistConsumerThread;
-    @Value("${consume.normal_persist.buffer_size}")
+    @Value("${com.dwarfeng.fdr.consume.normal_persist.buffer_size}")
     private int normalPersistBufferSize;
-    @Value("${consume.normal_persist.batch_size}")
+    @Value("${com.dwarfeng.fdr.consume.normal_persist.batch_size}")
     private int normalPersistBatchSize;
-    @Value("${consume.normal_persist.max_idle_time}")
+    @Value("${com.dwarfeng.fdr.consume.normal_persist.max_idle_time}")
     private long normalPersistMaxIdleTime;
 
-    @Value("${consume.filtered_keep.consumer_thread}")
+    @Value("${com.dwarfeng.fdr.consume.filtered_keep.consumer_thread}")
     private int filteredKeepConsumerThread;
-    @Value("${consume.filtered_keep.buffer_size}")
+    @Value("${com.dwarfeng.fdr.consume.filtered_keep.buffer_size}")
     private int filteredKeepBufferSize;
-    @Value("${consume.filtered_keep.batch_size}")
+    @Value("${com.dwarfeng.fdr.consume.filtered_keep.batch_size}")
     private int filteredKeepBatchSize;
-    @Value("${consume.filtered_keep.max_idle_time}")
+    @Value("${com.dwarfeng.fdr.consume.filtered_keep.max_idle_time}")
     private long filteredKeepMaxIdleTime;
 
-    @Value("${consume.filtered_persist.consumer_thread}")
+    @Value("${com.dwarfeng.fdr.consume.filtered_persist.consumer_thread}")
     private int filteredPersistConsumerThread;
-    @Value("${consume.filtered_persist.buffer_size}")
+    @Value("${com.dwarfeng.fdr.consume.filtered_persist.buffer_size}")
     private int filteredPersistBufferSize;
-    @Value("${consume.filtered_persist.batch_size}")
+    @Value("${com.dwarfeng.fdr.consume.filtered_persist.batch_size}")
     private int filteredPersistBatchSize;
-    @Value("${consume.filtered_persist.max_idle_time}")
+    @Value("${com.dwarfeng.fdr.consume.filtered_persist.max_idle_time}")
     private long filteredPersistMaxIdleTime;
 
-    @Value("${consume.triggered_keep.consumer_thread}")
+    @Value("${com.dwarfeng.fdr.consume.triggered_keep.consumer_thread}")
     private int triggeredKeepConsumerThread;
-    @Value("${consume.triggered_keep.buffer_size}")
+    @Value("${com.dwarfeng.fdr.consume.triggered_keep.buffer_size}")
     private int triggeredKeepBufferSize;
-    @Value("${consume.triggered_keep.batch_size}")
+    @Value("${com.dwarfeng.fdr.consume.triggered_keep.batch_size}")
     private int triggeredKeepBatchSize;
-    @Value("${consume.triggered_keep.max_idle_time}")
+    @Value("${com.dwarfeng.fdr.consume.triggered_keep.max_idle_time}")
     private long triggeredKeepMaxIdleTime;
 
-    @Value("${consume.triggered_persist.consumer_thread}")
+    @Value("${com.dwarfeng.fdr.consume.triggered_persist.consumer_thread}")
     private int triggeredPersistConsumerThread;
-    @Value("${consume.triggered_persist.buffer_size}")
+    @Value("${com.dwarfeng.fdr.consume.triggered_persist.buffer_size}")
     private int triggeredPersistBufferSize;
-    @Value("${consume.triggered_persist.batch_size}")
+    @Value("${com.dwarfeng.fdr.consume.triggered_persist.batch_size}")
     private int triggeredPersistBatchSize;
-    @Value("${consume.triggered_persist.max_idle_time}")
+    @Value("${com.dwarfeng.fdr.consume.triggered_persist.max_idle_time}")
     private long triggeredPersistMaxIdleTime;
 
-    @Value("${curator.inter_process_mutex.keep_consumer.normal}")
+    @Value("${com.dwarfeng.fdr.curator.inter_process_mutex.keep_consumer.normal}")
     private String normalKeepConsumerInterProcessMutexPath;
-    @Value("${curator.inter_process_mutex.keep_consumer.filtered}")
+    @Value("${com.dwarfeng.fdr.curator.inter_process_mutex.keep_consumer.filtered}")
     private String filteredKeepConsumerInterProcessMutexPath;
-    @Value("${curator.inter_process_mutex.keep_consumer.triggered}")
+    @Value("${com.dwarfeng.fdr.curator.inter_process_mutex.keep_consumer.triggered}")
     private String triggeredKeepConsumerInterProcessMutexPath;
 
     public ConsumeConfiguration(

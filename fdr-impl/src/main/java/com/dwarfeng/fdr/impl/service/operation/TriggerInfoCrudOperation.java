@@ -23,7 +23,7 @@ public class TriggerInfoCrudOperation implements BatchCrudOperation<LongIdKey, T
 
     private final EnabledTriggerInfoCache enabledTriggerInfoCache;
 
-    @Value("${cache.timeout.entity.trigger_info}")
+    @Value("${com.dwarfeng.fdr.cache.timeout.entity.trigger_info}")
     private long triggerInfoTimeout;
 
     public TriggerInfoCrudOperation(

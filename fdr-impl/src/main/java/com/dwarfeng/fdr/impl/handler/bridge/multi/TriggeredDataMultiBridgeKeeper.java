@@ -21,7 +21,7 @@ public class TriggeredDataMultiBridgeKeeper extends MultiBridgeKeeper<TriggeredD
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TriggeredDataMultiBridgeKeeper.class);
 
-    @Value("${bridge.multi.delegates.keep.triggered_data}")
+    @Value("${com.dwarfeng.fdr.bridge.multi.delegates.keep.triggered_data}")
     private String triggeredDataKeepDelegateConfig;
 
     protected TriggeredDataMultiBridgeKeeper(

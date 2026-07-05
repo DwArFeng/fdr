@@ -42,23 +42,23 @@ public class NativeKafkaPusher extends AbstractPusher {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    @Value("${pusher.kafka.native.topic.normal_updated}")
+    @Value("${com.dwarfeng.fdr.pusher.kafka.native.topic.normal_updated}")
     private String normalUpdatedTopic;
-    @Value("${pusher.kafka.native.topic.normal_recorded}")
+    @Value("${com.dwarfeng.fdr.pusher.kafka.native.topic.normal_recorded}")
     private String normalRecordedTopic;
-    @Value("${pusher.kafka.native.topic.filtered_updated}")
+    @Value("${com.dwarfeng.fdr.pusher.kafka.native.topic.filtered_updated}")
     private String filteredUpdatedTopic;
-    @Value("${pusher.kafka.native.topic.filtered_recorded}")
+    @Value("${com.dwarfeng.fdr.pusher.kafka.native.topic.filtered_recorded}")
     private String filteredRecordedTopic;
-    @Value("${pusher.kafka.native.topic.triggered_updated}")
+    @Value("${com.dwarfeng.fdr.pusher.kafka.native.topic.triggered_updated}")
     private String triggeredUpdatedTopic;
-    @Value("${pusher.kafka.native.topic.triggered_recorded}")
+    @Value("${com.dwarfeng.fdr.pusher.kafka.native.topic.triggered_recorded}")
     private String triggeredRecordedTopic;
-    @Value("${pusher.kafka.native.topic.record_reset}")
+    @Value("${com.dwarfeng.fdr.pusher.kafka.native.topic.record_reset}")
     private String recordResetTopic;
-    @Value("${pusher.kafka.native.topic.map_reset}")
+    @Value("${com.dwarfeng.fdr.pusher.kafka.native.topic.map_reset}")
     private String mapResetTopic;
-    @Value("${pusher.kafka.native.topic.fetch_reset}")
+    @Value("${com.dwarfeng.fdr.pusher.kafka.native.topic.fetch_reset}")
     private String fetchResetTopic;
 
     public NativeKafkaPusher(
@@ -184,19 +184,19 @@ public class NativeKafkaPusher extends AbstractPusher {
 
         private static final Logger LOGGER = LoggerFactory.getLogger(KafkaPusherConfiguration.class);
 
-        @Value("${pusher.kafka.native.bootstrap_servers}")
+        @Value("${com.dwarfeng.fdr.pusher.kafka.native.bootstrap_servers}")
         private String producerBootstrapServers;
-        @Value("${pusher.kafka.native.retries}")
+        @Value("${com.dwarfeng.fdr.pusher.kafka.native.retries}")
         private int retries;
-        @Value("${pusher.kafka.native.linger}")
+        @Value("${com.dwarfeng.fdr.pusher.kafka.native.linger}")
         private long linger;
-        @Value("${pusher.kafka.native.buffer_memory}")
+        @Value("${com.dwarfeng.fdr.pusher.kafka.native.buffer_memory}")
         private long bufferMemory;
-        @Value("${pusher.kafka.native.batch_size}")
+        @Value("${com.dwarfeng.fdr.pusher.kafka.native.batch_size}")
         private int batchSize;
-        @Value("${pusher.kafka.native.acks}")
+        @Value("${com.dwarfeng.fdr.pusher.kafka.native.acks}")
         private String acks;
-        @Value("${pusher.kafka.native.transaction_prefix}")
+        @Value("${com.dwarfeng.fdr.pusher.kafka.native.transaction_prefix}")
         private String transactionPrefix;
 
         @Bean("nativeKafkaPusher.producerProperties")

@@ -22,7 +22,7 @@ public class FetcherInfoCrudOperation implements BatchCrudOperation<LongIdKey, F
 
     private final EnabledFetcherInfoCache enabledFetcherInfoCache;
 
-    @Value("${cache.timeout.entity.fetcher_info}")
+    @Value("${com.dwarfeng.fdr.cache.timeout.entity.fetcher_info}")
     private long fetcherInfoTimeout;
 
     public FetcherInfoCrudOperation(

@@ -54,9 +54,9 @@ public class RecordProcessor {
     private final Consumer consumer;
     private final ConsumeBuffer consumeBuffer;
 
-    @Value("${record.consumer_thread}")
+    @Value("${com.dwarfeng.fdr.record.consumer_thread}")
     private int thread;
-    @Value("${record.threshold.warn}")
+    @Value("${com.dwarfeng.fdr.record.threshold.warn}")
     private double warnThreshold;
 
     private final Lock lock = new ReentrantLock();
@@ -523,7 +523,7 @@ public class RecordProcessor {
     @Component
     public static class ConsumeBuffer {
 
-        @Value("${record.buffer_size}")
+        @Value("${com.dwarfeng.fdr.record.buffer_size}")
         private int bufferSize;
 
         private final Lock lock = new ReentrantLock();

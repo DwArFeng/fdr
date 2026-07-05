@@ -24,7 +24,7 @@ public class EnabledTriggerInfoLookupServiceImpl implements EnabledTriggerInfoLo
     private final EnabledTriggerInfoCache cache;
     private final ServiceExceptionMapper sem;
 
-    @Value("${cache.timeout.key_list.enabled_trigger_info}")
+    @Value("${com.dwarfeng.fdr.cache.timeout.key_list.enabled_trigger_info}")
     private long timeout;
 
     public EnabledTriggerInfoLookupServiceImpl(

@@ -29,7 +29,7 @@ public class RedisBridgeTriggeredDataKeeper extends RedisBridgeKeeper<TriggeredD
     public RedisBridgeTriggeredDataKeeper(
             RedisBridgeTriggeredDataMaintainService service,
             @Qualifier("redisBridge.valueCodingHandler") ValueCodingHandler valueCodingHandler,
-            @Value("${bridge.redis.earlier_override.triggered_data}") boolean allowEarlierDataOverride
+            @Value("${com.dwarfeng.fdr.bridge.redis.earlier_override.triggered_data}") boolean allowEarlierDataOverride
     ) {
         super(service, valueCodingHandler, allowEarlierDataOverride);
     }

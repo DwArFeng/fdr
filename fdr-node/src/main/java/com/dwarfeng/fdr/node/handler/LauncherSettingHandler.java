@@ -7,21 +7,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class LauncherSettingHandler implements Handler {
 
-    @Value("${launcher.reset_filter_support}")
+    @Value("${com.dwarfeng.fdr.launcher.reset_filter_support}")
     private boolean resetFilterSupport;
-    @Value("${launcher.reset_trigger_support}")
+    @Value("${com.dwarfeng.fdr.launcher.reset_trigger_support}")
     private boolean resetTriggerSupport;
-    @Value("${launcher.reset_mapper_support}")
+    @Value("${com.dwarfeng.fdr.launcher.reset_mapper_support}")
     private boolean resetMapperSupport;
-    @Value("${launcher.reset_washer_support}")
+    @Value("${com.dwarfeng.fdr.launcher.reset_washer_support}")
     private boolean resetWasherSupport;
-    @Value("${launcher.reset_fetcher_support}")
+    @Value("${com.dwarfeng.fdr.launcher.reset_fetcher_support}")
     private boolean resetFetcherSupport;
-    @Value("${launcher.start_record_delay}")
+    @Value("${com.dwarfeng.fdr.launcher.start_record_delay}")
     private long startRecordDelay;
-    @Value("${launcher.start_fetch_delay}")
+    @Value("${com.dwarfeng.fdr.launcher.start_fetch_delay}")
     private long startFetchDelay;
-    @Value("${launcher.start_reset_delay}")
+    @Value("${com.dwarfeng.fdr.launcher.start_reset_delay}")
     private long startResetDelay;
 
     public boolean isResetFilterSupport() {

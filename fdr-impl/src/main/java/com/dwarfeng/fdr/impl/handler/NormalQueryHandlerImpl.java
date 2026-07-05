@@ -14,12 +14,12 @@ import java.util.List;
 @Component
 public class NormalQueryHandlerImpl extends AbstractQueryHandler implements NormalQueryHandler {
 
-    @Value("${persist.normal_data.type}")
+    @Value("${com.dwarfeng.fdr.persist.normal_data.type}")
     private String type;
 
-    @Value("${query.normal.max_period_span}")
+    @Value("${com.dwarfeng.fdr.query.normal.max_period_span}")
     private long maxPeriodSpan;
-    @Value("${query.normal.max_page_size}")
+    @Value("${com.dwarfeng.fdr.query.normal.max_page_size}")
     private int maxPageSize;
 
     public NormalQueryHandlerImpl(

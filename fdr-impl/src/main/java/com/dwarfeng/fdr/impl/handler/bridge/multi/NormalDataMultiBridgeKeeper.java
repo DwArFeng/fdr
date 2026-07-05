@@ -21,7 +21,7 @@ public class NormalDataMultiBridgeKeeper extends MultiBridgeKeeper<NormalData> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NormalDataMultiBridgeKeeper.class);
 
-    @Value("${bridge.multi.delegates.keep.normal_data}")
+    @Value("${com.dwarfeng.fdr.bridge.multi.delegates.keep.normal_data}")
     private String normalDataKeepDelegateConfig;
 
     protected NormalDataMultiBridgeKeeper(

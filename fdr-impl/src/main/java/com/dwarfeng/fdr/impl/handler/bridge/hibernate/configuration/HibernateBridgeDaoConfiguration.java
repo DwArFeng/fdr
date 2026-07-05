@@ -43,20 +43,20 @@ public class HibernateBridgeDaoConfiguration {
     private final List<DialectNativeLookup<HibernateBridgeTriggeredData>>
             hibernateBridgeTriggeredDataDialectNativeLookups;
 
-    @Value("${bridge.hibernate.use_project_config}")
+    @Value("${com.dwarfeng.fdr.bridge.hibernate.use_project_config}")
     private boolean useProjectConfig;
 
-    @Value("${hibernate.dialect}")
+    @Value("${com.dwarfeng.fdr.hibernate.dialect}")
     private String projectHibernateDialect;
-    @Value("${hibernate.jdbc.batch_size}")
+    @Value("${com.dwarfeng.fdr.hibernate.jdbc.batch_size}")
     private int projectHibernateJdbcBatchSize;
 
-    @Value("${bridge.hibernate.hibernate.dialect}")
+    @Value("${com.dwarfeng.fdr.bridge.hibernate.hibernate.dialect}")
     private String bridgeHibernateDialect;
-    @Value("${bridge.hibernate.hibernate.jdbc.batch_size}")
+    @Value("${com.dwarfeng.fdr.bridge.hibernate.hibernate.jdbc.batch_size}")
     private int bridgeHibernateJdbcBatchSize;
 
-    @Value("${bridge.hibernate.hibernate.accelerate_enabled}")
+    @Value("${com.dwarfeng.fdr.bridge.hibernate.hibernate.accelerate_enabled}")
     private boolean hibernateAccelerateEnabled;
 
     public HibernateBridgeDaoConfiguration(

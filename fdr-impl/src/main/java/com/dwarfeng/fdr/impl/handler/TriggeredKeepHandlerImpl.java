@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 public class TriggeredKeepHandlerImpl extends AbstractKeepHandler<TriggeredData> implements TriggeredKeepHandler {
 
-    @Value("${keep.triggered_data.type}")
+    @Value("${com.dwarfeng.fdr.keep.triggered_data.type}")
     private String type;
 
     public TriggeredKeepHandlerImpl(List<Bridge> bridges) {

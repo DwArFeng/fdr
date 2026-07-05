@@ -21,7 +21,7 @@ public class NormalDataMultiBridgePersister extends MultiBridgePersister<NormalD
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NormalDataMultiBridgePersister.class);
 
-    @Value("${bridge.multi.delegates.persist.normal_data}")
+    @Value("${com.dwarfeng.fdr.bridge.multi.delegates.persist.normal_data}")
     private String normalDataPersistDelegateConfig;
 
     protected NormalDataMultiBridgePersister(

@@ -19,7 +19,7 @@ public class PushHandlerImpl implements PushHandler {
 
     private final List<Pusher> pushers;
 
-    @Value("${pusher.type}")
+    @Value("${com.dwarfeng.fdr.pusher.type}")
     private String pusherType;
 
     private Pusher pusher;

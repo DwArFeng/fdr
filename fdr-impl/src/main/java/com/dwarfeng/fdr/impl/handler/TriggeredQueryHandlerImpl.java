@@ -14,12 +14,12 @@ import java.util.List;
 @Component
 public class TriggeredQueryHandlerImpl extends AbstractQueryHandler implements TriggeredQueryHandler {
 
-    @Value("${persist.triggered_data.type}")
+    @Value("${com.dwarfeng.fdr.persist.triggered_data.type}")
     private String type;
 
-    @Value("${query.triggered.max_period_span}")
+    @Value("${com.dwarfeng.fdr.query.triggered.max_period_span}")
     private long maxPeriodSpan;
-    @Value("${query.triggered.max_page_size}")
+    @Value("${com.dwarfeng.fdr.query.triggered.max_page_size}")
     private int maxPageSize;
 
     public TriggeredQueryHandlerImpl(

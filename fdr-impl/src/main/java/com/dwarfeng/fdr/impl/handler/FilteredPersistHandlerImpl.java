@@ -13,7 +13,7 @@ import java.util.List;
 public class FilteredPersistHandlerImpl extends AbstractPersistHandler<FilteredData>
         implements FilteredPersistHandler {
 
-    @Value("${persist.filtered_data.type}")
+    @Value("${com.dwarfeng.fdr.persist.filtered_data.type}")
     private String type;
 
     public FilteredPersistHandlerImpl(List<Bridge> bridges) {

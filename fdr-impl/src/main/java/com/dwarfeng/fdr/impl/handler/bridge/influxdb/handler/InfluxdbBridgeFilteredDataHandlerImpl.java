@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 public class InfluxdbBridgeFilteredDataHandlerImpl extends AbstractInfluxdbBridgeDataHandler implements
         InfluxdbBridgeFilteredDataHandler {
 
-    @Value("${bridge.influxdb.bucket.filtered_data}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.bucket.filtered_data}")
     private String bucket;
 
-    @Value("${bridge.influxdb.organization}")
+    @Value("${com.dwarfeng.fdr.bridge.influxdb.organization}")
     private String organization;
 
     public InfluxdbBridgeFilteredDataHandlerImpl(

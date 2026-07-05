@@ -16,12 +16,19 @@
     </dubbo:application>
 
     <!-- Zookeeper 注册中心。 -->
-    <dubbo:registry address="${dubbo.registry.zookeeper.address}" timeout="${dubbo.registry.zookeeper.timeout}"/>
+    <dubbo:registry
+            address="${com.dwarfeng.fdr.dubbo.registry.zookeeper.address}"
+            timeout="${com.dwarfeng.fdr.dubbo.registry.zookeeper.timeout}"
+    />
 
     <!-- Dubbo 协议。 -->
     <dubbo:protocol
-            name="dubbo" port="${dubbo.protocol.dubbo.port}" host="${dubbo.protocol.dubbo.host}"
-            dispatcher="message" threadpool="fixed" threads="100"
+            name="dubbo"
+            port="${com.dwarfeng.fdr.dubbo.protocol.dubbo.port}"
+            host="${com.dwarfeng.fdr.dubbo.protocol.dubbo.host}"
+            dispatcher="message"
+            threadpool="fixed"
+            threads="100"
     />
 
     <!-- endregion -->
@@ -33,92 +40,92 @@
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.PointMaintainService"
             ref="pointMaintainServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.FilterInfoMaintainService"
             ref="filterInfoMaintainServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.TriggerInfoMaintainService"
             ref="triggerInfoMaintainServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.WasherInfoMaintainService"
             ref="washerInfoMaintainServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.EnabledFilterInfoLookupService"
             ref="enabledFilterInfoLookupServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.EnabledTriggerInfoLookupService"
             ref="enabledTriggerInfoLookupServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.EnabledWasherInfoLookupService"
             ref="enabledWasherInfoLookupServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.FilterSupportMaintainService"
             ref="filterSupportMaintainServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.TriggerSupportMaintainService"
             ref="triggerSupportMaintainServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.MapperSupportMaintainService"
             ref="mapperSupportMaintainServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.WasherSupportMaintainService"
             ref="washerSupportMaintainServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.NormalViewService"
             ref="normalViewServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.FilteredViewService"
             ref="filteredViewServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.TriggeredViewService"
             ref="triggeredViewServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.RecordService"
             ref="recordServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.FetcherInfoMaintainService"
             ref="fetcherInfoMaintainServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.FetcherSupportMaintainService"
             ref="fetcherSupportMaintainServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
     <dubbo:service
             interface="com.dwarfeng.fdr.stack.service.EnabledFetcherInfoLookupService"
             ref="enabledFetcherInfoLookupServiceImpl"
-            group="${dubbo.provider.group}"
+            group="${com.dwarfeng.fdr.dubbo.provider.group}"
     />
 
     <!-- endregion -->
@@ -133,7 +140,7 @@
             id="snowflakeGenerateService"
             interface="com.dwarfeng.sfds.stack.service.GenerateService"
             check="false"
-            group="${dubbo.consumer.snowflake.group}"
+            group="${com.dwarfeng.fdr.dubbo.consumer.snowflake.group}"
     />
 
     <!-- endregion -->

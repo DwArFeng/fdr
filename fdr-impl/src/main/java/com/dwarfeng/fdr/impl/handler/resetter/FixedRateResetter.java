@@ -22,7 +22,7 @@ public class FixedRateResetter extends AbstractResetter {
 
     private final ThreadPoolTaskScheduler scheduler;
 
-    @Value("${resetter.fixed_rate.rate}")
+    @Value("${com.dwarfeng.fdr.resetter.fixed_rate.rate}")
     private long rate;
 
     private final ResetTask resetTask = new ResetTask();

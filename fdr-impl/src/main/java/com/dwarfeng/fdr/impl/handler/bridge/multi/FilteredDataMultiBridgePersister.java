@@ -21,7 +21,7 @@ public class FilteredDataMultiBridgePersister extends MultiBridgePersister<Filte
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FilteredDataMultiBridgePersister.class);
 
-    @Value("${bridge.multi.delegates.persist.filtered_data}")
+    @Value("${com.dwarfeng.fdr.bridge.multi.delegates.persist.filtered_data}")
     private String filteredDataPersistDelegateConfig;
 
     protected FilteredDataMultiBridgePersister(

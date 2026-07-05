@@ -24,7 +24,7 @@ public class EnabledWasherInfoLookupServiceImpl implements EnabledWasherInfoLook
     private final EnabledWasherInfoCache cache;
     private final ServiceExceptionMapper sem;
 
-    @Value("${cache.timeout.key_list.enabled_washer_info}")
+    @Value("${com.dwarfeng.fdr.cache.timeout.key_list.enabled_washer_info}")
     private long timeout;
 
     public EnabledWasherInfoLookupServiceImpl(

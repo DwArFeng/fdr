@@ -44,15 +44,15 @@ public class ServiceConfiguration {
     private final FetcherSupportCache fetcherSupportCache;
     private final FetcherSupportDao fetcherSupportDao;
 
-    @Value("${cache.timeout.entity.filter_support}")
+    @Value("${com.dwarfeng.fdr.cache.timeout.entity.filter_support}")
     private long filterSupportTimeout;
-    @Value("${cache.timeout.entity.trigger_support}")
+    @Value("${com.dwarfeng.fdr.cache.timeout.entity.trigger_support}")
     private long triggerSupportTimeout;
-    @Value("${cache.timeout.entity.mapper_support}")
+    @Value("${com.dwarfeng.fdr.cache.timeout.entity.mapper_support}")
     private long mapperSupportTimeout;
-    @Value("${cache.timeout.entity.washer_support}")
+    @Value("${com.dwarfeng.fdr.cache.timeout.entity.washer_support}")
     private long washerSupportTimeout;
-    @Value("${cache.timeout.entity.fetcher_support}")
+    @Value("${com.dwarfeng.fdr.cache.timeout.entity.fetcher_support}")
     private long fetcherSupportTimeout;
 
     public ServiceConfiguration(

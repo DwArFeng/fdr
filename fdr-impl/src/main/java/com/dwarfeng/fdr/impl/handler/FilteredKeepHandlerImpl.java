@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 public class FilteredKeepHandlerImpl extends AbstractKeepHandler<FilteredData> implements FilteredKeepHandler {
 
-    @Value("${keep.filtered_data.type}")
+    @Value("${com.dwarfeng.fdr.keep.filtered_data.type}")
     private String type;
 
     public FilteredKeepHandlerImpl(List<Bridge> bridges) {

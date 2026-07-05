@@ -23,7 +23,7 @@ public class FilterInfoCrudOperation implements BatchCrudOperation<LongIdKey, Fi
 
     private final EnabledFilterInfoCache enabledFilterInfoCache;
 
-    @Value("${cache.timeout.entity.filter_info}")
+    @Value("${com.dwarfeng.fdr.cache.timeout.entity.filter_info}")
     private long filterInfoTimeout;
 
     public FilterInfoCrudOperation(

@@ -14,12 +14,12 @@ import java.util.List;
 @Component
 public class FilteredQueryHandlerImpl extends AbstractQueryHandler implements FilteredQueryHandler {
 
-    @Value("${persist.filtered_data.type}")
+    @Value("${com.dwarfeng.fdr.persist.filtered_data.type}")
     private String type;
 
-    @Value("${query.filtered.max_period_span}")
+    @Value("${com.dwarfeng.fdr.query.filtered.max_period_span}")
     private long maxPeriodSpan;
-    @Value("${query.filtered.max_page_size}")
+    @Value("${com.dwarfeng.fdr.query.filtered.max_page_size}")
     private int maxPageSize;
 
     public FilteredQueryHandlerImpl(

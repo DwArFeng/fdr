@@ -16,11 +16,11 @@ public class RedisBridgeDaoConfiguration {
 
     private final RedisTemplate<String, ?> redisTemplate;
 
-    @Value("${bridge.redis.dbkey.normal_data}")
+    @Value("${com.dwarfeng.fdr.bridge.redis.dbkey.normal_data}")
     private String normalDataDbKey;
-    @Value("${bridge.redis.dbkey.filtered_data}")
+    @Value("${com.dwarfeng.fdr.bridge.redis.dbkey.filtered_data}")
     private String filteredDataDbKey;
-    @Value("${bridge.redis.dbkey.triggered_data}")
+    @Value("${com.dwarfeng.fdr.bridge.redis.dbkey.triggered_data}")
     private String triggeredDataDbKey;
 
     public RedisBridgeDaoConfiguration(

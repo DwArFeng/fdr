@@ -28,7 +28,7 @@ public class MultiPusher extends AbstractPusher {
 
     private final List<Pusher> pushers;
 
-    @Value("${pusher.multi.delegate_types}")
+    @Value("${com.dwarfeng.fdr.pusher.multi.delegate_types}")
     private String delegateTypes;
 
     private final List<Pusher> delegates = new ArrayList<>();
