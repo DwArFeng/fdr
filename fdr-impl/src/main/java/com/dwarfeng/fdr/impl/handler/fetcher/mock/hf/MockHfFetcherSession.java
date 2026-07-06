@@ -123,7 +123,9 @@ public class MockHfFetcherSession extends AbstractFetcherSession {
 
             for (long i = 0; i < toGenerate; i++) {
                 long sampleIndex = hfPointRuntime.getProducedSamples() + i;
-                Instant happenedInstant = computeInstant(hfPointRuntime.getBaseInstant(), sampleIndex, hfPointRuntime.getFrequency());
+                Instant happenedInstant = computeInstant(
+                        hfPointRuntime.getBaseInstant(), sampleIndex, hfPointRuntime.getFrequency()
+                );
                 RecordInfo recordInfo = RecordInfoUtil.newInstance(
                         hfPointRuntime.getPointKey(), hfPointRuntime.getGenerator().generateValue(), happenedInstant
                 );
@@ -133,7 +135,10 @@ public class MockHfFetcherSession extends AbstractFetcherSession {
 
             long cost = System.currentTimeMillis() - start;
             if (cost > Math.max(1L, hfPointRuntime.getTickPeriod())) {
-                LOGGER.warn("高频模拟点位 {} 补样耗时 {}ms 超过 tick 周期 {}ms", hfPointRuntime.getPointKey(), cost, hfPointRuntime.getTickPeriod());
+                LOGGER.warn(
+                        "高频模拟点位 {} 补样耗时 {}ms 超过 tick 周期 {}ms",
+                        hfPointRuntime.getPointKey(), cost, hfPointRuntime.getTickPeriod()
+                );
             }
         } catch (Exception e) {
             LOGGER.warn("高频模拟点位 {} 补样失败", hfPointRuntime.getPointKey(), e);

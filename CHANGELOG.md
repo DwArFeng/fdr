@@ -4,7 +4,8 @@
 
 ### 功能构建
 
-- (无)
+- `fdr-impl` 子模块类优化注释、文档注释格式、代码换行格式。
+  - com.dwarfeng.fdr.impl.handler.fetcher.mock.hf.MockHfFetcherSession。
 
 ### Bug 修复
 
