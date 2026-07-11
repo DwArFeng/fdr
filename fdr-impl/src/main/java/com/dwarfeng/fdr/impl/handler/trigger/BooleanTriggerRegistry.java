@@ -42,7 +42,7 @@ public class BooleanTriggerRegistry extends AbstractTriggerRegistry {
 
     @Override
     public String provideDescription() {
-        return "如果数据值的类型是布尔值，并且能够匹配指定的布尔值，则被触发。";
+        return "如果数据值的类型是布尔值，并且等于指定的布尔值，则被触发。";
     }
 
     @Override
@@ -78,23 +78,23 @@ public class BooleanTriggerRegistry extends AbstractTriggerRegistry {
             // 获取 testInfo 的值。
             Object value = testInfo.getValue();
 
-            // 如果值是 null，显然无法匹配布尔值，因此不被触发。
+            // 如果值是 null，显然无法比较布尔值，因此不被触发。
             if (value == null) {
                 return TestResult.NOT_TRIGGERED;
             }
 
-            // 如果值不是布尔值，显然无法匹配布尔值，因此不被触发。
+            // 如果值不是布尔值，显然无法比较布尔值，因此不被触发。
             if (!(value instanceof Boolean)) {
                 return TestResult.NOT_TRIGGERED;
             }
 
-            // 如果值不能匹配布尔值，则不被触发。
-            if (Objects.equals(value, config.isValue())) {
+            // 如果值不等于指定的布尔值，则不被触发。
+            if (!Objects.equals(value, config.isValue())) {
                 return TestResult.NOT_TRIGGERED;
             }
 
-            // 如果值能匹配布尔值，则被触发。
-            String message = "数据值匹配布尔值, 被触发";
+            // 如果值等于指定的布尔值，则被触发。
+            String message = "数据值等于指定布尔值, 被触发";
             LOGGER.debug("测试信息 {} 被触发, 原因: {}", testInfo, message);
             return TestResult.triggered(message);
         }
