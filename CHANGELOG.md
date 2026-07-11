@@ -4,6 +4,10 @@
 
 ### 功能构建
 
+- Wiki 更新。
+  - docs/wiki/zh-CN/Fetcher.md。
+  - docs/wiki/zh-CN/PresetFetcherImplements.md。
+
 - `fdr-impl` 子模块类优化注释、文档注释格式、代码换行格式。
   - com.dwarfeng.fdr.impl.handler.fetcher.mock.hf.MockHfFetcherSession。
 
