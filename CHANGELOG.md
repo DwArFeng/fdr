@@ -5,6 +5,7 @@
 ### 功能构建
 
 - Wiki 更新。
+  - docs/wiki/zh-CN/Filter.md。
   - docs/wiki/zh-CN/Fetcher.md。
   - docs/wiki/zh-CN/PresetFetcherImplements.md。
 
