@@ -314,3 +314,4 @@
 ## 参阅
 
 - [Fetcher](./Fetcher.md) - 抓取器，详细说明了本项目的抓取器机制。
+- [Opt Directory](./OptDirectory.md) - 可选配置目录说明，详细介绍了本项目的可选配置，即 `opt/` 目录下的内容。

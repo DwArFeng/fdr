@@ -168,4 +168,3 @@ FDR 支持两种写入记录的方式，一种是由其它系统调用 FDR 的�
 ## 参阅
 
 - [Preset Fetcher Implements](./PresetFetcherImplements.md) - 预设抓取器实现，详细说明了本项目内置的所有抓取器。
-- [Using Telqos](./UsingTelqos.md) - 使用 Telqos，介绍本项目的 telnet 运维平台。
