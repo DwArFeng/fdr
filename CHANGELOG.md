@@ -8,6 +8,9 @@
 
 ### Bug 修复
 
+- 修正部分过滤器实现中的逻辑错误。
+  - com.dwarfeng.fdr.impl.handler.trigger.BooleanTriggerRegistry。
+
 - 修正部分配置文件。
   - 修正 `spring/application-context-scan.xml` 中缺失的配置内容。
 
