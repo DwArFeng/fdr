@@ -8,7 +8,8 @@
 
 ### Bug 修复
 
-- (无)
+- 修正部分配置文件。
+  - 修正 `spring/application-context-scan.xml` 中缺失的配置内容。
 
 ### 功能移除
 
