@@ -52,7 +52,7 @@
         <log4j2.version>2.25.4</log4j2.version>
         <jboss-logging.version>3.4.3.Final</jboss-logging.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
-        <jackson.version>2.21.2</jackson.version>
+        <jackson.version>2.21.5</jackson.version>
         <groovy.version>4.0.31</groovy.version>
         <influxdb.version>6.12.0</influxdb.version>
         <dutil.version>0.4.2.a-beta</dutil.version>
